@@ -1,0 +1,29 @@
+
+CREATE TABLE users ( 
+	'user_id' 	INTEGER Primary key,
+	'name'  	TEXT,
+	'screenName'  	TEXT,
+	'email'  	TEXT,
+	'location' 	TEXT,
+	'meetsCount' 	INTEGER,
+	'profileImageUrl' 	TEXT
+);
+
+CREATE INDEX users_name on users(name);
+
+CREATE TABLE meets (
+	'id'        INTEGER,
+	'postId'    INTEGER,
+	'userId'    INTEGER,
+	'type'	    INTEGER,
+	'createAt'  INTEGER,
+	'timeAt'    INTEGER,
+	'longitude' TEXT,
+	'latitude'  TEXT,
+	'description'	TEXT,
+	'source'    TEXT,
+	'user_count' INTEGER,
+PRIMARY KEY(id,postid,type)
+);
+CREATE INDEX meet_ids on meets(id);
+CREATE INDEX post_ids on meets(postId);

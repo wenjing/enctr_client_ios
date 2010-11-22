@@ -1,0 +1,30 @@
+#build products
+build/
+*.[oa]
+*/Build/
+
+# OS X Finder and whatnot
+.DS_Store
+
+# to be safe
+dsa_priv.pem
+
+# XCode per user config
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+
+# imports
+.hg
+.svn
+CVS
+
+# auto backup files
+*~.nib
+*.swp
+*~
+
+
