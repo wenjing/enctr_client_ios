@@ -154,17 +154,21 @@ static NSString* addressString = @" " ;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
     // put parameters for POST
-	
+
 	// meet date
 	static NSDateFormatter* dateFormatter = nil ;
+	NSLocale *          enUSPOSIXLocale;
 	if ( dateFormatter == nil ) {
+		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
 		dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		[dateFormatter setLocale:enUSPOSIXLocale];
 	}
 	time_t now;
     time(&now);
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];        
-    [param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];
+	[param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
     [param setObject:[dateFormatter stringFromDate:date] forKey:@"created_at"];
 
 	// location 

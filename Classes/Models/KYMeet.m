@@ -52,33 +52,21 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	latitude         = [[dic objectForKey:@"lat"]    floatValue] ;
 	userCount		 = [[dic objectForKey:@"users_count"] longValue];
     
-	
 	//
 	// Check userCount value, create meetUsers array
 	//
 	meetUsers =[[NSMutableArray array] retain];
 	// loop to add users, DBupdate
-
 	
-	NSString *stringOfcreated = [dic objectForKey:@"created_at"];
-    if (stringOfcreated ) {
-		if (strptime([stringOfcreated UTF8String], "%FT%T%z",  &created) == NULL) {
-			strptime([stringOfcreated UTF8String], "%FT%H:%M:%S%z", &created);
-		}
-		createdAt = mktime(&created);
-	}
-
 	NSString* stringOftime = [dic objectForKey:@"time"] ;
     if ( stringOftime ) {
-		if (strptime([stringOftime UTF8String], "%FT%T%z",  &created) == NULL) {
-			strptime([stringOftime UTF8String], "%FT%H:%M:%S%z", &created);
-		}
-		timeAt = mktime(&created);
+		strptime([stringOftime UTF8String], "%FT%T%z",  &created) ;
+		timeAt = timegm(&created);
 	}
 		
 	// need server response meet names by string "description" in a format as "@name @name @name #place"
     NSString *textString = [dic objectForKey:@"city"] ;
-	NSString *zipString = [dic objectForKey:@"zip"];
+	NSString *zipString  = [dic objectForKey:@"zip" ] ;
 	
     if (textString == nil || (id)textString == [NSNull null]) {
         description = @"";
@@ -202,13 +190,12 @@ int sTextWidth[] = {
 	uint32_t uid			= [stmt getInt32:2];
 	s.user = [User userWithId:uid] ;
 	s.type =				  [stmt getInt32:3];
-    s.createdAt             = [stmt getInt32:4];
-	s.timeAt                = [stmt getInt32:5];
-    s.longitude             = [[stmt getString:6] floatValue];
-    s.latitude              = [[stmt getString:7] floatValue];
-    s.description           = [stmt getString:8] ;
-    s.source                = [stmt getString:9] ;
-	s.userCount				= [stmt getInt32:10] ;
+	s.timeAt                = [stmt getInt32:4];
+    s.longitude             = [[stmt getString:5] floatValue];
+    s.latitude              = [[stmt getString:6] floatValue];
+    s.description           = [stmt getString:7] ;
+    s.source                = [stmt getString:8] ;
+	s.userCount				= [stmt getInt32:9] ;
 			  
 	if (s.user == nil) {
 		NSLog(@"KYMeet initial with stm error");
@@ -269,20 +256,19 @@ int sTextWidth[] = {
 {
     static Statement *stmt = nil;
     if (stmt == nil) {
-        stmt = [DBConnection statementWithQuery:"REPLACE INTO meets VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"];
+        stmt = [DBConnection statementWithQuery:"REPLACE INTO meets VALUES(?, ?,  ?, ?, ?, ?, ?, ?, ?, ?)"];
         [stmt retain];
     }
     [stmt bindInt64:meetId			forIndex:1];
 	[stmt bindInt64:postId		forIndex:2];
 	[stmt bindInt32:user.userId forIndex:3];
 	[stmt bindInt32:type        forIndex:4];
-    [stmt bindInt32:createdAt   forIndex:5];
-	[stmt bindInt32:timeAt        forIndex:6];
-	[stmt bindString:[NSString stringWithFormat:@"%lf", longitude] forIndex:7];
-	[stmt bindString:[NSString stringWithFormat:@"%lf", latitude]  forIndex:8];
-    [stmt bindString:description forIndex:9];
-    [stmt bindString:source     forIndex:10];
-	[stmt bindInt32:userCount   forIndex:11];
+	[stmt bindInt32:timeAt        forIndex:5];
+	[stmt bindString:[NSString stringWithFormat:@"%lf", longitude] forIndex:6];
+	[stmt bindString:[NSString stringWithFormat:@"%lf", latitude]  forIndex:7];
+    [stmt bindString:description forIndex:8];
+    [stmt bindString:source     forIndex:9];
+	[stmt bindInt32:userCount   forIndex:10];
 
     if ([stmt step] != SQLITE_DONE) {
         [DBConnection alert];

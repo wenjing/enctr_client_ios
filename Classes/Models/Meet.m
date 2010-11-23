@@ -96,7 +96,7 @@ static NSString *userRegexp = @"@([0-9a-zA-Z_]+)";
     //
     time_t now;
     time(&now);
-    
+
     int distance = (int)difftime(now, timeAt);
     if (distance < 0) distance = 0;
     

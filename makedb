@@ -16,7 +16,6 @@ CREATE TABLE meets (
 	'postId'    INTEGER,
 	'userId'    INTEGER,
 	'type'	    INTEGER,
-	'createAt'  INTEGER,
 	'timeAt'    INTEGER,
 	'longitude' TEXT,
 	'latitude'  TEXT,

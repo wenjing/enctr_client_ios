@@ -30,6 +30,7 @@
 		3A14BA2F1276C1F6000FCDB2 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2B1276C1F6000FCDB2 /* 74-location.png */; };
 		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
 		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
+		3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A3497071294E3DB00AFFB30 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3496FC1294E3DB00AFFB30 /* NSObject+SBJSON.m */; };
 		3A3497081294E3DB00AFFB30 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3496FE1294E3DB00AFFB30 /* NSString+SBJSON.m */; };
@@ -51,7 +52,6 @@
 		3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA182D1288E5DD00D74450 /* setupView.xib */; };
 		3ACA18371288E62900D74450 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA18361288E62900D74450 /* SetupViewController.m */; };
 		3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD41C3A12891FF8001B2E90 /* meetView.xib */; };
-		3AEF641F12989DA70015B083 /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3AEF641E12989DA70015B083 /* kaya-meet-db.sql */; };
 		3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AF7B3B71278F96F008F83BC /* LoginView.xib */; };
 		3AF7B3D7127908C3008F83BC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B3D5127908C3008F83BC /* LoginViewController.m */; };
 		3AF7B40D1279109C008F83BC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */; };
@@ -95,6 +95,7 @@
 		3A14BA2B1276C1F6000FCDB2 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "74-location.png"; path = "images/74-location.png"; sourceTree = "<group>"; };
 		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
 		3A14BA511276C3A4000FCDB2 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "112-group.png"; path = "images/112-group.png"; sourceTree = "<group>"; };
+		3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
 		3A3496FA1294E3DB00AFFB30 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -133,7 +134,6 @@
 		3ACA18351288E62900D74450 /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetupViewController.h; path = Controllers/SetupViewController.h; sourceTree = "<group>"; };
 		3ACA18361288E62900D74450 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetupViewController.m; path = Controllers/SetupViewController.m; sourceTree = "<group>"; };
 		3AD41C3A12891FF8001B2E90 /* meetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = meetView.xib; path = Resources/meetView.xib; sourceTree = "<group>"; };
-		3AEF641E12989DA70015B083 /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3AF7B3B71278F96F008F83BC /* LoginView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LoginView.xib; path = Resources/LoginView.xib; sourceTree = "<group>"; };
 		3AF7B3D5127908C3008F83BC /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Controllers/LoginViewController.m; sourceTree = "<group>"; };
 		3AF7B3D6127908C3008F83BC /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Controllers/LoginViewController.h; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3AEF641E12989DA70015B083 /* kaya-meet-db.sql */,
+				3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */,
 				3AA51E181284ED5F00D8565B /* kaya_meet-Info.plist */,
 				3A6F1CCC127654210044D6E6 /* images */,
 				3AD41C3A12891FF8001B2E90 /* meetView.xib */,
@@ -434,7 +434,7 @@
 				3AA51E061284EC8000D8565B /* kaya-logo-withhands-on-blue.png in Resources */,
 				3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */,
 				3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */,
-				3AEF641F12989DA70015B083 /* kaya-meet-db.sql in Resources */,
+				3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
