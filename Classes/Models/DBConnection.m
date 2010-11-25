@@ -18,9 +18,8 @@ static sqlite3*   theDatabase = nil;
 #ifdef TEST_DELETE_MEETS
 const char *delete_meets = 
 "BEGIN;"
-//"DELETE FROM meets;"
-//"DELETE FROM meets WHERE type = 0 and id > (SELECT id FROM meets WHERE type = 0 ORDER BY id DESC LIMIT 1 OFFSET 1);"
-//"DELETE FROM meets WHERE type = 1 and id > (SELECT id FROM meets WHERE type = 1 ORDER BY id DESC LIMIT 1 OFFSET 1);"
+"DELETE FROM users;"
+"DELETE FROM meets;"
 "COMMIT";
 #endif
 
@@ -66,32 +65,29 @@ const char *delete_meets =
 //
 // delete caches
 //
-const char *delete_message_cache_sql = 
+const char *delete_users_cache_sql = 
 "BEGIN;"
 "DELETE FROM users;"
+"COMMIT;"
+"VACUUM;";
+const char *delete_meets_cache_sql = 
+"BEGIN;"
 "DELETE FROM meets;"
 "COMMIT;"
 "VACUUM;";
 
-+ (void)deleteMessageCache
++ (void)deleteDBCache
 {
     char *errmsg;
     [self getSharedDatabase];
     
-    if (sqlite3_exec(theDatabase, delete_message_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
+    if (sqlite3_exec(theDatabase, delete_users_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
         // ignore error
-        NSLog(@"Error: failed to cleanup chache (%s)", errmsg);
+        NSLog(@"Error: failed to cleanup users chache (%s)", errmsg);
     }
-}
-
-+ (void)deleteImageCache
-{
-    char *errmsg;
-    [self getSharedDatabase];
-    
-    if (sqlite3_exec(theDatabase, "DELETE FROM images; VACUUM;", NULL, NULL, &errmsg) != SQLITE_OK) {
+	if (sqlite3_exec(theDatabase, delete_meets_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
         // ignore error
-        NSLog(@"Error: failed to cleanup chache (%s)", errmsg);
+        NSLog(@"Error: failed to cleanup meets chache (%s)", errmsg);
     }
 }
 

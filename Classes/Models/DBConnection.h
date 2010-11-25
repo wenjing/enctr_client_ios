@@ -16,8 +16,7 @@
 }
 
 + (void)createEditableCopyOfDatabaseIfNeeded:(BOOL)force;
-+ (void)deleteMessageCache;
-+ (void)deleteImageCache;
++ (void)deleteDBCache;
 
 + (sqlite3*)getSharedDatabase;
 + (void)closeDatabase;

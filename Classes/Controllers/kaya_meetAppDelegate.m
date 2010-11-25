@@ -50,7 +50,7 @@
 	int  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
 		// delete other user's DB data
-        [DBConnection deleteMessageCache];
+        [DBConnection deleteDBCache];
     }
 	
 	selectedTab = TAB_MEETS;
@@ -120,7 +120,7 @@
     NSArray *views = tabBarController.viewControllers;
 	UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
 	[(MeetViewController*)[nav topViewController] restoreAndLoadMeets:true] ;
-	
+
 	// set auto refresh
 	//
     int interval = [[NSUserDefaults standardUserDefaults] integerForKey:@"autoRefresh"];

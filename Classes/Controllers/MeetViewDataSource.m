@@ -321,15 +321,16 @@ static NSString* addressString = @" " ;
 //
 - (void) getLocation
 {
-	if ( location ) return ;
-	location = [[LocationManager alloc] initWithDelegate:self];
+	if ( location == nil ) {
+		location = [[LocationManager alloc] initWithDelegate:self];
+	}
 	[location getCurrentLocation];
 }
 
 - (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
-	//    latitude  = alocation.coordinate.latitude;
-	//    longitude = alocation.coordinate.longitude;
+ 	latitude  = alocation.coordinate.latitude;
+	longitude = alocation.coordinate.longitude;
 }
 
 - (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation

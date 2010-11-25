@@ -116,9 +116,9 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"1111111111111";
     statusCode = 0;
     self.requestURL = aURL;
     
-    NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)URL, (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
+    NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)aURL, (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
     [URL autorelease];
-	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:aURL]
+	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                        cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                    timeoutInterval:NETWORK_TIMEOUT];
     

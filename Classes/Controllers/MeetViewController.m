@@ -41,6 +41,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+	if (!isLoaded) {
+		// get all meets from server
+        [meetDataSource getUserMeets] ;
+    }
+	isLoaded = true;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -86,6 +91,9 @@
 
 - (void) autoRefresh
 {
+	// get location update if needed
+	[meetDataSource getLocation];
+	
 	[self refreshMeet:nil];
 }
 
