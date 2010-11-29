@@ -18,7 +18,7 @@ typedef enum {
 	sqlite_int64    postId;  // Post meet id 
 	NSString*       description;   // meet description
     
-    time_t          createdAt, timeAt  ;
+    time_t          timeAt;
     NSString*       timestamp ;
 	float 		    longitude, latitude;
     MeetType        type;

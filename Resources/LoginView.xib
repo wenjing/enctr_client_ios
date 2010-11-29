@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1024</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
+		<string key="IBDocument.SystemVersion">10H574</string>
 		<string key="IBDocument.InterfaceBuilderVersion">804</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
+			<integer value="20"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,8 +44,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIImageView" id="165767142">
 						<reference key="NSNextResponder" ref="100285727"/>
-						<int key="NSvFlags">306</int>
-						<string key="NSFrame">{{41, 49}, {240, 90}}</string>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{0, 20}, {320, 416}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
@@ -54,13 +54,13 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">kaya-logo-withhands-on-blue.png</string>
+							<string key="NSResourceName">kaya-bg-640x960-03.png</string>
 						</object>
 					</object>
 					<object class="IBUITextField" id="90238200">
 						<reference key="NSNextResponder" ref="100285727"/>
 						<int key="NSvFlags">288</int>
-						<string key="NSFrame">{{51, 172}, {220, 31}}</string>
+						<string key="NSFrame">{{50, 177}, {220, 31}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
@@ -97,7 +97,7 @@
 					<object class="IBUITextField" id="728435678">
 						<reference key="NSNextResponder" ref="100285727"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{51, 211}, {220, 31}}</string>
+						<string key="NSFrame">{{50, 216}, {220, 31}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
@@ -130,8 +130,8 @@
 				<string key="NSFrameSize">{320, 436}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">2</int>
-					<bytes key="NSRGB">MC4yMTk2MDc4NDMxIDAuNjU0OTAxOTYwOCAwLjg3MDU4ODIzNTMAA</bytes>
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MQA</bytes>
 				</object>
 				<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 					<integer value="36" key="IBUIAccessibilityTraits"/>
@@ -226,9 +226,9 @@
 						<reference key="object" ref="100285727"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="728435678"/>
 							<reference ref="165767142"/>
 							<reference ref="90238200"/>
+							<reference ref="728435678"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -274,11 +274,11 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAw1AAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAwzIAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAw3AAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABCTAAAw1kAAA</bytes>
 					</object>
 					<string>{{241, 635}, {240, 90}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -389,7 +389,21 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">LoginViewController.h</string>
+						<string key="minorKey">Classes/Controllers/LoginViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/JSON-NEW/NSObject+SBJSON.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/JSON-NEW/SBJsonWriter.h</string>
 					</object>
 				</object>
 			</object>
@@ -463,6 +477,20 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSURLConnection.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuartzCore.framework/Headers/CAAnimation.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">QuartzCore.framework/Headers/CALayer.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -592,11 +620,11 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">kaya-meet.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../kaya_meet.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">kaya-logo-withhands-on-blue.png</string>
-			<string key="NS.object.0">{500, 187}</string>
+			<string key="NS.key.0">kaya-bg-640x960-03.png</string>
+			<string key="NS.object.0">{640, 960}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">123</string>
 	</data>

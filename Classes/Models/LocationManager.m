@@ -63,9 +63,9 @@
         didUpdateToLocation:(CLLocation *)newLocation
                fromLocation:(CLLocation *)oldLocation
 {
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init]  autorelease];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+//    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init]  autorelease];
+//    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
 
     NSDate* eventDate = newLocation.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];

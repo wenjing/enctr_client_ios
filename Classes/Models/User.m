@@ -51,6 +51,7 @@
 	}
     [name retain];
     [screenName retain];
+	[email retain];
 }
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic

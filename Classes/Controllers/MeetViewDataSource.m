@@ -154,17 +154,21 @@ static NSString* addressString = @" " ;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
     // put parameters for POST
-	
+
 	// meet date
 	static NSDateFormatter* dateFormatter = nil ;
+	NSLocale *          enUSPOSIXLocale;
 	if ( dateFormatter == nil ) {
+		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
 		dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		[dateFormatter setLocale:enUSPOSIXLocale];
 	}
 	time_t now;
     time(&now);
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];        
-    [param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];
+	[param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
     [param setObject:[dateFormatter stringFromDate:date] forKey:@"created_at"];
 
 	// location 
@@ -322,15 +326,16 @@ static NSString* addressString = @" " ;
 //
 - (void) getLocation
 {
-	if ( location ) return ;
-	location = [[LocationManager alloc] initWithDelegate:self];
+	if ( location == nil ) {
+		location = [[LocationManager alloc] initWithDelegate:self];
+	}
 	[location getCurrentLocation];
 }
 
 - (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
-	//    latitude  = alocation.coordinate.latitude;
-	//    longitude = alocation.coordinate.longitude;
+ 	latitude  = alocation.coordinate.latitude;
+	longitude = alocation.coordinate.longitude;
 }
 
 - (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation
