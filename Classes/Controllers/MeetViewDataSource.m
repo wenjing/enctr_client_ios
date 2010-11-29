@@ -172,8 +172,13 @@ static NSString* addressString = @" " ;
 	[param setObject:[NSString stringWithFormat:@"%lf",longitude] forKey:@"lng"];
 	//[param setObject:placeString forKey:@"location"];
 
+	// lerror
+	[param setObject:[NSString stringWithFormat:@"%f", 1.0] forKey:@"lerror"];
+	
 	// BT ids
-	[param setObject:@"12:34:56:78:9a:ab,22:33:44:55:66:44" forKey:@"devs"];
+	[param setObject:@"12:34:56:78:9a:ab" forKey:@"user_dev"];
+	
+	[param setObject:@"22:33:44:55:66:44" forKey:@"devs"];
 	
 	// Description
 	[param setObject:[NSString stringWithFormat:@" %@ ",addressString] forKey:@"description"];
