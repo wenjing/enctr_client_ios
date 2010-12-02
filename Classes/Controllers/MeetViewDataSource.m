@@ -6,6 +6,7 @@
 #import "MeetViewDataSource.h"
 #import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
+#import "BlueTooth.h"
 
 @interface NSObject (MeetViewControllerDelegate)
 - (void)meetsDidUpdate:(MeetViewDataSource*)sender count:(int)count insertAt:(int)position;
@@ -28,7 +29,7 @@ static NSString* addressString = @" " ;
 	meetClient = nil;
 	location = nil;
 	reverseGeocoder = nil;
-	longitude=0, latitude=0;
+	longitude=0.0, latitude=0.0;
 	[self getLocation] ;
 	isRestored=true;
     return self;
@@ -85,7 +86,7 @@ static NSString* addressString = @" " ;
 	// set image label in cell
 		KYMeet* sts = [self meetAtIndex:indexPath.row];
 		cell.primaryLabel.text   = [NSString stringWithFormat:@"meet with %ld friends", 
-									sts.userCount	];
+									sts.userCount-1	];
 		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@", [sts timestamp]
 									];
 		NSString *picURL = sts.user.profileImageUrl ;
@@ -146,7 +147,7 @@ static NSString* addressString = @" " ;
 
 // post/get meet methods 
 
-- (void)addMeet
+- (void)addMeet:(BluetoothConnect*)bt
 {
     if (meetClient) return;
 	meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidPost:obj:)];
@@ -169,20 +170,24 @@ static NSString* addressString = @" " ;
     time(&now);
 	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];
 	[param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
-    [param setObject:[dateFormatter stringFromDate:date] forKey:@"created_at"];
-
 	// location 
 	[param setObject:[NSString stringWithFormat:@"%lf",latitude]  forKey:@"lat" ];
 	[param setObject:[NSString stringWithFormat:@"%lf",longitude] forKey:@"lng"];
 	//[param setObject:placeString forKey:@"location"];
 
 	// lerror
-	[param setObject:[NSString stringWithFormat:@"%f", 1.0] forKey:@"lerror"];
+	[param setObject:[NSString stringWithFormat:@"%f", lerror] forKey:@"lerror"];
 	
-	// BT ids
-	[param setObject:@"12:34:56:78:9a:ab" forKey:@"user_dev"];
-	
-	[param setObject:@"22:33:44:55:66:44" forKey:@"devs"];
+	// bt
+	[param setObject:bt.session.peerID forKey:@"user_dev"];
+	if ( [bt numberOfPeers] == 0 ) {
+		[param setObject:bt.session.peerID forKey:@"devs"];
+	}
+	else {
+		NSString* query = [bt.peerList componentsJoinedByString:@","];
+		NSLog(@"user %@, meet %@", bt.session.peerID, query);
+		[param setObject:query forKey:@"devs"];
+	}
 	
 	// Description
 	[param setObject:[NSString stringWithFormat:@" %@ ",addressString] forKey:@"description"];
@@ -334,15 +339,18 @@ static NSString* addressString = @" " ;
 
 - (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
- 	latitude  = alocation.coordinate.latitude;
-	longitude = alocation.coordinate.longitude;
+	if (latitude==0.0 || longitude==0.0) {
+		latitude  = alocation.coordinate.latitude;
+		longitude = alocation.coordinate.longitude;
+		lerror = [alocation horizontalAccuracy] ;
+	}
 }
 
 - (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
     latitude  = alocation.coordinate.latitude;
     longitude = alocation.coordinate.longitude;
-	if ( reverseGeocoder ) [reverseGeocoder release] ;
+	lerror = [alocation horizontalAccuracy] ;
 	reverseGeocoder =
 	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
     reverseGeocoder.delegate = self;

@@ -38,6 +38,7 @@
 		3A34970A1294E3DB00AFFB30 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497021294E3DB00AFFB30 /* SBJsonBase.m */; };
 		3A34970B1294E3DB00AFFB30 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497041294E3DB00AFFB30 /* SBJsonParser.m */; };
 		3A34970C1294E3DB00AFFB30 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */; };
+		3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40570E12A738EB005E7F2B /* MBProgressHUD.m */; };
 		3A6F1CD11276545B0044D6E6 /* hands-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */; };
 		3A6F1CD21276545B0044D6E6 /* hands-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CD01276545B0044D6E6 /* hands-72x72.png */; };
 		3A6F1CD5127654E10044D6E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD4127654E10044D6E6 /* MapKit.framework */; };
@@ -57,6 +58,7 @@
 		3AF7B40D1279109C008F83BC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */; };
 		3AF7B46912791A2C008F83BC /* DBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46812791A2C008F83BC /* DBConnection.m */; };
 		3AF7B46D12791A59008F83BC /* Statement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46C12791A59008F83BC /* Statement.m */; };
+		3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC916712A6025E00BB0FB5 /* BlueTooth.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +113,8 @@
 		3A3497041294E3DB00AFFB30 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		3A3497051294E3DB00AFFB30 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
+		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
 		3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-57x57.png"; path = "images/hands-57x57.png"; sourceTree = "<group>"; };
 		3A6F1CD01276545B0044D6E6 /* hands-72x72.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-72x72.png"; path = "images/hands-72x72.png"; sourceTree = "<group>"; };
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -142,6 +146,8 @@
 		3AF7B46812791A2C008F83BC /* DBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBConnection.m; path = Models/DBConnection.m; sourceTree = "<group>"; };
 		3AF7B46B12791A59008F83BC /* Statement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Statement.h; path = Models/Statement.h; sourceTree = "<group>"; };
 		3AF7B46C12791A59008F83BC /* Statement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statement.m; path = Models/Statement.m; sourceTree = "<group>"; };
+		3AFC916612A6025E00BB0FB5 /* BlueTooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueTooth.h; path = Network/BlueTooth.h; sourceTree = "<group>"; };
+		3AFC916712A6025E00BB0FB5 /* BlueTooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueTooth.m; path = Network/BlueTooth.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +308,8 @@
 		3AA51D0F1284C2AB00D8565B /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3AFC916612A6025E00BB0FB5 /* BlueTooth.h */,
+				3AFC916712A6025E00BB0FB5 /* BlueTooth.m */,
 				3AA51E3E1284F37100D8565B /* KYMeetClient.h */,
 				3AA51E4C1284F59C00D8565B /* KYMeetClient.m */,
 				3AA51D111284C30800D8565B /* KYConnection.h */,
@@ -357,6 +365,8 @@
 		3AF7B46A12791A35008F83BC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
+				3A40570E12A738EB005E7F2B /* MBProgressHUD.m */,
 				3A863252127D618200147E3B /* TabBarController.h */,
 				3A863253127D618200147E3B /* TabBarController.m */,
 				3AF7B3D5127908C3008F83BC /* LoginViewController.m */,
@@ -473,6 +483,8 @@
 				3A34970A1294E3DB00AFFB30 /* SBJsonBase.m in Sources */,
 				3A34970B1294E3DB00AFFB30 /* SBJsonParser.m in Sources */,
 				3A34970C1294E3DB00AFFB30 /* SBJsonWriter.m in Sources */,
+				3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */,
+				3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

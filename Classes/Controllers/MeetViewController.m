@@ -5,6 +5,7 @@
 //
 
 #import "MeetViewController.h"
+#import "MBProgressHUD.h"
 #import "kaya_meetAppDelegate.h"
 
 @interface MeetViewController (Private)
@@ -82,11 +83,30 @@
 	[meetDataSource getUserMeets];
 }
 
+static MBProgressHUD *HUD = nil ;
+
 - (IBAction) postMeet:   (id)sender
 {
 	self.navigationItem.rightBarButtonItem.enabled = false;
-	// need to find a place for BT device connection
-	[meetDataSource addMeet] ;
+	// BT device connection
+	// BT ids
+	static BluetoothConnect *bt ;
+	if ( bt == nil ) 
+		 bt = [[BluetoothConnect alloc] initWithDelegate:self];
+	[bt   reset ] ;
+	HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+	HUD.labelText = @"finding friend..";
+	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
+	[bt startPeer];
+}
+
+- (void) BluetoothDidFinished:(BluetoothConnect *)bt {
+	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+	[meetDataSource addMeet:bt] ;
+}
+
+- (void) BluetoothDidUpdate:(BluetoothConnect *)bt peer:(NSString *)peerID{
+	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
 }
 
 - (void) autoRefresh

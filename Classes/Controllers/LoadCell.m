@@ -41,7 +41,7 @@ static NSString *sLabels[] = {
 {
     type = aType;
     label.text = sLabels[type];
-    [spinner stopAnimating];
+    [spinner startAnimating];
 }
 
 - (void)layoutSubviews

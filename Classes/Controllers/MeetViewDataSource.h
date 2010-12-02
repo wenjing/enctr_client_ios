@@ -7,6 +7,7 @@
 #import "MeetDataSource.h"
 #import "LocationManager.h"
 #import "KYMeetClient.h"
+#import "BlueTooth.h"
 
 @interface MeetViewDataSource : MeetDataSource <UITableViewDataSource, UITableViewDelegate, MKReverseGeocoderDelegate>
 {
@@ -16,14 +17,14 @@
     BOOL                    isRestored;
 	MKReverseGeocoder*		reverseGeocoder;
 	LocationManager*		location  ;
-	float		 longitude, latitude  ;
+	float		 longitude, latitude, lerror  ;
 }
 
 - (id)initWithController:(UITableViewController*)controller;
 - (MeetViewCell *)getMeetCell:(UITableView*)tableView atIndex:(int)index ;
 
 - (void)getUserMeets;
-- (void)addMeet ;
+- (void)addMeet:(BluetoothConnect*)bt ;
 - (void)getLocation;
 
 @end

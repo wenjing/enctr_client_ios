@@ -29,7 +29,7 @@
 	screenName		= [dic objectForKey:@"name"];
 	email			= [dic objectForKey:@"email"];
 	location        = [dic objectForKey:@"location"];
-    profileImageUrl = [dic objectForKey:@"image_url"];
+    profileImageUrl = [dic objectForKey:@"user_avatar"];
 
     meetsCount		= ([dic objectForKey:@"meets_count"]     == [NSNull null]) ? 0 : [[dic objectForKey:@"meets_count"] longValue];
     notifications   = ([dic objectForKey:@"notifications"]   == [NSNull null]) ? 0 : [[dic objectForKey:@"notifications"] boolValue];
