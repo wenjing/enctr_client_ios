@@ -38,7 +38,6 @@ static NSString* addressString = @" " ;
 - (void)dealloc {
 	[super dealloc];
 	[location release];
-	[reverseGeocoder release];
 	[meetClient cancel];
 	[meetClient release];
 }
@@ -255,7 +254,7 @@ static NSString* addressString = @" " ;
 	//}
 }
 
-// receieve meets arrage by getUserMeets
+// receieve meets array by getUserMeets
 //
 - (void)meetsDidReceive:(KYMeetClient*)sender obj:(NSObject*)obj
 {

@@ -231,9 +231,13 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	[[NSUserDefaults standardUserDefaults] setInteger:0	 forKey:@"KYUserId"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
+	kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
+
 	// push login view
+	kaya_delegate.selectedTab = TAB_MEETS;
+    kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+	[kaya_delegate 	openLoginView];
 	
-	[[kaya_meetAppDelegate getAppDelegate] 	openLoginView];
 }
 
 - (IBAction) Save : (id) sender {

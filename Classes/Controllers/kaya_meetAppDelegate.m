@@ -97,6 +97,7 @@
 - (void)openLoginView 
 {
 	if( loginView ) return ;
+	initialized = false;
 	loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];	
     UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
     [nav presentModalViewController:loginView animated:YES];
@@ -266,6 +267,11 @@ static UIAlertView *sAlert = nil;
     return (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
+-(UINavigationController*)getAppTabController:(int)selectTab
+{
+	NSArray *views = tabBarController.viewControllers;
+	return (UINavigationController*)[views objectAtIndex:selectTab];
+}
 
 @end
 

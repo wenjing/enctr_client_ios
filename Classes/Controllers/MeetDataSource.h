@@ -28,6 +28,7 @@
 - (void)removeMeet:(KYMeet*)meet;
 - (void)removeMeetAtIndex:(int)index;
 - (void)removeLastMeet;
+- (void)removeAllMeets;
 
 - (int)indexOfObject:(KYMeet*)meet;
 - (void)sortByDate;

@@ -44,6 +44,7 @@ typedef enum {
 - (void)openLoginView;
 - (void)postInit;
 - (void)closeLoginView;
+- (UINavigationController*)getAppTabController:(int)selectTab;
 
 + (BOOL)isMyScreenName:(NSString*)screen_name;
 + (kaya_meetAppDelegate*)getAppDelegate;

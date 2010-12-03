@@ -7,6 +7,10 @@
 #import "MeetViewController.h"
 #import "MBProgressHUD.h"
 #import "kaya_meetAppDelegate.h"
+#import "AccelerometerFilter.h"
+
+
+#define kUpdateFrequency	60.0
 
 @interface MeetViewController (Private)
 - (void)didLeaveTab:(UINavigationController*)navigationController;
@@ -14,44 +18,80 @@
 
 @implementation MeetViewController
 
+@synthesize soundFileURLRef, soundFileObject; 
 //
 // UIViewController methods
 //
 - (void)viewDidLoad
 {
+	tab       = [self navigationController].tabBarItem.tag;
+
     if (!isLoaded) {
 		// get all meets from server
         [meetDataSource getUserMeets] ;
     }
 	isLoaded = true;
+	
+	// accelerometer
+	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0 / kUpdateFrequency];
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+	
+	filter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0] ;
+	filter.adaptive = NO ;
+	
+	// sound
+	// Create the URL for the source audio file. The URLForResource:withExtension: method is
+    //    new in iOS 4.0.
+    NSURL *tapSound   = [[NSBundle mainBundle] URLForResource: @"tap"
+                                                withExtension: @"aif"];
+	
+    // Store the URL as a CFURLRef instance
+    self.soundFileURLRef = (CFURLRef) [tapSound retain];
+	
+    // Create a system sound object representing the sound file.
+    AudioServicesCreateSystemSoundID (
+									  soundFileURLRef,
+									  &soundFileObject
+									  );
+}
+
+- (void) viewDidUnload
+{
+	filter = nil ;
+	isLoaded = false;
 }
 
 - (void) dealloc
 {
     [super dealloc];
+	[filter release];
+	AudioServicesDisposeSystemSoundID (soundFileObject);
+    CFRelease (soundFileURLRef);
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    
-    [self.tableView setContentOffset:contentOffset animated:false];
-    [self.tableView reloadData];
+	if (!isLoaded) {
+		// get all meets from server
+        [meetDataSource getUserMeets] ;
+    }else {
+		[self.tableView setContentOffset:contentOffset animated:false];
+		[self.tableView reloadData];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	if (!isLoaded) {
-		// get all meets from server
-        [meetDataSource getUserMeets] ;
-    }
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
 	isLoaded = true;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     contentOffset = self.tableView.contentOffset;
+	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
@@ -60,6 +100,36 @@
 
 - (void)didReceiveMemoryWarning 
 {
+
+}
+
+// accelerometer
+//
+// UIAccelerometerDelegate method, called when the device accelerates.
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
+	static int count = 0 ;
+	// Update the accelerometer graph view	
+	[filter addAcceleration:acceleration];
+	float total = filter.x+filter.y+filter.z ;
+	if (total < 2.0 ) return ;
+	count ++ ;
+	if (count > 2) {
+		NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
+		count = 0 ;
+		[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+		[self postMeet:self];
+	}
+}
+// cleanup current meets
+// due to different user login
+
+- (void) resetMeets
+{
+//	[meetDataSource removeAllMeets];
+//  [self.tableView reloadData];
+	isLoaded = false ;
+//	contentOffset = 0;
 }
 
 //
@@ -68,6 +138,7 @@
 - (void) restoreAndLoadMeets:(BOOL)load
 {
 	tab       = [self navigationController].tabBarItem.tag;
+	if (meetDataSource) [meetDataSource release];
 	meetDataSource = [[MeetViewDataSource alloc] initWithController:self] ;
 	self.tableView.delegate   = meetDataSource;
 	self.tableView.dataSource = meetDataSource;
@@ -88,6 +159,8 @@ static MBProgressHUD *HUD = nil ;
 - (IBAction) postMeet:   (id)sender
 {
 	self.navigationItem.rightBarButtonItem.enabled = false;
+	AudioServicesPlaySystemSound (soundFileObject);
+	
 	// BT device connection
 	// BT ids
 	static BluetoothConnect *bt ;
@@ -155,7 +228,8 @@ static MBProgressHUD *HUD = nil ;
 {
 	self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
-
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+	
     if (self.navigationController.tabBarController.selectedIndex == tab &&
         self.navigationController.topViewController == self) {
 		
