@@ -38,7 +38,7 @@
 {
 	needAuth      = true;
 //	uint32_t user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"] ;
-    NSString *url = [NSString stringWithFormat:@"http://deep-sunset-14.heroku.com/users/%ld", userId];
+    NSString *url = [NSString stringWithFormat:@"http://www.kayameet.com/users/%ld", userId];
 //	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_USERMEETS;
 	// can pass parameters through body if needed
@@ -50,7 +50,7 @@
 - (void)getMeet:(NSDictionary*)params withMeetId:(uint32_t)meetId
 {
 	needAuth      = true;
-    NSString *url = [NSString stringWithFormat:@"http://deep-sunset-14.heroku.com/meets/%ld", meetId];
+    NSString *url = [NSString stringWithFormat:@"http://www.kayameet.com/meets/%ld", meetId];
 	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_MEET;
 	// can pass parameters through body if needed
@@ -61,7 +61,7 @@
 - (void)getMeet:(NSDictionary*)params withPostId:(uint32_t)postId
 {
 	needAuth      = true;
-    NSString *url = [NSString stringWithFormat:@"http://deep-sunset-14.heroku.com/mposts/%ld", postId];
+    NSString *url = [NSString stringWithFormat:@"http://www.kayameet.com/mposts/%ld", postId];
 	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_MEET;
 	// can pass parameters through body if needed
@@ -74,7 +74,7 @@
 {
     needAuth = true;
 	request = KAYAMEET_REQUEST_POST_MEET;
-    NSString* url = @"http://deep-sunset-14.heroku.com/mposts";
+    NSString* url = @"http://www.kayameet.com/mposts";
     NSString *postString = [KYConnection generateBodyString:nil params:params];
     [self post:url body:postString];
 }
@@ -83,7 +83,7 @@
 - (void)verify
 {
     needAuth = true;
-	NSString* url = @"http://deep-sunset-14.heroku.com/sessions";
+	NSString* url = @"http://www.kayameet.com/sessions";
 	request = KAYAMEET_REQUEST_LOGIN;
     [super post:url body:nil];
 }
