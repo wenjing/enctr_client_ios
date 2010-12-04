@@ -64,7 +64,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 		timeAt = timegm(&created);
 	}
 		
-	// need server response meet names by string "description" in a format as "@name @name @name #place"
+	// location display
     NSString *textString = [dic objectForKey:@"city"] ;
 	NSString *zipString  = [dic objectForKey:@"zip" ] ;
 	

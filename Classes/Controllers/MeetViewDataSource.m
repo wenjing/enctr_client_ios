@@ -88,10 +88,11 @@ static NSString* addressString = @" " ;
 									sts.userCount-1	];
 		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@", [sts timestamp]
 									];
-		NSString *picURL = sts.user.profileImageUrl ;
+//		NSString *picURL = sts.user.profileImageUrl ;
+		NSString *picURL = nil ;
 		if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-			NSData *imgData = [[NSData dataWithContentsOfURL:
-							   [NSURL URLWithString:picURL]] retain];
+			NSData *imgData = [[[NSData dataWithContentsOfURL:
+							   [NSURL URLWithString:picURL]] autorelease] retain];
 			cell.meetImageView.image = [[UIImage alloc] initWithData:imgData];
 		} else {
 			cell.meetImageView.image = nil;

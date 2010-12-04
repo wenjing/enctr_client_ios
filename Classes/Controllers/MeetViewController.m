@@ -26,12 +26,6 @@
 {
 	tab       = [self navigationController].tabBarItem.tag;
 
-    if (!isLoaded) {
-		// get all meets from server
-        [meetDataSource getUserMeets] ;
-    }
-	isLoaded = true;
-	
 	// accelerometer
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0 / kUpdateFrequency];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
@@ -126,8 +120,8 @@
 
 - (void) resetMeets
 {
-//	[meetDataSource removeAllMeets];
-//  [self.tableView reloadData];
+	[meetDataSource removeAllMeets];
+//    [self.tableView reloadData];
 	isLoaded = false ;
 //	contentOffset = 0;
 }
