@@ -6,9 +6,11 @@
 //
 
 #import "SetupViewController.h"
+#import "kaya_meetAppDelegate.h"
 
 enum {
 	SECTION_ACCOUNT,
+	SECTION_USERIMAGE,
 	SECTION_PROFILE,
 	SECTION_CONNECT,
 	NUM_OF_SECTION,
@@ -22,9 +24,14 @@ enum {
 };
 
 enum {
+	ROW_USERIMAGE,
+	NUM_ROWS_USERIMAGE,
+};
+
+enum {
 	ROW_PHONE,
-	ROW_URL,
 	ROW_LOCATION,
+	ROW_URL,
 	NUM_ROWS_PROFILE,
 };
 
@@ -36,17 +43,21 @@ enum {
 
 static int sNumRows[NUM_OF_SECTION] = {
 	NUM_ROWS_ACCOUNT,
+	NUM_ROWS_USERIMAGE,
 	NUM_ROWS_PROFILE,
 	NUM_ROWS_CONNECTION,
 };
 
 static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	@"Account",
+	@"User Image",
 	@"Profile",
 	@"Connection",
 };
 
+
 @implementation SetupViewController
+@synthesize navigation;
 
 #define LABLE_TAG		1
 #define TEXTFIELD_TAG	2
@@ -74,6 +85,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	locationField.text = user.location;
 	passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
 	phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
+//	user_image
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -94,6 +106,15 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
 	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SECTION_USERIMAGE) {
+        return 80;
+    }
+    else {
+        return 45;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,7 +139,12 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             label = (UILabel*)[cell viewWithTag:LABLE_TAG];
             label.font = [UIFont boldSystemFontOfSize:16];
             break;
-		
+			
+        case SECTION_USERIMAGE:
+			if (indexPath.row == ROW_USERIMAGE) {
+                cell = Image;
+            }
+			break;
         case SECTION_PROFILE:
 			if (indexPath.row == ROW_PHONE) {
                 cell = Phone;
@@ -127,10 +153,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 				cell = Location;
 			}
             else {
-                cell = Image;
-				text = (UITextField*)[cell viewWithTag:TEXTFIELD_TAG];
-				text.font = [UIFont systemFontOfSize:16];
-				break;
+                cell = Url;
             }
             text = (UITextField*)[cell viewWithTag:TEXTFIELD_TAG];
             text.font = [UIFont systemFontOfSize:16];
@@ -158,6 +181,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     UITableViewCell *cell;
 	UITextField *text ;
+	UIActionSheet *as;
     switch (indexPath.section) {
         case SECTION_ACCOUNT:
             if (indexPath.row == ROW_USERNAME) {
@@ -180,13 +204,23 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 				cell = Location;
 			}
             else {
-                cell = Image;
-				break;
+                cell = Url;
             }
              text = (UITextField*)[cell viewWithTag:TEXTFIELD_TAG];
             [text becomeFirstResponder];
             break;
+		case SECTION_USERIMAGE:
 			
+			as = [[UIActionSheet alloc] initWithTitle:nil
+											delegate:self
+									cancelButtonTitle:@"Cancel"
+								destructiveButtonTitle:nil
+									otherButtonTitles:nil];
+			[as addButtonWithTitle:@"Take Picture by Camera"];
+			[as addButtonWithTitle:@"Choose From Library"];
+			[as showInView:tableView];
+			[as release];
+			break;
         default: // SECTION_CONNECTION
 			if (indexPath.row == ROW_FACEBOOK) {
                 cell = Facebook;
@@ -241,6 +275,18 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 }
 
 - (IBAction) Save : (id) sender {
+}
+
+- (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex
+{
+	NSLog(@"%d", buttonIndex);
+	if (buttonIndex == 1 )
+	{
+	}
+	else if (buttonIndex == 2)
+	{
+	}
+	
 }
 
 @end

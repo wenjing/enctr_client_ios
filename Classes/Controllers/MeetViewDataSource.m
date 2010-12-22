@@ -89,11 +89,18 @@ static NSString* addressString = @" " ;
 		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@", [sts timestamp]
 									];
 //		NSString *picURL = sts.user.profileImageUrl ;
-		NSString *picURL = nil ;
+		NSString *picURL = NULL;
+//		NSString *picURL = @"http://www.gravatar.com/avatar/12468ce98b80c55ec202850ac4026d75?size=50";
 		if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
 			NSData *imgData = [[[NSData dataWithContentsOfURL:
 							   [NSURL URLWithString:picURL]] autorelease] retain];
-			cell.meetImageView.image = [[UIImage alloc] initWithData:imgData];
+			UIImage *aImage = [[UIImage alloc] initWithData:imgData];
+			CGSize itemSize  = CGSizeMake(45,50);
+			UIGraphicsBeginImageContext(itemSize);
+			CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
+			[aImage drawInRect:imageRect];
+			cell.meetImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
 		} else {
 			cell.meetImageView.image = nil;
 		}
@@ -279,21 +286,10 @@ static NSString* addressString = @" " ;
         return;
     }
     
-    if ( ! [obj isKindOfClass:[NSDictionary class]] ) {
+    if ( ! [obj isKindOfClass:[NSArray class]] ) {
 		return ;
 	}
-	NSDictionary *dic = (NSDictionary*)obj ;
-	if ( ! [dic isKindOfClass:[NSDictionary class]] ) {
-		return ;
-	}	
-	NSDictionary *u   = (NSDictionary*)[dic objectForKey:@"user"] ;
-	if ( ! [u  isKindOfClass:[NSDictionary class]] ) {
-		return ;
-	}
-	NSArray *ary = [u objectForKey:@"meets"] ;
-	if ( ! [ary  isKindOfClass:[NSArray class]] ) {
-		return ;
-	}
+	NSArray *ary = (NSArray *)obj;
 	
     int unread = 0;    
     //KYMeet* lastMeet = [self lastMeet];
@@ -303,7 +299,7 @@ static NSString* addressString = @" " ;
         [DBConnection beginTransaction];
         // Add meets 
         for (int i = [ary count] - 1; i >= 0; --i) {
-            NSDictionary *dic = (NSDictionary*)[ary objectAtIndex:i];
+            NSDictionary *dic = (NSDictionary*)[[ary objectAtIndex:i] objectForKey:@"meet"];
             if (![dic isKindOfClass:[NSDictionary class]]) {
                 continue;
             }

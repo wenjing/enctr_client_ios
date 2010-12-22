@@ -49,13 +49,13 @@
   
   CGRect frame;
   
-  frame= CGRectMake(boundsX+10 ,0, 50, 50);
+  frame= CGRectMake(boundsX+5 ,0, 50, 50);
   meetImageView.frame = frame;
   
-  frame= CGRectMake(boundsX+70 ,5, 200, 25);
+  frame= CGRectMake(boundsX+60 ,5, 200, 25);
   primaryLabel.frame = frame;
   
-  frame= CGRectMake(boundsX+70 ,30, 200, 15);
+  frame= CGRectMake(boundsX+60 ,30, 200, 15);
   secondaryLabel.frame = frame;
   
 }

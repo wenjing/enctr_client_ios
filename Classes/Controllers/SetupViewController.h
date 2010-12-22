@@ -6,19 +6,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UIKit/UIActionSheet.h>
 #import <Foundation/Foundation.h>
-#import "kaya_meetAppDelegate.h"
+//#import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
 #import "User.h"
 
 
-@interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 	UITableViewController  *controller;
 	User  *user ;
 	IBOutlet UITableViewCell*	Name;
 	IBOutlet UITableViewCell*	Email;
 	IBOutlet UITableViewCell*	Password;
 	IBOutlet UITableViewCell*	Location;
+	IBOutlet UITableViewCell*	Url;
 	IBOutlet UITableViewCell*	Phone;
 	IBOutlet UITableViewCell*   Image;
 	IBOutlet UITableViewCell*	Facebook;
@@ -29,9 +31,16 @@
 	IBOutlet UITextField*		passwordField;
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
+	IBOutlet UITextField*		urlField;
+	IBOutlet UIImage*			user_image;
+	
+	UINavigationController*		navigation;
 }
+
+@property(nonatomic, assign) UINavigationController* navigation;
 
 - (IBAction) Save   : (id)sender ;
 - (IBAction) logout : (id)sender ;
+-(void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 @end

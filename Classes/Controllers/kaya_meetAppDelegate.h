@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import "MeetViewController.h"
-#import "SetupViewController.h"
 
 typedef enum {
     TAB_MEETS=0,
-    TAB_SEARCH,
+    TAB_PEOPLE,
     TAB_PLACE,
     TAB_SETUP
 } TAB_ITEM;
@@ -23,8 +22,7 @@ typedef enum {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
-	LoginViewController *loginView;
-
+	LoginViewController *loginView;	
 	NSString			*screeName;
 	int					 selectedTab;
 	BOOL				 initialized;

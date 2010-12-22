@@ -37,8 +37,7 @@
 - (void)getUserMeets:(NSDictionary*)params withUserId:(uint32_t)userId
 {
 	needAuth      = true;
-//	uint32_t user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"] ;
-    NSString *url = [NSString stringWithFormat:@"http://www.kayameet.com/users/%ld", userId];
+    NSString *url = [NSString stringWithFormat:@"http://www.kayameet.com/users/%ld/meets", userId];
 //	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_USERMEETS;
 	// can pass parameters through body if needed
