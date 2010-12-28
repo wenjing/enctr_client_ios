@@ -14,12 +14,10 @@
 - (void)didSelectTab:(UINavigationController*)navigationController;
 @end
 
-
 @interface kaya_meetAppDelegate(Private)
 - (void)initializeUserDefaults;
 - (void)setNextTimer:(NSTimeInterval)interval;
 @end
-
 
 @implementation kaya_meetAppDelegate
 
@@ -221,14 +219,14 @@
     UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     UIViewController *c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didLeaveTab:)]) {
-        [c didLeaveTab:nav];
+        [c performSelector:@selector(didLeaveTab:nav:)];
     }
     selectedTab = tabBar.selectedIndex;
 	
     nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didSelectTab:)]) {
-        [c didSelectTab:nav];
+        [c performSelector:@selector(didSelectTab:nav:)];
     }
 }
 
@@ -237,6 +235,21 @@
 //
 
 static UIAlertView *sAlert = nil;
+static id actionDelegate ;
+static SEL clickedAccept ;
+- (void)dialog:(NSString*)title message:(NSString*)message action:(SEL)anAction dg:(id)aDelegate
+{
+	if (sAlert) return;
+	sAlert = [[UIAlertView alloc] initWithTitle:title
+										message:message
+									   delegate:self
+							  cancelButtonTitle:@"Accept"
+							  otherButtonTitles:@"Cancel", nil];
+	clickedAccept  = anAction ;
+	actionDelegate = aDelegate;
+	[sAlert show];
+	[sAlert release];
+}
 
 - (void)alert:(NSString*)title message:(NSString*)message
 {
@@ -251,9 +264,15 @@ static UIAlertView *sAlert = nil;
     [sAlert release];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonInde
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    sAlert = nil;
+	NSLog(@"click %d",buttonIndex);
+	sAlert = nil ;
+	if ( buttonIndex == 1 )
+	{
+		[actionDelegate performSelector:clickedAccept] ;
+	}
+	sAlert = nil ; 
 }
 
 + (BOOL)isMyScreenName:(NSString*)screen_name

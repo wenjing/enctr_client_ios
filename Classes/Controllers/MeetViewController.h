@@ -10,15 +10,18 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MeetViewDataSource.h"
 #import "AccelerometerFilter.h"
+#import "MBProgressHUD.h"
 
 @interface MeetViewController : UITableViewController<UIAccelerometerDelegate> {
-	BOOL		  isLoaded         ;
+	BOOL			isLoaded       ;
 	MeetViewDataSource* meetDataSource;
-	CGPoint       contentOffset    ;
+	CGPoint			contentOffset  ;
 	HighpassFilter          *filter;
-	int           tab;
-	CFURLRef	soundFileURLRef;
-	SystemSoundID soundFileObject;
+	int				tab;
+	CFURLRef		soundFileURLRef;
+	SystemSoundID	soundFileObject;
+	
+	MBProgressHUD	*HUD  ;
 } 
 
 @property (readwrite) CFURLRef soundFileURLRef;

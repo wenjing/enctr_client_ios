@@ -31,13 +31,16 @@
 @interface KYMeet : Meet
 {
 	User*			user  ; // to add Friends' meet 
+	NSString*		place; // to display place
     NSString*       source;
+	NSString*		latestChat;
 }
 
 @property (getter=_meetId, setter=setMeetId:) sqlite_int64  kymeetId;
 @property (nonatomic, retain) User*         user;
 @property (nonatomic, retain) NSString*     source;
-
+@property (nonatomic, retain) NSString*      place;
+@property (nonatomic, retain) NSString*      latestChat;
 
 + (KYMeet*)meetWithId:(sqlite_int64)kymeetId;
 + (KYMeet*)meetWithJsonDictionary:(NSDictionary*)dic type:(MeetType)type;

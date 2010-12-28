@@ -8,12 +8,14 @@
 #import "DBConnection.h"
 #import "BlueTooth.h"
 
+#import "MeetDetailView.h"
+
 @interface NSObject (MeetViewControllerDelegate)
 - (void)meetsDidUpdate:(MeetViewDataSource*)sender count:(int)count insertAt:(int)position;
 - (void)meetsDidFailToUpdate:(MeetViewDataSource*)sender position:(int)position;
 @end
 
-static NSString* addressString = @" " ;
+static NSString* addressString = @"" ;
 
 @implementation MeetViewDataSource
 
@@ -32,6 +34,9 @@ static NSString* addressString = @" " ;
 	longitude=0.0, latitude=0.0;
 	[self getLocation] ;
 	isRestored=true;
+	userConfirmString = nil;
+	
+	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     return self;
 }
 
@@ -40,6 +45,7 @@ static NSString* addressString = @" " ;
 	[location release];
 	[meetClient cancel];
 	[meetClient release];
+	[userConfirmString release];
 }
 
 //  get meet cell
@@ -74,9 +80,23 @@ static NSString* addressString = @" " ;
 {
 //    KYMeet* sts = [self meetAtIndex:indexPath.row];
 //    return sts ? sts.cellHeight : 50;
-	return 60;
+	return 50;
     
 }
+
+/*
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {	
+	if ((indexPath.row % 2) == 1) { 
+		cell.backgroundColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
+		cell.textLabel.backgroundColor = [UIColor blackColor];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	} else {
+		cell.backgroundColor = [UIColor whiteColor];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	}
+	
+}
+ */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -84,9 +104,10 @@ static NSString* addressString = @" " ;
     if (cell) {
 	// set image label in cell
 		KYMeet* sts = [self meetAtIndex:indexPath.row];
-		cell.primaryLabel.text   = [NSString stringWithFormat:@"meet with %ld friends", 
-									sts.userCount-1	];
-		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@", [sts timestamp]
+//		cell.primaryLabel.text   = [NSString stringWithFormat:@"meet with %ld friends", 
+//									sts.userCount-1	];
+		cell.primaryLabel.text   = sts.description  ;
+		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@ %@", [sts timestamp], sts.source
 									];
 //		NSString *picURL = sts.user.profileImageUrl ;
 		NSString *picURL = NULL;
@@ -116,10 +137,11 @@ static NSString* addressString = @" " ;
     KYMeet* sts = [self meetAtIndex:indexPath.row];
     
     if (sts) {
-        // Display user view
+        // Display Meet Detail View
         //
-        //UserViewController* userView = [[[UserViewController alloc] initWithMessage:sts] autorelease];
-        //[[controller navigationController] pushViewController:userView animated:TRUE];
+        MeetDetailView* meetDetailView = [[[MeetDetailView alloc] initWithMeet:sts] autorelease];
+		meetDetailView.hidesBottomBarWhenPushed = YES;
+        [[controller navigationController] pushViewController:meetDetailView animated:TRUE];
     }      
     else {
         // Restore meets from DB
@@ -151,14 +173,12 @@ static NSString* addressString = @" " ;
     [tableView deselectRowAtIndexPath:indexPath animated:TRUE];   
 }
 
-
-// post/get meet methods 
-
 - (void)addMeet:(BluetoothConnect*)bt
 {
     if (meetClient) return;
 	meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidPost:obj:)];
     
+	if (userConfirmString != nil)    [userConfirmString release] ;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
     // put parameters for POST
@@ -186,26 +206,35 @@ static NSString* addressString = @" " ;
 	[param setObject:[NSString stringWithFormat:@"%f", lerror] forKey:@"lerror"];
 	
 	// bt
-	[param setObject:bt.session.peerID forKey:@"user_dev"];
+	//[param setObject:bt.session.peerID forKey:@"user_dev"];
+	latestUserCount = [bt numberOfPeers] + 1 ;
+	[param setObject:[bt.session displayNameForPeer:bt.session.peerID] forKey:@"user_dev"];
 	if ( [bt numberOfPeers] == 0 ) {
-		[param setObject:bt.session.peerID forKey:@"devs"];
+//		[param setObject:bt.session.peerID forKey:@"devs"];
+		[param setObject:[bt.session displayNameForPeer:bt.session.peerID] forKey:@"devs"];
 	}
 	else {
+		userConfirmString = [self getUserNameList:bt.peerList];
 		NSString* query = [bt.peerList componentsJoinedByString:@","];
-		NSLog(@"user %@, meet %@", bt.session.peerID, query);
+		NSLog(@"user %@, meet %@", [bt.session displayNameForPeer:bt.session.peerID], query);
 		[param setObject:query forKey:@"devs"];
 	}
 	
 	// Description
-	[param setObject:[NSString stringWithFormat:@" %@ ",addressString] forKey:@"description"];
+	// [param setObject:[NSString stringWithFormat:@" %@ ",addressString] forKey:@"description"];
 	
 	// record the post as sent
 	// NEED keep the temporary meet here until post receieved
 	// KYMeet* sts = [KYMeet meetWithJsonDictionary:param type:KYMEET_TYPE_TEMP] ;
 	// [self appendMeet:sts];
-				   
+
 	// poset meet from server
     [meetClient postMeet:param];
+}
+
+- (void)clickedAccept 
+{
+	NSLog(@"collision happen %d", latestPostId);
 }
 
 - (void)getUserMeets
@@ -241,6 +270,8 @@ static NSString* addressString = @" " ;
         [sender alert];
     }
 	NSDictionary *dic = (NSDictionary*)obj ;
+	if ([dic isKindOfClass:[NSDictionary class]])
+		 dic = [dic objectForKey:@"mpost"] ;
     if ([dic isKindOfClass:[NSDictionary class]]) {
 		// remove post array
 		//[self removeLastMeet] ;
@@ -249,8 +280,16 @@ static NSString* addressString = @" " ;
 		//[sts insertDB];
 		//[self insertSentMeet:sts atIndex:insertPosition];
 		//[DBConnection commitTransaction];
+		latestPostId = [[dic objectForKey:@"id"] longLongValue] ;
+		
 		kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
-		[appDelegate alert:@"Meet Posted" message:[NSString stringWithFormat:@"meet at %@",addressString]]; 
+		if ( latestUserCount > 1 ) {
+			[appDelegate dialog:@"Meet Confirm" message:[NSString stringWithFormat:@"met with %@",userConfirmString] action:@selector(clickedAccept) dg:self ]; 
+		}
+		else 
+		{
+			[appDelegate alert:@"Meet Posted" message:[NSString stringWithFormat:@"meet at %@",addressString]]; 
+		}
 		[self getUserMeets];
 	}
     else {
@@ -322,6 +361,17 @@ static NSString* addressString = @" " ;
 	}
 }
 
+- (NSString *)getUserNameList:(NSMutableArray *)ar
+{
+	NSMutableArray* pairs = [NSMutableArray array];
+	for (int i = 0 ; i < [ar count] ; i ++ ) {
+		NSRange end = [[ar objectAtIndex:i] rangeOfString:@":"] ;
+		[pairs addObject:[[ar objectAtIndex:i] substringToIndex:end.location]];
+	}
+	NSString *query = [[pairs componentsJoinedByString:@","] retain];
+	return query ;
+}
+
 //
 // LocationManager delegate
 //
@@ -360,7 +410,7 @@ static NSString* addressString = @" " ;
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
-    addressString = [[NSString stringWithFormat:@"At: %@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode] retain] ;
+    addressString = [[NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode] retain] ;
 	NSLog(@"place %@",addressString);
 	[reverseGeocoder release];
 }
@@ -370,6 +420,7 @@ static NSString* addressString = @" " ;
     NSLog(@"MKReverseGeocoder has failed. %@",error);
 	addressString = @"At Location" ;
 	[reverseGeocoder release];
-}
+}				 
 
+				 
 @end

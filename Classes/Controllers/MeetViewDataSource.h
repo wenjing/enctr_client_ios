@@ -17,7 +17,9 @@
     BOOL                    isRestored;
 	MKReverseGeocoder*		reverseGeocoder;
 	LocationManager*		location  ;
-	float		 longitude, latitude, lerror  ;
+	float					longitude, latitude, lerror  ;
+	int64_t					latestUserCount, latestPostId;
+	NSString*				userConfirmString;
 }
 
 - (id)initWithController:(UITableViewController*)controller;
@@ -27,4 +29,5 @@
 - (void)addMeet:(BluetoothConnect*)bt ;
 - (void)getLocation;
 
+- (NSString *)getUserNameList:(NSMutableArray *)ar;
 @end

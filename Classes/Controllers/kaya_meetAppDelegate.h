@@ -22,14 +22,13 @@ typedef enum {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
-	LoginViewController *loginView;	
+	LoginViewController *loginView;
 	NSString			*screeName;
 	int					 selectedTab;
 	BOOL				 initialized;
     NSTimeInterval       autoRefreshInterval;
     NSTimer*             autoRefreshTimer;
     NSDate*              lastRefreshDate;
-	
 }
 
 @property (nonatomic, readonly) IBOutlet UIWindow *window;
@@ -39,6 +38,7 @@ typedef enum {
 @property (nonatomic, assign) int selectedTab;
 
 - (void)alert:(NSString*)title message:(NSString*)detail;
+- (void)dialog:(NSString*)title message:(NSString*)detail action:(SEL)anAction dg:(id)aDelegate;
 - (void)openLoginView;
 - (void)postInit;
 - (void)closeLoginView;

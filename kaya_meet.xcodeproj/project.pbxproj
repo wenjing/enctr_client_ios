@@ -32,6 +32,7 @@
 		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
 		3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
+		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
 		3A3497071294E3DB00AFFB30 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3496FC1294E3DB00AFFB30 /* NSObject+SBJSON.m */; };
 		3A3497081294E3DB00AFFB30 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3496FE1294E3DB00AFFB30 /* NSString+SBJSON.m */; };
 		3A3497091294E3DB00AFFB30 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497001294E3DB00AFFB30 /* SBJSON.m */; };
@@ -39,6 +40,9 @@
 		3A34970B1294E3DB00AFFB30 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497041294E3DB00AFFB30 /* SBJsonParser.m */; };
 		3A34970C1294E3DB00AFFB30 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */; };
 		3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40570E12A738EB005E7F2B /* MBProgressHUD.m */; };
+		3A4269F912C675CB0091D520 /* MeetDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4269F712C675CB0091D520 /* MeetDetailView.m */; };
+		3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A4269F812C675CB0091D520 /* MeetDetailView.xib */; };
+		3A426ADC12C6BA640091D520 /* FriendViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A426ADB12C6BA640091D520 /* FriendViewCell.m */; };
 		3A5F339912A8E757008E9353 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F339812A8E757008E9353 /* AccelerometerFilter.m */; };
 		3A5F346D12A91ADB008E9353 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */; };
 		3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F34BA12A91DA3008E9353 /* tap.aif */; };
@@ -56,6 +60,7 @@
 		3ACA18371288E62900D74450 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA18361288E62900D74450 /* SetupViewController.m */; };
 		3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD41C3A12891FF8001B2E90 /* meetView.xib */; };
 		3AECAB59129E036300650176 /* kaya-bg-640x960-03.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */; };
+		3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF53C9112C9238600844457 /* meetDisplayMap.m */; };
 		3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AF7B3B71278F96F008F83BC /* LoginView.xib */; };
 		3AF7B3D7127908C3008F83BC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B3D5127908C3008F83BC /* LoginViewController.m */; };
 		3AF7B40D1279109C008F83BC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */; };
@@ -103,6 +108,8 @@
 		3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
+		3A2F898B12C9BFD300D465CD /* UACellBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UACellBackgroundView.h; path = Others/UACellBackgroundView.h; sourceTree = "<group>"; };
+		3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UACellBackgroundView.m; path = Others/UACellBackgroundView.m; sourceTree = "<group>"; };
 		3A3496FA1294E3DB00AFFB30 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		3A3496FB1294E3DB00AFFB30 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		3A3496FC1294E3DB00AFFB30 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -118,6 +125,11 @@
 		3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
 		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
+		3A4269F612C675CB0091D520 /* FriendViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendViewCell.h; path = Controllers/FriendViewCell.h; sourceTree = "<group>"; };
+		3A4269F712C675CB0091D520 /* MeetDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetDetailView.m; path = Controllers/MeetDetailView.m; sourceTree = "<group>"; };
+		3A4269F812C675CB0091D520 /* MeetDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MeetDetailView.xib; path = Classes/Controllers/MeetDetailView.xib; sourceTree = "<group>"; };
+		3A426ADA12C6BA0F0091D520 /* MeetDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetDetailView.h; path = Controllers/MeetDetailView.h; sourceTree = "<group>"; };
+		3A426ADB12C6BA640091D520 /* FriendViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendViewCell.m; path = Controllers/FriendViewCell.m; sourceTree = "<group>"; };
 		3A5F339712A8E757008E9353 /* AccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccelerometerFilter.h; path = Models/AccelerometerFilter.h; sourceTree = "<group>"; };
 		3A5F339812A8E757008E9353 /* AccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccelerometerFilter.m; path = Models/AccelerometerFilter.m; sourceTree = "<group>"; };
 		3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -145,6 +157,8 @@
 		3ACA18361288E62900D74450 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetupViewController.m; path = Controllers/SetupViewController.m; sourceTree = "<group>"; };
 		3AD41C3A12891FF8001B2E90 /* meetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = meetView.xib; path = Resources/meetView.xib; sourceTree = "<group>"; };
 		3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "kaya-bg-640x960-03.png"; path = "images/kaya-bg-640x960-03.png"; sourceTree = "<group>"; };
+		3AF53C9012C9238600844457 /* meetDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = meetDisplayMap.h; path = Controllers/meetDisplayMap.h; sourceTree = "<group>"; };
+		3AF53C9112C9238600844457 /* meetDisplayMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = meetDisplayMap.m; path = Controllers/meetDisplayMap.m; sourceTree = "<group>"; };
 		3AF7B3B71278F96F008F83BC /* LoginView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LoginView.xib; path = Resources/LoginView.xib; sourceTree = "<group>"; };
 		3AF7B3D5127908C3008F83BC /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Controllers/LoginViewController.m; sourceTree = "<group>"; };
 		3AF7B3D6127908C3008F83BC /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Controllers/LoginViewController.h; sourceTree = "<group>"; };
@@ -211,6 +225,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3A2F898B12C9BFD300D465CD /* UACellBackgroundView.h */,
+				3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */,
 				3AA51E281284EEF700D8565B /* kaya_meet_Prefix.pch */,
 				3AA51D171284C6E700D8565B /* DebugUtils.h */,
 				3A0FC6FC1289CD0A00BFC7F5 /* TimeUtils.h */,
@@ -236,6 +252,7 @@
 				3ACA182D1288E5DD00D74450 /* setupView.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				3AF7B3B71278F96F008F83BC /* LoginView.xib */,
+				3A4269F812C675CB0091D520 /* MeetDetailView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -267,6 +284,12 @@
 				3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */,
 				3A0FC70E1289D3D500BFC7F5 /* MeetDataSource.h */,
 				3A0FC70F1289D3D500BFC7F5 /* MeetDataSource.m */,
+				3A4269F612C675CB0091D520 /* FriendViewCell.h */,
+				3A426ADB12C6BA640091D520 /* FriendViewCell.m */,
+				3A426ADA12C6BA0F0091D520 /* MeetDetailView.h */,
+				3A4269F712C675CB0091D520 /* MeetDetailView.m */,
+				3AF53C9012C9238600844457 /* meetDisplayMap.h */,
+				3AF53C9112C9238600844457 /* meetDisplayMap.m */,
 			);
 			name = MeetViews;
 			sourceTree = "<group>";
@@ -474,6 +497,7 @@
 				3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */,
 				3AECAB59129E036300650176 /* kaya-bg-640x960-03.png in Resources */,
 				3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */,
+				3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +539,10 @@
 				3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */,
 				3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */,
 				3A5F339912A8E757008E9353 /* AccelerometerFilter.m in Sources */,
+				3A4269F912C675CB0091D520 /* MeetDetailView.m in Sources */,
+				3A426ADC12C6BA640091D520 /* FriendViewCell.m in Sources */,
+				3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */,
+				3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

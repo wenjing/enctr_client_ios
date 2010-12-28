@@ -27,9 +27,11 @@
 
 - (void) startPeer
 {
-    if (!session) {
+	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    
+	if (!session) {
         session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
-                                           displayName:nil
+                                           displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
                                            sessionMode:GKSessionModePeer];
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
@@ -102,14 +104,15 @@
 		peerList = [[NSMutableArray alloc] initWithArray:[session peersWithConnectionState:GKPeerStateAvailable]];
 }
 
-- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
+- (void)session:(GKSession *)aSession peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
 	BOOL peerChanged = NO;
 	switch (state) {
 		case GKPeerStateAvailable:
                 if (peerList) {
-                        [peerList addObject:peerID];
+					//[peerList addObject:peerID];
+					[peerList addObject:[aSession displayNameForPeer:peerID]];
 					//	[session connectToPeer:peerID withTimeout:10];
-                        peerChanged = YES;
+					peerChanged = YES;
 					aNumber ++ ;
                 }
 			if ([delegate respondsToSelector:@selector(BluetoothDidUpdate:peer:)]) {

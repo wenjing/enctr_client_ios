@@ -14,7 +14,6 @@
 
 
 @interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
-	UITableViewController  *controller;
 	User  *user ;
 	IBOutlet UITableViewCell*	Name;
 	IBOutlet UITableViewCell*	Email;
@@ -32,7 +31,7 @@
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
 	IBOutlet UITextField*		urlField;
-	IBOutlet UIImage*			user_image;
+	IBOutlet UIImageView*		user_image;
 	
 	UINavigationController*		navigation;
 }

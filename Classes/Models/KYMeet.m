@@ -30,12 +30,14 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 @implementation KYMeet
 
 @synthesize source;
-@synthesize user;
+@synthesize user, place, latestChat;
 
 - (void)dealloc
 {
 	[meetUsers release];
 	[source release];
+	[place release];
+	[latestChat release];
   	[super dealloc];
 }
 
@@ -55,8 +57,37 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	//
 	// Check userCount value, create meetUsers array
 	//
-	meetUsers =[[NSMutableArray array] retain];
+
 	// loop to add users, DBupdate
+	NSArray *ary = (NSArray *)[dic objectForKey:@"users"];
+	NSArray *chatters = (NSArray *)[dic objectForKey:@"chatters"];
+	if ( [ary isKindOfClass:[NSArray class]] ) {
+		if (place != nil)  [place release];
+		if (latestChat != nil) [latestChat release];
+		place = [[dic objectForKey:@"location"] retain];
+		if (meetUsers != nil) [meetUsers release] ;
+		meetUsers =[[NSMutableArray array] retain];
+		[DBConnection beginTransaction];
+		for (int i = 0 ; i < [ary count] ; i ++) {
+			NSDictionary *dic = (NSDictionary*)[ary objectAtIndex:i] ;
+			if (![dic isKindOfClass:[NSDictionary class]]) {
+				continue;
+			}
+			User *u = [User userWithJsonDictionary:dic]  ;
+			[u updateDB] ;
+			if ( u != user ) [meetUsers addObject:u];
+		}
+		[DBConnection commitTransaction];
+		// only for the purpose to update users in a meeting
+		// skip rest of update
+		if ( [chatters isKindOfClass:[NSArray class]] && [chatters count]){
+			NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:0] ; 
+			User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
+			NSString *content = [dic objectForKey:@"content"] ;
+			latestChat = [NSString stringWithFormat:@"[%@] : %@", u.name, content];
+		}
+		return ;
+	}
 	
 	NSString* stringOftime = [dic objectForKey:@"time"] ;
     if ( stringOftime ) {
@@ -67,13 +98,18 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	// location display
     NSString *textString = [dic objectForKey:@"city"] ;
 	NSString *zipString  = [dic objectForKey:@"zip" ] ;
-	
-    if (textString == nil || (id)textString == [NSNull null]) {
+	NSString *brief		 = [dic objectForKey:@"peers_name_brief"];
+	if (description != nil) [description release] ;
+    if (brief == nil || (id)brief == [NSNull null]) {
         description = @"";
     }
-    else {
-        description = [[NSString stringWithFormat:@" at %@ - %@", textString, zipString] retain];
+    else if ( userCount > 1 ) {
+        description = [[NSString stringWithFormat:@" met  %@ ", brief]  retain];
     }
+	else 
+	{
+		description = [[NSString stringWithFormat:@" meet with friend"]  retain];
+	}
 	
 	// can add more info by source, html links
     // parse source parameter
@@ -97,7 +133,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
             source = [src retain];
         }
     }
-
+	source = [[NSString stringWithFormat:@" at %@ ( %@ ) ", textString, zipString] retain];
 }
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic type:(MeetType)aType user:(User*)aUser
@@ -109,6 +145,8 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	// if we will post Friends' meets in the future
 	// there will be user: 
 	user = aUser ;
+	place = nil  ;
+	latestChat = nil;
 	return self;
 }
 

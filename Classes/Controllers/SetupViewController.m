@@ -5,6 +5,7 @@
 //  Copyright 2010 Anova Solutions Inc. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "SetupViewController.h"
 #import "kaya_meetAppDelegate.h"
 
@@ -73,6 +74,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
 	phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
  
+	navigation = self.navigationController ;
 	self.navigationItem.title = @"Account Setup";
 }
 
@@ -86,6 +88,22 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
 	phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
 //	user_image
+	[user_image setClipsToBounds:YES];
+	user_image.layer.cornerRadius = 5.0 ;
+	NSString *picURL = user.profileImageUrl ;
+	if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
+		NSData *imgData = [[[NSData dataWithContentsOfURL:
+							 [NSURL URLWithString:picURL]] autorelease] retain];
+		UIImage *aImage = [[UIImage alloc] initWithData:imgData];
+		CGSize itemSize  = CGSizeMake(65,65);
+		UIGraphicsBeginImageContext(itemSize);
+		CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
+		[aImage drawInRect:imageRect];
+		user_image.image = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+	} else {
+		user_image.image = nil;
+	}
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -110,7 +128,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_USERIMAGE) {
-        return 80;
+        return 70;
     }
     else {
         return 45;
@@ -216,9 +234,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 									cancelButtonTitle:@"Cancel"
 								destructiveButtonTitle:nil
 									otherButtonTitles:nil];
-			[as addButtonWithTitle:@"Take Picture by Camera"];
-			[as addButtonWithTitle:@"Choose From Library"];
-			[as showInView:tableView];
+			[as addButtonWithTitle:@"Take Picture "];
+			[as addButtonWithTitle:@"Choose Photo "];
+			[as showInView:navigation.parentViewController.view];
 			[as release];
 			break;
         default: // SECTION_CONNECTION
@@ -282,9 +300,12 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	NSLog(@"%d", buttonIndex);
 	if (buttonIndex == 1 )
 	{
+		// take picture by camera
+		
 	}
 	else if (buttonIndex == 2)
 	{
+		// choose from Photo library
 	}
 	
 }

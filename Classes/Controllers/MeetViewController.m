@@ -5,7 +5,6 @@
 //
 
 #import "MeetViewController.h"
-#import "MBProgressHUD.h"
 #import "kaya_meetAppDelegate.h"
 #import "AccelerometerFilter.h"
 
@@ -67,8 +66,10 @@
 {
     [super viewWillAppear:animated];
 	if (!isLoaded) {
+
 		// get all meets from server
         [meetDataSource getUserMeets] ;
+		
     }else {
 		[self.tableView setContentOffset:contentOffset animated:false];
 		[self.tableView reloadData];
@@ -132,6 +133,8 @@
 - (void) restoreAndLoadMeets:(BOOL)load
 {
 	tab       = [self navigationController].tabBarItem.tag;
+	HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+	HUD.labelText = @"load meets..";
 	if (meetDataSource) [meetDataSource release];
 	meetDataSource = [[MeetViewDataSource alloc] initWithController:self] ;
 	self.tableView.delegate   = meetDataSource;
@@ -147,8 +150,6 @@
 	self.navigationItem.leftBarButtonItem.enabled = false;
 	[meetDataSource getUserMeets];
 }
-
-static MBProgressHUD *HUD = nil ;
 
 - (IBAction) postMeet:   (id)sender
 {
@@ -180,7 +181,6 @@ static MBProgressHUD *HUD = nil ;
 {
 	// get location update if needed
 	[meetDataSource getLocation];
-	
 	[self refreshMeet:nil];
 }
 
@@ -223,7 +223,7 @@ static MBProgressHUD *HUD = nil ;
 	self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	
+	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
     if (self.navigationController.tabBarController.selectedIndex == tab &&
         self.navigationController.topViewController == self) {
 		
@@ -241,7 +241,7 @@ static MBProgressHUD *HUD = nil ;
             for (int i = 0; i < numInsert; ++i) {
                 [insertion addObject:[NSIndexPath indexPathForRow:position + i inSection:0]];
             }
-            [self.tableView insertRowsAtIndexPaths:insertion withRowAnimation:UITableViewRowAnimationRight];
+            [self.tableView insertRowsAtIndexPaths:insertion withRowAnimation:UITableViewRowAnimationTop];
         }
         [self.tableView endUpdates];
     }
