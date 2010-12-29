@@ -162,7 +162,7 @@ static NSString* addressString = @"" ;
             for (int i = 0; i < count; ++i) {
                 [newPath addObject:[NSIndexPath indexPathForRow:i + indexPath.row inSection:0]];
             }        
-            [tableView insertRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationTop];
+            [tableView insertRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationRight];
         }
         else {
             [newPath addObject:indexPath];

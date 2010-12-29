@@ -241,7 +241,7 @@
             for (int i = 0; i < numInsert; ++i) {
                 [insertion addObject:[NSIndexPath indexPathForRow:position + i inSection:0]];
             }
-            [self.tableView insertRowsAtIndexPaths:insertion withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView insertRowsAtIndexPaths:insertion withRowAnimation:UITableViewRowAnimationRight];
         }
         [self.tableView endUpdates];
     }
