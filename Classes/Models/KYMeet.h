@@ -53,8 +53,9 @@
 - (void)updateWithJsonDictionary:(NSDictionary*)dic ;
 
 - (void)updateAttribute;
-- (int )getMeetsFromDB:(NSMutableArray *)meets;
 - (void)insertDB;
 - (void)deleteFromDB;
+
++ (int )getMeetsFromDB:(NSMutableArray *)meets;
 
 @end

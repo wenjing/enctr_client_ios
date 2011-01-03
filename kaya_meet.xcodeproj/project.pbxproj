@@ -15,6 +15,9 @@
 		282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* moreView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
+		3A04A94512D00522000B99FB /* PlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04A94412D00522000B99FB /* PlaceViewController.m */; };
+		3A04AA5D12D02520000B99FB /* placeDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04AA5C12D02520000B99FB /* placeDisplayMap.m */; };
+		3A04AB8912D15677000B99FB /* placeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A04AB8812D15677000B99FB /* placeView.xib */; };
 		3A0BD170128DC0F200213D64 /* MeetViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0BD16F128DC0F200213D64 /* MeetViewCell.m */; };
 		3A0FC6FE1289CD0A00BFC7F5 /* TimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC6FD1289CD0A00BFC7F5 /* TimeUtils.m */; };
 		3A0FC7031289D0F700BFC7F5 /* LoadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC7021289D0F700BFC7F5 /* LoadCell.m */; };
@@ -30,6 +33,7 @@
 		3A14BA2F1276C1F6000FCDB2 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2B1276C1F6000FCDB2 /* 74-location.png */; };
 		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
 		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
+		3A1A484412D194E600B085B0 /* map_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1A484312D194E600B085B0 /* map_icon.png */; };
 		3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
@@ -81,6 +85,11 @@
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Others/main.m; sourceTree = "<group>"; };
+		3A04A94312D00522000B99FB /* PlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaceViewController.h; path = Controllers/PlaceViewController.h; sourceTree = "<group>"; };
+		3A04A94412D00522000B99FB /* PlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaceViewController.m; path = Controllers/PlaceViewController.m; sourceTree = "<group>"; };
+		3A04AA5B12D02520000B99FB /* placeDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = placeDisplayMap.h; path = Controllers/placeDisplayMap.h; sourceTree = "<group>"; };
+		3A04AA5C12D02520000B99FB /* placeDisplayMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = placeDisplayMap.m; path = Controllers/placeDisplayMap.m; sourceTree = "<group>"; };
+		3A04AB8812D15677000B99FB /* placeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = placeView.xib; path = Resources/placeView.xib; sourceTree = "<group>"; };
 		3A0BD16E128DC0F200213D64 /* MeetViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewCell.h; path = Controllers/MeetViewCell.h; sourceTree = "<group>"; };
 		3A0BD16F128DC0F200213D64 /* MeetViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewCell.m; path = Controllers/MeetViewCell.m; sourceTree = "<group>"; };
 		3A0FC6FC1289CD0A00BFC7F5 /* TimeUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeUtils.h; path = Others/TimeUtils.h; sourceTree = "<group>"; };
@@ -105,6 +114,7 @@
 		3A14BA2B1276C1F6000FCDB2 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "74-location.png"; path = "images/74-location.png"; sourceTree = "<group>"; };
 		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
 		3A14BA511276C3A4000FCDB2 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "112-group.png"; path = "images/112-group.png"; sourceTree = "<group>"; };
+		3A1A484312D194E600B085B0 /* map_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_icon.png; path = images/map_icon.png; sourceTree = "<group>"; };
 		3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
@@ -249,6 +259,7 @@
 				3A6F1CCC127654210044D6E6 /* images */,
 				3AD41C3A12891FF8001B2E90 /* meetView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* moreView.xib */,
+				3A04AB8812D15677000B99FB /* placeView.xib */,
 				3ACA182D1288E5DD00D74450 /* setupView.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				3AF7B3B71278F96F008F83BC /* LoginView.xib */,
@@ -343,6 +354,7 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3A1A484312D194E600B085B0 /* map_icon.png */,
 				3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */,
 				3A14BA511276C3A4000FCDB2 /* 112-group.png */,
 				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
@@ -429,6 +441,10 @@
 				3A03974D128DD82C004C2315 /* MeetViews */,
 				3A0FC7011289D0F700BFC7F5 /* LoadCell.h */,
 				3A0FC7021289D0F700BFC7F5 /* LoadCell.m */,
+				3A04AA5B12D02520000B99FB /* placeDisplayMap.h */,
+				3A04AA5C12D02520000B99FB /* placeDisplayMap.m */,
+				3A04A94312D00522000B99FB /* PlaceViewController.h */,
+				3A04A94412D00522000B99FB /* PlaceViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -498,6 +514,8 @@
 				3AECAB59129E036300650176 /* kaya-bg-640x960-03.png in Resources */,
 				3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */,
 				3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */,
+				3A04AB8912D15677000B99FB /* placeView.xib in Resources */,
+				3A1A484412D194E600B085B0 /* map_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +561,8 @@
 				3A426ADC12C6BA640091D520 /* FriendViewCell.m in Sources */,
 				3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */,
 				3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */,
+				3A04A94512D00522000B99FB /* PlaceViewController.m in Sources */,
+				3A04AA5D12D02520000B99FB /* placeDisplayMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,9 +20,9 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
     KYMeet* dmb = (KYMeet*)b;
     int diff = dmb.timeAt - dma.timeAt;
     if (diff > 0)
-        return -1;
-    else if (diff < 0)
         return 1;
+    else if (diff < 0)
+        return -1;
     else
         return 0;
 }
@@ -263,27 +263,28 @@ int sTextWidth[] = {
 // can add different userId meets array
 //
 
-- (int)getMeetsFromDB:(NSMutableArray*)meets
++ (int)getMeetsFromDB:(NSMutableArray*)meets
 {
-    NSMutableDictionary *hash = [NSMutableDictionary dictionary];    
-    int count = 1;
-    [meets   addObject:self];
-    [hash    setObject:self forKey:[NSString stringWithFormat:@"%lld", self.user.userId]];
+ //   NSMutableDictionary *hash = [NSMutableDictionary dictionary];
+	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    int count = 0;
+ //   [meets   addObject:self];
+ //   [hash    setObject:self forKey:[NSString stringWithFormat:@"%lld", self.user.userId]];
     
-	NSString *sql = [NSString stringWithFormat:@"SELECT * FROM meets WHERE userId IN (%@)", self.user.userId];
+	NSString *sql = [NSString stringWithFormat:@"SELECT * FROM meets WHERE userId IN (%d)", user.userId];
 	Statement *stmt = [DBConnection statementWithQuery:[sql UTF8String]];
         
 	//NSLog(@"Exec %@", sql);
 	while ([stmt step] == SQLITE_ROW) {
-		NSString *idStr = [NSString stringWithFormat:@"%lld", [stmt getInt64:0]];
+		//NSString *idStr = [NSString stringWithFormat:@"%lld", [stmt getInt64:0]];
 		//NSLog(@"Found %@", idStr);
-		if (![hash objectForKey:idStr]) {
-			KYMeet *s = [KYMeet initWithStatement:stmt];
-			[hash setObject:s forKey:idStr];
-			[meets addObject:s];
+		//if (![hash objectForKey:idStr]) {
+		KYMeet *s = [KYMeet initWithStatement:stmt];
+		//[hash setObject:s forKey:idStr];
+		[meets addObject:s];
 			// Up to 20 meets
-			if (++count >= 20) break;
-		}
+		//if (++count >= 20) break;
+		//}
 	}
 	[stmt reset];
     [meets sortUsingFunction:sortByDateDesc context:nil];    
