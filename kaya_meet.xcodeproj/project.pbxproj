@@ -30,10 +30,11 @@
 		3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0FC760128A513600BFC7F5 /* QuartzCore.framework */; };
 		3A14BA021276AF9D000FCDB2 /* hands-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA011276AF9D000FCDB2 /* hands-29x29.png */; };
 		3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */; };
-		3A14BA2F1276C1F6000FCDB2 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2B1276C1F6000FCDB2 /* 74-location.png */; };
 		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
 		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
-		3A1A484412D194E600B085B0 /* map_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1A484312D194E600B085B0 /* map_icon.png */; };
+		3A1775C012D25F120099D87D /* world.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775BF12D25F120099D87D /* world.png */; };
+		3A1775D812D2642B0099D87D /* connections.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775D712D2642B0099D87D /* connections.png */; };
+		3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775D912D2644A0099D87D /* 07-map-marker.png */; };
 		3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
@@ -111,10 +112,11 @@
 		3A0FC760128A513600BFC7F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3A14BA011276AF9D000FCDB2 /* hands-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hands-29x29.png"; path = "images/hands-29x29.png"; sourceTree = "<group>"; };
 		3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "20-gear2.png"; path = "images/20-gear2.png"; sourceTree = "<group>"; };
-		3A14BA2B1276C1F6000FCDB2 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "74-location.png"; path = "images/74-location.png"; sourceTree = "<group>"; };
 		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
 		3A14BA511276C3A4000FCDB2 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "112-group.png"; path = "images/112-group.png"; sourceTree = "<group>"; };
-		3A1A484312D194E600B085B0 /* map_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_icon.png; path = images/map_icon.png; sourceTree = "<group>"; };
+		3A1775BF12D25F120099D87D /* world.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = world.png; path = images/world.png; sourceTree = "<group>"; };
+		3A1775D712D2642B0099D87D /* connections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connections.png; path = images/connections.png; sourceTree = "<group>"; };
+		3A1775D912D2644A0099D87D /* 07-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "07-map-marker.png"; path = "images/07-map-marker.png"; sourceTree = "<group>"; };
 		3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
@@ -354,11 +356,12 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				3A1A484312D194E600B085B0 /* map_icon.png */,
+				3A1775D912D2644A0099D87D /* 07-map-marker.png */,
+				3A1775D712D2642B0099D87D /* connections.png */,
+				3A1775BF12D25F120099D87D /* world.png */,
 				3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */,
 				3A14BA511276C3A4000FCDB2 /* 112-group.png */,
 				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
-				3A14BA2B1276C1F6000FCDB2 /* 74-location.png */,
 				3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */,
 				3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */,
 				3A6F1CD01276545B0044D6E6 /* hands-72x72.png */,
@@ -504,7 +507,6 @@
 				3A6F1CD21276545B0044D6E6 /* hands-72x72.png in Resources */,
 				3A14BA021276AF9D000FCDB2 /* hands-29x29.png in Resources */,
 				3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */,
-				3A14BA2F1276C1F6000FCDB2 /* 74-location.png in Resources */,
 				3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */,
 				3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */,
 				3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */,
@@ -515,7 +517,9 @@
 				3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */,
 				3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */,
 				3A04AB8912D15677000B99FB /* placeView.xib in Resources */,
-				3A1A484412D194E600B085B0 /* map_icon.png in Resources */,
+				3A1775C012D25F120099D87D /* world.png in Resources */,
+				3A1775D812D2642B0099D87D /* connections.png in Resources */,
+				3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

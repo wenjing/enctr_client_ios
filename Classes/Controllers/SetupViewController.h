@@ -8,12 +8,11 @@
 #import <UIKit/UIKit.h>
 #import <UIKit/UIActionSheet.h>
 #import <Foundation/Foundation.h>
-//#import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
 #import "User.h"
 
 
-@interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
+@interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate> {
 	User  *user ;
 	IBOutlet UITableViewCell*	Name;
 	IBOutlet UITableViewCell*	Email;
@@ -33,6 +32,7 @@
 	IBOutlet UITextField*		urlField;
 	IBOutlet UIImageView*		user_image;
 	
+	UIImagePickerController*	imgPicker ;
 	UINavigationController*		navigation;
 }
 

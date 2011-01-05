@@ -297,17 +297,23 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex
 {
-	NSLog(@"%d", buttonIndex);
-	if (buttonIndex == 1 )
-	{
-		// take picture by camera
-		
+	if (buttonIndex == 0 ) return ;
+	if ( imgPicker==nil ) {
+		imgPicker = [[UIImagePickerController alloc] init];
+		imgPicker.allowsEditing = YES;
+		imgPicker.delegate = self;
 	}
-	else if (buttonIndex == 2)
-	{
-		// choose from Photo library
+	if(buttonIndex == 1) {
+		imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+	} else {
+		imgPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	}
-	
+	[self presentModalViewController:imgPicker animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[picker dismissModalViewControllerAnimated:YES];
+	//imageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 }
 
 @end
