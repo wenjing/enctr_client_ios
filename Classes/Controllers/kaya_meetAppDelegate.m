@@ -3,7 +3,6 @@
 //  kaya-meet
 //
 //  Created by Jun Li on 10/25/10.
-//  Copyright 2010 Anova Solutions Inc. All rights reserved.
 //
 
 #import "kaya_meetAppDelegate.h"
@@ -25,6 +24,7 @@
 @synthesize tabBarController;
 @synthesize screenName;
 @synthesize loginView;
+@synthesize messageView;
 @synthesize selectedTab;
 
 #pragma mark -
@@ -51,6 +51,7 @@
         [DBConnection deleteDBCache];
     }
 	
+	messageView = nil ;
 	selectedTab = TAB_MEETS;
     tabBarController.selectedIndex = selectedTab;
 	[window addSubview:tabBarController.view];
@@ -158,10 +159,19 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+	
     /*
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
+	if (autoRefreshTimer) {
+        [autoRefreshTimer invalidate];
+        autoRefreshTimer = nil;
+    }
+	
+    if (messageView != nil) {
+        [self.messageView saveMessage];
+    }
 }
 
 
@@ -184,6 +194,22 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+	if (lastRefreshDate == nil) {
+        lastRefreshDate = [[NSDate date] retain];
+    }
+    else if (autoRefreshInterval) {
+        NSDate *now = [NSDate date];
+        NSTimeInterval diff = autoRefreshInterval - [now timeIntervalSinceDate:lastRefreshDate];
+        if (diff < 0) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            diff = 2.0;
+        }
+        [self setNextTimer:diff];
+    }
+	
+    if (messageView != nil) {
+        [self.messageView checkProgressWindowState];
+    }
 }
 
 
@@ -192,6 +218,11 @@
      Called when the application is about to terminate.
      See also applicationDidEnterBackground:.
      */
+	if (messageView != nil) {
+        [self.messageView saveMessage];
+        [messageView release];
+    }
+    [DBConnection closeDatabase];
 }
 
 
@@ -229,6 +260,57 @@
         [c performSelector:@selector(didSelectTab:nav:)];
     }
 }
+
+// message view initialization
+
+- (MessageViewController*)messageView
+{
+    if (messageView == nil) {
+        messageView = [[MessageViewController alloc] initWithNibName:@"MessageView" bundle:nil];
+    }
+    messageView.navigation = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
+    return messageView;
+}
+
+// message view return screen
+//
+- (void)messageViewAnimationDidFinish
+{
+    UINavigationController *nav = nil;
+    if ( selectedTab == TAB_MEETS) {
+        nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_MEETS];
+    }
+    else if (selectedTab == TAB_PEOPLE) {
+        nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_PEOPLE];
+    }
+    UIViewController *c = nav.topViewController;
+    if ([c respondsToSelector:@selector(messageViewAnimationDidFinish)]) {
+        [c performSelector:@selector(messageViewAnimationDidFinish)];
+    }
+}
+
+/* Web View
+- (void)openWebView:(NSString*)url on:(UINavigationController*)nav
+{
+    if (webView == nil) {
+        webView = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+    }
+    webView.hidesBottomBarWhenPushed = YES;
+    [webView setUrl:url];
+    [nav pushViewController:webView animated:YES];
+}
+
+- (void)openWebView:(NSString*)url
+{
+    if (webView == nil) {
+        webView = [[WebViewController alloc] initWithNibName:@"WebView" bundle:nil];
+    }
+    webView.hidesBottomBarWhenPushed = YES;
+    [webView setUrl:url];
+    UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
+    [nav pushViewController:webView animated:YES];
+}
+*/
 
 //
 // Common utilities

@@ -3,12 +3,12 @@
 //  kaya-meet
 //
 //  Created by Jun Li on 10/25/10.
-//  Copyright 2010 Anova Solutions Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import "MeetViewController.h"
+#import "MessageViewController.h"
 
 typedef enum {
     TAB_MEETS=0,
@@ -22,7 +22,8 @@ typedef enum {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
-	LoginViewController *loginView;
+	LoginViewController   *loginView;
+	MessageViewController *messageView;
 	NSString			*screeName;
 	int					 selectedTab;
 	BOOL				 initialized;
@@ -33,7 +34,8 @@ typedef enum {
 
 @property (nonatomic, readonly) IBOutlet UIWindow *window;
 @property (nonatomic, assign) IBOutlet UITabBarController *tabBarController;
-@property (nonatomic, assign) LoginViewController *loginView;
+@property (nonatomic, assign) LoginViewController    *loginView;
+@property (nonatomic, assign) MessageViewController  *messageView;
 @property (nonatomic, retain) NSString*	screenName;
 @property (nonatomic, assign) int selectedTab;
 
@@ -43,7 +45,7 @@ typedef enum {
 - (void)postInit;
 - (void)closeLoginView;
 - (UINavigationController*)getAppTabController:(int)selectTab;
-
+- (void)messageViewAnimationDidFinish ;
 + (BOOL)isMyScreenName:(NSString*)screen_name;
 + (kaya_meetAppDelegate*)getAppDelegate;
 

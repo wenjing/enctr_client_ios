@@ -143,6 +143,7 @@
 		[meetDataSource getUserMeets];
 		isLoaded = true; 
 	}
+	typeSelector.selectedSegmentIndex = 0 ;
 }
 
 - (IBAction) refreshMeet:(id) sender 
@@ -250,6 +251,34 @@
 - (void) meetsDidFailToUpdate:(MeetViewDataSource *)sender position:(int)position
 {
 	self.navigationItem.leftBarButtonItem.enabled = true;
+}
+
+// message return screen
+
+- (void)messageViewAnimationDidFinish
+{
+    if (self.navigationController.topViewController != self) return;
+	
+    if (tab == TAB_MEETS) {
+        //
+        // Do animation if the controller displays
+        //
+        NSArray *indexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil];
+        [self.tableView beginUpdates];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView endUpdates];
+    }
+	
+}
+
+// segmentedControl
+- (void) typeSelected:(id)sender
+{
+	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+	
+	NSLog(@"selected %d",meetDataSource.showType=[segmentedControl selectedSegmentIndex]);
+
+	[self.tableView reloadData];
 }
 
 @end

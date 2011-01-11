@@ -19,6 +19,7 @@ static NSString* addressString = @"" ;
 
 @implementation MeetViewDataSource
 
+
 - (id)initWithController:(UITableViewController*)aController
 {
     [super init];
@@ -35,7 +36,7 @@ static NSString* addressString = @"" ;
 	[self getLocation] ;
 	isRestored=true;
 	userConfirmString = nil;
-	
+	showType = MEET_ALL;
 	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     return self;
 }
@@ -346,7 +347,7 @@ static NSString* addressString = @"" ;
             if (![KYMeet isExists:meetId ]) {
 				// add meet from Server
                 KYMeet* sts = [KYMeet meetWithJsonDictionary:dic type:KYMEET_TYPE_UPDATE];
-                [sts insertDB];                
+                [sts insertDB];              
                 [self insertMeet:sts atIndex:insertPosition];
                 ++unread;
             }else if ( [self meetById:meetId] == nil ) {

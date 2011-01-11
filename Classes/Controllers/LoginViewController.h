@@ -2,7 +2,6 @@
 //  LoginViewController.h
 //
 //  Created by Jun Li on 10/27/10.
-//  Copyright 2010 Anova Solutions Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

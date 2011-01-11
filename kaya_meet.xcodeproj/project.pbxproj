@@ -51,6 +51,15 @@
 		3A5F339912A8E757008E9353 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F339812A8E757008E9353 /* AccelerometerFilter.m */; };
 		3A5F346D12A91ADB008E9353 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */; };
 		3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F34BA12A91DA3008E9353 /* tap.aif */; };
+		3A636CD112D44973008A8B47 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD012D44973008A8B47 /* camera.png */; };
+		3A636CD412D44995008A8B47 /* friends_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD212D44995008A8B47 /* friends_small.png */; };
+		3A636CD512D44995008A8B47 /* friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD312D44995008A8B47 /* friends.png */; };
+		3A636CD712D449A5008A8B47 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD612D449A5008A8B47 /* location.png */; };
+		3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A636D0B12D44B8A008A8B47 /* MessageView.xib */; };
+		3A636D1D12D44EB5008A8B47 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1412D44EB5008A8B47 /* MessageViewController.m */; };
+		3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1612D44EB5008A8B47 /* MessageView.m */; };
+		3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */; };
+		3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */; };
 		3A6F1CD11276545B0044D6E6 /* hands-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */; };
 		3A6F1CD21276545B0044D6E6 /* hands-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CD01276545B0044D6E6 /* hands-72x72.png */; };
 		3A6F1CD5127654E10044D6E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD4127654E10044D6E6 /* MapKit.framework */; };
@@ -64,7 +73,6 @@
 		3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA182D1288E5DD00D74450 /* setupView.xib */; };
 		3ACA18371288E62900D74450 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA18361288E62900D74450 /* SetupViewController.m */; };
 		3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD41C3A12891FF8001B2E90 /* meetView.xib */; };
-		3AECAB59129E036300650176 /* kaya-bg-640x960-03.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */; };
 		3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF53C9112C9238600844457 /* meetDisplayMap.m */; };
 		3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AF7B3B71278F96F008F83BC /* LoginView.xib */; };
 		3AF7B3D7127908C3008F83BC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B3D5127908C3008F83BC /* LoginViewController.m */; };
@@ -147,6 +155,19 @@
 		3A5F339812A8E757008E9353 /* AccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccelerometerFilter.m; path = Models/AccelerometerFilter.m; sourceTree = "<group>"; };
 		3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		3A5F34BA12A91DA3008E9353 /* tap.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = tap.aif; path = sounds/tap.aif; sourceTree = "<group>"; };
+		3A636CD012D44973008A8B47 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera.png; path = images/camera.png; sourceTree = "<group>"; };
+		3A636CD212D44995008A8B47 /* friends_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends_small.png; path = images/friends_small.png; sourceTree = "<group>"; };
+		3A636CD312D44995008A8B47 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends.png; path = images/friends.png; sourceTree = "<group>"; };
+		3A636CD612D449A5008A8B47 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location.png; path = images/location.png; sourceTree = "<group>"; };
+		3A636D0B12D44B8A008A8B47 /* MessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MessageView.xib; path = Resources/MessageView.xib; sourceTree = "<group>"; };
+		3A636D1312D44EB5008A8B47 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		3A636D1412D44EB5008A8B47 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		3A636D1512D44EB5008A8B47 /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
+		3A636D1612D44EB5008A8B47 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
+		3A636D1712D44EB5008A8B47 /* SendImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendImagePickerController.h; sourceTree = "<group>"; };
+		3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendImagePickerController.m; sourceTree = "<group>"; };
+		3A636D1912D44EB5008A8B47 /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindow.h; sourceTree = "<group>"; };
+		3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindow.m; sourceTree = "<group>"; };
 		3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-57x57.png"; path = "images/hands-57x57.png"; sourceTree = "<group>"; };
 		3A6F1CD01276545B0044D6E6 /* hands-72x72.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-72x72.png"; path = "images/hands-72x72.png"; sourceTree = "<group>"; };
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -169,7 +190,6 @@
 		3ACA18351288E62900D74450 /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetupViewController.h; path = Controllers/SetupViewController.h; sourceTree = "<group>"; };
 		3ACA18361288E62900D74450 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetupViewController.m; path = Controllers/SetupViewController.m; sourceTree = "<group>"; };
 		3AD41C3A12891FF8001B2E90 /* meetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = meetView.xib; path = Resources/meetView.xib; sourceTree = "<group>"; };
-		3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "kaya-bg-640x960-03.png"; path = "images/kaya-bg-640x960-03.png"; sourceTree = "<group>"; };
 		3AF53C9012C9238600844457 /* meetDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = meetDisplayMap.h; path = Controllers/meetDisplayMap.h; sourceTree = "<group>"; };
 		3AF53C9112C9238600844457 /* meetDisplayMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = meetDisplayMap.m; path = Controllers/meetDisplayMap.m; sourceTree = "<group>"; };
 		3AF7B3B71278F96F008F83BC /* LoginView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LoginView.xib; path = Resources/LoginView.xib; sourceTree = "<group>"; };
@@ -268,6 +288,7 @@
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				3AF7B3B71278F96F008F83BC /* LoginView.xib */,
 				3A4269F812C675CB0091D520 /* MeetDetailView.xib */,
+				3A636D0B12D44B8A008A8B47 /* MessageView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -355,14 +376,32 @@
 			name = sounds;
 			sourceTree = "<group>";
 		};
+		3A636D1212D44EB5008A8B47 /* MessageViews */ = {
+			isa = PBXGroup;
+			children = (
+				3A636D1312D44EB5008A8B47 /* MessageViewController.h */,
+				3A636D1412D44EB5008A8B47 /* MessageViewController.m */,
+				3A636D1512D44EB5008A8B47 /* MessageView.h */,
+				3A636D1612D44EB5008A8B47 /* MessageView.m */,
+				3A636D1712D44EB5008A8B47 /* SendImagePickerController.h */,
+				3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */,
+				3A636D1912D44EB5008A8B47 /* ProgressWindow.h */,
+				3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */,
+			);
+			name = MessageViews;
+			sourceTree = "<group>";
+		};
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3A636CD612D449A5008A8B47 /* location.png */,
+				3A636CD212D44995008A8B47 /* friends_small.png */,
+				3A636CD312D44995008A8B47 /* friends.png */,
+				3A636CD012D44973008A8B47 /* camera.png */,
 				3A1775D912D2644A0099D87D /* 07-map-marker.png */,
 				3A1775D712D2642B0099D87D /* connections.png */,
 				3A1775BF12D25F120099D87D /* world.png */,
 				3D94090C12D0059F008E3A9C /* new-ipone-bg-02.png */,
-				3AECAB58129E036300650176 /* kaya-bg-640x960-03.png */,
 				3A14BA511276C3A4000FCDB2 /* 112-group.png */,
 				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
 				3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */,
@@ -434,6 +473,7 @@
 		3AF7B46A12791A35008F83BC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3A636D1212D44EB5008A8B47 /* MessageViews */,
 				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
 				3A40570E12A738EB005E7F2B /* MBProgressHUD.m */,
 				3A863252127D618200147E3B /* TabBarController.h */,
@@ -516,7 +556,6 @@
 				3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */,
 				3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */,
 				3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */,
-				3AECAB59129E036300650176 /* kaya-bg-640x960-03.png in Resources */,
 				3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */,
 				3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */,
 				3A04AB8912D15677000B99FB /* placeView.xib in Resources */,
@@ -524,6 +563,11 @@
 				3A1775D812D2642B0099D87D /* connections.png in Resources */,
 				3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */,
 				3D94090D12D0059F008E3A9C /* new-ipone-bg-02.png in Resources */,
+				3A636CD112D44973008A8B47 /* camera.png in Resources */,
+				3A636CD412D44995008A8B47 /* friends_small.png in Resources */,
+				3A636CD512D44995008A8B47 /* friends.png in Resources */,
+				3A636CD712D449A5008A8B47 /* location.png in Resources */,
+				3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +615,10 @@
 				3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */,
 				3A04A94512D00522000B99FB /* PlaceViewController.m in Sources */,
 				3A04AA5D12D02520000B99FB /* placeDisplayMap.m in Sources */,
+				3A636D1D12D44EB5008A8B47 /* MessageViewController.m in Sources */,
+				3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */,
+				3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */,
+				3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

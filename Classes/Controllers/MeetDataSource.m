@@ -11,6 +11,7 @@
 
 @synthesize meets;
 @synthesize contentOffset;
+@synthesize showType ;
 
 static NSInteger sortByDate(id a, id b, void *context)
 {
@@ -48,15 +49,41 @@ static NSInteger sortByDate(id a, id b, void *context)
 //
 // meets array related functions
 
+- (BOOL) matchMeet:(KYMeet*)mt
+{
+	if ( mt == nil ) return false ;
+	if ( showType == MEET_ALL ) return true ;
+	else if ( showType == MEET_SOLO && mt.userCount == 1 ) return true ;
+	else if ( showType == MEET_PRIVATE && mt.userCount == 2 ) return true ;
+	else if ( showType == MEET_GROUP && mt.userCount > 2 ) return true ;
+	return false ;
+}
+
 - (int)countMeets
 {
-    return [meets count];
+	int count = 0 ;
+	for( int i = 0 ; i < [meets count]; i ++ ) 
+		if ( [self matchMeet:[meets objectAtIndex:i]] ) count ++ ;
+    return count  ;
+}
+
+- (int)cvtIndex:(int)i
+{
+	if ( showType == MEET_ALL ) return i ;
+	for( int ct = 0 ; ct < [meets count] ; ct ++ ){
+		if ( [self matchMeet:[meets objectAtIndex:ct]] ) {
+			if ( i == 0 ) return ct ;
+			else i-- ;
+		}
+	}
+	return i ; // ?? over flow
 }
 
 - (KYMeet*)meetAtIndex:(int)i
 {
-    if (i >= [meets count]) return NULL;
-    return [meets objectAtIndex:i];
+	int j = [self cvtIndex:i] ;
+    if (j >= [meets count]) return NULL;
+    return [meets objectAtIndex:j]   ;
 }
 
 -(KYMeet*)meetById:(sqlite_int64)meetId
@@ -77,7 +104,8 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 - (void)removeMeetAtIndex:(int)index
 {
-    [meets removeObjectAtIndex:index];
+	int j = [self cvtIndex:index] ;
+    [meets removeObjectAtIndex:j] ;
 }
 
 - (void)removeMeet:(KYMeet*)meet
@@ -108,7 +136,8 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 - (void)insertMeet:(KYMeet*)meet atIndex:(int)index
 {
-    [meets insertObject:meet atIndex:index];
+	int j = [self cvtIndex:index] ;
+    [meets insertObject:meet atIndex:j];
 }
 
 - (int)indexOfObject:(KYMeet*)meet

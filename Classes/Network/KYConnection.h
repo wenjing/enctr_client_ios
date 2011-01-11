@@ -32,6 +32,8 @@ extern NSString *KAYAMEET_FORM_BOUNDARY;
 - (void)KYConnectionDidFinishLoading:(NSString*)content;
 - (void)KYConnectionDidReceieveResponse:(NSURLResponse *)aResponse;
 
+- (NSString *)nameValString:(NSDictionary *)dict ;
+
 + (NSString *)getStringFromUrl:(NSString*) url needle:(NSString *) needle;
 + (NSURL*)generateURL:(NSString*)baseURL params:(NSDictionary*)params;
 + (NSString*)generateBodyString:(NSString*)baseBody params:(NSDictionary*)params;

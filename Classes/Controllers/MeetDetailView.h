@@ -29,4 +29,8 @@
 - (id) initWithMeet:(KYMeet *)meet ;
 - (void) getMeetDetails ;
 - (void) updateFriendList ;
+
+- (IBAction) postMessage:(id) sender;
+
+
 @end

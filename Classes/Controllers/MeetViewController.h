@@ -21,6 +21,7 @@
 	CFURLRef		soundFileURLRef;
 	SystemSoundID	soundFileObject;
 	
+	IBOutlet  UISegmentedControl *typeSelector;
 	MBProgressHUD	*HUD  ;
 } 
 
@@ -32,4 +33,5 @@
 - (IBAction) postMeet:   (id)sender;
 - (IBAction) refreshMeet:(id)sender;
 
+- (void) typeSelected:(id)sender;
 @end

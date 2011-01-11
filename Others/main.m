@@ -3,7 +3,7 @@
 //  kaya-meet
 //
 //  Created by Jun Li on 10/25/10.
-//  Copyright 2010 Anova Solutions Inc. All rights reserved.
+//  Copyright 2010 Kaya Labs, Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

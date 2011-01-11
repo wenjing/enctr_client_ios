@@ -12,7 +12,9 @@ typedef enum {
     KAYAMEET_REQUEST_LOGIN,
 	KAYAMEET_REQUEST_SIGNIN,
     KAYAMEET_REQUEST_POST_MEET,
-    KAYAMEET_REQUEST_GET_MEET,
+	KAYAMEET_REQUEST_POST_MESSAGE,
+	KAYAMEET_REQUEST_POST_PHOTO,
+	KAYAMEET_REQUEST_GET_MEET,
 	KAYAMEET_REQUEST_GET_USERMEETS
 } RequestType;
 
@@ -37,8 +39,11 @@ typedef enum {
 - (void)getMeet :(NSDictionary*)params withMeetId:(uint32_t)meetId ;
 - (void)getMeet :(NSDictionary*)params withPostId:(uint32_t)postId ;
 - (void)getUserMeets :(NSDictionary*)params withUserId:(uint32_t)userId;
+
+- (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId toChatId:(int)chatId photoData:(UIImage*)photo;
 - (void)verify;
 - (void)alert;
 
+- (NSString *)writeImageToTempFile:(UIImage *)image ;
 
 @end

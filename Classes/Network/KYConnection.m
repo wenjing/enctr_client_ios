@@ -19,7 +19,7 @@
 @synthesize requestURL;
 
 
-NSString *KAYAMEET_FORM_BOUNDARY = @"1111111111111";
+NSString *KAYAMEET_FORM_BOUNDARY = @"0xKaYaMeEtbOuNdArY---This_Is_ThE_BoUnDaRyy---pqo";
 
 - (id)initWithDelegate:(id)aDelegate
 {
@@ -156,21 +156,19 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"1111111111111";
     NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)aURL, (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
     [URL autorelease];
 	NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
-                                                       cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                   timeoutInterval:NETWORK_TIMEOUT];
+													cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                    timeoutInterval:NETWORK_TIMEOUT];
     
 
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", KAYAMEET_FORM_BOUNDARY];
     [req setHTTPMethod:@"POST"];
+	[req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [req setValue:contentType forHTTPHeaderField:@"Content-Type"];
-    [req setValue:[NSString stringWithFormat:@"%d", [data length]] forHTTPHeaderField:@"Content-Length"];
+	[req setValue:[NSString stringWithFormat:@"%d", [data length]] forHTTPHeaderField:@"Content-Length"];
     [req setHTTPBody:data];
-#ifdef _USE_BASIC_AUTHENTICATION
     [self addAuthHeader:req];
-#else
-//	[self addAuthTrailer:body];
-	[self addSessionToken:req];
-#endif
+	
+	NSLog(@"post : %@\n%@", [req allHTTPHeaderFields],[req HTTPBody]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     
@@ -324,6 +322,23 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"1111111111111";
 		// return [baseBody encodeAsURIComponent];
 		return baseBody;
 	} else return nil ;
+}
+
+- (NSString*) nameValString: (NSDictionary*) dict {
+	NSArray* keys = [dict allKeys];
+	NSString* result = [NSString string];
+	int i;
+	for (i = 0; i < [keys count]; i++) {
+        result = [result stringByAppendingString:
+                  [@"--" stringByAppendingString:
+                   [KAYAMEET_FORM_BOUNDARY stringByAppendingString:
+                    [@"\nContent-Disposition: form-data; name=\"" stringByAppendingString:
+                     [[keys objectAtIndex: i] stringByAppendingString:
+                      [@"\"\n\n" stringByAppendingString:
+                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString: @"\n"]]]]]]];
+	}
+	
+	return result;
 }
 
 @end

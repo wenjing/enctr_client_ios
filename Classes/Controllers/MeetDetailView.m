@@ -3,7 +3,6 @@
 //  kaya_meet
 //
 //  Created by Jun Li on 12/25/10.
-//  Copyright 2010 Anova Solutions Inc. All rights reserved.
 //
 #import <QuartzCore/QuartzCore.h>
 #import "MeetDetailView.h"
@@ -278,5 +277,16 @@
 //	}
 	return pinView;
 }
+
+// IBActions 
+
+- (IBAction) postMessage:(id) sender 
+{
+	kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+	MessageViewController *mV = appDelegate.messageView ;
+	
+	[mV postTo:currentMeet];
+}
+
 
 @end
