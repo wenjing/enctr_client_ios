@@ -54,6 +54,7 @@
 	messageView = nil ;
 	selectedTab = TAB_MEETS;
     tabBarController.selectedIndex = selectedTab;
+	tabBarController.delegate = self ;
 	[window addSubview:tabBarController.view];
 	
     // login if needed.
@@ -250,14 +251,14 @@
     UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     UIViewController *c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didLeaveTab:)]) {
-        [c performSelector:@selector(didLeaveTab:nav:)];
+        [c didLeaveTab:nav];
     }
     selectedTab = tabBar.selectedIndex;
 	
     nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didSelectTab:)]) {
-        [c performSelector:@selector(didSelectTab:nav:)];
+        [c didSelectTab:nav];
     }
 }
 
@@ -280,7 +281,7 @@
     if ( selectedTab == TAB_MEETS) {
         nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_MEETS];
     }
-    else if (selectedTab == TAB_PEOPLE) {
+    else if (selectedTab == TAB_PLACE) {
         nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_PEOPLE];
     }
     UIViewController *c = nav.topViewController;

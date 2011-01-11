@@ -34,6 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	meets = [[NSMutableArray alloc] init];
+	showType = MEET_ALL ;
 }
 
 - (void)viewWillAppear:(BOOL)animate {
@@ -50,9 +51,20 @@
 	[self zoomToFitMapAnnotations];
 }
 
+- (BOOL) matchMeet:(KYMeet*)mt
+{
+	if ( mt == nil ) return false ;
+	if ( showType == MEET_ALL ) return true ;
+	else if ( showType == MEET_SOLO && mt.userCount == 1 ) return true ;
+	else if ( showType == MEET_PRIVATE && mt.userCount == 2 ) return true ;
+	else if ( showType == MEET_GROUP && mt.userCount > 2 ) return true ;
+	return false ;
+}
+
 - (void) setMeetAnnotates {
 	int count = 0 ; // currently only show latest 20 meets
 	for( KYMeet *mt in meets ) {
+		if ( [self matchMeet:mt] == false ) { count ++ ; continue ; }
 		placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
 		CLLocationCoordinate2D cord ;
 		cord.latitude = mt.latitude ;
@@ -164,6 +176,17 @@
     
     region = [meetMapView regionThatFits:region];
     [meetMapView setRegion:region animated:YES];
+}
+
+
+// segmentedControl
+- (void) typeSelected:(id)sender
+{
+	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+	
+	showType=[segmentedControl selectedSegmentIndex];
+	
+	[self refreshMeetMap];
 }
 
 @end

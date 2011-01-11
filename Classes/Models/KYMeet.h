@@ -28,6 +28,13 @@
 #define USER_CELL_WIDTH     (320 - USER_CELL_LEFT)
 #define DETAIL_CELL_WIDTH   (300 - USER_CELL_LEFT)
 
+typedef enum {
+    MEET_ALL=0,
+    MEET_SOLO,
+    MEET_PRIVATE,
+    MEET_GROUP
+} KAYA_MEET_SHOW_TYPE;
+
 @interface KYMeet : Meet
 {
 	User*			user  ; // to add Friends' meet 

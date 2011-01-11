@@ -6,23 +6,16 @@
 #import "KYMeet.h"
 #import "LoadCell.h"
 
-typedef enum {
-    MEET_ALL=0,
-    MEET_SOLO,
-    MEET_PRIVATE,
-    MEET_GROUP
-} KAYA_MEET_TYPE;
-
 @interface MeetDataSource : NSObject {
 	NSMutableArray*			meets;
     LoadCell*               loadCell ;
-	KAYA_MEET_TYPE			showType  ;
+	KAYA_MEET_SHOW_TYPE		showType  ;
     CGPoint                 contentOffset;
 }
 
 @property(nonatomic, readonly)  NSMutableArray* meets;
 @property(nonatomic, assign)	CGPoint contentOffset;
-@property (nonatomic, assign) KAYA_MEET_TYPE showType ;
+@property (nonatomic, assign) KAYA_MEET_SHOW_TYPE showType ;
 
 - (int)restoreMeets:(MeetType)type all:(BOOL)flag;
 

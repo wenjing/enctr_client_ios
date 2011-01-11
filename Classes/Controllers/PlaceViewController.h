@@ -13,6 +13,8 @@
 @interface PlaceViewController : UIViewController<MKMapViewDelegate> {
 	IBOutlet  MKMapView		*meetMapView ;
 	NSMutableArray*			 meets;
+	KAYA_MEET_SHOW_TYPE	showType  ;
+	IBOutlet  UISegmentedControl *typeSelector;
 }
 @property(nonatomic, readonly)  NSMutableArray* meets;
 @property(nonatomic, assign)    MKMapView* meetMapView;
@@ -21,4 +23,5 @@
 -(void) refreshMeetMap;
 -(void) setMeetAnnotates;
 
+-(void) typeSelected:(id)sender;
 @end

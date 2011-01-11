@@ -206,10 +206,9 @@
 //
 - (void)didLeaveTab:(UINavigationController*)navigationController
 {
-    navigationController.tabBarItem.badgeValue = nil;
-    for (int i = 0; i < [meetDataSource countMeets]; ++i) {
+    //for (int i = 0; i < [meetDataSource countMeets]; ++i) {
      //   KYMeet* sts = [meetDataSource meetAtIndex:i];
-    }
+    //}
 }
 
 - (void) removeMeet:(KYMeet*)meet
