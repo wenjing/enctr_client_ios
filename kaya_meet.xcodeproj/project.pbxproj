@@ -28,7 +28,6 @@
 		3A0FC734128A1D4C00BFC7F5 /* KYMeet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC733128A1D4C00BFC7F5 /* KYMeet.m */; };
 		3A0FC753128A508300BFC7F5 /* MeetViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */; };
 		3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0FC760128A513600BFC7F5 /* QuartzCore.framework */; };
-		3A14BA021276AF9D000FCDB2 /* hands-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA011276AF9D000FCDB2 /* hands-29x29.png */; };
 		3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */; };
 		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
 		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
@@ -60,8 +59,6 @@
 		3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1612D44EB5008A8B47 /* MessageView.m */; };
 		3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */; };
 		3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */; };
-		3A6F1CD11276545B0044D6E6 /* hands-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */; };
-		3A6F1CD21276545B0044D6E6 /* hands-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A6F1CD01276545B0044D6E6 /* hands-72x72.png */; };
 		3A6F1CD5127654E10044D6E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD4127654E10044D6E6 /* MapKit.framework */; };
 		3A6F1CD9127654ED0044D6E6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */; };
 		3A6F1CDD127655000044D6E6 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CDC127655000044D6E6 /* GameKit.framework */; };
@@ -80,7 +77,10 @@
 		3AF7B46912791A2C008F83BC /* DBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46812791A2C008F83BC /* DBConnection.m */; };
 		3AF7B46D12791A59008F83BC /* Statement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46C12791A59008F83BC /* Statement.m */; };
 		3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC916712A6025E00BB0FB5 /* BlueTooth.m */; };
-		3D94090D12D0059F008E3A9C /* new-ipone-bg-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D94090C12D0059F008E3A9C /* new-ipone-bg-02.png */; };
+		3D0C4BE612DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */; };
+		3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */; };
+		3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */; };
+		3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,7 +119,6 @@
 		3A0FC751128A508300BFC7F5 /* MeetViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewDataSource.h; path = Controllers/MeetViewDataSource.h; sourceTree = "<group>"; };
 		3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewDataSource.m; path = Controllers/MeetViewDataSource.m; sourceTree = "<group>"; };
 		3A0FC760128A513600BFC7F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		3A14BA011276AF9D000FCDB2 /* hands-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hands-29x29.png"; path = "images/hands-29x29.png"; sourceTree = "<group>"; };
 		3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "20-gear2.png"; path = "images/20-gear2.png"; sourceTree = "<group>"; };
 		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
 		3A14BA511276C3A4000FCDB2 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "112-group.png"; path = "images/112-group.png"; sourceTree = "<group>"; };
@@ -168,8 +167,6 @@
 		3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendImagePickerController.m; sourceTree = "<group>"; };
 		3A636D1912D44EB5008A8B47 /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindow.h; sourceTree = "<group>"; };
 		3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindow.m; sourceTree = "<group>"; };
-		3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-57x57.png"; path = "images/hands-57x57.png"; sourceTree = "<group>"; };
-		3A6F1CD01276545B0044D6E6 /* hands-72x72.png */ = {isa = PBXFileReference; explicitFileType = image.png; name = "hands-72x72.png"; path = "images/hands-72x72.png"; sourceTree = "<group>"; };
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3A6F1CDC127655000044D6E6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -202,7 +199,10 @@
 		3AF7B46C12791A59008F83BC /* Statement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statement.m; path = Models/Statement.m; sourceTree = "<group>"; };
 		3AFC916612A6025E00BB0FB5 /* BlueTooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueTooth.h; path = Network/BlueTooth.h; sourceTree = "<group>"; };
 		3AFC916712A6025E00BB0FB5 /* BlueTooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueTooth.m; path = Network/BlueTooth.m; sourceTree = "<group>"; };
-		3D94090C12D0059F008E3A9C /* new-ipone-bg-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "new-ipone-bg-02.png"; path = "images/new-ipone-bg-02.png"; sourceTree = "<group>"; };
+		3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-29x29.png"; path = "images/app-icon-8888-02-29x29.png"; sourceTree = "<group>"; };
+		3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-57x57.png"; path = "images/app-icon-8888-02-57x57.png"; sourceTree = "<group>"; };
+		3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-72x72.png"; path = "images/app-icon-8888-02-72x72.png"; sourceTree = "<group>"; };
+		3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-signin-bg-640x960-04.png"; path = "images/app-signin-bg-640x960-04.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +394,10 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */,
+				3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */,
+				3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */,
+				3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */,
 				3A636CD612D449A5008A8B47 /* location.png */,
 				3A636CD212D44995008A8B47 /* friends_small.png */,
 				3A636CD312D44995008A8B47 /* friends.png */,
@@ -401,13 +405,9 @@
 				3A1775D912D2644A0099D87D /* 07-map-marker.png */,
 				3A1775D712D2642B0099D87D /* connections.png */,
 				3A1775BF12D25F120099D87D /* world.png */,
-				3D94090C12D0059F008E3A9C /* new-ipone-bg-02.png */,
 				3A14BA511276C3A4000FCDB2 /* 112-group.png */,
 				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
 				3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */,
-				3A6F1CCF1276545B0044D6E6 /* hands-57x57.png */,
-				3A6F1CD01276545B0044D6E6 /* hands-72x72.png */,
-				3A14BA011276AF9D000FCDB2 /* hands-29x29.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -520,6 +520,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Kaya Labs, Inc.";
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "kaya_meet" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -546,9 +549,6 @@
 			files = (
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
 				282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */,
-				3A6F1CD11276545B0044D6E6 /* hands-57x57.png in Resources */,
-				3A6F1CD21276545B0044D6E6 /* hands-72x72.png in Resources */,
-				3A14BA021276AF9D000FCDB2 /* hands-29x29.png in Resources */,
 				3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */,
 				3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */,
 				3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */,
@@ -562,12 +562,15 @@
 				3A1775C012D25F120099D87D /* world.png in Resources */,
 				3A1775D812D2642B0099D87D /* connections.png in Resources */,
 				3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */,
-				3D94090D12D0059F008E3A9C /* new-ipone-bg-02.png in Resources */,
 				3A636CD112D44973008A8B47 /* camera.png in Resources */,
 				3A636CD412D44995008A8B47 /* friends_small.png in Resources */,
 				3A636CD512D44995008A8B47 /* friends.png in Resources */,
 				3A636CD712D449A5008A8B47 /* location.png in Resources */,
 				3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */,
+				3D0C4BE612DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png in Resources */,
+				3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */,
+				3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */,
+				3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,7 +632,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jun Li (ZSNN83838F)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -637,6 +642,9 @@
 				GCC_PREFIX_HEADER = kaya_meet_Prefix.pch;
 				INFOPLIST_FILE = "kaya_meet-Info.plist";
 				PRODUCT_NAME = "kaya-meet";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
 			};
 			name = Debug;
 		};
@@ -644,12 +652,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jun Li (ZSNN83838F)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kaya_meet_Prefix.pch;
 				INFOPLIST_FILE = "kaya_meet-Info.plist";
 				PRODUCT_NAME = "kaya-meet";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -658,12 +671,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jun Li (ZSNN83838F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Jun Li (ZSNN83838F)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -674,13 +688,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jun Li (ZSNN83838F)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Jun Li (ZSNN83838F)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
