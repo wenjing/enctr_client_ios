@@ -101,18 +101,17 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 		[dic setObject:[NSString stringWithFormat:@"%d",chatId] forKey:@"reply_chat_id"];
 	}
 	NSString *param = [self nameValString:dic];
-	param = [param stringByAppendingString:[NSString stringWithFormat:@"--%@\n", KAYAMEET_FORM_BOUNDARY]];
+	NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r\n", KAYAMEET_FORM_BOUNDARY];
 	
     NSMutableData *data = [NSMutableData data];
-    [data appendData:[param dataUsingEncoding:NSASCIIStringEncoding]];
+    [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	// When the server can support Data transfer
-	//
+	// param = [param stringByAppendingString:[NSString stringWithFormat:@"\r\n--%@\r\n", KAYAMEET_FORM_BOUNDARY]];
 	// NSData *jpeg = UIImageJPEGRepresentation(photo, 0.8);
-	// param = [param stringByAppendingString:@"Content-Disposition: form-data; name=\"media\";filename=\"image.jpg\"\nContent-Type: image/jpeg\n\n"];
-	// NSString *footer = [NSString stringWithFormat:@"\n--%@--\n", KAYAMEET_FORM_BOUNDARY];
+	// param = [param stringByAppendingString:@"Content-Disposition: form-data; name=\"media\";filename=\"image.jpg\"\nContent-Type: image/jpeg\r\n\r\n"];
     // [data appendData:jpeg];
-    // [data appendData:[footer dataUsingEncoding:NSASCIIStringEncoding]];
+	[data appendData:[footer dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[super post:url data:data] ;
 }
@@ -184,9 +183,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 		case 200: // OK: everything went awesome.
         case 400: // Bad Request: your request is invalid, and we'll return an error message that tells you why. 
         case 403: // Forbidden: we understand your request, but are refusing to fulfill it.  An accompanying error message should explain why.
-		case 500: // Internal Server Error: we did something wrong. 
 			break;
-                
+		case 500: // Internal Server Error: we did something wrong. 
         case 404: // Not Found: either you're requesting an invalid URI or the resource in question doesn't exist (ex: no such user). 
         case 502: // Bad Gateway: returned if  is down or being upgraded.
         case 503: // Service Unavailable: the  servers are up, but are overloaded with requests.  Try again later.

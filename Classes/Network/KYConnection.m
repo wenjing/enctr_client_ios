@@ -19,7 +19,8 @@
 @synthesize requestURL;
 
 
-NSString *KAYAMEET_FORM_BOUNDARY = @"0xKaYaMeEtbOuNdArY---This_Is_ThE_BoUnDaRyy---pqo";
+//NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
+NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
 
 - (id)initWithDelegate:(id)aDelegate
 {
@@ -165,8 +166,8 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xKaYaMeEtbOuNdArY---This_Is_ThE_BoUnDaRyy-
 	[req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [req setValue:contentType forHTTPHeaderField:@"Content-Type"];
 	[req setValue:[NSString stringWithFormat:@"%d", [data length]] forHTTPHeaderField:@"Content-Length"];
+	[self addAuthHeader:req];
     [req setHTTPBody:data];
-    [self addAuthHeader:req];
 	
 	NSLog(@"post : %@\n%@", [req allHTTPHeaderFields],[req HTTPBody]);
 	buf = [[NSMutableData data] retain];
@@ -332,10 +333,19 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xKaYaMeEtbOuNdArY---This_Is_ThE_BoUnDaRyy-
         result = [result stringByAppendingString:
                   [@"--" stringByAppendingString:
                    [KAYAMEET_FORM_BOUNDARY stringByAppendingString:
-                    [@"\nContent-Disposition: form-data; name=\"" stringByAppendingString:
+                    [@"\r\nContent-Disposition: form-data; name=\"" stringByAppendingString:
                      [[keys objectAtIndex: i] stringByAppendingString:
-                      [@"\"\n\n" stringByAppendingString:
-                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString: @"\n"]]]]]]];
+                      [@"\"\r\n" stringByAppendingString:
+                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString: @"\r\n\r\n"]]]]]]];
+		/*
+		result = [result stringByAppendingString:
+                    [@"\r\nContent-Disposition: form-data; name=\"" stringByAppendingString:
+                     [[keys objectAtIndex: i] stringByAppendingString:
+                      [@"\"\r\n" stringByAppendingString:
+                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString:
+						[@"\r\n" stringByAppendingString:
+						 [@"--" stringByAppendingString:[KAYAMEET_FORM_BOUNDARY stringByAppendingString:@"\r\n"]]]]]]]];
+		 */
 	}
 	
 	return result;

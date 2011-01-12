@@ -84,7 +84,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 			NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:0] ; 
 			User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
 			NSString *content = [dic objectForKey:@"content"] ;
-			latestChat = [NSString stringWithFormat:@"[%@] : %@", u.name, content];
+			latestChat = [[NSString stringWithFormat:@"[%@] : %@", u.name, content] retain];
 		}
 		return ;
 	}
