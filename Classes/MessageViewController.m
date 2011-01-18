@@ -24,7 +24,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    text.font           = [UIFont systemFontOfSize:18];
+    text.font           = [UIFont systemFontOfSize:16];
     self.view.hidden    = true;
 	self.view.frame = [[UIScreen mainScreen] applicationFrame];
 
@@ -45,8 +45,9 @@
 {
 	if ( isReplyMessage ) {
 		self.navigationItem.title = @"Reply";
-	}
-	else {
+	}else if ( isInviteMessage ) {
+		self.navigationItem.title = @"Invite";
+	}else {
 		self.navigationItem.title = @"Message";
 	}
 	
@@ -60,8 +61,9 @@
 	
     if (isReplyMessage && [recipient.text length] == 0) {
         [recipient becomeFirstResponder];
-    }
-    else {
+    }else if (isInviteMessage ) {
+		[recipient becomeFirstResponder];
+    } else {
         [text becomeFirstResponder];
     }
     text.selectedRange = textRange;
@@ -84,13 +86,28 @@
 
 - (void)postTo:(KYMeet*)mt
 {
+	isReplyMessage = false;
+	isInviteMessage = false;
     [messageView editMessage:mt];
     [self edit];
 }
 
 - (void)replyTo:(KYMeet*)mt ofChatId:(uint32_t)cid
 {
+	isReplyMessage = true;
 	[messageView editReply:mt ofChatId:cid];
+	[self edit];
+}
+
+- (void)inviteTo:(KYMeet *)mt
+{
+	isInviteMessage = true;
+	text.text = [NSString stringWithFormat:@"Great to meet you on Kaya\nTo keep in touch, please join our Live Social Network\n -%@", mt.user.name];
+    textRange.location = [text.text length];
+    textRange.length = 0;
+	recipient.text = @"";
+	[messageView editInvite:mt];
+	
 	[self edit];
 }
 
@@ -104,7 +121,7 @@
     [recipient resignFirstResponder];
     [text resignFirstResponder];
     self.view.hidden = true;
-    
+    if (isInviteMessage) text.text = @"" ;
 	CATransition *animation = [CATransition animation];
  	[animation setDelegate:self];
     [animation setType:kCATransitionPush];
@@ -161,6 +178,22 @@
 }
 
 
+//
+// May need to add address check 
+//
+- (void)inviteMessage
+{
+	uint32_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
+	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
+	[client postInvite:recipient.text
+			  byUserId:userId
+			  byMeetId:messageView.InReplyToMeetId 
+			custMessage:text.text ];
+    [progressWindow show];
+    connection = client;
+}
+
+
 - (IBAction) send: (id) sender
 {
     int length = [text.text length];
@@ -169,10 +202,13 @@
         return;
     }
         
-    [progressWindow show];
+    //[progressWindow show];
 
-	[self updateMessage] ;
-	
+	if ( isInviteMessage ) {
+		[self inviteMessage] ;
+	} else {
+		[self updateMessage] ;
+	}
 	/* need to seperate photo upload and message upload seperately
 	if (selectedPhoto) {
         [self performSelector:@selector(uploadPhoto) withObject:nil afterDelay:0.1];
@@ -304,7 +340,7 @@
 - (void)showKeyboard
 {
     [text becomeFirstResponder];
-    text.selectedRange = textRange;
+     text.selectedRange = textRange;
 }
 
 - (void)imagePickerControllerDidDisappear
@@ -337,6 +373,7 @@
     messageView.InReplyToMeetId = 0;
 	messageView.InReplyToChatId = 0;
 	messageView.isReplyFlag  = false;
+	messageView.isInviteFlag = false;
     textRange.location = 0;
     textRange.length = 0;
     [self close:self];
@@ -420,4 +457,53 @@
         }
     }
 }
+
+// people pick
+// The application only shows the phone, email, and birthdate information of the selected contact.
+
+-(void)showPeoplePickerController
+{
+	ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
+    picker.peoplePickerDelegate = self;
+	// Display only a person's phone, email, and birthdate
+	NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty], 
+							  [NSNumber numberWithInt:kABPersonEmailProperty],nil];
+	
+	picker.displayedProperties = displayedItems;
+	picker.navigationItem.title = @"select to invite";
+	// Show the picker 
+	[self presentModalViewController:picker animated:YES];
+    [picker release];	
+}
+
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
+{
+	return YES ;
+}
+
+
+// Does not allow users to perform default actions such as dialing a phone number, when they select a person property.
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person 
+								property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
+{
+	if (property == kABPersonEmailProperty) {
+		id value = [(id)ABRecordCopyValue(person,property) autorelease];
+		CFIndex idx = ABMultiValueGetIndexForIdentifier((ABMultiValueRef)value,identifier);
+		NSString *email = [(NSString*)ABMultiValueCopyValueAtIndex((ABMultiValueRef)value, idx) autorelease];
+
+		recipient.text = [NSString stringWithFormat:@"%@ %@",(NSString*)email,recipient.text] ;
+		sendButton.enabled = true;
+		[ self dismissModalViewControllerAnimated:YES ];
+	}
+	return NO;
+}
+
+// Dismisses the people picker and shows the application when users tap Cancel. 
+- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;
+{
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+
 @end

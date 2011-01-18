@@ -10,6 +10,10 @@
 
 #import "MeetDetailView.h"
 
+#define KAYAMEET_MAX_GET	200
+#define KAYAMEET_MAX_LOAD	20
+
+
 @interface NSObject (MeetViewControllerDelegate)
 - (void)meetsDidUpdate:(MeetViewDataSource*)sender count:(int)count insertAt:(int)position;
 - (void)meetsDidFailToUpdate:(MeetViewDataSource*)sender position:(int)position;
@@ -25,16 +29,14 @@ static NSString* addressString = @"" ;
     [super init];
      controller = aController;
     [loadCell setType:MSG_TYPE_LOAD_FROM_DB];
+	from_index = 0 ;
     isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] < 20) ? true : false;
-	if (isRestored == true) {
-		[self restoreMeets:KYMEET_TYPE_SENT all:false] ;
-	}
 	meetClient = nil;
 	location = nil;
 	reverseGeocoder = nil;
 	longitude=0.0, latitude=0.0;
 	[self getLocation] ;
-	isRestored=true;
+	//isRestored=true;
 	userConfirmString = nil;
 	showType = MEET_ALL;
 	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -85,7 +87,6 @@ static NSString* addressString = @"" ;
     
 }
 
-/*
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {	
 	if ((indexPath.row % 2) == 1) { 
 		cell.backgroundColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
@@ -97,7 +98,6 @@ static NSString* addressString = @"" ;
 	}
 	
 }
- */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -105,11 +105,10 @@ static NSString* addressString = @"" ;
     if (cell) {
 	// set image label in cell
 		KYMeet* sts = [self meetAtIndex:indexPath.row];
-//		cell.primaryLabel.text   = [NSString stringWithFormat:@"meet with %ld friends", 
-//									sts.userCount-1	];
+
 		cell.primaryLabel.text   = sts.description  ;
-		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@ %@", [sts timestamp], sts.source
-									];
+		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@ %@", [sts timestamp], sts.source];
+		
 //		NSString *picURL = sts.user.profileImageUrl ;
 		NSString *picURL = NULL;
 //		NSString *picURL = @"http://www.gravatar.com/avatar/12468ce98b80c55ec202850ac4026d75?size=50";
@@ -147,11 +146,7 @@ static NSString* addressString = @"" ;
     else {
         // Restore meets from DB
         //
-        int count  = [self restoreMeets:KYMEET_TYPE_SENT   all:true];
-		
-		if ( count < 10 ) {
-			count += [self restoreMeets:KYMEET_TYPE_UPDATE all:true];
-		}
+        int count  = [self restoreMeets:KYMEET_TYPE_UPDATE all:true];
         isRestored = true;
         
         NSMutableArray *newPath = [[[NSMutableArray alloc] init] autorelease];
@@ -238,6 +233,9 @@ static NSString* addressString = @"" ;
 	NSLog(@"collision happen %d", latestPostId);
 }
 
+
+// GET latest meets from Server
+
 - (void)getUserMeets
 {
     if (meetClient) return;
@@ -245,9 +243,15 @@ static NSString* addressString = @"" ;
 	meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetsDidReceive:obj:)];
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
+	// last get meet date
+	if( [meets count] ) {
+		KYMeet *lastMeet = [self lastMeet] ;
+		[param setObject:[self dateString:lastMeet.timeAt] forKey:@"after_time"];
+	}
+	
 	// put parameters for GET
-	// [param setObject:[NSString stringWithFormat:@"%d", since_id] forKey:@"date"];
-    // [param setObject:@"200" forKey:@"count"];
+	[param setObject:[NSString stringWithFormat:@"%d", KAYAMEET_MAX_GET] forKey:@"max_count" ];
+    // [param setObject:[NSString stringWithFormat:@"%d", from_index]       forKey:@"from_index"];
 	
     uint32_t user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"] ;
 	// get meets from server
@@ -332,9 +336,6 @@ static NSString* addressString = @"" ;
 	NSArray *ary = (NSArray *)obj;
 	
     int unread = 0;    
-    //KYMeet* lastMeet = [self lastMeet];
-	// refresh the entire datamodel
-	// if ([self countMeets]) [self removeAllMeets];
     if ([ary count]) {
         [DBConnection beginTransaction];
         // Add meets 
@@ -344,15 +345,25 @@ static NSString* addressString = @"" ;
                 continue;
             }
             sqlite_int64 meetId = [[dic objectForKey:@"id"] longLongValue];
+			// check if meet in DB
             if (![KYMeet isExists:meetId ]) {
 				// add meet from Server
-                KYMeet* sts = [KYMeet meetWithJsonDictionary:dic type:KYMEET_TYPE_UPDATE];
-                [sts insertDB];              
-                [self insertMeet:sts atIndex:insertPosition];
-                ++unread;
+                KYMeet* mt = [KYMeet meetWithJsonDictionary:dic type:KYMEET_TYPE_UPDATE];
+                [mt insertDB];              
+                [self insertMeet:mt atIndex:insertPosition];
+                if ( [self matchMeet:mt] ) ++unread;
+			// check if meet on memory
             }else if ( [self meetById:meetId] == nil ) {
-				[self insertMeet:[KYMeet meetWithId:meetId] atIndex:insertPosition];
-				++unread;
+				KYMeet* mt = [KYMeet meetWithId:meetId];
+				[mt updateWithJsonDictionary:dic] ;
+				[mt insertDB];
+				[self insertMeet:mt atIndex:insertPosition];
+                if ( [self matchMeet:mt] ) ++unread;
+			// server update
+			}else {
+				KYMeet* mt = [self meetById:meetId] ;
+				[mt updateWithJsonDictionary:dic] ;
+				[mt insertDB];
 			}
         }
         [DBConnection commitTransaction];
@@ -362,16 +373,6 @@ static NSString* addressString = @"" ;
 	}
 }
 
-- (NSString *)getUserNameList:(NSMutableArray *)ar
-{
-	NSMutableArray* pairs = [NSMutableArray array];
-	for (int i = 0 ; i < [ar count] ; i ++ ) {
-		NSRange end = [[ar objectAtIndex:i] rangeOfString:@":"] ;
-		[pairs addObject:[[ar objectAtIndex:i] substringToIndex:end.location]];
-	}
-	NSString *query = [[pairs componentsJoinedByString:@","] retain];
-	return query ;
-}
 
 //
 // LocationManager delegate
@@ -423,5 +424,33 @@ static NSString* addressString = @"" ;
 	[reverseGeocoder release];
 }				 
 
-				 
+
+// utilities
+
+-(NSString *)dateString:(time_t)at 
+{
+	static NSDateFormatter* dateFormatter = nil ;
+	NSLocale *enUSPOSIXLocale;
+	if ( dateFormatter == nil ) {
+		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		[dateFormatter setLocale:enUSPOSIXLocale];
+	}
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:at];
+	return [dateFormatter stringFromDate:date]   ;
+}
+
+- (NSString *)getUserNameList:(NSMutableArray *)ar
+{
+	NSMutableArray* pairs = [NSMutableArray array];
+	for (int i = 0 ; i < [ar count] ; i ++ ) {
+		NSRange end = [[ar objectAtIndex:i] rangeOfString:@":"] ;
+		[pairs addObject:[[ar objectAtIndex:i] substringToIndex:end.location]];
+	}
+	NSString *query = [[pairs componentsJoinedByString:@","] retain];
+	return query ;
+}
+
 @end

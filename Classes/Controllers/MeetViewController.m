@@ -11,6 +11,7 @@
 
 #define kUpdateFrequency	60.0
 
+
 @interface MeetViewController (Private)
 - (void)didLeaveTab:(UINavigationController*)navigationController;
 @end
@@ -95,7 +96,7 @@
 
 - (void)didReceiveMemoryWarning 
 {
-
+	[super didReceiveMemoryWarning];
 }
 
 // accelerometer
@@ -237,7 +238,7 @@
         if (count != 0) {
             NSMutableArray *insertion = [[[NSMutableArray alloc] init] autorelease];
             // Avoid to create too many table cell.
- //           if (numInsert > 8) numInsert = 8;
+            //if (numInsert > 8) numInsert = 8;
             for (int i = 0; i < numInsert; ++i) {
                 [insertion addObject:[NSIndexPath indexPathForRow:position + i inSection:0]];
             }
@@ -270,14 +271,22 @@
 	
 }
 
+- (NSArray*) getMeets 
+{
+	return meetDataSource.meets ;
+}
+
 // segmentedControl
 - (void) typeSelected:(id)sender
 {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+	if (self.navigationController.topViewController != self)    return;
+	if (tab == TAB_MEETS) {
+		UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
 	
-	NSLog(@"selected %d",meetDataSource.showType=[segmentedControl selectedSegmentIndex]);
+		meetDataSource.showType=[segmentedControl selectedSegmentIndex];
 
-	[self.tableView reloadData];
+		[self.tableView reloadData];
+	}
 }
 
 @end

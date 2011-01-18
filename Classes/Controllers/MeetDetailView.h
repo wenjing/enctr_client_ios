@@ -31,6 +31,6 @@
 - (void) updateFriendList ;
 
 - (IBAction) postMessage:(id) sender;
-
+- (IBAction) inviteFriend: (id) sender;
 
 @end

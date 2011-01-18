@@ -62,6 +62,8 @@
 		3A6F1CD5127654E10044D6E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD4127654E10044D6E6 /* MapKit.framework */; };
 		3A6F1CD9127654ED0044D6E6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */; };
 		3A6F1CDD127655000044D6E6 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CDC127655000044D6E6 /* GameKit.framework */; };
+		3A7A885312E57D6F00076712 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7A885212E57D6F00076712 /* AddressBook.framework */; };
+		3A7A885512E57D7F00076712 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7A885412E57D7F00076712 /* AddressBookUI.framework */; };
 		3A863254127D618200147E3B /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A863253127D618200147E3B /* TabBarController.m */; };
 		3AA51D131284C30800D8565B /* KYConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51D121284C30800D8565B /* KYConnection.m */; };
 		3AA51D1A1284C71600D8565B /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51D191284C71600D8565B /* StringUtil.m */; };
@@ -170,6 +172,8 @@
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3A6F1CDC127655000044D6E6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		3A7A885212E57D6F00076712 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		3A7A885412E57D7F00076712 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		3A863252127D618200147E3B /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBarController.h; path = Controllers/TabBarController.h; sourceTree = "<group>"; };
 		3A863253127D618200147E3B /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabBarController.m; path = Controllers/TabBarController.m; sourceTree = "<group>"; };
 		3AA51D111284C30800D8565B /* KYConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYConnection.h; path = Network/KYConnection.h; sourceTree = "<group>"; };
@@ -219,6 +223,8 @@
 				3AF7B40D1279109C008F83BC /* libsqlite3.0.dylib in Frameworks */,
 				3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */,
 				3A5F346D12A91ADB008E9353 /* AudioToolbox.framework in Frameworks */,
+				3A7A885312E57D6F00076712 /* AddressBook.framework in Frameworks */,
+				3A7A885512E57D7F00076712 /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +302,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A7A885212E57D6F00076712 /* AddressBook.framework */,
+				3A7A885412E57D7F00076712 /* AddressBookUI.framework */,
 				3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,

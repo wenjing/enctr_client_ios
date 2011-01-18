@@ -54,15 +54,14 @@
 					<object class="IBUISegmentedControl" id="1068986319">
 						<reference key="NSNextResponder" ref="269902458"/>
 						<int key="NSvFlags">288</int>
-						<string key="NSFrameSize">{320, 30}</string>
+						<string key="NSFrame">{{0, -5}, {320, 40}}</string>
 						<reference key="NSSuperview" ref="269902458"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="940868312">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 						</object>
-						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBSegmentControlStyle">2</int>
+						<int key="IBSegmentControlStyle">3</int>
 						<int key="IBNumberOfSegments">4</int>
 						<int key="IBSelectedSegmentIndex">0</int>
 						<object class="NSArray" key="IBSegmentTitles">

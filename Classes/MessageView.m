@@ -10,7 +10,7 @@
 
 @implementation MessageView
 
-@synthesize InReplyToChatId, InReplyToMeetId, isReplyFlag;
+@synthesize InReplyToChatId, InReplyToMeetId, isReplyFlag, isInviteFlag;
 
 - (void)awakeFromNib
 {
@@ -34,9 +34,20 @@
     InReplyToMeetId   = mt.meetId;
     InReplyToChatId   = chatId;
 	isReplyFlag = true;
+	isInviteFlag = false;
     to.text = @"In-Reply-To:";
     recipient.text = [NSString stringWithFormat:@"char %d",chatId] ;
-    recipient.enabled = false;
+    recipient.enabled = true;
+    recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+}
+
+- (void)editInvite:(KYMeet*)mt
+{
+	InReplyToMeetId   = mt.meetId;
+	isReplyFlag = false;
+	isInviteFlag = true;
+    to.text = @"To :";
+    recipient.enabled = true;
     recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
 
@@ -44,8 +55,9 @@
 {
 	InReplyToMeetId = mt.meetId ;
 	isReplyFlag = false  ;
+	isInviteFlag = false ;
 	to.text = @"Post-To:";
-	recipient.enabled = true;
+	recipient.enabled = false;
 }
 
 - (void)createTransform:(BOOL)isDelete
@@ -140,7 +152,7 @@
 - (void)setCharCount
 {
     int length = [text.text length];
-    
+    if (isInviteFlag) return ;
     if (undoBuffer && length > 0) {
         [undoBuffer release];
         undoBuffer = nil;
@@ -181,17 +193,31 @@
     
     if (isReplyFlag) {
         to.hidden = false;
-        to.frame = CGRectMake(9, 0, 100, 43);
+        to.frame = CGRectMake(9, 0, 50, 43);
         
-        recipient.frame = CGRectMake(110, 0, 200, 44);
+        recipient.frame = CGRectMake(50, 0, 200, 44);
         recipient.hidden = false;
         recipient.enabled = false;
         recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
         text.frame = CGRectMake(5, 44, 310, 112);
-    }
-    else {
+		address.hidden = true ;
+		charCount.hidden = false;
+    }else if (isInviteFlag) {
+        to.hidden = false;
+        to.frame = CGRectMake(9, 0, 50, 43);
+        
+        recipient.frame = CGRectMake(50, 0, 220, 44);
+        recipient.hidden = false;
+        recipient.enabled = true;
+        recipient.textColor = [UIColor colorWithRed:0.3 green:0.4 blue:0.5 alpha:1.0];
+        text.frame = CGRectMake(5, 44, 310, 112);
+		address.hidden = false ;		
+		charCount.hidden = true ;
+    }else {
         to.hidden = true;
         recipient.hidden = true;
+		address.hidden = true ;
+		charCount.hidden = false;
         text.frame = CGRectMake(5, 5, 310, 156);
     }
 

@@ -8,10 +8,12 @@
 #import "PlaceViewController.h"
 #import "placeDisplayMap.h"
 #import "MeetDetailView.h"
+#import "kaya_meetAppDelegate.h"
+#import "MeetViewController.h"
 
 @implementation PlaceViewController
 
-@synthesize meets, meetMapView ;
+@synthesize dbmeets, meetMapView ;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -33,7 +35,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	meets = [[NSMutableArray alloc] init];
+	// dbmeets = [[NSMutableArray alloc] init];
+	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
+	MeetViewController *mc = [appDelegate getAppMeetViewController] ;
+	dbmeets = [mc getMeets] ;
 	showType = MEET_ALL ;
 }
 
@@ -41,14 +46,26 @@
 	[self refreshMeetMap] ;
 }
 
-- (void)refreshMeetMap {
-	if ([meets count] ){
+- (void)refreshMap {
+	if ( [meetMapView.annotations count] )
 		[meetMapView removeAnnotations:meetMapView.annotations];
-		[meets removeAllObjects];
-	}
-	[KYMeet getMeetsFromDB:meets]; 
+//	if ( [dbmeets count] ) [meetMapView removeAnnotations:meetMapView.annotations];
+	
+	[self setMeetAnnotates] ;
+//	[self zoomToFitMapAnnotations];
+}
+
+- (void)refreshMeetMap {
+//	if ([dbmeets count] ){
+//		[meetMapView removeAnnotations:meetMapView.annotations];
+//		[dbmeets removeAllObjects];
+//	}
+	if ( [meetMapView.annotations count] )
+		 [meetMapView removeAnnotations:meetMapView.annotations];
+//	[KYMeet getMeetsFromDB:dbmeets]; 
 	[self setMeetAnnotates] ;
 	[self zoomToFitMapAnnotations];
+//	[dbmeets removeAllObjects];
 }
 
 - (BOOL) matchMeet:(KYMeet*)mt
@@ -63,8 +80,8 @@
 
 - (void) setMeetAnnotates {
 	int count = 0 ; // currently only show latest 20 meets
-	for( KYMeet *mt in meets ) {
-		if ( [self matchMeet:mt] == false ) { count ++ ; continue ; }
+	for( KYMeet *mt in dbmeets ) {
+		if ( [self matchMeet:mt] == false )  continue ; 
 		placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
 		CLLocationCoordinate2D cord ;
 		cord.latitude = mt.latitude ;
@@ -72,7 +89,7 @@
 		ann.coordinate = cord ;
 		if( mt.userCount > 1 ) {
 			ann.title = [[NSString stringWithFormat:@"%@",mt.description] retain] ;
-			ann.dataid = count ;
+			ann.dataid = mt.meetId ;
 		} else {
 			ann.dataid = -1 ;
 		}
@@ -83,17 +100,16 @@
 	}
 }
 
--(MKAnnotationView *)mapView:(MKMapView *)mV viewForAnnotation:(id <MKAnnotation>)annotation {
-	static MKPinAnnotationView *pinView = nil; 
-	if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+	MKPinAnnotationView *pinView = nil; 
+
 	if([annotation isKindOfClass:[placeDisplayMap class]]) 
 	{
 		static NSString *defaultPinID = @"com.kayameet.mapPin";
-		pinView = (MKPinAnnotationView *)[meetMapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
+		pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
 		if ( pinView == nil ) {
 				pinView = [[[MKPinAnnotationView alloc]
-							initWithAnnotation:annotation reuseIdentifier:defaultPinID] autorelease];
+							initWithAnnotation:annotation reuseIdentifier:defaultPinID] autorelease] ;
 				UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 				pinView.rightCalloutAccessoryView = rightButton ;
 				//pinView.image = [UIImage imageNamed:@"07-map-marker.png"];
@@ -107,8 +123,9 @@
 		pinView.annotation = annotation ;
 
 		//	[self performSelector:@selector(openCallout:) withObject:annotation afterDelay:0.5];
+		return pinView;
 	} 
-	return pinView;
+	else return nil;
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
@@ -116,7 +133,8 @@
 	if(! [view.annotation isKindOfClass:[placeDisplayMap class]]) return ;
 	placeDisplayMap *ann = (placeDisplayMap *)view.annotation ;
 	if ( ann.dataid < 0 ) return ;
-	KYMeet *mt = [meets objectAtIndex:ann.dataid];
+	//KYMeet *mt = [dbmeets objectAtIndex:ann.dataid];
+	KYMeet *mt = [[KYMeet meetWithId:ann.dataid] retain];
 	MeetDetailView* meetDetailView = [[[MeetDetailView alloc] initWithMeet:mt] autorelease];
 	meetDetailView.hidesBottomBarWhenPushed = YES;
 	[[self navigationController] pushViewController:meetDetailView animated:TRUE];
@@ -131,8 +149,10 @@
 }
 
 - (void)viewDidUnload {
+	[meetMapView release] ;
+	self.meetMapView = nil ;
     [super viewDidUnload];
-	[meets removeAllObjects];
+//	[dbmeets removeAllObjects];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -141,7 +161,7 @@
 - (void)dealloc {
     [super dealloc];
 	[meetMapView release];
-	[meets release];
+//	[dbmeets release];
 }
 
 -(void)zoomToFitMapAnnotations
@@ -186,7 +206,7 @@
 	
 	showType=[segmentedControl selectedSegmentIndex];
 	
-	[self refreshMeetMap];
+	[self refreshMap];
 }
 
 @end

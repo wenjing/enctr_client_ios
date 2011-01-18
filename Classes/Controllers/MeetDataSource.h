@@ -23,6 +23,7 @@
 - (void)appendMeet:(KYMeet*)meet;
 - (void)insertMeet:(KYMeet*)meet atIndex:(int)index;
 
+- (BOOL)matchMeet:(KYMeet *)meet;
 - (KYMeet*)meetAtIndex:(int)i;
 - (KYMeet*)meetById:(sqlite_int64)id;
 - (KYMeet*)lastMeet;

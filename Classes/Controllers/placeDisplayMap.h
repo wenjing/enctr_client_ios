@@ -12,11 +12,12 @@
 	CLLocationCoordinate2D coordinate; 
 	NSString *title; 
 	NSString *subtitle;
-	int		  dataid  ;
+	uint64_t		  dataid  ;
 	int		  dataType;
 }
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate; 
 @property (nonatomic, assign) NSString *title; 
 @property (nonatomic, assign) NSString *subtitle;
-@property (nonatomic, assign) int dataid, dataType;
+@property (nonatomic, assign) int  dataType;
+@property (nonatomic, assign) uint64_t  dataid;
 @end

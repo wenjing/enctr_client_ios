@@ -14,7 +14,7 @@
 {
 	UITableViewController  *controller;
 	KYMeetClient*           meetClient;
-    int                     insertPosition ;
+    int                     insertPosition, from_index ;
     BOOL                    isRestored;
 	MKReverseGeocoder*		reverseGeocoder;
 	LocationManager*		location  ;
@@ -31,4 +31,5 @@
 - (void)getLocation;
 
 - (NSString *)getUserNameList:(NSMutableArray *)ar;
+- (NSString *)dateString:(time_t)at;
 @end

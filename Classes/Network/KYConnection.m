@@ -19,8 +19,7 @@
 @synthesize requestURL;
 
 
-//NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
-NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
+NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 
 - (id)initWithDelegate:(id)aDelegate
 {
@@ -77,7 +76,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
 	}
 }
 
-- (void)get:(NSString*)aURL body:(NSString *)aBody
+- (void)get:(NSString*)aURL param:(NSDictionary *)params
 {
     [connection release];
 	[buf release];
@@ -86,25 +85,14 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
     NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)aURL, (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
     [URL autorelease];
 	
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:aURL]
+    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[KYConnection generateURL:aURL params:params] // NSURL URLWithString:URL]
 						cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                      timeoutInterval:NETWORK_TIMEOUT];
 	[req setHTTPMethod:@"GET"];
 	[req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-#ifdef _USE_BASIC_AUTHENTICATION
     [self addAuthHeader:req];
-#else
-	//NSMutableString *body = [NSMutableString stringWithFormat:@"%@", aBody]  ;
-	//[self addAuthTrailer:body];
-	[self addSessionToken:req];
-#endif
 
-	if (aBody) {
-		int contentLength = [aBody lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-		[req setValue:[NSString stringWithFormat:@"%d", contentLength] forHTTPHeaderField:@"Content-Length"];
-		[req setHTTPBody:[NSData dataWithBytes:[aBody UTF8String] length:contentLength]];
-	}
-
+	NSLog(@"get : %@ %@", [req allHTTPHeaderFields], [req HTTPBody]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -279,12 +267,10 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
 		NSMutableArray* pairs = [NSMutableArray array];
 		for (NSString* key in params.keyEnumerator) {
 			NSString* value = [params objectForKey:key];
-			NSString* escaped_value = (NSString *)CFURLCreateStringByAddingPercentEscapes(
-																						  NULL, /* allocator */
-																						  (CFStringRef)value,
-																						  NULL, /* charactersToLeaveUnescaped */
-																						  (CFStringRef)@"!*'();:&=+$,/?%#[]@",
-																						  kCFStringEncodingUTF8);
+			NSString* escaped_value = (NSString *)CFURLCreateStringByAddingPercentEscapes( NULL, /* allocator */
+											(CFStringRef)value,  NULL, /* charactersToLeaveUnescaped */
+											(CFStringRef)@"!*'();:&=+$,/?%#[]@",
+											kCFStringEncodingUTF8);
 			
 			[pairs addObject:[NSString stringWithFormat:@"%@=%@", key, escaped_value]];
 			[escaped_value release];
@@ -335,17 +321,8 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"----------------------------20d19457c122";
                    [KAYAMEET_FORM_BOUNDARY stringByAppendingString:
                     [@"\r\nContent-Disposition: form-data; name=\"" stringByAppendingString:
                      [[keys objectAtIndex: i] stringByAppendingString:
-                      [@"\"\r\n" stringByAppendingString:
-                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString: @"\r\n\r\n"]]]]]]];
-		/*
-		result = [result stringByAppendingString:
-                    [@"\r\nContent-Disposition: form-data; name=\"" stringByAppendingString:
-                     [[keys objectAtIndex: i] stringByAppendingString:
-                      [@"\"\r\n" stringByAppendingString:
-                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString:
-						[@"\r\n" stringByAppendingString:
-						 [@"--" stringByAppendingString:[KAYAMEET_FORM_BOUNDARY stringByAppendingString:@"\r\n"]]]]]]]];
-		 */
+                      [@"\"\r\n\r\n" stringByAppendingString:
+                       [[dict valueForKey: [keys objectAtIndex: i]] stringByAppendingString: @"\r\n"]]]]]]];
 	}
 	
 	return result;

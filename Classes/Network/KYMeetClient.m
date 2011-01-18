@@ -21,6 +21,8 @@
 
 NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 
+//NSString *KAYAMEET_SITE_NAME = @"http:/0.0.0.0:3000" ;
+
 - (id)initWithTarget:(id)aDelegate action:(SEL)anAction
 {
     [super initWithDelegate:aDelegate];
@@ -42,7 +44,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     NSString *url = [NSString stringWithFormat:@"%@/users/%ld/meets", KAYAMEET_SITE_NAME,userId];
 	request = KAYAMEET_REQUEST_GET_USERMEETS;
 	// can pass parameters through body if needed
-    [super get:url body:nil]; 
+    [super get:url param:params]; 
 }
 
 
@@ -51,10 +53,9 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
 	needAuth      = true;
     NSString *url = [NSString stringWithFormat:@"%@/meets/%ld", KAYAMEET_SITE_NAME,meetId];
-	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_MEET;
 	// can pass parameters through body if needed
-    [super get:url body:body];
+    [super get:url param:params];
 }
 
 // get posted meet update until the meetId show
@@ -62,10 +63,9 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
 	needAuth      = true;
     NSString *url = [NSString stringWithFormat:@"%@/mposts/%ld", KAYAMEET_SITE_NAME,postId];
-	NSString *body = [KYConnection generateBodyString:nil params:params ] ;
 	request = KAYAMEET_REQUEST_GET_MEET;
 	// can pass parameters through body if needed
-    [super get:url body:body];
+    [super get:url param:params];
 }
 
 // post meet 
@@ -78,6 +78,17 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     NSString *postString = [KYConnection generateBodyString:nil params:params];
     [self post:url body:postString];
 }
+
+// post Invitation
+- (void)postInvite:(NSString*)invitee  byUserId:(uint32_t)userId byMeetId:(uint64_t)meetId custMessage:(NSString*)message
+{
+	needAuth = true;
+	request = KAYAMEET_REQUEST_POST_INVITE;
+	NSString* url = [NSString stringWithFormat:@"%@/invitations",KAYAMEET_SITE_NAME];
+	NSString* inviteString = [NSString stringWithFormat:@"invitee=%@&user_id=%d&meet_id=%d",invitee,userId,meetId] ;
+	[self post:url body:inviteString];
+}
+
 
 // post Message (including photo)
 - (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId toChatId:(int)chatId photoData:(UIImage*)photo
@@ -101,13 +112,13 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 		[dic setObject:[NSString stringWithFormat:@"%d",chatId] forKey:@"reply_chat_id"];
 	}
 	NSString *param = [self nameValString:dic];
-	NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r\n", KAYAMEET_FORM_BOUNDARY];
+	NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
 	
     NSMutableData *data = [NSMutableData data];
     [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	// When the server can support Data transfer
-	// param = [param stringByAppendingString:[NSString stringWithFormat:@"\r\n--%@\r\n", KAYAMEET_FORM_BOUNDARY]];
+	// param = [param stringByAppendingString:[NSString stringWithFormat:@"\r\n—%@\r\n", KAYAMEET_FORM_BOUNDARY]];
 	// NSData *jpeg = UIImageJPEGRepresentation(photo, 0.8);
 	// param = [param stringByAppendingString:@"Content-Disposition: form-data; name=\"media\";filename=\"image.jpg\"\nContent-Type: image/jpeg\r\n\r\n"];
     // [data appendData:jpeg];

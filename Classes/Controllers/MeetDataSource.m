@@ -45,7 +45,6 @@ static NSInteger sortByDate(id a, id b, void *context)
     [meets	removeAllObjects];
 }
 
-
 //
 // meets array related functions
 
@@ -136,7 +135,8 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 - (void)insertMeet:(KYMeet*)meet atIndex:(int)index
 {
-	int j = [self cvtIndex:index] ;
+	// int j = [self cvtIndex:index] ;
+	int j = index ;
     [meets insertObject:meet atIndex:j];
 }
 
@@ -153,6 +153,7 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 
 // restore Meets from DB
+// 
 - (int)restoreMeets:(MeetType)aType all:(BOOL)all
 {
     static Statement *stmt = nil;

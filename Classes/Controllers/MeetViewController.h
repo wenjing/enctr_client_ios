@@ -32,6 +32,6 @@
 - (void) resetMeets;
 - (IBAction) postMeet:   (id)sender;
 - (IBAction) refreshMeet:(id)sender;
-
+- (NSArray*) getMeets ;
 - (void) typeSelected:(id)sender;
 @end

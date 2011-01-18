@@ -375,5 +375,12 @@ static SEL clickedAccept ;
 	return (UINavigationController*)[views objectAtIndex:selectTab];
 }
 
+-(MeetViewController*)getAppMeetViewController
+{
+	NSArray *views = tabBarController.viewControllers;
+	UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
+	return (MeetViewController*)[nav topViewController]  ;
+}
+
 @end
 

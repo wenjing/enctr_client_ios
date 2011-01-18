@@ -288,5 +288,12 @@
 	[mV postTo:currentMeet];
 }
 
+- (IBAction) inviteFriend:(id) sender 
+{
+	kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+	MessageViewController *mV = appDelegate.messageView ;
+	
+	[mV inviteTo:currentMeet];
+}
 
 @end

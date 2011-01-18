@@ -48,5 +48,5 @@ typedef enum {
 - (void)messageViewAnimationDidFinish ;
 + (BOOL)isMyScreenName:(NSString*)screen_name;
 + (kaya_meetAppDelegate*)getAppDelegate;
-
+- (MeetViewController*)getAppMeetViewController;
 @end

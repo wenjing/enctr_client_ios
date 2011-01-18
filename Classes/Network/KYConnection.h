@@ -23,7 +23,7 @@ extern NSString *KAYAMEET_FORM_BOUNDARY;
 @property (nonatomic, copy) NSString* requestURL;
 
 - (id)initWithDelegate:(id)delegate;
-- (void)get :(NSString*)URL  body:(NSString*)body;
+- (void)get :(NSString*)URL  param:(NSDictionary*)params;
 - (void)post:(NSString*)aURL body:(NSString*)body;
 - (void)post:(NSString*)aURL data:(NSData*)data;
 - (void)cancel;
