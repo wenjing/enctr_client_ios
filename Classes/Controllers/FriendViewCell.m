@@ -48,10 +48,10 @@
 	
 	CGRect frame;
 	
-	frame= CGRectMake(boundsX+2 ,2,  52, 52);
+	frame= CGRectMake(boundsX+2 ,2,  42, 42);
 	friendImageView.frame = frame;
 	
-	frame= CGRectMake(boundsX+55,10, 200, 40);
+	frame= CGRectMake(boundsX+45,10, 100, 20);
 	nameLabel.frame = frame;
 		
 }

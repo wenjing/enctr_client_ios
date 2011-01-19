@@ -35,8 +35,8 @@
       [self.contentView addSubview:secondaryLabel];
       [self.contentView addSubview:meetImageView];
 	   self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//	   self.backgroundView = [[[UACellBackgroundView alloc] initWithFrame:CGRectZero] autorelease];
-//	   [(UACellBackgroundView *)self.backgroundView setPosition:UACellBackgroundViewPositionMiddle];
+	   self.backgroundView = [[[UACellBackgroundView alloc] initWithFrame:CGRectZero] autorelease];
+	   [(UACellBackgroundView *)self.backgroundView setPosition:UACellBackgroundViewPositionMiddle];
     }
     return self;
 }

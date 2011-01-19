@@ -17,13 +17,13 @@
 	KYMeetClient*         meetDetailClient;
 	LoadCell*             loadCell ;
 	IBOutlet UITableView *friendsView;
-	IBOutlet MKMapView	 *mapView ;
+	IBOutlet UIImageView *mapView ;
 	IBOutlet UITextView  *messageView;
 	IBOutlet UIButton	 *addButton, *sendButton;
 }
 @property (nonatomic, assign)  KYMeet *currentMeet ;
 @property (nonatomic, assign) UITableView *friendsView;
-@property (nonatomic, assign) MKMapView *mapView;
+@property (nonatomic, assign) UIImageView *mapView;
 @property (nonatomic, assign) UITextView *messageView;
 
 - (id) initWithMeet:(KYMeet *)meet ;

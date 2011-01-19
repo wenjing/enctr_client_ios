@@ -81,10 +81,14 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 		// only for the purpose to update users in a meeting
 		// skip rest of update
 		if ( [chatters isKindOfClass:[NSArray class]] && [chatters count]){
-			NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:0] ; 
-			User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
-			NSString *content = [dic objectForKey:@"content"] ;
-			latestChat = [[NSString stringWithFormat:@"[%@] : %@", u.name, content] retain];
+			NSString *messages = @" ";
+			for( int i = 0 ; i < [chatters count] ; i ++ ) {
+				NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:i] ; 
+				User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
+				NSString *content = [dic objectForKey:@"content"] ;
+				messages = [NSString stringWithFormat:@"%@\n%@ > %@", messages, u.name, content] ;
+			}
+			latestChat = [[NSString stringWithFormat:@"%@", messages] retain];
 		}
 		return ;
 	}

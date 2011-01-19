@@ -41,7 +41,7 @@
 	}
 	NSDate *date = [NSDate dateWithTimeIntervalSince1970:currentMeet.timeAt];        
 	self.navigationItem.title = [NSString stringWithFormat:@"@ %@", [dateFormatter stringFromDate:date]];
-	// set mapView
+	/* set mapView
 	[mapView setMapType:MKMapTypeStandard];
 	[mapView setZoomEnabled:YES];
 	[mapView setScrollEnabled:YES];
@@ -58,6 +58,9 @@
 	[mapView addAnnotation:ann];
 	mapView.layer.cornerRadius = 5.0;
 	[ann release];
+	*/
+	
+
 	
 	// textView
 	messageView.layer.cornerRadius = 5.0;
@@ -70,6 +73,7 @@
 	[friendsView setDataSource:self];
 	friendsView.layer.cornerRadius = 5.0;
 	friendsView.backgroundColor = [UIColor clearColor];
+	friendsView.separatorColor = [UIColor clearColor];
 	[friendsView setAlwaysBounceVertical:YES];
 	
 	[self getMeetDetails];
@@ -173,6 +177,18 @@
 	else {
 		self.messageView.text = [NSString stringWithFormat:@"%@",currentMeet.latestChat] ;
 	}
+	// set MayImageView
+	NSString *headmapurl = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=110x90&maptype=roadmap&format=png32&markers=color:green|size:small";
+	NSString *mapurl = [NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",headmapurl,currentMeet.latitude,currentMeet.longitude];
+	mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	NSURL *url = [NSURL URLWithString:mapurl] ;
+	NSData *mapdata = [[NSData alloc] initWithContentsOfURL:url];
+	UIImage *uimap = [[UIImage alloc] initWithData:mapdata];
+	mapView.image = uimap; 
+	mapView.layer.cornerRadius = 5.0;
+	[mapdata release];
+	[uimap release];
+//	[url release];
 
 }
 
@@ -180,7 +196,8 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection: (NSInteger)section
 {
-    return @"People you met with";
+    //return @"People you met with";
+	return nil;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -206,7 +223,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return  55 ;
+	return  45 ;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -238,7 +255,7 @@
 		NSData *imgData = [[[NSData dataWithContentsOfURL:
 							 [NSURL URLWithString:picURL]] autorelease] retain];
 		UIImage *aImage = [[UIImage alloc] initWithData:imgData];
-		CGSize itemSize  = CGSizeMake(50,50);
+		CGSize itemSize  = CGSizeMake(40,40);
 		UIGraphicsBeginImageContext(itemSize);
 		CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
 		[aImage drawInRect:imageRect];
@@ -255,7 +272,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];   
 }
 
-// mapView 
+/* mapView 
 
 -(MKAnnotationView *)mapView:(MKMapView *)mV viewForAnnotation:(id <MKAnnotation>)annotation {
 	MKPinAnnotationView *pinView = nil; 
@@ -277,6 +294,7 @@
 //	}
 	return pinView;
 }
+ */
 
 // IBActions 
 
