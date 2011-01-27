@@ -98,8 +98,7 @@
 
 - (void)didReceiveMemoryWarning 
 {
-	[self resetMeets];
-//	isLoaded = false ;
+//	[self resetMeets];
 	[super didReceiveMemoryWarning];
 }
 
