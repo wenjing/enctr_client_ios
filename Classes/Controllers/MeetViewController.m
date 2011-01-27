@@ -67,7 +67,6 @@
 {
     [super viewWillAppear:animated];
 	if (!isLoaded) {
-
 		// get all meets from server
         [meetDataSource getUserMeets] ;
 		
@@ -88,14 +87,19 @@
 {
     contentOffset = self.tableView.contentOffset;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+	[meetDataSource cancelConnect];
+	//self.navigationItem.leftBarButtonItem.enabled = true;
+	self.navigationItem.rightBarButtonItem.enabled = true;
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
-{
+{	
 }
 
 - (void)didReceiveMemoryWarning 
 {
+	[self resetMeets];
+//	isLoaded = false ;
 	[super didReceiveMemoryWarning];
 }
 
@@ -111,7 +115,7 @@
 	if (total < 2.0 ) return ;
 	count ++ ;
 	if (count > 2) {
-		NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
+		//NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
 		count = 0 ;
 		[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
 		[self postMeet:self];
@@ -123,7 +127,7 @@
 - (void) resetMeets
 {
 	[meetDataSource removeAllMeets];
-//    [self.tableView reloadData];
+    [self.tableView reloadData];
 	isLoaded = false ;
 //	contentOffset = 0;
 }
@@ -183,7 +187,7 @@
 {
 	// get location update if needed
 	[meetDataSource getLocation];
-	[self refreshMeet:nil];
+//	[self refreshMeet:nil];
 }
 
 - (void)postViewAnimationDidFinish
@@ -221,7 +225,7 @@
 // MeetViewControllerDelegate 
 - (void) meetsDidUpdate:(MeetViewDataSource*)sender count:(int)count insertAt:(int)position
 {
-	self.navigationItem.leftBarButtonItem.enabled = true;
+	//self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
 	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
@@ -250,7 +254,10 @@
 
 - (void) meetsDidFailToUpdate:(MeetViewDataSource *)sender position:(int)position
 {
-	self.navigationItem.leftBarButtonItem.enabled = true;
+	//self.navigationItem.leftBarButtonItem.enabled = true;
+	self.navigationItem.rightBarButtonItem.enabled = true;
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
 }
 
 // message return screen

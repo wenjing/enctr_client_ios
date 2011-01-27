@@ -11,13 +11,15 @@
 #import "KYMeet.h"
 
 @interface PlaceViewController : UIViewController<MKMapViewDelegate> {
-	IBOutlet  MKMapView		*meetMapView ;
+	IBOutlet UIView		*mapView;
+	MKMapView	*meetMapView ;
 	NSArray*			 dbmeets;
 	KAYA_MEET_SHOW_TYPE	showType  ;
 	IBOutlet  UISegmentedControl *typeSelector;
 }
 @property(nonatomic, readonly)  NSArray* dbmeets;
 @property(nonatomic, assign)    MKMapView* meetMapView;
+@property(nonatomic, assign)    UIView* mapView;
 
 -(void) zoomToFitMapAnnotations ;
 -(void) refreshMeetMap;

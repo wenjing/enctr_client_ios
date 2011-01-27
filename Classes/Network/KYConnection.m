@@ -92,7 +92,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 	[req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [self addAuthHeader:req];
 
-	NSLog(@"get : %@ %@", [req allHTTPHeaderFields], [req HTTPBody]);
+	//NSLog(@"get : %@ %@", [req allHTTPHeaderFields], [req HTTPBody]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -128,7 +128,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 		[req setHTTPBody:[NSData dataWithBytes:[body UTF8String] length:contentLength]];
     }
 #endif
-	NSLog(@"post : %@", [req allHTTPHeaderFields]);
+	//NSLog(@"post : %@", [req allHTTPHeaderFields]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -157,7 +157,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 	[self addAuthHeader:req];
     [req setHTTPBody:data];
 	
-	NSLog(@"post : %@\n%@", [req allHTTPHeaderFields],[req HTTPBody]);
+	//NSLog(@"post : %@\n%@", [req allHTTPHeaderFields],[req HTTPBody]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     
@@ -180,7 +180,6 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
     NSHTTPURLResponse *resp = (NSHTTPURLResponse*)aResponse;
     if (resp) {
         statusCode = resp.statusCode;
-        NSLog(@"Response: %d", statusCode);
 		[self KYConnectionDidReceieveResponse:aResponse];
     }
 
@@ -204,11 +203,11 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
     
 
     
-    NSString* msg = [NSString stringWithFormat:@"Error: %@ %@",
-                     [error localizedDescription],
-                     [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]];
+    //NSString* msg = [NSString stringWithFormat:@"Error: %@ %@",
+    //                 [error localizedDescription],
+    //                 [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]];
     
-    NSLog(@"Connection failed: %@", msg);
+    //NSLog(@"Connection failed: %@", msg);
     
     [self KYConnectionDidFailWithError:error];
 	[connection autorelease];
@@ -279,7 +278,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 		NSString* query = [pairs componentsJoinedByString:@"&"];
 		NSString* url = [NSString stringWithFormat:@"%@?%@", baseURL, query];
 		
-		NSLog(@"%@",url);
+		//NSLog(@"%@",url);
 		return [NSURL URLWithString:url];
 	} else {
 		return [NSURL URLWithString:baseURL];
@@ -296,7 +295,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 		
 		NSString* query = [pairs componentsJoinedByString:@"&"];
 		
-		NSLog(@"%@",query);
+		//NSLog(@"%@",query);
 		if ( baseBody == nil || baseBody == @"" ) 
 			return query ;
 			//return [query encodeAsURIComponent];

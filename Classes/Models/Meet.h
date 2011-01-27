@@ -18,7 +18,7 @@ typedef enum {
 	sqlite_int64    postId;  // Post meet id 
 	NSString*       description;   // meet description
     
-    time_t          timeAt;
+    time_t          timeAt, updateAt;
     NSString*       timestamp ;
 	float 		    longitude, latitude;
     MeetType        type;
@@ -34,7 +34,7 @@ typedef enum {
 @property (nonatomic, assign) sqlite_int64      meetId, postId;
 @property (nonatomic, retain) NSString*         description;
 
-@property (nonatomic, assign) time_t            createdAt, timeAt;
+@property (nonatomic, assign) time_t            updateAt, timeAt;
 @property (nonatomic, assign) float         longitude, latitude;
 @property (nonatomic, retain) NSString*     timestamp;
 @property (nonatomic, assign) MeetType       type;

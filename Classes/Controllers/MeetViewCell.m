@@ -37,6 +37,10 @@
 	   self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	   self.backgroundView = [[[UACellBackgroundView alloc] initWithFrame:CGRectZero] autorelease];
 	   [(UACellBackgroundView *)self.backgroundView setPosition:UACellBackgroundViewPositionMiddle];
+		
+		[primaryLabel release];
+		[secondaryLabel release];
+		[meetImageView release];
     }
     return self;
 }
@@ -72,9 +76,7 @@
 }
 
 - (void)dealloc {
-  [primaryLabel release];
-  [secondaryLabel release];
-  [meetImageView release];
+
   [super dealloc];
 }
 

@@ -17,7 +17,7 @@
 	KYMeetClient*         meetDetailClient;
 	LoadCell*             loadCell ;
 	IBOutlet UITableView *friendsView;
-	IBOutlet UIImageView *mapView ;
+	UIImageView			 *mapView ;
 	IBOutlet UITextView  *messageView;
 	IBOutlet UIButton	 *addButton, *sendButton;
 }

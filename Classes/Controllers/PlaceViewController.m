@@ -13,18 +13,19 @@
 
 @implementation PlaceViewController
 
-@synthesize dbmeets, meetMapView ;
+@synthesize dbmeets, meetMapView, mapView ;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization.
-    }
+		if ( meetMapView == nil ) meetMapView = [MKMapView alloc];
+		meetMapView.delegate = self;
+		meetMapView.frame = [[UIScreen mainScreen] applicationFrame];
+	}
     return self;
 }
-*/
+
 
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -36,14 +37,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// dbmeets = [[NSMutableArray alloc] init];
-	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
-	MeetViewController *mc = [appDelegate getAppMeetViewController] ;
-	dbmeets = [mc getMeets] ;
+	if ( meetMapView == nil ){
+		meetMapView =[[MKMapView alloc] initWithFrame:CGRectMake(0,0,mapView.frame.size.width, mapView.frame.size.height) ];
+		meetMapView.delegate = self;
+		[self.mapView addSubview:meetMapView];
+		[meetMapView release];
+	}
 	showType = MEET_ALL ;
 }
 
 - (void)viewWillAppear:(BOOL)animate {
+	if ( meetMapView == nil ) {
+		meetMapView =[[MKMapView alloc] initWithFrame:CGRectMake(0,0,mapView.frame.size.width, mapView.frame.size.height) ];
+		meetMapView.delegate = self;
+		[self.mapView addSubview:meetMapView];
+		[meetMapView release];
+	}
+	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
+	MeetViewController *mc = [appDelegate getAppMeetViewController] ;
+	dbmeets = [mc getMeets] ;
 	[self refreshMeetMap] ;
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+	if ( meetMapView != nil ) {
+		[meetMapView removeAnnotations:meetMapView.annotations];
+		for ( MKMapView *sub in [self.mapView subviews] )	
+			[sub removeFromSuperview];
+		meetMapView = nil ;
+	}
 }
 
 - (void)refreshMap {
@@ -80,6 +102,12 @@
 
 - (void) setMeetAnnotates {
 	int count = 0 ; // currently only show latest 20 meets
+	/* placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
+	CLLocationCoordinate2D cord ;
+	cord.latitude = mt.latitude ;
+	cord.longitude = mt.longitude;
+	ann.coordinate = cord ;
+	*/
 	for( KYMeet *mt in dbmeets ) {
 		if ( [self matchMeet:mt] == false )  continue ; 
 		placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
@@ -88,7 +116,7 @@
 		cord.longitude = mt.longitude;
 		ann.coordinate = cord ;
 		if( mt.userCount > 1 ) {
-			ann.title = [[NSString stringWithFormat:@"%@",mt.description] retain] ;
+			ann.title = [[NSString alloc] initWithString:mt.description] ;
 			ann.dataid = mt.meetId ;
 		} else {
 			ann.dataid = -1 ;
@@ -96,17 +124,17 @@
 		ann.dataType = mt.userCount;
 		[meetMapView addAnnotation:ann];
 		[ann release];
-		if ( count ++ > 50 ) return ;
+		if ( count ++ > 30 ) return ;
 	}
 }
 
--(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+-(MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)annotation {
 	MKPinAnnotationView *pinView = nil; 
 
 	if([annotation isKindOfClass:[placeDisplayMap class]]) 
 	{
 		static NSString *defaultPinID = @"com.kayameet.mapPin";
-		pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
+		pinView = (MKPinAnnotationView *)[mv dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
 		if ( pinView == nil ) {
 				pinView = [[[MKPinAnnotationView alloc]
 							initWithAnnotation:annotation reuseIdentifier:defaultPinID] autorelease] ;
@@ -149,8 +177,8 @@
 }
 
 - (void)viewDidUnload {
-	[meetMapView release] ;
-	self.meetMapView = nil ;
+//	[meetMapView release] ;
+//	self.meetMapView = nil ;
     [super viewDidUnload];
 //	[dbmeets removeAllObjects];
     // Release any retained subviews of the main view.
@@ -160,8 +188,6 @@
 
 - (void)dealloc {
     [super dealloc];
-	[meetMapView release];
-//	[dbmeets release];
 }
 
 -(void)zoomToFitMapAnnotations

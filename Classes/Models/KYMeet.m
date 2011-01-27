@@ -47,26 +47,38 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
     time_t now;
     time(&now);	
 	
-    type			 = [[dic objectForKey:@"type"]   longValue];
+    //type			 = [[dic objectForKey:@"type"]   longValue];
 	meetId           = [[dic objectForKey:@"id"]     longLongValue];
 	postId			 = [[dic objectForKey:@"postid"] longLongValue];
 	longitude        = [[dic objectForKey:@"lng"]    floatValue] ;
 	latitude         = [[dic objectForKey:@"lat"]    floatValue] ;
 	userCount		 = [[dic objectForKey:@"users_count"] longValue];
-    
+	
+	NSString* stringOftime = [dic objectForKey:@"time"] ;
+    if ( stringOftime ) {
+		strptime([stringOftime UTF8String], "%FT%T%z",  &created) ;
+		timeAt   = timegm(&created);
+	}
+	stringOftime = [dic objectForKey:@"updated_at"] ;
+    if ( stringOftime ) {
+		strptime([stringOftime UTF8String], "%FT%T%z",  &created) ;
+		updateAt = timegm(&created);
+	}		
+	
 	//
 	// Check userCount value, create meetUsers array
 	//
 
 	// loop to add users, DBupdate
 	NSArray *ary = (NSArray *)[dic objectForKey:@"users"];
-	NSArray *chatters = (NSArray *)[dic objectForKey:@"chatters"];
+	NSArray *chatters = (NSArray *)[dic objectForKey:@"topics"];
 	if ( [ary isKindOfClass:[NSArray class]] ) {
 		if (place != nil)  [place release];
 		if (latestChat != nil) [latestChat release];
-		place = [[dic objectForKey:@"location"] retain];
 		if (meetUsers != nil) [meetUsers release] ;
+		place = [[dic objectForKey:@"location"] retain];
 		meetUsers =[[NSMutableArray array] retain];
+		userCount = [ary count] ;
 		[DBConnection beginTransaction];
 		for (int i = 0 ; i < [ary count] ; i ++) {
 			NSDictionary *dic = (NSDictionary*)[ary objectAtIndex:i] ;
@@ -81,33 +93,27 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 		// only for the purpose to update users in a meeting
 		// skip rest of update
 		if ( [chatters isKindOfClass:[NSArray class]] && [chatters count]){
-			NSString *messages = @" ";
+			NSString *messages = @"";
 			for( int i = 0 ; i < [chatters count] ; i ++ ) {
 				NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:i] ; 
 				User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
 				NSString *content = [dic objectForKey:@"content"] ;
-				messages = [NSString stringWithFormat:@"%@\n%@ > %@", messages, u.name, content] ;
+				messages = [NSString stringWithFormat:@"%@ > %@\n%@",u.name,content,messages] ;
 			}
 			latestChat = [[NSString stringWithFormat:@"%@", messages] retain];
-		}
+		} else if (place != nil) {
+			latestChat = [[NSString stringWithFormat:@"@%@", place]    retain];
+		} else latestChat = [[NSString stringWithFormat:@"@%@", source]    retain];
 		return ;
 	}
 	
-	NSString* stringOftime = [dic objectForKey:@"time"] ;
-    if ( stringOftime ) {
-		strptime([stringOftime UTF8String], "%FT%T%z",  &created) ;
-		timeAt = timegm(&created);
-	}
-		
+
 	// location display
     NSString *textString = [dic objectForKey:@"city"] ;
 	NSString *zipString  = [dic objectForKey:@"zip" ] ;
 	NSString *brief		 = [dic objectForKey:@"peers_name_brief"];
 	if (description != nil) [description release] ;
-    if (brief == nil || (id)brief == [NSNull null]) {
-        description = @"";
-    }
-    else if ( userCount > 1 ) {
+	if ( userCount > 1 ) {
         description = [[NSString stringWithFormat:@" met  %@ ", brief]  retain];
     }
 	else 
@@ -117,12 +123,9 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	
 	// can add more info by source, html links
     // parse source parameter
-    NSString *src = [dic objectForKey:@"source"];
-    if (src == nil || (id)src == [NSNull null]) {
-        source = @"";
-    }
-    else {
-		[source release];
+    /* NSString *src = [dic objectForKey:@"source"];
+    if (src != nil && (id)src != [NSNull null]) {
+		if ( source != nil ) [source release];
         NSRange r = [src rangeOfString:@"<a href"];
         if (r.location != NSNotFound) {
             NSRange start = [src rangeOfString:@"\">"];
@@ -136,7 +139,8 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
         else {
             source = [src retain];
         }
-    }
+    } */
+	if (source != nil ) [source release];
 	source = [[NSString stringWithFormat:@" at %@ ( %@ ) ", textString, zipString] retain];
 }
 
@@ -151,6 +155,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	user = aUser ;
 	place = nil  ;
 	latestChat = nil;
+	meetUsers = nil;
 	return self;
 }
 
@@ -163,7 +168,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 - (id)initWithJsonDictionary:(NSDictionary*)dic
 {
 	User *aUser = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"]];
-	return [self initWithJsonDictionary:dic type:KYMEET_TYPE_SENT user:aUser] ;
+	return [self initWithJsonDictionary:dic type:KYMEET_TYPE_UPDATE user:aUser] ;
 }
 
 + (KYMeet*)meetWithJsonDictionary:(NSDictionary*)dic type:(MeetType)type
@@ -233,11 +238,12 @@ int sTextWidth[] = {
 	s.user = [User userWithId:uid] ;
 	s.type =				  [stmt getInt32:3];
 	s.timeAt                = [stmt getInt32:4];
-    s.longitude             = [[stmt getString:5] floatValue];
-    s.latitude              = [[stmt getString:6] floatValue];
-    s.description           = [stmt getString:7] ;
-    s.source                = [stmt getString:8] ;
-	s.userCount				= [stmt getInt32:9] ;
+	s.updateAt              = [stmt getInt32:5];
+    s.longitude             = [[stmt getString:6] floatValue];
+    s.latitude              = [[stmt getString:7] floatValue];
+    s.description           = [stmt getString:8] ;
+    s.source                = [stmt getString:9] ;
+	s.userCount				= [stmt getInt32:10] ;
 			  
 	if (s.user == nil) {
 		NSLog(@"KYMeet initial with stm error");
@@ -299,7 +305,7 @@ int sTextWidth[] = {
 {
     static Statement *stmt = nil;
     if (stmt == nil) {
-        stmt = [DBConnection statementWithQuery:"REPLACE INTO meets VALUES(?, ?,  ?, ?, ?, ?, ?, ?, ?, ?)"];
+        stmt = [DBConnection statementWithQuery:"REPLACE INTO meets VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"];
         [stmt retain];
     }
     [stmt bindInt64:meetId			forIndex:1];
@@ -307,11 +313,12 @@ int sTextWidth[] = {
 	[stmt bindInt32:user.userId forIndex:3];
 	[stmt bindInt32:type        forIndex:4];
 	[stmt bindInt32:timeAt        forIndex:5];
-	[stmt bindString:[NSString stringWithFormat:@"%lf", longitude] forIndex:6];
-	[stmt bindString:[NSString stringWithFormat:@"%lf", latitude]  forIndex:7];
-    [stmt bindString:description forIndex:8];
-    [stmt bindString:source     forIndex:9];
-	[stmt bindInt32:userCount   forIndex:10];
+	[stmt bindInt32:updateAt       forIndex:6];
+	[stmt bindString:[NSString stringWithFormat:@"%lf", longitude] forIndex:7];
+	[stmt bindString:[NSString stringWithFormat:@"%lf", latitude]  forIndex:8];
+    [stmt bindString:description forIndex:9];
+    [stmt bindString:source     forIndex:10];
+	[stmt bindInt32:userCount   forIndex:11];
 
     if ([stmt step] != SQLITE_DONE) {
         [DBConnection alert];

@@ -7,9 +7,9 @@
 #import "LoadCell.h"
 
 static NSString *sLabels[] = {
-    @"Load all stored meets...",
+    @"Get meet from server",
+    @"Load more meet",
     @"Loading...",
-    @"Send request...",
     @"Meet request has been sent.",
 };
 
@@ -22,7 +22,7 @@ static NSString *sLabels[] = {
 {
 	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     // name label
-    label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+    label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.backgroundColor = [UIColor whiteColor];
     label.textColor = [UIColor blueColor];
     label.highlightedTextColor = [UIColor redColor];
@@ -32,8 +32,12 @@ static NSString *sLabels[] = {
     label.frame = CGRectMake(0, 0, 320, 47);
     [self.contentView addSubview:label];
     
-    spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.contentView addSubview:spinner];
+	
+	[label release];
+	[spinner release];
+	
 	return self;
 }
 

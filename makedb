@@ -17,10 +17,11 @@ CREATE TABLE meets (
 	'userId'    INTEGER,
 	'type'	    INTEGER,
 	'timeAt'    INTEGER,
+	'updateAt'  INTEGER,
 	'longitude' TEXT,
 	'latitude'  TEXT,
 	'description'	TEXT,
-	'source'    TEXT,
+	'source'     TEXT,
 	'user_count' INTEGER,
 PRIMARY KEY(id,postid,type)
 );

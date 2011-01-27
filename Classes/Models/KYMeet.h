@@ -29,7 +29,7 @@
 #define DETAIL_CELL_WIDTH   (300 - USER_CELL_LEFT)
 
 typedef enum {
-    MEET_ALL=0,
+    MEET_ALL=-1,
     MEET_SOLO,
     MEET_PRIVATE,
     MEET_GROUP

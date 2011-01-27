@@ -1,4 +1,4 @@
-//
+////
 //  KYMeetClient.m
 //  Kaya Meet
 //
@@ -84,8 +84,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
 	needAuth = true;
 	request = KAYAMEET_REQUEST_POST_INVITE;
-	NSString* url = [NSString stringWithFormat:@"%@/invitations",KAYAMEET_SITE_NAME];
-	NSString* inviteString = [NSString stringWithFormat:@"invitee=%@&user_id=%d&meet_id=%d",invitee,userId,meetId] ;
+	NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/invitations",KAYAMEET_SITE_NAME, meetId];
+	NSString* inviteString = [NSString stringWithFormat:@"invitee=%@&message=%@",invitee,message] ;
 	[self post:url body:inviteString];
 }
 
@@ -95,10 +95,12 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
 	needAuth = true;
 	request = KAYAMEET_REQUEST_POST_MEET;
-	NSString* url = [NSString stringWithFormat:@"%@/chatters",KAYAMEET_SITE_NAME];
+	NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/chatters",KAYAMEET_SITE_NAME,meetId];
 	NSMutableDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:
-								[NSString stringWithFormat:@"%ld", meetId],  @"meet_id",
 								message, @"content", nil];
+	
+	// [NSString stringWithFormat:@"%ld", meetId],  @"meet_id",
+	
 	// photo
 	if( photo != nil )
 	{
@@ -161,13 +163,13 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 -(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     if ([challenge previousFailureCount] == 0) {
-        NSLog(@"Authentication Challenge");
+        //NSLog(@"Authentication Challenge");
         NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
         NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
         NSURLCredential* cred = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistenceNone];
         [[challenge sender] useCredential:cred forAuthenticationChallenge:challenge];
     } else {
-        NSLog(@"Failed auth (%d times)", [challenge previousFailureCount]);
+        //NSLog(@"Failed auth (%d times)", [challenge previousFailureCount]);
         [[challenge sender] cancelAuthenticationChallenge:challenge];
     }
 }
@@ -214,7 +216,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
         NSDictionary* dic = (NSDictionary*)obj;
         NSString *msg = [dic objectForKey:@"error"];
         if (msg) {
-            NSLog(@"Server responded with an error: %@", msg);
+            //NSLog(@"Server responded with an error: %@", msg);
             hasError = true;
             self.errorMessage = @" Server Error";
             self.errorDetail  = msg;

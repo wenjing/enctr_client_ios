@@ -32,6 +32,9 @@
 		self.accessoryType = UITableViewCellAccessoryNone;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 		//	[(UACellBackgroundView *)self.backgroundView setPosition:UACellBackgroundViewPositionMiddle];
+		
+		[nameLabel release];
+		[friendImageView release];
 	}
 	return self;
 }
@@ -64,8 +67,8 @@
 }
 
 - (void)dealloc {
-	[friendImageView release] ;
-	[nameLabel release] ;
+//	[friendImageView release] ;
+//	[nameLabel release] ;
     [super dealloc];
 }
 

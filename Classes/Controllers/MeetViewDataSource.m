@@ -10,8 +10,8 @@
 
 #import "MeetDetailView.h"
 
-#define KAYAMEET_MAX_GET	200
-#define KAYAMEET_MAX_LOAD	20
+#define KAYAMEET_MAX_GET	1
+#define KAYAMEET_MAX_LOAD	2
 
 
 @interface NSObject (MeetViewControllerDelegate)
@@ -19,7 +19,6 @@
 - (void)meetsDidFailToUpdate:(MeetViewDataSource*)sender position:(int)position;
 @end
 
-static NSString* addressString = @"" ;
 
 @implementation MeetViewDataSource
 
@@ -30,25 +29,34 @@ static NSString* addressString = @"" ;
      controller = aController;
     [loadCell setType:MSG_TYPE_LOAD_FROM_DB];
 	from_index = 0 ;
-    isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] < 20) ? true : false;
+    isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] < 21) ? false : true ;
 	meetClient = nil;
 	location = nil;
 	reverseGeocoder = nil;
 	longitude=0.0, latitude=0.0;
 	[self getLocation] ;
-	//isRestored=true;
 	userConfirmString = nil;
-	showType = MEET_ALL;
-	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	showType = MEET_SOLO;
+	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+	if( refreshHeaderView == nil ) {
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - controller.tableView.bounds.size.height, controller.view.frame.size.width+2.0f, controller.tableView.bounds.size.height)];
+		view.delegate = self ;
+		[controller.tableView addSubview:view];
+		refreshHeaderView = view ;
+		[view release];
+	}
+	reloading = NO ;
+	[refreshHeaderView refreshLastUpdatedDate];
     return self;
 }
 
 - (void)dealloc {
-	[super dealloc];
 	[location release];
 	[meetClient cancel];
 	[meetClient release];
 	[userConfirmString release];
+	refreshHeaderView = nil;
+	[super dealloc];
 }
 
 //  get meet cell
@@ -73,7 +81,7 @@ static NSString* addressString = @"" ;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     int count = [self countMeets];
-    return  isRestored ? count : count+1;
+    return  isRestored ? count : count+1; // add load more cell if is not restored
 }
 
 //
@@ -87,6 +95,7 @@ static NSString* addressString = @"" ;
     
 }
 
+/*
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {	
 	if ((indexPath.row % 2) == 1) { 
 		cell.backgroundColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
@@ -98,9 +107,11 @@ static NSString* addressString = @"" ;
 	}
 	
 }
+*/
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (isRestored == false && indexPath.row == [self countMeets] ) return loadCell ;
     MeetViewCell* cell = [self getMeetCell:tableView atIndex:indexPath.row];
     if (cell) {
 	// set image label in cell
@@ -135,38 +146,40 @@ static NSString* addressString = @"" ;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     KYMeet* sts = [self meetAtIndex:indexPath.row];
-    
+	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];   
     if (sts) {
         // Display Meet Detail View
         //
         MeetDetailView* meetDetailView = [[[MeetDetailView alloc] initWithMeet:sts] autorelease];
 		meetDetailView.hidesBottomBarWhenPushed = YES;
         [[controller navigationController] pushViewController:meetDetailView animated:TRUE];
-    }      
-    else {
-        // Restore meets from DB
+    }
+	else { 
+		// restore meet from DB
         //
-        int count  = [self restoreMeets:KYMEET_TYPE_UPDATE all:true];
-        isRestored = true;
+		int preCount = [self.meets count];
+        int count  = [self restoreMeets:KYMEET_TYPE_UPDATE all:false];
         
-        NSMutableArray *newPath = [[[NSMutableArray alloc] init] autorelease];
-        
+		NSMutableArray *newPath = [[[NSMutableArray alloc] init] autorelease];
         [tableView beginUpdates];
         // Avoid to create too many table cell.
         if (count > 0) {
-//          if (count > 20) count = 20;
-            for (int i = 0; i < count; ++i) {
-                [newPath addObject:[NSIndexPath indexPathForRow:i + indexPath.row inSection:0]];
+			//if (count > 2) count = 2;
+            for (int i = 0, idx = 0; i < count; ++i) {
+				if ( [self matchMeet:[self.meets objectAtIndex: i+preCount]] ){
+					[newPath addObject:[NSIndexPath indexPathForRow:idx + indexPath.row inSection:0]];
+					idx++;
+				}
             }        
             [tableView insertRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationRight];
         }
         else {
+			isRestored = true;
             [newPath addObject:indexPath];
             [tableView deleteRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationLeft];
         }
         [tableView endUpdates];
-    }
-    [tableView deselectRowAtIndexPath:indexPath animated:TRUE];   
+	}
 }
 
 - (void)addMeet:(BluetoothConnect*)bt
@@ -245,8 +258,8 @@ static NSString* addressString = @"" ;
 	
 	// last get meet date
 	if( [meets count] ) {
-		KYMeet *lastMeet = [self lastMeet] ;
-		[param setObject:[self dateString:lastMeet.timeAt] forKey:@"after_time"];
+		KYMeet *lastMeet = [self meetAtIndex:0] ;
+		[param setObject:[self dateString:lastMeet.updateAt] forKey:@"after_updated_at"];
 	}
 	
 	// put parameters for GET
@@ -256,6 +269,17 @@ static NSString* addressString = @"" ;
     uint32_t user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"] ;
 	// get meets from server
     [meetClient getUserMeets:param withUserId:user_id];
+}
+
+- (void)cancelConnect 
+{
+	if (meetClient != nil ) {
+		[meetClient cancel];
+		[meetClient release];
+		meetClient = nil;
+		[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:controller.tableView];
+		reloading = NO;
+	}
 }
 
 - (void)meetDidPost:(KYMeetClient*)sender obj:(NSObject*)obj
@@ -293,7 +317,7 @@ static NSString* addressString = @"" ;
 		}
 		else 
 		{
-			[appDelegate alert:@"Meet Posted" message:[NSString stringWithFormat:@"meet at %@",addressString]]; 
+			[appDelegate dialog:@"Meet Posted"  message:[NSString stringWithFormat:@"please confirm"] action:@selector(clickedAccept) dg:self ] ; 
 		}
 		[self getUserMeets];
 	}
@@ -312,6 +336,9 @@ static NSString* addressString = @"" ;
 {
 	meetClient = nil;
     [loadCell.spinner stopAnimating];
+	
+	[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:controller.tableView];
+	reloading = NO;
     
     if (sender.hasError) {
         if ([controller respondsToSelector:@selector(meetsDidFailToUpdate:position:)]) {
@@ -374,6 +401,43 @@ static NSString* addressString = @"" ;
 }
 
 
+// UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+	
+	[refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+	
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+	
+}
+
+
+// EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	reloading = YES;
+	[self getUserMeets];
+	//[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:controller.tableView];
+	// reloading = NO;
+	// [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
+
 //
 // LocationManager delegate
 //
@@ -399,28 +463,29 @@ static NSString* addressString = @"" ;
     latitude  = alocation.coordinate.latitude;
     longitude = alocation.coordinate.longitude;
 	lerror = [alocation horizontalAccuracy] ;
-	reverseGeocoder =
-	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
-    reverseGeocoder.delegate = self;
-    [reverseGeocoder start];
+//	reverseGeocoder =
+//	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
+//    reverseGeocoder.delegate = self;
+//    [reverseGeocoder start];
 }
 
 - (void)locationManagerDidFail:(LocationManager*)manager
 {
-    NSLog(@"Can't get current location.");
+    lerror = 10000 ;
+	//NSLog(@"Can't get current location.");
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
-    addressString = [[NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode] retain] ;
-	NSLog(@"place %@",addressString);
+    //addressString = [NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode];
+	//NSLog(@"place %@",addressString);
 	[reverseGeocoder release];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
 {
-    NSLog(@"MKReverseGeocoder has failed. %@",error);
-	addressString = @"At Location" ;
+   // NSLog(@"MKReverseGeocoder has failed. %@",error);
+	//addressString = @"At Location" ;
 	[reverseGeocoder release];
 }				 
 

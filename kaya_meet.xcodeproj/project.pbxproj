@@ -64,6 +64,15 @@
 		3A6F1CDD127655000044D6E6 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CDC127655000044D6E6 /* GameKit.framework */; };
 		3A7A885312E57D6F00076712 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7A885212E57D6F00076712 /* AddressBook.framework */; };
 		3A7A885512E57D7F00076712 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7A885412E57D7F00076712 /* AddressBookUI.framework */; };
+		3A7B496B12EEB44600F8AA17 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */; };
+		3A7B497112EEB4F800F8AA17 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B496D12EEB4F800F8AA17 /* blackArrow.png */; };
+		3A7B497212EEB4F800F8AA17 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B496E12EEB4F800F8AA17 /* blackArrow@2x.png */; };
+		3A7B497312EEB4F800F8AA17 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B496F12EEB4F800F8AA17 /* blueArrow.png */; };
+		3A7B497412EEB4F800F8AA17 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B497012EEB4F800F8AA17 /* blueArrow@2x.png */; };
+		3A7B497712EEB50A00F8AA17 /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B497512EEB50A00F8AA17 /* grayArrow.png */; };
+		3A7B497812EEB50A00F8AA17 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B497612EEB50A00F8AA17 /* grayArrow@2x.png */; };
+		3A7B497B12EEB54F00F8AA17 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B497912EEB54F00F8AA17 /* whiteArrow.png */; };
+		3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */; };
 		3A863254127D618200147E3B /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A863253127D618200147E3B /* TabBarController.m */; };
 		3AA51D131284C30800D8565B /* KYConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51D121284C30800D8565B /* KYConnection.m */; };
 		3AA51D1A1284C71600D8565B /* StringUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51D191284C71600D8565B /* StringUtil.m */; };
@@ -145,8 +154,8 @@
 		3A3497041294E3DB00AFFB30 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		3A3497051294E3DB00AFFB30 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
-		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
+		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Classes/Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
+		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
 		3A4269F612C675CB0091D520 /* FriendViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendViewCell.h; path = Controllers/FriendViewCell.h; sourceTree = "<group>"; };
 		3A4269F712C675CB0091D520 /* MeetDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetDetailView.m; path = Controllers/MeetDetailView.m; sourceTree = "<group>"; };
 		3A4269F812C675CB0091D520 /* MeetDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MeetDetailView.xib; path = Classes/Controllers/MeetDetailView.xib; sourceTree = "<group>"; };
@@ -174,6 +183,16 @@
 		3A6F1CDC127655000044D6E6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		3A7A885212E57D6F00076712 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		3A7A885412E57D7F00076712 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGORefreshTableHeaderView.h; path = Classes/Controllers/EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGORefreshTableHeaderView.m; path = Classes/Controllers/EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		3A7B496D12EEB4F800F8AA17 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blackArrow.png; path = images/blackArrow.png; sourceTree = "<group>"; };
+		3A7B496E12EEB4F800F8AA17 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blackArrow@2x.png"; path = "images/blackArrow@2x.png"; sourceTree = "<group>"; };
+		3A7B496F12EEB4F800F8AA17 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueArrow.png; path = images/blueArrow.png; sourceTree = "<group>"; };
+		3A7B497012EEB4F800F8AA17 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blueArrow@2x.png"; path = "images/blueArrow@2x.png"; sourceTree = "<group>"; };
+		3A7B497512EEB50A00F8AA17 /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grayArrow.png; path = images/grayArrow.png; sourceTree = "<group>"; };
+		3A7B497612EEB50A00F8AA17 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayArrow@2x.png"; path = "images/grayArrow@2x.png"; sourceTree = "<group>"; };
+		3A7B497912EEB54F00F8AA17 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = whiteArrow.png; path = images/whiteArrow.png; sourceTree = "<group>"; };
+		3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whiteArrow@2x.png"; path = "images/whiteArrow@2x.png"; sourceTree = "<group>"; };
 		3A863252127D618200147E3B /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBarController.h; path = Controllers/TabBarController.h; sourceTree = "<group>"; };
 		3A863253127D618200147E3B /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabBarController.m; path = Controllers/TabBarController.m; sourceTree = "<group>"; };
 		3AA51D111284C30800D8565B /* KYConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYConnection.h; path = Network/KYConnection.h; sourceTree = "<group>"; };
@@ -265,6 +284,10 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */,
+				3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */,
+				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
+				3A40570E12A738EB005E7F2B /* MBProgressHUD.m */,
 				3A2F898B12C9BFD300D465CD /* UACellBackgroundView.h */,
 				3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */,
 				3AA51E281284EEF700D8565B /* kaya_meet_Prefix.pch */,
@@ -402,6 +425,14 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
+				3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */,
+				3A7B497512EEB50A00F8AA17 /* grayArrow.png */,
+				3A7B497612EEB50A00F8AA17 /* grayArrow@2x.png */,
+				3A7B496D12EEB4F800F8AA17 /* blackArrow.png */,
+				3A7B496E12EEB4F800F8AA17 /* blackArrow@2x.png */,
+				3A7B496F12EEB4F800F8AA17 /* blueArrow.png */,
+				3A7B497012EEB4F800F8AA17 /* blueArrow@2x.png */,
 				3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */,
 				3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */,
 				3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */,
@@ -482,8 +513,6 @@
 			isa = PBXGroup;
 			children = (
 				3A636D1212D44EB5008A8B47 /* MessageViews */,
-				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
-				3A40570E12A738EB005E7F2B /* MBProgressHUD.m */,
 				3A863252127D618200147E3B /* TabBarController.h */,
 				3A863253127D618200147E3B /* TabBarController.m */,
 				3AF7B3D5127908C3008F83BC /* LoginViewController.m */,
@@ -579,6 +608,14 @@
 				3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */,
 				3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */,
 				3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */,
+				3A7B497112EEB4F800F8AA17 /* blackArrow.png in Resources */,
+				3A7B497212EEB4F800F8AA17 /* blackArrow@2x.png in Resources */,
+				3A7B497312EEB4F800F8AA17 /* blueArrow.png in Resources */,
+				3A7B497412EEB4F800F8AA17 /* blueArrow@2x.png in Resources */,
+				3A7B497712EEB50A00F8AA17 /* grayArrow.png in Resources */,
+				3A7B497812EEB50A00F8AA17 /* grayArrow@2x.png in Resources */,
+				3A7B497B12EEB54F00F8AA17 /* whiteArrow.png in Resources */,
+				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +667,7 @@
 				3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */,
 				3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */,
 				3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */,
+				3A7B496B12EEB44600F8AA17 /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

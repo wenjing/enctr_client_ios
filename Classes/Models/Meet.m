@@ -12,7 +12,7 @@
 @synthesize meetId, postId;
 @synthesize description;
 
-@synthesize createdAt, timeAt, userCount, meetUsers;
+@synthesize updateAt, timeAt, userCount, meetUsers;
 @synthesize timestamp;
 @synthesize longitude, latitude;
 @synthesize type;

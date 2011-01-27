@@ -17,7 +17,7 @@ static NSInteger sortByDate(id a, id b, void *context)
 {
     KYMeet* dma = (KYMeet*)a;
     KYMeet* dmb = (KYMeet*)b;
-    int diff = dmb.createdAt - dma.createdAt;
+    int diff = dmb.timeAt - dma.timeAt;
     if (diff > 0)
         return 1;
     else if (diff < 0)
@@ -80,6 +80,7 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 - (KYMeet*)meetAtIndex:(int)i
 {
+	if (i >= [self countMeets]) return NULL;
 	int j = [self cvtIndex:i] ;
     if (j >= [meets count]) return NULL;
     return [meets objectAtIndex:j]   ;
@@ -135,8 +136,8 @@ static NSInteger sortByDate(id a, id b, void *context)
 
 - (void)insertMeet:(KYMeet*)meet atIndex:(int)index
 {
-	// int j = [self cvtIndex:index] ;
-	int j = index ;
+	int j = [self cvtIndex:index] ;
+	//int j = index ;
     [meets insertObject:meet atIndex:j];
 }
 
@@ -145,7 +146,7 @@ static NSInteger sortByDate(id a, id b, void *context)
     for (int i = 0; i < [meets count]; ++i) {
         KYMeet* sts = [meets objectAtIndex:i];
         if (sts.meetId == meet.meetId) {
-            return i;
+			return [self cvtIndex:i];
         }
     }
     return -1;
@@ -163,8 +164,8 @@ static NSInteger sortByDate(id a, id b, void *context)
         [stmt retain];
     }
     
-    [stmt bindInt32:aType            forIndex:2];
-    [stmt bindInt32:(all) ? 20 : 10  forIndex:2];
+    [stmt bindInt32:aType            forIndex:1];
+    [stmt bindInt32:all?500:20       forIndex:2];
     [stmt bindInt32:[meets count]    forIndex:3];
 	
     int count = 0;

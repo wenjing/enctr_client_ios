@@ -69,7 +69,7 @@
 
     NSDate* eventDate = newLocation.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-    NSLog(@"%@ (%lf)", [newLocation description], howRecent);
+    //NSLog(@"%@ (%lf)", [newLocation description], howRecent);
 
     if ([delegate respondsToSelector:@selector(locationManagerDidUpdateLocation:location:)]) {
         [delegate locationManagerDidUpdateLocation:self location:newLocation];

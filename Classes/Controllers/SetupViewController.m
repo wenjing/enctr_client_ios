@@ -11,9 +11,9 @@
 enum {
 	SECTION_ACCOUNT,
 	SECTION_USERIMAGE,
+	NUM_OF_SECTION,
 	SECTION_PROFILE,
 	SECTION_CONNECT,
-	NUM_OF_SECTION,
 };
 
 enum {
@@ -44,15 +44,15 @@ enum {
 static int sNumRows[NUM_OF_SECTION] = {
 	NUM_ROWS_ACCOUNT,
 	NUM_ROWS_USERIMAGE,
-	NUM_ROWS_PROFILE,
-	NUM_ROWS_CONNECTION,
+//	NUM_ROWS_PROFILE,
+//	NUM_ROWS_CONNECTION,
 };
 
 static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	@"Account",
 	@"User Image",
-	@"Profile",
-	@"Connection",
+//	@"Profile",
+//	@"Connection",
 };
 
 
@@ -91,8 +91,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	user_image.layer.cornerRadius = 5.0 ;
 	NSString *picURL = user.profileImageUrl ;
 	if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-		NSData *imgData = [[[NSData dataWithContentsOfURL:
-							 [NSURL URLWithString:picURL]] autorelease] retain];
+		NSData *imgData = [NSData dataWithContentsOfURL:
+							 [NSURL URLWithString:picURL]] ;
 		UIImage *aImage = [[UIImage alloc] initWithData:imgData];
 		CGSize itemSize  = CGSizeMake(65,65);
 		UIGraphicsBeginImageContext(itemSize);
@@ -100,6 +100,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 		[aImage drawInRect:imageRect];
 		user_image.image = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
+		[aImage release];
 	} else {
 		user_image.image = nil;
 	}
