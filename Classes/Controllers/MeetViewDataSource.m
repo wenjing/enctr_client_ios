@@ -10,8 +10,6 @@
 
 #import "MeetDetailView.h"
 
-#define KAYAMEET_MAX_GET	1
-#define KAYAMEET_MAX_LOAD	2
 
 
 @interface NSObject (MeetViewControllerDelegate)
@@ -29,7 +27,7 @@
      controller = aController;
     [loadCell setType:MSG_TYPE_LOAD_FROM_DB];
 	from_index = 0 ;
-    isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] < 21) ? false : true ;
+    isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] <= KAYAMEET_MAX_LOAD) ? false : true ;
 	meetClient = nil;
 	location = nil;
 	reverseGeocoder = nil;
@@ -37,7 +35,7 @@
 	[self getLocation] ;
 	userConfirmString = nil;
 	showType = MEET_SOLO;
-	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	if( refreshHeaderView == nil ) {
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - controller.tableView.bounds.size.height, controller.view.frame.size.width+2.0f, controller.tableView.bounds.size.height)];
 		view.delegate = self ;
@@ -171,12 +169,12 @@
 					idx++;
 				}
             }        
-            [tableView insertRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationRight];
+            [tableView insertRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationBottom];
         }
         else {
 			isRestored = true;
             [newPath addObject:indexPath];
-            [tableView deleteRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationLeft];
+            [tableView deleteRowsAtIndexPaths:newPath withRowAnimation:UITableViewRowAnimationNone];
         }
         [tableView endUpdates];
 	}

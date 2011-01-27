@@ -6,6 +6,9 @@
 #import "KYMeet.h"
 #import "LoadCell.h"
 
+#define KAYAMEET_MAX_GET	30
+#define KAYAMEET_MAX_LOAD	20
+
 @interface MeetDataSource : NSObject {
 	NSMutableArray*			meets;
     LoadCell*               loadCell ;

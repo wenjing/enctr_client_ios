@@ -164,8 +164,8 @@ static NSInteger sortByDate(id a, id b, void *context)
         [stmt retain];
     }
     
-    [stmt bindInt32:aType            forIndex:1];
-    [stmt bindInt32:all?500:20       forIndex:2];
+    [stmt bindInt32:aType			 forIndex:1];
+    [stmt bindInt32:all?1000:KAYAMEET_MAX_LOAD       forIndex:2];
     [stmt bindInt32:[meets count]    forIndex:3];
 	
     int count = 0;

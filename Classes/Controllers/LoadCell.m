@@ -23,9 +23,9 @@ static NSString *sLabels[] = {
 	self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     // name label
     label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.backgroundColor = [UIColor whiteColor];
-    label.textColor = [UIColor blueColor];
-    label.highlightedTextColor = [UIColor redColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor grayColor];
+    label.highlightedTextColor = [UIColor blueColor];
     label.font = [UIFont boldSystemFontOfSize:16];
     label.numberOfLines = 1;
     label.textAlignment = UITextAlignmentCenter;    
