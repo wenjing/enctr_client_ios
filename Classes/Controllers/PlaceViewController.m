@@ -38,7 +38,7 @@
     [super viewDidLoad];
 	// dbmeets = [[NSMutableArray alloc] init];
 	if ( meetMapView == nil ){
-		meetMapView =[[MKMapView alloc] initWithFrame:CGRectMake(0,0,mapView.frame.size.width, mapView.frame.size.height) ];
+		meetMapView =[[MKMapView alloc] initWithFrame:CGRectMake(0,0,mapView.frame.size.width, mapView.frame.size.height)];
 		meetMapView.delegate = self;
 		[self.mapView addSubview:meetMapView];
 		[meetMapView release];
@@ -53,9 +53,16 @@
 		[self.mapView addSubview:meetMapView];
 		[meetMapView release];
 	}
+	//meetMapView.showsUserLocation=TRUE;
 	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
 	MeetViewController *mc = [appDelegate getAppMeetViewController] ;
 	dbmeets = [mc getMeets] ;
+	[appDelegate addObserver:self forKeyPath:@"latitude" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:NULL];
+/*	[meetMapView.userLocation addObserver:self  
+							forKeyPath:@"location"  
+							options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld)  
+								context:NULL];
+ */
 	[self refreshMeetMap] ;
 }
 
@@ -102,12 +109,19 @@
 
 - (void) setMeetAnnotates {
 	int count = 0 ; // currently only show latest 20 meets
-	/* placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
+
+	
+	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
+	placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
 	CLLocationCoordinate2D cord ;
-	cord.latitude = mt.latitude ;
-	cord.longitude = mt.longitude;
+	cord.latitude  = appDelegate.latitude ;
+	cord.longitude = appDelegate.longitude;
 	ann.coordinate = cord ;
-	*/
+	ann.dataType = -2 ;
+	ann.title = @"You are here now!" ;
+	[meetMapView addAnnotation:ann] ;
+	[ann release];	
+	
 	for( KYMeet *mt in dbmeets ) {
 		if ( [self matchMeet:mt] == false )  continue ; 
 		placeDisplayMap *ann = [[placeDisplayMap alloc] init]; 
@@ -119,13 +133,14 @@
 			ann.title = [[NSString alloc] initWithString:mt.description] ;
 			ann.dataid = mt.meetId ;
 		} else {
-			ann.dataid = -1 ;
+			ann.dataType = -1 ;
 		}
 		ann.dataType = mt.userCount;
 		[meetMapView addAnnotation:ann];
 		[ann release];
 		if ( count ++ > 30 ) return ;
 	}
+
 }
 
 -(MKAnnotationView *)mapView:(MKMapView *)mv viewForAnnotation:(id <MKAnnotation>)annotation {
@@ -133,19 +148,25 @@
 
 	if([annotation isKindOfClass:[placeDisplayMap class]]) 
 	{
-		static NSString *defaultPinID = @"com.kayameet.mapPin";
+		NSString *defaultPinID = ((placeDisplayMap *)annotation).dataType==-2? @"com.kayameet.mapPin.userlocation":@"com.kayameet.mapPin";
 		pinView = (MKPinAnnotationView *)[mv dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
 		if ( pinView == nil ) {
 				pinView = [[[MKPinAnnotationView alloc]
 							initWithAnnotation:annotation reuseIdentifier:defaultPinID] autorelease] ;
-				UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-				pinView.rightCalloutAccessoryView = rightButton ;
-				//pinView.image = [UIImage imageNamed:@"07-map-marker.png"];
+			if ( defaultPinID == @"com.kayameet.mapPin") {
+					UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+					pinView.rightCalloutAccessoryView = rightButton ;
+			}
+			else {
+				pinView.image = [UIImage imageNamed:@"ball.png"];
+				[meetMapView bringSubviewToFront:pinView];
+			}
 		}
 		if( ((placeDisplayMap *)annotation).dataType > 1 )
 			pinView.pinColor = MKPinAnnotationColorGreen; 
 		else						  
 			pinView.pinColor = MKPinAnnotationColorRed;
+				
 		pinView.canShowCallout = YES;
 		pinView.animatesDrop = NO;
 		pinView.annotation = annotation ;
@@ -160,13 +181,12 @@
 {
 	if(! [view.annotation isKindOfClass:[placeDisplayMap class]]) return ;
 	placeDisplayMap *ann = (placeDisplayMap *)view.annotation ;
-	if ( ann.dataid < 0 ) return ;
+	if ( ann.dataType < 0 ) return ;
 	//KYMeet *mt = [dbmeets objectAtIndex:ann.dataid];
 	KYMeet *mt = [[KYMeet meetWithId:ann.dataid] retain];
 	MeetDetailView* meetDetailView = [[[MeetDetailView alloc] initWithMeet:mt] autorelease];
 	meetDetailView.hidesBottomBarWhenPushed = YES;
 	[[self navigationController] pushViewController:meetDetailView animated:TRUE];
-    //do your show details thing here...
 }
 
 - (void)didReceiveMemoryWarning {
@@ -192,10 +212,27 @@
 
 -(void)zoomToFitMapAnnotations
 {
-    if([meetMapView.annotations count] == 0)
-        return;
+    //if([meetMapView.annotations count] == 0)
+   //     return;
+	MKCoordinateRegion region;
+	MKCoordinateSpan span;
+	
+	span.latitudeDelta=0.2;
+	span.longitudeDelta=0.2;
+	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
+	CLLocationCoordinate2D cord ;
+	cord.latitude  = appDelegate.latitude ;
+	cord.longitude = appDelegate.longitude;
+	
+	CLLocationCoordinate2D location = cord;
+		
+	region.span = span;
+	region.center = location;
+	[meetMapView regionThatFits:region];
+	[meetMapView setRegion:region animated:TRUE];
+	return ;
     
-    CLLocationCoordinate2D topLeftCoord;
+	CLLocationCoordinate2D topLeftCoord;
     topLeftCoord.latitude = -90;
     topLeftCoord.longitude = 180;
     
@@ -214,7 +251,6 @@
         bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
     }
     
-    MKCoordinateRegion region;
     region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
     region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
     region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1; // Add a little extra space on the sides
@@ -222,6 +258,17 @@
     
     region = [meetMapView regionThatFits:region];
     [meetMapView setRegion:region animated:YES];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath  
+                     ofObject:(id)object  
+                       change:(NSDictionary *)change  
+                      context:(void *)context {  
+	
+    if ([self.meetMapView isUserLocationVisible]) {  
+		[self.meetMapView setCenterCoordinate:self.meetMapView.userLocation.location.coordinate
+									 animated:YES];
+    }
 }
 
 

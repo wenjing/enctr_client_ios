@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "LoginViewController.h"
 #import "MeetViewController.h"
 #import "MessageViewController.h"
@@ -42,7 +43,7 @@ typedef enum {
 @property (nonatomic, assign) MessageViewController  *messageView;
 @property (nonatomic, retain) NSString*	screenName;
 @property (nonatomic, assign) int selectedTab;
-@property (nonatomic, readonly) float longtitude, latitude, lerror;
+@property (nonatomic, readonly) float longitude, latitude, lerror;
 
 - (void)alert :(NSString*)title message:(NSString*)detail;
 - (void)openLoginView;

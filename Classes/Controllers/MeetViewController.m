@@ -337,9 +337,7 @@ static SEL  clickedCancel  ;
 
 - (void) autoRefresh
 {
-	// get location update if needed
-	[meetDataSource getLocation];
-//	[self refreshMeet:nil];
+    //[self refreshMeet:nil];
 }
 
 - (void)postViewAnimationDidFinish

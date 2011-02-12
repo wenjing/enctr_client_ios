@@ -29,10 +29,7 @@
 	from_index = 0 ;
     isRestored = ([self restoreMeets:KYMEET_TYPE_UPDATE all:false] <= KAYAMEET_MAX_LOAD) ? false : true ;
 	meetClient = nil;
-	location = nil;
-	reverseGeocoder = nil;
-	longitude=0.0, latitude=0.0;
-	[self getLocation] ;
+
 	userConfirmString = nil;
 	showType = MEET_SOLO;
 	controller.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -49,7 +46,6 @@
 }
 
 - (void)dealloc {
-	[location release];
 	[meetClient cancel];
 	[meetClient release];
 	[userConfirmString release];
@@ -184,15 +180,17 @@
 	meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidPost:obj:)];
     // NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
+	kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+	
 	// meet date
 	time_t now;
 	time(&now);
 	[param setObject:[NSString dateString:now] forKey:@"time"];
 	
 	// location 
-	[param setObject:[NSString stringWithFormat:@"%lf",latitude]  forKey:@"lat" ];
-	[param setObject:[NSString stringWithFormat:@"%lf",longitude] forKey:@"lng"];
-	[param setObject:[NSString stringWithFormat:@"%f", lerror] forKey:@"lerror"];
+	[param setObject:[NSString stringWithFormat:@"%lf",del.latitude]  forKey:@"lat" ];
+	[param setObject:[NSString stringWithFormat:@"%lf",del.longitude] forKey:@"lng"];
+	[param setObject:[NSString stringWithFormat:@"%f", del.lerror]    forKey:@"lerror"];
 	
 	// record the post as sent
 	// NEED keep the temporary meet here until post receieved
@@ -388,56 +386,5 @@
 	return [NSDate date]; // should return date data source was last changed
 	
 }
-
-//
-// LocationManager delegate
-//
-- (void) getLocation
-{
-	if ( location == nil ) {
-		location = [[LocationManager alloc] initWithDelegate:self];
-	}
-	[location getCurrentLocation];
-}
-
-- (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
-{
-	if (latitude==0.0 || longitude==0.0) {
-		latitude  = alocation.coordinate.latitude;
-		longitude = alocation.coordinate.longitude;
-		lerror = [alocation horizontalAccuracy] ;
-	}
-}
-
-- (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation
-{
-    latitude  = alocation.coordinate.latitude;
-    longitude = alocation.coordinate.longitude;
-	lerror = [alocation horizontalAccuracy] ;
-//	reverseGeocoder =
-//	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
-//    reverseGeocoder.delegate = self;
-//    [reverseGeocoder start];
-}
-
-- (void)locationManagerDidFail:(LocationManager*)manager
-{
-    lerror = 10000 ;
-	//NSLog(@"Can't get current location.");
-}
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
-{
-    //addressString = [NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode];
-	//NSLog(@"place %@",addressString);
-	[reverseGeocoder release];
-}
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
-{
-   // NSLog(@"MKReverseGeocoder has failed. %@",error);
-	//addressString = @"At Location" ;
-	[reverseGeocoder release];
-}				 
 
 @end

@@ -31,10 +31,8 @@
 		3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0FC760128A513600BFC7F5 /* QuartzCore.framework */; };
 		3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */; };
 		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
-		3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA511276C3A4000FCDB2 /* 112-group.png */; };
 		3A1775C012D25F120099D87D /* world.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775BF12D25F120099D87D /* world.png */; };
 		3A1775D812D2642B0099D87D /* connections.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775D712D2642B0099D87D /* connections.png */; };
-		3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775D912D2644A0099D87D /* 07-map-marker.png */; };
 		3A28F326129C4F32001F4F0D /* kaya-meet-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
@@ -44,6 +42,7 @@
 		3A34970A1294E3DB00AFFB30 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497021294E3DB00AFFB30 /* SBJsonBase.m */; };
 		3A34970B1294E3DB00AFFB30 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497041294E3DB00AFFB30 /* SBJsonParser.m */; };
 		3A34970C1294E3DB00AFFB30 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */; };
+		3A39BA2413066F76006D40FA /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A39BA2313066F76006D40FA /* ball.png */; };
 		3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40570E12A738EB005E7F2B /* MBProgressHUD.m */; };
 		3A4269F912C675CB0091D520 /* MeetDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4269F712C675CB0091D520 /* MeetDetailView.m */; };
 		3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A4269F812C675CB0091D520 /* MeetDetailView.xib */; };
@@ -54,7 +53,6 @@
 		3A636CD112D44973008A8B47 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD012D44973008A8B47 /* camera.png */; };
 		3A636CD412D44995008A8B47 /* friends_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD212D44995008A8B47 /* friends_small.png */; };
 		3A636CD512D44995008A8B47 /* friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD312D44995008A8B47 /* friends.png */; };
-		3A636CD712D449A5008A8B47 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD612D449A5008A8B47 /* location.png */; };
 		3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A636D0B12D44B8A008A8B47 /* MessageView.xib */; };
 		3A636D1D12D44EB5008A8B47 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1412D44EB5008A8B47 /* MessageViewController.m */; };
 		3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1612D44EB5008A8B47 /* MessageView.m */; };
@@ -136,10 +134,8 @@
 		3A0FC760128A513600BFC7F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "20-gear2.png"; path = "images/20-gear2.png"; sourceTree = "<group>"; };
 		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
-		3A14BA511276C3A4000FCDB2 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "112-group.png"; path = "images/112-group.png"; sourceTree = "<group>"; };
 		3A1775BF12D25F120099D87D /* world.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = world.png; path = images/world.png; sourceTree = "<group>"; };
 		3A1775D712D2642B0099D87D /* connections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connections.png; path = images/connections.png; sourceTree = "<group>"; };
-		3A1775D912D2644A0099D87D /* 07-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "07-map-marker.png"; path = "images/07-map-marker.png"; sourceTree = "<group>"; };
 		3A28F325129C4F32001F4F0D /* kaya-meet-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "kaya-meet-db.sql"; path = "Resources/kaya-meet-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
@@ -158,6 +154,7 @@
 		3A3497041294E3DB00AFFB30 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		3A3497051294E3DB00AFFB30 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		3A39BA2313066F76006D40FA /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball.png; path = images/ball.png; sourceTree = "<group>"; };
 		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Classes/Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
 		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
 		3A4269F612C675CB0091D520 /* FriendViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendViewCell.h; path = Controllers/FriendViewCell.h; sourceTree = "<group>"; };
@@ -172,7 +169,6 @@
 		3A636CD012D44973008A8B47 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera.png; path = images/camera.png; sourceTree = "<group>"; };
 		3A636CD212D44995008A8B47 /* friends_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends_small.png; path = images/friends_small.png; sourceTree = "<group>"; };
 		3A636CD312D44995008A8B47 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends.png; path = images/friends.png; sourceTree = "<group>"; };
-		3A636CD612D449A5008A8B47 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location.png; path = images/location.png; sourceTree = "<group>"; };
 		3A636D0B12D44B8A008A8B47 /* MessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MessageView.xib; path = Resources/MessageView.xib; sourceTree = "<group>"; };
 		3A636D1312D44EB5008A8B47 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageViewController.h; path = Controllers/MessageViewController.h; sourceTree = "<group>"; };
 		3A636D1412D44EB5008A8B47 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageViewController.m; path = Controllers/MessageViewController.m; sourceTree = "<group>"; };
@@ -433,6 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				3ACAE49512F39D9600F85B5D /* images */,
+				3A39BA2313066F76006D40FA /* ball.png */,
 				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
 				3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */,
 				3A7B497512EEB50A00F8AA17 /* grayArrow.png */,
@@ -445,14 +442,11 @@
 				3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */,
 				3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */,
 				3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */,
-				3A636CD612D449A5008A8B47 /* location.png */,
 				3A636CD212D44995008A8B47 /* friends_small.png */,
 				3A636CD312D44995008A8B47 /* friends.png */,
 				3A636CD012D44973008A8B47 /* camera.png */,
-				3A1775D912D2644A0099D87D /* 07-map-marker.png */,
 				3A1775D712D2642B0099D87D /* connections.png */,
 				3A1775BF12D25F120099D87D /* world.png */,
-				3A14BA511276C3A4000FCDB2 /* 112-group.png */,
 				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
 				3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */,
 			);
@@ -596,7 +590,6 @@
 				282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */,
 				3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */,
 				3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */,
-				3A14BA521276C3A4000FCDB2 /* 112-group.png in Resources */,
 				3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */,
 				3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */,
 				3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */,
@@ -606,11 +599,9 @@
 				3A04AB8912D15677000B99FB /* placeView.xib in Resources */,
 				3A1775C012D25F120099D87D /* world.png in Resources */,
 				3A1775D812D2642B0099D87D /* connections.png in Resources */,
-				3A1775DA12D2644A0099D87D /* 07-map-marker.png in Resources */,
 				3A636CD112D44973008A8B47 /* camera.png in Resources */,
 				3A636CD412D44995008A8B47 /* friends_small.png in Resources */,
 				3A636CD512D44995008A8B47 /* friends.png in Resources */,
-				3A636CD712D449A5008A8B47 /* location.png in Resources */,
 				3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */,
 				3D0C4BE612DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png in Resources */,
 				3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */,
@@ -625,6 +616,7 @@
 				3A7B497B12EEB54F00F8AA17 /* whiteArrow.png in Resources */,
 				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
 				3ACAE49612F39D9600F85B5D /* images in Resources */,
+				3A39BA2413066F76006D40FA /* ball.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
