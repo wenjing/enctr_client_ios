@@ -48,6 +48,6 @@ typedef enum {
 - (void)verify;
 - (void)alert;
 
-- (NSString *)writeImageToTempFile:(UIImage *)image ;
+- (void)writeImageToTempFile:(UIImage *)image ;
 
 @end

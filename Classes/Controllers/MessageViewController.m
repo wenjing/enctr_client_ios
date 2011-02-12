@@ -8,6 +8,7 @@
 #import "SendImagePickerController.h"
 #import "MessageView.h"
 #import "REString.h"
+#import "ImageUtils.h"
 
 #define kShowAnimationkey   @"showAnimation"
 #define kHideAnimationKey   @"hideAnimation"
@@ -18,7 +19,7 @@
 @implementation MessageViewController
 
 @synthesize navigation;
-@synthesize selectedPhoto;
+@synthesize selectedPhoto, picture;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -142,10 +143,10 @@
     [progressWindow hide];
 }
 
-- (void)uploadPhoto
+- (UIImage*)modifyPhoto:(UIImage *)image
 {
-    float width  = selectedPhoto.size.width;
-    float height = selectedPhoto.size.height;
+    float width  = image.size.width;
+    float height = image.size.height;
     float scale;
     
     if (width > height) {
@@ -154,16 +155,8 @@
     else {
         scale = 480.0 / height;
     }
-    
-    /*KYMeetPicClient *pic = [[KYMeetPicClient alloc] initWithTarget:self];
-
-    if (scale >= 1.0) {
-        [pic upload:selectedPhoto];
-    }
-    else if (scale < 1.0) {
-        [pic upload:[selectedPhoto scaleAndRotateImage:640]];
-    }
-    connection = pic; */
+	
+	return scale >= 1.0 ? image : [image  scaleAndRotateImage:640];
 }
 
 - (void)updateMessage
@@ -326,7 +319,16 @@
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
-    self.selectedPhoto = image;
+	
+    self.selectedPhoto = [self modifyPhoto:image] ;
+	
+	CGSize itemSize  = CGSizeMake(60,50);
+	UIGraphicsBeginImageContext(itemSize);
+	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
+	[self.selectedPhoto drawInRect:imageRect];
+	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
     photoButton.style = UIBarButtonItemStyleDone;
     [navigation dismissModalViewControllerAnimated:true];
 
@@ -377,6 +379,8 @@
     textRange.location = 0;
     textRange.length = 0;
     [self close:self];
+	selectedPhoto = nil;
+	picture.image = nil;
     didPost =  true ;
 }
 

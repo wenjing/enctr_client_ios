@@ -142,6 +142,24 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 	return [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:key];
 }
 
+
+// utilities
+
++(NSString *)dateString:(time_t)at 
+{
+	static NSDateFormatter* dateFormatter = nil ;
+	NSLocale *enUSPOSIXLocale;
+	if ( dateFormatter == nil ) {
+		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		[dateFormatter setLocale:enUSPOSIXLocale];
+	}
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:at];
+	return [dateFormatter stringFromDate:date]   ;
+}
+
 @end
 
 

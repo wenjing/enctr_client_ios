@@ -19,7 +19,7 @@
 @synthesize requestURL;
 
 
-NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
+NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
 
 - (id)initWithDelegate:(id)aDelegate
 {
@@ -98,7 +98,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
--(void)post:(NSString*)aURL body:(NSString*)aBody
+-(void)post:(NSString*)aURL body:(NSString*)body
 {
     [connection release];
 	[buf release];
@@ -115,20 +115,14 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
     [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 	[req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-#ifdef _USE_BASIC_AUTHENTICATION
     [self addAuthHeader:req];
-#else
-	NSMutableString *body = [NSMutableString stringWithFormat:@"%@", aBody]  ;
-	[self addAuthTrailer:body];
-	[self addSessionToken:req];
 	
 	if (body) {
 		int contentLength = [body lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 		[req setValue:[NSString stringWithFormat:@"%d", contentLength] forHTTPHeaderField:@"Content-Length"];
 		[req setHTTPBody:[NSData dataWithBytes:[body UTF8String] length:contentLength]];
     }
-#endif
-	//NSLog(@"post : %@", [req allHTTPHeaderFields]);
+	//NSLog(@"post : %@\n%@ \n %@", [req allHTTPHeaderFields], [req HTTPBody], body);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -157,7 +151,8 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"0xkAyAMeEtB0uNd@rYStRiNg";
 	[self addAuthHeader:req];
     [req setHTTPBody:data];
 	
-	//NSLog(@"post : %@\n%@", [req allHTTPHeaderFields],[req HTTPBody]);
+	//NSLog(@"post : %@\n", [req allHTTPHeaderFields]); 
+	//,[req HTTPBody]);
 	buf = [[NSMutableData data] retain];
 	connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     

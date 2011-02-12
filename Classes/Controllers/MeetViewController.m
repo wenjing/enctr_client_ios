@@ -33,6 +33,9 @@
 	filter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0] ;
 	filter.adaptive = NO ;
 	
+	// BT
+	bt = [[BluetoothConnect alloc] initWithDelegate:self];
+	
 	// sound
 	// Create the URL for the source audio file. The URLForResource:withExtension: method is
     //    new in iOS 4.0.
@@ -57,10 +60,11 @@
 
 - (void) dealloc
 {
-    [super dealloc];
 	[filter release];
 	AudioServicesDisposeSystemSoundID (soundFileObject);
     CFRelease (soundFileURLRef);
+	[bt release] ;
+	[super dealloc] ;
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -87,6 +91,7 @@
 {
     contentOffset = self.tableView.contentOffset;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+
 	[meetDataSource cancelConnect];
 	//self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
@@ -126,7 +131,7 @@
 - (void) resetMeets
 {
 	[meetDataSource removeAllMeets];
-    [self.tableView reloadData];
+//  [self.tableView reloadData];
 	isLoaded = false ;
 //	contentOffset = 0;
 }
@@ -160,12 +165,7 @@
 {
 	self.navigationItem.rightBarButtonItem.enabled = false;
 	AudioServicesPlaySystemSound (soundFileObject);
-	
 	// BT device connection
-	// BT ids
-	static BluetoothConnect *bt ;
-	if ( bt == nil ) 
-		 bt = [[BluetoothConnect alloc] initWithDelegate:self];
 	[bt   reset ] ;
 	HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
 	HUD.labelText = @"finding friend..";
@@ -173,13 +173,166 @@
 	[bt startPeer];
 }
 
-- (void) BluetoothDidFinished:(BluetoothConnect *)bt {
-	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
-	[meetDataSource addMeet:bt] ;
+
+// post for different modes
+
+- (void) cancelSolo
+{
+	self.navigationItem.rightBarButtonItem.enabled = true;
+	return;
 }
 
-- (void) BluetoothDidUpdate:(BluetoothConnect *)bt peer:(NSString *)peerID{
-	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
+- (void) acceptSolo
+{
+	NSMutableDictionary *param = [NSMutableDictionary dictionary];
+	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
+	[param setObject:[bt getDisplayName] forKey:@"devs"];
+	[meetDataSource addMeet:param];
+}
+
+- (void) acceptHost {
+	NSMutableDictionary *param = [NSMutableDictionary dictionary];
+	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
+	[param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
+	[param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
+	[param setObject:@"2" forKey:@"host_mode"];
+	[meetDataSource addMeet:param];
+}
+
+// alterview button 
+
+static UIAlertView *sAlert = nil ;
+static SEL  clickedAccept  ;
+static SEL  clickedCancel  ;
+
+- (void) cancelHost {
+	NSString *meet = [bt findMeet];
+	sAlert = nil ;
+	if ( meet != nil )
+	{ // add to a meet
+		[bt getDisplayNames:meet];
+		[self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]  
+					message:[NSString stringWithFormat:@"please confirm"] 
+					 accept:@selector(acceptJoin)
+					 cancel:@selector(collisionJoin)
+						 ] ;
+		return ;
+	}
+	NSString *names = [bt getPeerNameList] ;
+	if ( names != nil && names != @"") {
+		[self dialog:[NSString stringWithFormat:@"meet with %@", names]  
+					message:[NSString stringWithFormat:@"please confirm"] 
+					 accept:@selector(acceptPeer)
+					 cancel:@selector(collisionPeer)
+						 ] ;
+	}
+}
+
+	 
+- (void) postJoin:(BOOL)collision
+{
+	NSMutableDictionary *param = [NSMutableDictionary dictionary];
+	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
+	[param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
+	[param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
+	
+	[param setObject:@"4" forKey:@"host_mode"];
+	if( collision == true ) {
+		[param setObject:@"1" forKey:@"collision"];
+	} else {
+		[param setObject:@"0" forKey:@"collision"];
+	}
+	
+	[meetDataSource addMeet:param];
+}
+
+- (void) acceptJoin
+{
+	[self postJoin:false];
+}
+
+- (void) collisionJoin
+{
+	[self postJoin:true];
+}
+
+- (void) postPeer:(BOOL)collision
+{
+	NSMutableDictionary *param = [NSMutableDictionary dictionary];
+	NSString* query = [bt.peerList componentsJoinedByString:@","];
+	[param setObject:query forKey:@"devs"];
+	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
+	if( collision == true ) {
+		[param setObject:@"1" forKey:@"collision"];
+	} else {
+		[param setObject:@"0" forKey:@"collision"];
+	}
+	[meetDataSource addMeet:param];
+}
+
+- (void) collisionPeer
+{
+	[self postPeer:true];
+}
+
+- (void) acceptPeer 
+{
+	[self postPeer:false];
+}
+
+// hostmode, addmode, peermode
+
+- (void) BluetoothDidFinished:(BluetoothConnect *)Bluetooth {
+
+	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];	
+	self.navigationItem.rightBarButtonItem.enabled = true;
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+	
+	if( [bt numberOfPeers] == 0 && bt.mode != BT_ADD ) { // solo
+		[self dialog:@"Solo Meet"  
+					message:[NSString stringWithFormat:@"please confirm"] 
+					 accept:@selector(acceptSolo) 
+					 cancel:@selector(cancelSolo)] ;
+		return ;
+	}
+	
+	NSString *host = [Bluetooth findHost];
+	
+	if ( host != nil )
+	{ // host
+		[bt getDisplayNames:host];
+		[self dialog:[NSString stringWithFormat:@"Join %@'s %@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:2]]  
+					message:[NSString stringWithFormat:@"please confirm"] 
+					 accept:@selector(acceptHost)
+					 cancel:@selector(cancelHost)
+						] ; 
+		return ;
+	}
+	
+	NSString *meet = [Bluetooth findMeet];
+	if ( meet != nil )
+	{ // add to a meet
+		[bt getDisplayNames:meet];
+		[self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]
+					message:[NSString stringWithFormat:@"please confirm"] 
+					 accept:@selector(acceptJoin)
+					 cancel:@selector(collisionJoin)
+						] ;
+		return ;
+	}
+	NSString *names = [bt getPeerNameList] ;
+	if ( names != nil && names != @"") {
+		[self dialog:[NSString stringWithFormat:@"meet with %@", names]  
+				message:[NSString stringWithFormat:@"please confirm"] 
+				 accept:@selector(acceptPeer)
+				 cancel:@selector(collisionPeer )
+					 ] ;
+	}
+	
+}
+
+- (void) BluetoothDidUpdate:(BluetoothConnect *)Bluetooth peer:(NSString *)peerID{
+	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [Bluetooth numberOfPeers]] ;
 }
 
 - (void) autoRefresh
@@ -282,6 +435,11 @@
 	return meetDataSource.meets ;
 }
 
+- (MeetViewDataSource *)meetDataSource 
+{
+	return meetDataSource ;
+}
+
 // segmentedControl
 - (void) typeSelected:(id)sender
 {
@@ -293,6 +451,37 @@
 
 		[self.tableView reloadData];
 	}
+}
+
+
+
+
+- (void)dialog:(NSString*)title message:(NSString*)message accept:(SEL)aAction cancel:(SEL)cAction
+{
+	if (sAlert) return;
+	sAlert = [[UIAlertView alloc] initWithTitle:title
+										message:message
+									   delegate:self
+							  cancelButtonTitle:@"Accept"
+							  otherButtonTitles:@"Cancel", nil];
+	clickedAccept  = aAction ;
+	clickedCancel  = cAction ;
+	[sAlert show];
+	[sAlert release];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	NSLog(@"click %d",buttonIndex);
+	if ( buttonIndex == 0 && [self respondsToSelector:clickedAccept] )
+	{
+		[self performSelector:clickedAccept] ;
+	}
+	else if ( buttonIndex == 1 && [self respondsToSelector:clickedCancel] ){
+		[self performSelector:clickedCancel] ;
+	}
+	sAlert = nil ; 
 }
 
 @end

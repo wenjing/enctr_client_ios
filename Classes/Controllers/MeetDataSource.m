@@ -6,6 +6,7 @@
 #import "MeetDataSource.h"
 #import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
+#import "StringUtil.h"
 
 @implementation MeetDataSource
 
@@ -37,7 +38,7 @@ static NSInteger sortByDate(id a, id b, void *context)
 - (void)dealloc {
     [loadCell   release];
     [meets		release];
-	[super dealloc];
+	[super		dealloc];
 }
 
 - (void)removeAllMeets

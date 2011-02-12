@@ -76,6 +76,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	request = KAYAMEET_REQUEST_POST_MEET;
     NSString* url = [NSString stringWithFormat:@"%@/mposts",KAYAMEET_SITE_NAME];
     NSString *postString = [KYConnection generateBodyString:nil params:params];
+	
+	//NSLog(@"%@ -d %@",url,postString);
     [self post:url body:postString];
 }
 
@@ -96,34 +98,42 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	needAuth = true;
 	request = KAYAMEET_REQUEST_POST_MEET;
 	NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/chatters",KAYAMEET_SITE_NAME,meetId];
-	NSMutableDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								message, @"content", nil];
 	
 	// [NSString stringWithFormat:@"%ld", meetId],  @"meet_id",
 	
-	// photo
+	/* photo
 	if( photo != nil )
 	{
-		//[self writeImageToTempFile];
-		[dic  setObject:[self writeImageToTempFile:photo] forKey:@"photo"];
-	}
+		[self writeImageToTempFile:photo];
+		NSString  *fname = [NSString stringWithFormat:@"@%@",[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/kayameetTempFile.jpg"]];
+		NSLog(@"photo=%@",fname);
+		[dic  setObject:[NSString stringWithFormat:@"%@",fname] forKey:@"photo"];
+	}*/
 	
 	// reply to chat
 	if(chatId > 0)
 	{
 		[dic setObject:[NSString stringWithFormat:@"%d",chatId] forKey:@"reply_chat_id"];
 	}
+	[dic setObject:[NSString stringWithFormat:@"test %ld",meetId] forKey:@"testid"];
+	NSMutableData *data = [NSMutableData data];
+	// When the server can support Data transfer
 	NSString *param = [self nameValString:dic];
 	NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
-	
-    NSMutableData *data = [NSMutableData data];
     [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
 	
-	// When the server can support Data transfer
-	// param = [param stringByAppendingString:[NSString stringWithFormat:@"\r\n—%@\r\n", KAYAMEET_FORM_BOUNDARY]];
-	// NSData *jpeg = UIImageJPEGRepresentation(photo, 0.8);
-	// param = [param stringByAppendingString:@"Content-Disposition: form-data; name=\"media\";filename=\"image.jpg\"\nContent-Type: image/jpeg\r\n\r\n"];
-    // [data appendData:jpeg];
+	
+	if ( photo != nil ) {
+		param = [NSString stringWithFormat:@"--%@", KAYAMEET_FORM_BOUNDARY];
+		NSData *jpeg = UIImageJPEGRepresentation(photo, 0.5);
+		param = [param stringByAppendingString:@"\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"a.jpeg\"\r \n\r\n"];
+		param = [param stringByAppendingString:@"Content-Type: image/jpeg\r\n\r\n"];
+		[data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
+		[data appendData:[NSData dataWithData:jpeg]];
+
+	}	
 	[data appendData:[footer dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[super post:url data:data] ;
@@ -132,10 +142,13 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 // login
 - (void)verify
 {
-    needAuth = true;
+    needAuth = false;
 	NSString* url = [NSString stringWithFormat:@"%@/sessions", KAYAMEET_SITE_NAME ];
+	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+	NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];					   
+	NSString *body = [NSString stringWithFormat:@"&email=%@&password=%@",username,password] ;
 	request = KAYAMEET_REQUEST_LOGIN;
-    [super post:url body:nil];
+    [super post:url body:body];
 }
 
 - (void)authError
@@ -232,7 +245,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 
 - (void)KYConnectionDidReceieveResponse:(NSURLResponse *)aResponse
 {
-	NSHTTPURLResponse *resp = (NSHTTPURLResponse*)aResponse;
+/*	NSHTTPURLResponse *resp = (NSHTTPURLResponse*)aResponse;
 	if (request == KAYAMEET_REQUEST_LOGIN && resp.statusCode / 100 == 2 ) 
 	{
 		// store session token
@@ -256,6 +269,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
             self.errorDetail  = @" Authentication error, missing session token" ;
 		}
 	}
+ */
 }
 
 - (void)alert
@@ -264,7 +278,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 }
 
 // 
-- (NSString *)writeImageToTempFile:(UIImage *)image
+- (void)writeImageToTempFile:(UIImage *)image
 {
 	// Create paths to output images
 	// NSString  *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/kayameetTempFile.png"];
@@ -281,16 +295,17 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	// Let's check to see if files were successfully written...
 	
 	// Create file manager
-	NSError *error;
-	NSFileManager *fileMgr = [NSFileManager defaultManager];
+	//NSError *error;
+	//NSFileManager *fileMgr = [NSFileManager defaultManager];
 	
 	// Point to Document directory
-	NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+	//NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
 	
 	// Write out the contents of home directory to console
-	NSLog(@"Documents directory: %@", [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
-	NSString *name = [NSString stringWithFormat:@"@%@",jpgPath];
-	return name ;
+	//NSLog(@"Documents directory: %@", [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
+	//return [[NSString stringWithFormat:@"@%@",jpgPath] retain];
+	return ;
+	
 }
 
 @end

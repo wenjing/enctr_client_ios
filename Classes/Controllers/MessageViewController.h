@@ -22,6 +22,7 @@
 	
     IBOutlet UIBarButtonItem*           sendButton;
     IBOutlet UIBarButtonItem*           photoButton;
+	IBOutlet UIImageView*				picture;
     IBOutlet UIActivityIndicatorView*   indicator;
 
     UIImage*                    selectedPhoto;
@@ -37,6 +38,7 @@
 
 @property(nonatomic, assign) UINavigationController* navigation;
 @property(nonatomic, retain) UIImage*  selectedPhoto;
+@property(nonatomic, assign) UIImageView* picture;
 
 - (void)postTo:(KYMeet*)mt;
 - (void)inviteTo:(KYMeet*)mt;

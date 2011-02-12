@@ -279,13 +279,12 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	[[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
-	[[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"KYsessionToken"];
 	[[NSUserDefaults standardUserDefaults] setInteger:0	 forKey:@"KYUserId"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
 	kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
-
-	// push login view
+	MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
+	[mc resetMeets];	// push login view
 	kaya_delegate.selectedTab = TAB_MEETS;
     kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
 	[kaya_delegate 	openLoginView];

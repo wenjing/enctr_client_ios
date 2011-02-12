@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "MeetViewController.h"
 #import "MessageViewController.h"
+#import "LocationManager.h"
 
 typedef enum {
     TAB_MEETS=0,
@@ -18,7 +19,7 @@ typedef enum {
 } TAB_ITEM;
 
 
-@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, MKReverseGeocoderDelegate> {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
@@ -27,6 +28,9 @@ typedef enum {
 	NSString			*screeName;
 	int					 selectedTab;
 	BOOL				 initialized;
+	LocationManager*		location  ;
+	MKReverseGeocoder*		reverseGeocoder;
+	float				 longitude, latitude, lerror  ;
     NSTimeInterval       autoRefreshInterval;
     NSTimer*             autoRefreshTimer;
     NSDate*              lastRefreshDate;
@@ -38,12 +42,13 @@ typedef enum {
 @property (nonatomic, assign) MessageViewController  *messageView;
 @property (nonatomic, retain) NSString*	screenName;
 @property (nonatomic, assign) int selectedTab;
+@property (nonatomic, readonly) float longtitude, latitude, lerror;
 
-- (void)alert:(NSString*)title message:(NSString*)detail;
-- (void)dialog:(NSString*)title message:(NSString*)detail action:(SEL)anAction dg:(id)aDelegate;
+- (void)alert :(NSString*)title message:(NSString*)detail;
 - (void)openLoginView;
 - (void)postInit;
 - (void)closeLoginView;
+- (void) getLocation;
 - (UINavigationController*)getAppTabController:(int)selectTab;
 - (void)messageViewAnimationDidFinish ;
 + (BOOL)isMyScreenName:(NSString*)screen_name;

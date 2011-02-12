@@ -9,6 +9,7 @@
 - (NSString*)encodeAsURIComponent;
 - (NSString*)escapeHTML;
 - (NSString*)unescapeHTML;
++ (NSString*)dateString:(time_t)at;
 + (NSString*)localizedString:(NSString*)key;
 + (NSString*)base64encode:(NSString*)str;
 @end

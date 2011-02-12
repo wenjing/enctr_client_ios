@@ -96,6 +96,8 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 			NSString *messages = @"";
 			for( int i = 0 ; i < [chatters count] ; i ++ ) {
 				NSDictionary *dic = (NSDictionary*)[chatters objectAtIndex:i] ; 
+				NSString *uid = [dic objectForKey:@"user_id"] ;
+				if ( uid == (NSString*)[NSNull null] || uid == nil || uid == @"" ) continue ;
 				User *u = [User userWithId:[[dic objectForKey:@"user_id"] longValue]];
 				NSString *content = [dic objectForKey:@"content"] ;
 				messages = [NSString stringWithFormat:@"%@ > %@\n%@",u.name,content,messages] ;

@@ -9,7 +9,7 @@
 #import "BlueTooth.h"
 
 #import "MeetDetailView.h"
-
+#import "StringUtil.h"
 
 
 @interface NSObject (MeetViewControllerDelegate)
@@ -118,9 +118,7 @@
 		cell.primaryLabel.text   = sts.description  ;
 		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@ %@", [sts timestamp], sts.source];
 		
-//		NSString *picURL = sts.user.profileImageUrl ;
 		NSString *picURL = NULL;
-//		NSString *picURL = @"http://www.gravatar.com/avatar/12468ce98b80c55ec202850ac4026d75?size=50";
 		if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
 			NSData *imgData = [[[NSData dataWithContentsOfURL:
 							   [NSURL URLWithString:picURL]] autorelease] retain];
@@ -180,70 +178,30 @@
 	}
 }
 
-- (void)addMeet:(BluetoothConnect*)bt
+- (void)addMeet:(NSMutableDictionary*)param
 {
     if (meetClient) return;
 	meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidPost:obj:)];
-    
-	if (userConfirmString != nil)    [userConfirmString release] ;
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    // NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
-    // put parameters for POST
-
 	// meet date
-	static NSDateFormatter* dateFormatter = nil ;
-	NSLocale *          enUSPOSIXLocale;
-	if ( dateFormatter == nil ) {
-		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
-		dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-		[dateFormatter setLocale:enUSPOSIXLocale];
-	}
 	time_t now;
-    time(&now);
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:now];
-	[param setObject:[dateFormatter stringFromDate:date] forKey:@"time"];
+	time(&now);
+	[param setObject:[NSString dateString:now] forKey:@"time"];
+	
 	// location 
 	[param setObject:[NSString stringWithFormat:@"%lf",latitude]  forKey:@"lat" ];
 	[param setObject:[NSString stringWithFormat:@"%lf",longitude] forKey:@"lng"];
-	//[param setObject:placeString forKey:@"location"];
-
-	// lerror
 	[param setObject:[NSString stringWithFormat:@"%f", lerror] forKey:@"lerror"];
-	
-	// bt
-	//[param setObject:bt.session.peerID forKey:@"user_dev"];
-	latestUserCount = [bt numberOfPeers] + 1 ;
-	[param setObject:[bt.session displayNameForPeer:bt.session.peerID] forKey:@"user_dev"];
-	if ( [bt numberOfPeers] == 0 ) {
-//		[param setObject:bt.session.peerID forKey:@"devs"];
-		[param setObject:[bt.session displayNameForPeer:bt.session.peerID] forKey:@"devs"];
-	}
-	else {
-		userConfirmString = [self getUserNameList:bt.peerList];
-		NSString* query = [bt.peerList componentsJoinedByString:@","];
-		NSLog(@"user %@, meet %@", [bt.session displayNameForPeer:bt.session.peerID], query);
-		[param setObject:query forKey:@"devs"];
-	}
-	
-	// Description
-	// [param setObject:[NSString stringWithFormat:@" %@ ",addressString] forKey:@"description"];
 	
 	// record the post as sent
 	// NEED keep the temporary meet here until post receieved
 	// KYMeet* sts = [KYMeet meetWithJsonDictionary:param type:KYMEET_TYPE_TEMP] ;
 	// [self appendMeet:sts];
 
-	// poset meet from server
+	// post meet from server
     [meetClient postMeet:param];
 }
-
-- (void)clickedAccept 
-{
-	NSLog(@"collision happen %d", latestPostId);
-}
-
 
 // GET latest meets from Server
 
@@ -257,7 +215,7 @@
 	// last get meet date
 	if( [meets count] ) {
 		KYMeet *lastMeet = [self meetAtIndex:0] ;
-		[param setObject:[self dateString:lastMeet.updateAt] forKey:@"after_updated_at"];
+		[param setObject:[NSString dateString:lastMeet.updateAt] forKey:@"after_updated_at"];
 	}
 	
 	// put parameters for GET
@@ -284,7 +242,8 @@
 {
 	meetClient = nil;
     [loadCell.spinner stopAnimating];
-    
+	[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:controller.tableView];
+	reloading = NO;
     if (sender.hasError) {
         if ([controller respondsToSelector:@selector(meetsDidFailToUpdate:position:)]) {
             [controller meetsDidFailToUpdate:self position:insertPosition];
@@ -307,17 +266,11 @@
 		//[sts insertDB];
 		//[self insertSentMeet:sts atIndex:insertPosition];
 		//[DBConnection commitTransaction];
-		latestPostId = [[dic objectForKey:@"id"] longLongValue] ;
-		
+		NSString *collision = [dic objectForKey:@"collision"] ;
 		kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
-		if ( latestUserCount > 1 ) {
-			[appDelegate dialog:@"Meet Confirm" message:[NSString stringWithFormat:@"met with %@",userConfirmString] action:@selector(clickedAccept) dg:self ]; 
-		}
-		else 
-		{
-			[appDelegate dialog:@"Meet Posted"  message:[NSString stringWithFormat:@"please confirm"] action:@selector(clickedAccept) dg:self ] ; 
-		}
-		[self getUserMeets];
+		if ( collision != (NSString *)[NSNull null] ) [appDelegate alert: @"Post Meet Collision !"   message:nil]; 
+		else										  [appDelegate alert: @"Post Meet Success   !"   message:nil];
+		//[self getUserMeets];
 	}
     else {
 		// didn't get meet back from response
@@ -486,34 +439,5 @@
 	//addressString = @"At Location" ;
 	[reverseGeocoder release];
 }				 
-
-
-// utilities
-
--(NSString *)dateString:(time_t)at 
-{
-	static NSDateFormatter* dateFormatter = nil ;
-	NSLocale *enUSPOSIXLocale;
-	if ( dateFormatter == nil ) {
-		enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
-		dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-		[dateFormatter setLocale:enUSPOSIXLocale];
-	}
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:at];
-	return [dateFormatter stringFromDate:date]   ;
-}
-
-- (NSString *)getUserNameList:(NSMutableArray *)ar
-{
-	NSMutableArray* pairs = [NSMutableArray array];
-	for (int i = 0 ; i < [ar count] ; i ++ ) {
-		NSRange end = [[ar objectAtIndex:i] rangeOfString:@":"] ;
-		[pairs addObject:[[ar objectAtIndex:i] substringToIndex:end.location]];
-	}
-	NSString *query = [[pairs componentsJoinedByString:@","] retain];
-	return query ;
-}
 
 @end

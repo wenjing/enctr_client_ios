@@ -13,30 +13,83 @@
 @end
 
 #define BLUETOOTH_TIMEOUT	 5
+#define BLUETOOTH_SERVER_TIMEOUT 3600
 #define BLUETOOTH_MAX_FRIEND 3
 
 @implementation BluetoothConnect
 
-@synthesize picker;
+//@synthesize picker;
 @synthesize session;
-@synthesize peerList;
+@synthesize devNames, peerList, mode;
 
 - (int) numberOfPeers{
 	return aNumber ;
 }
 
+// host mode start from meet detail view.
+
+- (void) startHost:(NSString *)name withId:(uint64_t)meet_id
+{
+	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    
+	if (!session) {
+		
+        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
+										   displayName:[NSString stringWithFormat:@"%@:%d:%@:%ld",user.name,user.userId,name,meet_id]
+										   sessionMode:GKSessionModeServer];
+        session.delegate = self;
+        [session setDataReceiveHandler:self withContext:nil];
+        session.available = YES;
+		NSLog(@"start host mode : %@", [session displayNameForPeer:session.peerID]);
+		mode = BT_HOST ;
+    }
+	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_SERVER_TIMEOUT
+                                             target:self
+                                           selector:@selector(bluetoothDidTimeout:userInfo:)
+                                           userInfo:nil
+                                            repeats:false];
+}
+
+// peer mode start from meet list view
 - (void) startPeer
 {
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     
 	if (!session) {
         session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
-                                           displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
-                                           sessionMode:GKSessionModePeer];
+										displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
+										sessionMode:GKSessionModePeer];
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
-		NSLog(@"start Peer id is %@ name is %@", session.peerID, [session displayNameForPeer:session.peerID]);
+		NSLog(@"start Peer  %@", [session displayNameForPeer:session.peerID]);
+		mode = BT_PEER ;
+    }
+	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_TIMEOUT
+                                             target:self
+                                           selector:@selector(bluetoothDidTimeout:userInfo:)
+                                           userInfo:nil
+                                            repeats:false];
+}
+
+// start peer with meet_id from meet detail view
+// name:time_id:id
+
+- (void) startPeer:(uint64_t)meet_id
+{
+	time_t now;
+	time(&now);
+	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    
+	if (!session) {
+        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
+										   displayName:[NSString stringWithFormat:@"%@:%d_%d:%ld",user.name,now,user.userId,meet_id]
+										   sessionMode:GKSessionModePeer];
+        session.delegate = self;
+        [session setDataReceiveHandler:self withContext:nil];
+        session.available = YES;
+		NSLog(@"start Peer %@", [session displayNameForPeer:session.peerID]);
+		mode = BT_ADD ;
     }
 	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_TIMEOUT
                                              target:self
@@ -48,7 +101,7 @@
 -(void) bluetoothDidTimeout:(NSTimer*)aTimer userInfo:(id)userInfo
 {
 	timer = nil ;
-	[delegate BluetoothDidFinished:self];
+	if ( mode != BT_HOST ) [delegate BluetoothDidFinished:self];
 	[self stopPeer];
 }
 
@@ -60,7 +113,16 @@
 	session.available = NO;
 	[session setDataReceiveHandler: nil withContext: nil];
 	session.delegate = nil;
-	[session release];
+	mode=BT_FREE;
+//	[session release];
+}
+
+- (void) reset {
+	if ( mode != BT_FREE ) [self stopPeer];
+	aNumber = 0 ;
+	session = nil;
+	[peerList removeAllObjects]  ;
+	[devNames removeAllObjects]  ;
 }
 
 - (id)initWithDelegate:(id)aDelegate {
@@ -73,18 +135,15 @@
 //	picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
 //	[picker show];
 	peerList = [[NSMutableArray alloc] init];
+	devNames = [[NSMutableArray alloc] init];
 	aNumber = 0 ;
+	mode = BT_FREE;
 	session = nil;
 	return self;
 }
 
-- (void) reset {
-	aNumber = 0 ;
-	session = nil;
-	[peerList removeAllObjects] ;
-}
 
-//- (void)peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type {
+/*- (void)peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type {
 //}
 
 - (GKSession *) peerPickerController:(GKPeerPickerController *)picker
@@ -103,9 +162,13 @@
 	if (peerList == nil ) 
 		peerList = [[NSMutableArray alloc] initWithArray:[session peersWithConnectionState:GKPeerStateAvailable]];
 }
-
+*/
 - (void)session:(GKSession *)aSession peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
 	BOOL peerChanged = NO;
+	if (mode == BT_HOST) {
+		aNumber ++ ;
+		return ;
+	}
 	switch (state) {
 		case GKPeerStateAvailable:
                 if (peerList) {
@@ -167,7 +230,6 @@
 	aNumber++;
 	NSData *myData = [[NSData alloc] initWithBytes:&aNumber length:sizeof(int)];
 	[session sendDataToAllPeers :myData withDataMode:GKSendDataReliable error:nil];
-	NSLog(@"send data: %i\n", aNumber);
 	[myData autorelease];
 }
 
@@ -184,10 +246,84 @@
 - (void)dealloc
 {
 	if (timer)    [timer invalidate];
-	[picker release];
+//	[picker release];
 	[self stopPeer];
 	[peerList release];
+	[devNames release];
 	[super dealloc];
+}
+
+
+
+// utility
+// name:u_id
+// name:u_id:host_name:meet_id
+// name:u_id:meet_id
+// name utility
+
+- (NSString *)getDisplayName
+{
+	return [session displayNameForPeer:session.peerID];
+}
+
+- (NSString *)getPeerNameList
+{
+	NSMutableArray* pairs = [NSMutableArray array];
+	for (int i = 0 ; i < aNumber ; i ++ ) {
+		if ([self countField:[peerList objectAtIndex:i]] > 2) continue ;
+		 NSRange end = [[peerList objectAtIndex:i] rangeOfString:@":"] ;
+		[pairs addObject:[[peerList objectAtIndex:i] substringToIndex:end.location]];
+	}
+	if ( [pairs count] )
+		return [pairs componentsJoinedByString:@","] ;
+	return nil ;
+}
+
+
+- (NSString *)findHost {
+	for ( int i = 0 ; i < aNumber ; i ++ ) 
+	{
+		if ( [self countField:[peerList objectAtIndex:i]] > 3 )
+			return [peerList objectAtIndex:i] ;
+	}
+	return nil ;
+}
+
+- (NSString *)findMeet {
+	for ( int i = 0 ; i < aNumber ; i ++ ) 
+	{
+		if ( [self countField:[peerList objectAtIndex:i]] == 3 )
+			return [peerList objectAtIndex:i] ;
+	}
+	return nil ;
+}
+
+- (int) countField:(NSString *)str
+{	int count = 1  ;
+	int len = [str length];
+	for (int i = 0 ; i < len ; i ++ ) 
+		if ( [str characterAtIndex:i] == ':' ) count++;
+	return count ;
+}
+
+- (void)getDisplayNames:(NSString *)str
+{
+	[devNames removeAllObjects];
+	int start = 0;
+	int len = [str length];
+	NSCharacterSet* chs = [NSCharacterSet characterSetWithCharactersInString:@":"];
+	
+	while (start < len) {
+		NSRange r = [str rangeOfCharacterFromSet:chs options:0 range:NSMakeRange(start, len-start)];
+		if (r.location == NSNotFound) {
+			[devNames addObject:[str substringFromIndex:start]];
+			break;
+		}
+		if (start < r.location) {
+			[devNames addObject:[str substringWithRange:NSMakeRange(start, r.location-start)]];
+		}
+		start = r.location + 1;
+	}
 }
 
 @end

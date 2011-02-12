@@ -11,7 +11,7 @@
 #import "BlueTooth.h"
 
 
-@interface MeetViewDataSource : MeetDataSource <EGORefreshTableHeaderDelegate, UITableViewDataSource, UITableViewDelegate, MKReverseGeocoderDelegate>
+@interface MeetViewDataSource : MeetDataSource <EGORefreshTableHeaderDelegate, UITableViewDataSource, UITableViewDelegate>
 {
 	UITableViewController  *controller;
 	KYMeetClient*           meetClient;
@@ -29,10 +29,9 @@
 - (MeetViewCell *)getMeetCell:(UITableView*)tableView atIndex:(int)index ;
 
 - (void)getUserMeets;
-- (void)addMeet:(BluetoothConnect*)bt ;
+- (void)addMeet:(NSMutableDictionary*)param ;
 - (void)getLocation;
 - (void)cancelConnect;
 
-- (NSString *)getUserNameList:(NSMutableArray *)ar;
-- (NSString *)dateString:(time_t)at;
+//- (NSString *)dateString:(time_t)at;
 @end

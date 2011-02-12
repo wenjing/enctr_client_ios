@@ -15,6 +15,7 @@
 		282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* moreView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
+		3A0208DD1303CB5A0017841B /* ImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0208DC1303CB5A0017841B /* ImageUtils.m */; };
 		3A04A94512D00522000B99FB /* PlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04A94412D00522000B99FB /* PlaceViewController.m */; };
 		3A04AA5D12D02520000B99FB /* placeDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04AA5C12D02520000B99FB /* placeDisplayMap.m */; };
 		3A04AB8912D15677000B99FB /* placeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A04AB8812D15677000B99FB /* placeView.xib */; };
@@ -80,6 +81,7 @@
 		3AA51E4D1284F59C00D8565B /* KYMeetClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51E4C1284F59C00D8565B /* KYMeetClient.m */; };
 		3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA182D1288E5DD00D74450 /* setupView.xib */; };
 		3ACA18371288E62900D74450 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA18361288E62900D74450 /* SetupViewController.m */; };
+		3ACAE49612F39D9600F85B5D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 3ACAE49512F39D9600F85B5D /* images */; };
 		3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD41C3A12891FF8001B2E90 /* meetView.xib */; };
 		3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF53C9112C9238600844457 /* meetDisplayMap.m */; };
 		3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AF7B3B71278F96F008F83BC /* LoginView.xib */; };
@@ -106,6 +108,8 @@
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Others/main.m; sourceTree = "<group>"; };
+		3A0208DB1303CB5A0017841B /* ImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageUtils.h; path = Others/ImageUtils.h; sourceTree = "<group>"; };
+		3A0208DC1303CB5A0017841B /* ImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageUtils.m; path = Others/ImageUtils.m; sourceTree = "<group>"; };
 		3A04A94312D00522000B99FB /* PlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaceViewController.h; path = Controllers/PlaceViewController.h; sourceTree = "<group>"; };
 		3A04A94412D00522000B99FB /* PlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaceViewController.m; path = Controllers/PlaceViewController.m; sourceTree = "<group>"; };
 		3A04AA5B12D02520000B99FB /* placeDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = placeDisplayMap.h; path = Controllers/placeDisplayMap.h; sourceTree = "<group>"; };
@@ -170,14 +174,14 @@
 		3A636CD312D44995008A8B47 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends.png; path = images/friends.png; sourceTree = "<group>"; };
 		3A636CD612D449A5008A8B47 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location.png; path = images/location.png; sourceTree = "<group>"; };
 		3A636D0B12D44B8A008A8B47 /* MessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MessageView.xib; path = Resources/MessageView.xib; sourceTree = "<group>"; };
-		3A636D1312D44EB5008A8B47 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
-		3A636D1412D44EB5008A8B47 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
-		3A636D1512D44EB5008A8B47 /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
-		3A636D1612D44EB5008A8B47 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
-		3A636D1712D44EB5008A8B47 /* SendImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendImagePickerController.h; sourceTree = "<group>"; };
-		3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendImagePickerController.m; sourceTree = "<group>"; };
-		3A636D1912D44EB5008A8B47 /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindow.h; sourceTree = "<group>"; };
-		3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindow.m; sourceTree = "<group>"; };
+		3A636D1312D44EB5008A8B47 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageViewController.h; path = Controllers/MessageViewController.h; sourceTree = "<group>"; };
+		3A636D1412D44EB5008A8B47 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageViewController.m; path = Controllers/MessageViewController.m; sourceTree = "<group>"; };
+		3A636D1512D44EB5008A8B47 /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageView.h; path = Controllers/MessageView.h; sourceTree = "<group>"; };
+		3A636D1612D44EB5008A8B47 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageView.m; path = Controllers/MessageView.m; sourceTree = "<group>"; };
+		3A636D1712D44EB5008A8B47 /* SendImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendImagePickerController.h; path = Controllers/SendImagePickerController.h; sourceTree = "<group>"; };
+		3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendImagePickerController.m; path = Controllers/SendImagePickerController.m; sourceTree = "<group>"; };
+		3A636D1912D44EB5008A8B47 /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressWindow.h; path = Controllers/ProgressWindow.h; sourceTree = "<group>"; };
+		3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressWindow.m; path = Controllers/ProgressWindow.m; sourceTree = "<group>"; };
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3A6F1CDC127655000044D6E6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -209,6 +213,7 @@
 		3ACA182D1288E5DD00D74450 /* setupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = setupView.xib; path = Resources/setupView.xib; sourceTree = "<group>"; };
 		3ACA18351288E62900D74450 /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetupViewController.h; path = Controllers/SetupViewController.h; sourceTree = "<group>"; };
 		3ACA18361288E62900D74450 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetupViewController.m; path = Controllers/SetupViewController.m; sourceTree = "<group>"; };
+		3ACAE49512F39D9600F85B5D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		3AD41C3A12891FF8001B2E90 /* meetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = meetView.xib; path = Resources/meetView.xib; sourceTree = "<group>"; };
 		3AF53C9012C9238600844457 /* meetDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = meetDisplayMap.h; path = Controllers/meetDisplayMap.h; sourceTree = "<group>"; };
 		3AF53C9112C9238600844457 /* meetDisplayMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = meetDisplayMap.m; path = Controllers/meetDisplayMap.m; sourceTree = "<group>"; };
@@ -284,6 +289,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3A0208DB1303CB5A0017841B /* ImageUtils.h */,
+				3A0208DC1303CB5A0017841B /* ImageUtils.m */,
 				3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */,
 				3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */,
 				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
@@ -425,6 +432,7 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3ACAE49512F39D9600F85B5D /* images */,
 				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
 				3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */,
 				3A7B497512EEB50A00F8AA17 /* grayArrow.png */,
@@ -616,6 +624,7 @@
 				3A7B497812EEB50A00F8AA17 /* grayArrow@2x.png in Resources */,
 				3A7B497B12EEB54F00F8AA17 /* whiteArrow.png in Resources */,
 				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
+				3ACAE49612F39D9600F85B5D /* images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,6 +677,7 @@
 				3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */,
 				3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */,
 				3A7B496B12EEB44600F8AA17 /* EGORefreshTableHeaderView.m in Sources */,
+				3A0208DD1303CB5A0017841B /* ImageUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

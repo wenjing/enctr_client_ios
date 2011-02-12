@@ -27,6 +27,8 @@
 @synthesize messageView;
 @synthesize selectedTab;
 
+@synthesize longtitude, latitude, lerror;
+
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -44,7 +46,6 @@
 	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
 	NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
 	NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
-	NSString *sessionToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"KYsessionToken"];	
 	int  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
 		// delete other user's DB data
@@ -59,7 +60,7 @@
 	
     // login if needed.
 	
-	if ([username length] == 0 || [password length] == 0 || [sessionToken length] == 0 || user_id == 0 ) {
+	if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
 		[self openLoginView];
 	}
 	else if ( [User userWithId:user_id] == nil ) {
@@ -78,7 +79,6 @@
                          @"",                             @"username",
                          @"",                             @"password",
                          @"",                             @"name",
-						 @"",							  @"KYsessionToken",
 						 [NSNumber numberWithInt:0],      @"KYUserId",
                          [NSNumber numberWithBool:false], @"clearLocalCache",
                          [NSNumber numberWithBool:true],  @"loadAllTabOnLaunch",
@@ -155,7 +155,7 @@
             [c performSelector:@selector(autoRefresh)];
         }
     }
-	
+	[self getLocation] ;
     [self setNextTimer:autoRefreshInterval];
 }
 
@@ -241,6 +241,7 @@
     [tabBarController release];
 	[loginView release];
     [window release];
+	[location release];
     [super dealloc];
 }
 
@@ -313,26 +314,64 @@
 }
 */
 
+// location 
+//
+// LocationManager delegate
+//
+- (void) getLocation
+{
+	if ( location == nil ) {
+		location = [[LocationManager alloc] initWithDelegate:self];
+	}
+	[location getCurrentLocation];
+}
+
+- (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
+{
+	if (latitude==0.0 || longitude==0.0) {
+		latitude  = alocation.coordinate.latitude;
+		longitude = alocation.coordinate.longitude;
+		lerror = [alocation horizontalAccuracy] ;
+	}
+}
+
+- (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation
+{
+    latitude  = alocation.coordinate.latitude;
+    longitude = alocation.coordinate.longitude;
+	lerror = [alocation horizontalAccuracy] ;
+	//	reverseGeocoder =
+	//	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
+	//    reverseGeocoder.delegate = self;
+	//    [reverseGeocoder start];
+}
+
+- (void)locationManagerDidFail:(LocationManager*)manager
+{
+    lerror = 10000 ;
+	//NSLog(@"Can't get current location.");
+}
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
+{
+    //addressString = [NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode];
+	//NSLog(@"place %@",addressString);
+	[reverseGeocoder release];
+}
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
+{
+	// NSLog(@"MKReverseGeocoder has failed. %@",error);
+	//addressString = @"At Location" ;
+	[reverseGeocoder release];
+}				 
+
+
 //
 // Common utilities
 //
 
-static UIAlertView *sAlert = nil;
-static id actionDelegate ;
-static SEL clickedAccept ;
-- (void)dialog:(NSString*)title message:(NSString*)message action:(SEL)anAction dg:(id)aDelegate
-{
-	if (sAlert) return;
-	sAlert = [[UIAlertView alloc] initWithTitle:title
-										message:message
-									   delegate:self
-							  cancelButtonTitle:@"Accept"
-							  otherButtonTitles:@"Cancel", nil];
-	clickedAccept  = anAction ;
-	actionDelegate = aDelegate;
-	[sAlert show];
-	[sAlert release];
-}
+static UIAlertView *sAlert = nil ;
 
 - (void)alert:(NSString*)title message:(NSString*)message
 {
@@ -347,16 +386,6 @@ static SEL clickedAccept ;
     [sAlert release];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	NSLog(@"click %d",buttonIndex);
-	sAlert = nil ;
-	if ( buttonIndex == 1 )
-	{
-		[actionDelegate performSelector:clickedAccept] ;
-	}
-	sAlert = nil ; 
-}
 
 + (BOOL)isMyScreenName:(NSString*)screen_name
 {
@@ -377,9 +406,8 @@ static SEL clickedAccept ;
 
 -(MeetViewController*)getAppMeetViewController
 {
-	NSArray *views = tabBarController.viewControllers;
-	UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
-	return (MeetViewController*)[nav topViewController]  ;
+	UINavigationController* nav = (UINavigationController*)[self getAppTabController:TAB_MEETS];
+	return (MeetViewController*)[nav.viewControllers objectAtIndex:0]  ;
 }
 
 @end
