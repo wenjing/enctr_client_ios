@@ -221,7 +221,7 @@
 	span.longitudeDelta=0.2;
 	kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
 	CLLocationCoordinate2D cord ;
-	cord.latitude  = appDelegate.latitude ;
+	cord.latitude  = appDelegate.latitude +0.1;
 	cord.longitude = appDelegate.longitude;
 	
 	CLLocationCoordinate2D location = cord;
