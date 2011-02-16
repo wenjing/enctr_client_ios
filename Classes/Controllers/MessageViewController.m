@@ -28,7 +28,8 @@
     text.font           = [UIFont systemFontOfSize:16];
     self.view.hidden    = true;
 	self.view.frame = [[UIScreen mainScreen] applicationFrame];
-
+	picture.layer.cornerRadius = 5.0;
+	
     textRange.location  = [text.text length];
     textRange.length    = 0;
     

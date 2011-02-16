@@ -92,6 +92,7 @@
     contentOffset = self.tableView.contentOffset;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
 
+	if(bt.mode != BT_FREE) [bt stopPeer];
 	[meetDataSource cancelConnect];
 	//self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;

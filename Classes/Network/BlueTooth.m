@@ -40,9 +40,9 @@
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
-		NSLog(@"start host mode : %@", [session displayNameForPeer:session.peerID]);
 		mode = BT_HOST ;
     }
+	NSLog(@"start host mode : %@", [session displayNameForPeer:session.peerID]);
 	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_SERVER_TIMEOUT
                                              target:self
                                            selector:@selector(bluetoothDidTimeout:userInfo:)
@@ -109,12 +109,13 @@
 {
     // Set up the session for the next connection
     //
+	NSLog(@"stop peer %@", [session displayNameForPeer:session.peerID]);
     [session disconnectFromAllPeers];
 	session.available = NO;
 	[session setDataReceiveHandler: nil withContext: nil];
 	session.delegate = nil;
 	mode=BT_FREE;
-//	[session release];
+	//	[session release];
 }
 
 - (void) reset {
@@ -247,7 +248,7 @@
 {
 	if (timer)    [timer invalidate];
 //	[picker release];
-	[self stopPeer];
+	if ( mode != BT_FREE ) [self stopPeer];
 	[peerList release];
 	[devNames release];
 	[super dealloc];

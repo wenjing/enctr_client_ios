@@ -121,6 +121,7 @@
 		[meetDetailClient release];
 		meetDetailClient = nil;
 	}
+	if ( bt.mode != BT_FREE ) [bt stopPeer] ;
 }
 
 /*
@@ -358,6 +359,7 @@
 	button.selected = !button.selected;
 	if ( button.selected ) { // selected, start host
 		//NSLog(@"selected");
+		[bt   reset ] ;
 		AudioServicesPlaySystemSound (soundFileObject);
 		self.navigationItem.rightBarButtonItem.enabled = false;
 		[self hostDialog];
@@ -408,7 +410,6 @@
 	time_t now;
 	time(&now);
 	[param setObject:[NSString dateString:now] forKey:@"time"];
-
 	[meetDetailClient postMeet:param];
 }
 
@@ -529,13 +530,13 @@ static UIAlertView *sAlert = nil ;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"click %d",buttonIndex);
+	//NSLog(@"click %d",buttonIndex);
 	if (alertView.tag == HOST_MODE_ALERT ) {
 		if ( buttonIndex == 1 )
 		{
 			UITextField *nameField = (UITextField *)[alertView viewWithTag:HOST_MODE_NAMEFIELD];
-			UITextField *pwField = (UITextField *)[alertView viewWithTag:HOST_MODE_PASSWORDFIELD];
-			NSLog(@"name: %@ (%@)",nameField.text, pwField.text);
+		//	UITextField *pwField = (UITextField *)[alertView viewWithTag:HOST_MODE_PASSWORDFIELD];
+			NSLog(@"start host: %@",nameField.text);
 			[bt startHost:nameField.text withId:currentMeet.meetId] ;
 		}
 		else {

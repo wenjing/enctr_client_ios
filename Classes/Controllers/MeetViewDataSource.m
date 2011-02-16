@@ -266,8 +266,10 @@
 		//[DBConnection commitTransaction];
 		NSString *collision = [dic objectForKey:@"collision"] ;
 		kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
-		if ( collision != (NSString *)[NSNull null] ) [appDelegate alert: @"Post Meet Collision !"   message:nil]; 
-		else										  [appDelegate alert: @"Post Meet Success   !"   message:nil];
+		if ( collision != (NSString *)[NSNull null] && collision == @"1" )
+			[appDelegate alert: @"Post Meet Collision !"   message:nil]; 
+		else										  
+			[appDelegate alert: @"Post Meet Success   !"   message:nil];
 		//[self getUserMeets];
 	}
     else {
