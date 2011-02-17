@@ -5,16 +5,16 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>Kaya Meet</string>
+	<string>Cirkle</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>app-icon-8888-02-29x29</string>
-		<string>app-icon-8888-02-57x57</string>
-		<string>app-icon-8888-02-72x72</string>
+		<string>cirkle-29x29@2x.png</string>
+		<string>cirkle-57x57@2x.png</string>
+		<string>cirkle-72x72@2x.png</string>
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string></string>

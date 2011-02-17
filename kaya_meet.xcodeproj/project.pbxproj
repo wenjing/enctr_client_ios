@@ -92,13 +92,16 @@
 		3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */; };
 		3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */; };
 		3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */; };
+		3D0E94C8130CA3A100CB021F /* cirkle-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */; };
+		3D0E94C9130CA3A100CB021F /* cirkle-57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */; };
+		3D0E94CA130CA3A100CB021F /* cirkle-72x72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C7130CA3A100CB021F /* cirkle-72x72@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* kaya_meetAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kaya_meetAppDelegate.h; path = Controllers/kaya_meetAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* kaya_meetAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = kaya_meetAppDelegate.m; path = Controllers/kaya_meetAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* kaya-meet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kaya-meet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Cirkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cirkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28216C950DB411BC00E5133A /* MeetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewController.h; path = Controllers/MeetViewController.h; sourceTree = "<group>"; };
 		28216C960DB411BC00E5133A /* MeetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewController.m; path = Controllers/MeetViewController.m; sourceTree = "<group>"; };
@@ -227,6 +230,9 @@
 		3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-57x57.png"; path = "images/app-icon-8888-02-57x57.png"; sourceTree = "<group>"; };
 		3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-72x72.png"; path = "images/app-icon-8888-02-72x72.png"; sourceTree = "<group>"; };
 		3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-signin-bg-640x960-04.png"; path = "images/app-signin-bg-640x960-04.png"; sourceTree = "<group>"; };
+		3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29@2x.png"; path = "../../Desktop/cirkle-29x29@2x.png"; sourceTree = SOURCE_ROOT; };
+		3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57@2x.png"; path = "../../Desktop/cirkle-57x57@2x.png"; sourceTree = SOURCE_ROOT; };
+		3D0E94C7130CA3A100CB021F /* cirkle-72x72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72@2x.png"; path = "../../Desktop/cirkle-72x72@2x.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,7 +271,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* kaya-meet.app */,
+				1D6058910D05DD3D006BFB54 /* Cirkle.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -429,6 +435,9 @@
 			isa = PBXGroup;
 			children = (
 				3ACAE49512F39D9600F85B5D /* images */,
+				3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */,
+				3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */,
+				3D0E94C7130CA3A100CB021F /* cirkle-72x72@2x.png */,
 				3A39BA2313066F76006D40FA /* ball.png */,
 				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
 				3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */,
@@ -551,7 +560,7 @@
 			);
 			name = "kaya-meet";
 			productName = "kaya-meet";
-			productReference = 1D6058910D05DD3D006BFB54 /* kaya-meet.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Cirkle.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -617,6 +626,9 @@
 				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
 				3ACAE49612F39D9600F85B5D /* images in Resources */,
 				3A39BA2413066F76006D40FA /* ball.png in Resources */,
+				3D0E94C8130CA3A100CB021F /* cirkle-29x29@2x.png in Resources */,
+				3D0E94C9130CA3A100CB021F /* cirkle-57x57@2x.png in Resources */,
+				3D0E94CA130CA3A100CB021F /* cirkle-72x72@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,7 +701,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kaya_meet_Prefix.pch;
 				INFOPLIST_FILE = "kaya_meet-Info.plist";
-				PRODUCT_NAME = "kaya-meet";
+				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
@@ -707,7 +719,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kaya_meet_Prefix.pch;
 				INFOPLIST_FILE = "kaya_meet-Info.plist";
-				PRODUCT_NAME = "kaya-meet";
+				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
