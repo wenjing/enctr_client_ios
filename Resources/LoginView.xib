@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="20"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,6 +46,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 20}, {320, 416}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<integer value="260" key="IBUIAccessibilityTraits"/>
@@ -54,7 +54,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">app-signin-bg-640x960-04.png</string>
+							<string key="NSResourceName">signup-bg-640x960.png</string>
 						</object>
 					</object>
 					<object class="IBUITextField" id="90238200">
@@ -62,9 +62,10 @@
 						<int key="NSvFlags">288</int>
 						<string key="NSFrame">{{50, 177}, {220, 31}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4yMTk2MDc4NDMxIDAuNjU0OTAxOTYwOCAwLjg3MDU4ODIzNTMAA</bytes>
+						<reference key="NSWindow"/>
+						<object class="NSColor" key="IBUIBackgroundColor" id="127283129">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">1</int>
@@ -80,8 +81,8 @@
 								<int key="NSID">2</int>
 							</object>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="713599650">
-							<string key="NSName">Verdana-Bold</string>
+						<object class="NSFont" key="IBUIFont" id="355472829">
+							<string key="NSName">TwCenMT-Bold</string>
 							<double key="NSSize">12</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -99,10 +100,8 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{50, 216}, {220, 31}}</string>
 						<reference key="NSSuperview" ref="100285727"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4yMTk2MDc4NDMxIDAuNjU0OTAxOTYwOCAwLjg3MDU4ODIzNTMAA</bytes>
-						</object>
+						<reference key="NSWindow"/>
+						<reference key="IBUIBackgroundColor" ref="127283129"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -115,7 +114,7 @@
 							<bytes key="NSWhite">MAA</bytes>
 							<reference key="NSCustomColorSpace" ref="92254340"/>
 						</object>
-						<reference key="IBUIFont" ref="713599650"/>
+						<reference key="IBUIFont" ref="355472829"/>
 						<int key="IBUITextAlignment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -129,6 +128,7 @@
 				</object>
 				<string key="NSFrameSize">{320, 436}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -627,10 +627,10 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../kaya_meet.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../Cirkle.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">app-signin-bg-640x960-04.png</string>
+			<string key="NS.key.0">signup-bg-640x960.png</string>
 			<string key="NS.object.0">{640, 960}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">132</string>
