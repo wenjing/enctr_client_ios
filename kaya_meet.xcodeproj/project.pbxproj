@@ -88,9 +88,6 @@
 		3AF7B46912791A2C008F83BC /* DBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46812791A2C008F83BC /* DBConnection.m */; };
 		3AF7B46D12791A59008F83BC /* Statement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46C12791A59008F83BC /* Statement.m */; };
 		3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC916712A6025E00BB0FB5 /* BlueTooth.m */; };
-		3D0C4BE612DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */; };
-		3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */; };
-		3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */; };
 		3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */; };
 		3D0E94C8130CA3A100CB021F /* cirkle-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */; };
 		3D0E94C9130CA3A100CB021F /* cirkle-57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */; };
@@ -226,13 +223,10 @@
 		3AF7B46C12791A59008F83BC /* Statement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statement.m; path = Models/Statement.m; sourceTree = "<group>"; };
 		3AFC916612A6025E00BB0FB5 /* BlueTooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueTooth.h; path = Network/BlueTooth.h; sourceTree = "<group>"; };
 		3AFC916712A6025E00BB0FB5 /* BlueTooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueTooth.m; path = Network/BlueTooth.m; sourceTree = "<group>"; };
-		3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-29x29.png"; path = "images/app-icon-8888-02-29x29.png"; sourceTree = "<group>"; };
-		3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-57x57.png"; path = "images/app-icon-8888-02-57x57.png"; sourceTree = "<group>"; };
-		3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-8888-02-72x72.png"; path = "images/app-icon-8888-02-72x72.png"; sourceTree = "<group>"; };
 		3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-signin-bg-640x960-04.png"; path = "images/app-signin-bg-640x960-04.png"; sourceTree = "<group>"; };
-		3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29@2x.png"; path = "../../Desktop/cirkle-29x29@2x.png"; sourceTree = SOURCE_ROOT; };
-		3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57@2x.png"; path = "../../Desktop/cirkle-57x57@2x.png"; sourceTree = SOURCE_ROOT; };
-		3D0E94C7130CA3A100CB021F /* cirkle-72x72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72@2x.png"; path = "../../Desktop/cirkle-72x72@2x.png"; sourceTree = SOURCE_ROOT; };
+		3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29@2x.png"; path = "images/cirkle-29x29@2x.png"; sourceTree = "<group>"; };
+		3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57@2x.png"; path = "images/cirkle-57x57@2x.png"; sourceTree = "<group>"; };
+		3D0E94C7130CA3A100CB021F /* cirkle-72x72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72@2x.png"; path = "images/cirkle-72x72@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,9 +441,6 @@
 				3A7B496E12EEB4F800F8AA17 /* blackArrow@2x.png */,
 				3A7B496F12EEB4F800F8AA17 /* blueArrow.png */,
 				3A7B497012EEB4F800F8AA17 /* blueArrow@2x.png */,
-				3D0C4BE212DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png */,
-				3D0C4BE312DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png */,
-				3D0C4BE412DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png */,
 				3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */,
 				3A636CD212D44995008A8B47 /* friends_small.png */,
 				3A636CD312D44995008A8B47 /* friends.png */,
@@ -612,9 +603,6 @@
 				3A636CD412D44995008A8B47 /* friends_small.png in Resources */,
 				3A636CD512D44995008A8B47 /* friends.png in Resources */,
 				3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */,
-				3D0C4BE612DE2B1400EBBEC9 /* app-icon-8888-02-29x29.png in Resources */,
-				3D0C4BE712DE2B1400EBBEC9 /* app-icon-8888-02-57x57.png in Resources */,
-				3D0C4BE812DE2B1400EBBEC9 /* app-icon-8888-02-72x72.png in Resources */,
 				3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */,
 				3A7B497112EEB4F800F8AA17 /* blackArrow.png in Resources */,
 				3A7B497212EEB4F800F8AA17 /* blackArrow@2x.png in Resources */,
