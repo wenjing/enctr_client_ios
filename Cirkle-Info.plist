@@ -12,9 +12,9 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>cirkle-29x29@2x.png</string>
-		<string>cirkle-57x57@2x.png</string>
-		<string>cirkle-72x72@2x.png</string>
+		<string>cirkle-29x29</string>
+		<string>cirkle-57x57</string>
+		<string>cirkle-72x72</string>
 	</array>
 	<key>CFBundleShortVersionString</key>
 	<string></string>

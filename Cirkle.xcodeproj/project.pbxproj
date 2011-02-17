@@ -29,10 +29,6 @@
 		3A0FC734128A1D4C00BFC7F5 /* KYMeet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC733128A1D4C00BFC7F5 /* KYMeet.m */; };
 		3A0FC753128A508300BFC7F5 /* MeetViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */; };
 		3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0FC760128A513600BFC7F5 /* QuartzCore.framework */; };
-		3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */; };
-		3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */; };
-		3A1775C012D25F120099D87D /* world.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775BF12D25F120099D87D /* world.png */; };
-		3A1775D812D2642B0099D87D /* connections.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A1775D712D2642B0099D87D /* connections.png */; };
 		3A28F326129C4F32001F4F0D /* Cirkle-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* Cirkle-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
@@ -51,8 +47,6 @@
 		3A5F346D12A91ADB008E9353 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */; };
 		3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F34BA12A91DA3008E9353 /* tap.aif */; };
 		3A636CD112D44973008A8B47 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD012D44973008A8B47 /* camera.png */; };
-		3A636CD412D44995008A8B47 /* friends_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD212D44995008A8B47 /* friends_small.png */; };
-		3A636CD512D44995008A8B47 /* friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A636CD312D44995008A8B47 /* friends.png */; };
 		3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A636D0B12D44B8A008A8B47 /* MessageView.xib */; };
 		3A636D1D12D44EB5008A8B47 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1412D44EB5008A8B47 /* MessageViewController.m */; };
 		3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1612D44EB5008A8B47 /* MessageView.m */; };
@@ -88,10 +82,15 @@
 		3AF7B46912791A2C008F83BC /* DBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46812791A2C008F83BC /* DBConnection.m */; };
 		3AF7B46D12791A59008F83BC /* Statement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46C12791A59008F83BC /* Statement.m */; };
 		3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC916712A6025E00BB0FB5 /* BlueTooth.m */; };
-		3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */; };
-		3D0E94C8130CA3A100CB021F /* cirkle-29x29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */; };
-		3D0E94C9130CA3A100CB021F /* cirkle-57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */; };
 		3D0E9567130CAFDE00CB021F /* signup-bg-640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */; };
+		3D0E95AE130CC9AC00CB021F /* tab-cirkle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95AA130CC9AC00CB021F /* tab-cirkle@2x.png */; };
+		3D0E95AF130CC9AC00CB021F /* tab-live@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95AB130CC9AC00CB021F /* tab-live@2x.png */; };
+		3D0E95B0130CC9AC00CB021F /* tab-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95AC130CC9AC00CB021F /* tab-map@2x.png */; };
+		3D0E95B1130CC9AC00CB021F /* tab-setup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95AD130CC9AC00CB021F /* tab-setup@2x.png */; };
+		3D0E95C6130CDA6200CB021F /* icon-handshake@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95C5130CDA6200CB021F /* icon-handshake@2x.png */; };
+		3D0E95EF130CE7F700CB021F /* cirkle-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */; };
+		3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */; };
+		3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,10 +131,6 @@
 		3A0FC751128A508300BFC7F5 /* MeetViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewDataSource.h; path = Controllers/MeetViewDataSource.h; sourceTree = "<group>"; };
 		3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewDataSource.m; path = Controllers/MeetViewDataSource.m; sourceTree = "<group>"; };
 		3A0FC760128A513600BFC7F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "20-gear2.png"; path = "images/20-gear2.png"; sourceTree = "<group>"; };
-		3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "77-ekg.png"; path = "images/77-ekg.png"; sourceTree = "<group>"; };
-		3A1775BF12D25F120099D87D /* world.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = world.png; path = images/world.png; sourceTree = "<group>"; };
-		3A1775D712D2642B0099D87D /* connections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connections.png; path = images/connections.png; sourceTree = "<group>"; };
 		3A28F325129C4F32001F4F0D /* Cirkle-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cirkle-db.sql"; path = "Resources/Cirkle-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
@@ -167,8 +162,6 @@
 		3A5F346C12A91ADB008E9353 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		3A5F34BA12A91DA3008E9353 /* tap.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = tap.aif; path = sounds/tap.aif; sourceTree = "<group>"; };
 		3A636CD012D44973008A8B47 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera.png; path = images/camera.png; sourceTree = "<group>"; };
-		3A636CD212D44995008A8B47 /* friends_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends_small.png; path = images/friends_small.png; sourceTree = "<group>"; };
-		3A636CD312D44995008A8B47 /* friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friends.png; path = images/friends.png; sourceTree = "<group>"; };
 		3A636D0B12D44B8A008A8B47 /* MessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MessageView.xib; path = Resources/MessageView.xib; sourceTree = "<group>"; };
 		3A636D1312D44EB5008A8B47 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageViewController.h; path = Controllers/MessageViewController.h; sourceTree = "<group>"; };
 		3A636D1412D44EB5008A8B47 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageViewController.m; path = Controllers/MessageViewController.m; sourceTree = "<group>"; };
@@ -223,10 +216,15 @@
 		3AF7B46C12791A59008F83BC /* Statement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statement.m; path = Models/Statement.m; sourceTree = "<group>"; };
 		3AFC916612A6025E00BB0FB5 /* BlueTooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueTooth.h; path = Network/BlueTooth.h; sourceTree = "<group>"; };
 		3AFC916712A6025E00BB0FB5 /* BlueTooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueTooth.m; path = Network/BlueTooth.m; sourceTree = "<group>"; };
-		3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-signin-bg-640x960-04.png"; path = "images/app-signin-bg-640x960-04.png"; sourceTree = "<group>"; };
-		3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29@2x.png"; path = "images/cirkle-29x29@2x.png"; sourceTree = "<group>"; };
-		3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57@2x.png"; path = "images/cirkle-57x57@2x.png"; sourceTree = "<group>"; };
 		3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "signup-bg-640x960.png"; path = "images/signup-bg-640x960.png"; sourceTree = "<group>"; };
+		3D0E95AA130CC9AC00CB021F /* tab-cirkle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-cirkle@2x.png"; path = "images/tab-cirkle@2x.png"; sourceTree = "<group>"; };
+		3D0E95AB130CC9AC00CB021F /* tab-live@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-live@2x.png"; path = "images/tab-live@2x.png"; sourceTree = "<group>"; };
+		3D0E95AC130CC9AC00CB021F /* tab-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-map@2x.png"; path = "images/tab-map@2x.png"; sourceTree = "<group>"; };
+		3D0E95AD130CC9AC00CB021F /* tab-setup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tab-setup@2x.png"; path = "images/tab-setup@2x.png"; sourceTree = "<group>"; };
+		3D0E95C5130CDA6200CB021F /* icon-handshake@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-handshake@2x.png"; path = "images/icon-handshake@2x.png"; sourceTree = "<group>"; };
+		3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29.png"; path = "images/cirkle-29x29.png"; sourceTree = "<group>"; };
+		3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57.png"; path = "images/cirkle-57x57.png"; sourceTree = "<group>"; };
+		3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72.png"; path = "images/cirkle-72x72.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,10 +426,16 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */,
+				3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */,
+				3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */,
+				3D0E95C5130CDA6200CB021F /* icon-handshake@2x.png */,
+				3D0E95AA130CC9AC00CB021F /* tab-cirkle@2x.png */,
+				3D0E95AB130CC9AC00CB021F /* tab-live@2x.png */,
+				3D0E95AC130CC9AC00CB021F /* tab-map@2x.png */,
+				3D0E95AD130CC9AC00CB021F /* tab-setup@2x.png */,
 				3ACAE49512F39D9600F85B5D /* images */,
 				3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */,
-				3D0E94C5130CA3A100CB021F /* cirkle-29x29@2x.png */,
-				3D0E94C6130CA3A100CB021F /* cirkle-57x57@2x.png */,
 				3A39BA2313066F76006D40FA /* ball.png */,
 				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
 				3A7B497A12EEB54F00F8AA17 /* whiteArrow@2x.png */,
@@ -441,14 +445,7 @@
 				3A7B496E12EEB4F800F8AA17 /* blackArrow@2x.png */,
 				3A7B496F12EEB4F800F8AA17 /* blueArrow.png */,
 				3A7B497012EEB4F800F8AA17 /* blueArrow@2x.png */,
-				3D0C4BE512DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png */,
-				3A636CD212D44995008A8B47 /* friends_small.png */,
-				3A636CD312D44995008A8B47 /* friends.png */,
 				3A636CD012D44973008A8B47 /* camera.png */,
-				3A1775D712D2642B0099D87D /* connections.png */,
-				3A1775BF12D25F120099D87D /* world.png */,
-				3A14BA2A1276C1F6000FCDB2 /* 20-gear2.png */,
-				3A14BA2C1276C1F6000FCDB2 /* 77-ekg.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -588,8 +585,6 @@
 			files = (
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
 				282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */,
-				3A14BA2E1276C1F6000FCDB2 /* 20-gear2.png in Resources */,
-				3A14BA301276C1F6000FCDB2 /* 77-ekg.png in Resources */,
 				3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */,
 				3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */,
 				3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */,
@@ -597,13 +592,8 @@
 				3A5F34BB12A91DA3008E9353 /* tap.aif in Resources */,
 				3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */,
 				3A04AB8912D15677000B99FB /* placeView.xib in Resources */,
-				3A1775C012D25F120099D87D /* world.png in Resources */,
-				3A1775D812D2642B0099D87D /* connections.png in Resources */,
 				3A636CD112D44973008A8B47 /* camera.png in Resources */,
-				3A636CD412D44995008A8B47 /* friends_small.png in Resources */,
-				3A636CD512D44995008A8B47 /* friends.png in Resources */,
 				3A636D0C12D44B8A008A8B47 /* MessageView.xib in Resources */,
-				3D0C4BE912DE2B1400EBBEC9 /* app-signin-bg-640x960-04.png in Resources */,
 				3A7B497112EEB4F800F8AA17 /* blackArrow.png in Resources */,
 				3A7B497212EEB4F800F8AA17 /* blackArrow@2x.png in Resources */,
 				3A7B497312EEB4F800F8AA17 /* blueArrow.png in Resources */,
@@ -614,9 +604,15 @@
 				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
 				3ACAE49612F39D9600F85B5D /* images in Resources */,
 				3A39BA2413066F76006D40FA /* ball.png in Resources */,
-				3D0E94C8130CA3A100CB021F /* cirkle-29x29@2x.png in Resources */,
-				3D0E94C9130CA3A100CB021F /* cirkle-57x57@2x.png in Resources */,
 				3D0E9567130CAFDE00CB021F /* signup-bg-640x960.png in Resources */,
+				3D0E95AE130CC9AC00CB021F /* tab-cirkle@2x.png in Resources */,
+				3D0E95AF130CC9AC00CB021F /* tab-live@2x.png in Resources */,
+				3D0E95B0130CC9AC00CB021F /* tab-map@2x.png in Resources */,
+				3D0E95B1130CC9AC00CB021F /* tab-setup@2x.png in Resources */,
+				3D0E95C6130CDA6200CB021F /* icon-handshake@2x.png in Resources */,
+				3D0E95EF130CE7F700CB021F /* cirkle-29x29.png in Resources */,
+				3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */,
+				3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
