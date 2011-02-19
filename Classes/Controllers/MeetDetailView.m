@@ -49,7 +49,7 @@
 	
 	// right button
 	
-	UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"77-ekg.png"]
+	UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-handshake.png"]
 																	  style:UIBarButtonItemStylePlain 
 																	 target:self 
 																	 action:@selector(addMeet)];

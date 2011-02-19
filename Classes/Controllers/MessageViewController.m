@@ -249,6 +249,7 @@
 - (void)showImagePicker:(BOOL)hasCamera
 {
     SendImagePickerController *picker = [[[SendImagePickerController alloc] init] autorelease];
+	picker.allowsEditing = YES;
     picker.messageViewController = self;
     picker.delegate = self;
     if (hasCamera) {
@@ -315,10 +316,10 @@
     // do nothing here
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
+/*- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
 {
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+//      UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
 	
     self.selectedPhoto = [self modifyPhoto:image] ;
@@ -333,6 +334,22 @@
     photoButton.style = UIBarButtonItemStyleDone;
     [navigation dismissModalViewControllerAnimated:true];
 
+}*/
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[picker dismissModalViewControllerAnimated:YES];
+	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+	
+    self.selectedPhoto = [self modifyPhoto:image] ;
+	
+	CGSize itemSize  = CGSizeMake(50,50);
+	UIGraphicsBeginImageContext(itemSize);
+	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
+	[self.selectedPhoto drawInRect:imageRect];
+	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+    photoButton.style = UIBarButtonItemStyleDone;
+	
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

@@ -15,6 +15,7 @@
 		282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* moreView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
+		3A01B279130E431600ADBF42 /* small-graph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A01B278130E431600ADBF42 /* small-graph@2x.png */; };
 		3A0208DD1303CB5A0017841B /* ImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0208DC1303CB5A0017841B /* ImageUtils.m */; };
 		3A04A94512D00522000B99FB /* PlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04A94412D00522000B99FB /* PlaceViewController.m */; };
 		3A04AA5D12D02520000B99FB /* placeDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A04AA5C12D02520000B99FB /* placeDisplayMap.m */; };
@@ -39,6 +40,9 @@
 		3A34970B1294E3DB00AFFB30 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497041294E3DB00AFFB30 /* SBJsonParser.m */; };
 		3A34970C1294E3DB00AFFB30 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */; };
 		3A39BA2413066F76006D40FA /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A39BA2313066F76006D40FA /* ball.png */; };
+		3A3B20AB130FA20B0069BB29 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B20A6130FA20B0069BB29 /* UIImage+Alpha.m */; };
+		3A3B20AC130FA20B0069BB29 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B20A8130FA20B0069BB29 /* UIImage+Resize.m */; };
+		3A3B20AD130FA20B0069BB29 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B20AA130FA20B0069BB29 /* UIImage+RoundedCorner.m */; };
 		3A40570F12A738EB005E7F2B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A40570E12A738EB005E7F2B /* MBProgressHUD.m */; };
 		3A4269F912C675CB0091D520 /* MeetDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4269F712C675CB0091D520 /* MeetDetailView.m */; };
 		3A4269FA12C675CB0091D520 /* MeetDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A4269F812C675CB0091D520 /* MeetDetailView.xib */; };
@@ -73,7 +77,6 @@
 		3AA51E4D1284F59C00D8565B /* KYMeetClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA51E4C1284F59C00D8565B /* KYMeetClient.m */; };
 		3ACA182E1288E5DD00D74450 /* setupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA182D1288E5DD00D74450 /* setupView.xib */; };
 		3ACA18371288E62900D74450 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACA18361288E62900D74450 /* SetupViewController.m */; };
-		3ACAE49612F39D9600F85B5D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 3ACAE49512F39D9600F85B5D /* images */; };
 		3AD41C3B12891FF8001B2E90 /* meetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD41C3A12891FF8001B2E90 /* meetView.xib */; };
 		3AF53C9212C9238600844457 /* meetDisplayMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF53C9112C9238600844457 /* meetDisplayMap.m */; };
 		3AF7B3B81278F96F008F83BC /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AF7B3B71278F96F008F83BC /* LoginView.xib */; };
@@ -105,6 +108,7 @@
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Others/main.m; sourceTree = "<group>"; };
+		3A01B278130E431600ADBF42 /* small-graph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "small-graph@2x.png"; path = "images/small-graph@2x.png"; sourceTree = "<group>"; };
 		3A0208DB1303CB5A0017841B /* ImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageUtils.h; path = Others/ImageUtils.h; sourceTree = "<group>"; };
 		3A0208DC1303CB5A0017841B /* ImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageUtils.m; path = Others/ImageUtils.m; sourceTree = "<group>"; };
 		3A04A94312D00522000B99FB /* PlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaceViewController.h; path = Controllers/PlaceViewController.h; sourceTree = "<group>"; };
@@ -150,6 +154,12 @@
 		3A3497051294E3DB00AFFB30 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		3A3497061294E3DB00AFFB30 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		3A39BA2313066F76006D40FA /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball.png; path = images/ball.png; sourceTree = "<group>"; };
+		3A3B20A5130FA20B0069BB29 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Alpha.h"; path = "Others/UIImage+Alpha.h"; sourceTree = "<group>"; };
+		3A3B20A6130FA20B0069BB29 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Alpha.m"; path = "Others/UIImage+Alpha.m"; sourceTree = "<group>"; };
+		3A3B20A7130FA20B0069BB29 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "Others/UIImage+Resize.h"; sourceTree = "<group>"; };
+		3A3B20A8130FA20B0069BB29 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "Others/UIImage+Resize.m"; sourceTree = "<group>"; };
+		3A3B20A9130FA20B0069BB29 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+RoundedCorner.h"; path = "Others/UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		3A3B20AA130FA20B0069BB29 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCorner.m"; path = "Others/UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		3A40570D12A738EB005E7F2B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = Classes/Controllers/MBProgressHUD.h; sourceTree = "<group>"; };
 		3A40570E12A738EB005E7F2B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = Classes/Controllers/MBProgressHUD.m; sourceTree = "<group>"; };
 		3A4269F612C675CB0091D520 /* FriendViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendViewCell.h; path = Controllers/FriendViewCell.h; sourceTree = "<group>"; };
@@ -202,7 +212,6 @@
 		3ACA182D1288E5DD00D74450 /* setupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = setupView.xib; path = Resources/setupView.xib; sourceTree = "<group>"; };
 		3ACA18351288E62900D74450 /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetupViewController.h; path = Controllers/SetupViewController.h; sourceTree = "<group>"; };
 		3ACA18361288E62900D74450 /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetupViewController.m; path = Controllers/SetupViewController.m; sourceTree = "<group>"; };
-		3ACAE49512F39D9600F85B5D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		3AD41C3A12891FF8001B2E90 /* meetView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = meetView.xib; path = Resources/meetView.xib; sourceTree = "<group>"; };
 		3AF53C9012C9238600844457 /* meetDisplayMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = meetDisplayMap.h; path = Controllers/meetDisplayMap.h; sourceTree = "<group>"; };
 		3AF53C9112C9238600844457 /* meetDisplayMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = meetDisplayMap.m; path = Controllers/meetDisplayMap.m; sourceTree = "<group>"; };
@@ -283,6 +292,12 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3A3B20A5130FA20B0069BB29 /* UIImage+Alpha.h */,
+				3A3B20A6130FA20B0069BB29 /* UIImage+Alpha.m */,
+				3A3B20A7130FA20B0069BB29 /* UIImage+Resize.h */,
+				3A3B20A8130FA20B0069BB29 /* UIImage+Resize.m */,
+				3A3B20A9130FA20B0069BB29 /* UIImage+RoundedCorner.h */,
+				3A3B20AA130FA20B0069BB29 /* UIImage+RoundedCorner.m */,
 				3A0208DB1303CB5A0017841B /* ImageUtils.h */,
 				3A0208DC1303CB5A0017841B /* ImageUtils.m */,
 				3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */,
@@ -426,6 +441,7 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3A01B278130E431600ADBF42 /* small-graph@2x.png */,
 				3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */,
 				3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */,
 				3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */,
@@ -434,7 +450,6 @@
 				3D0E95AB130CC9AC00CB021F /* tab-live@2x.png */,
 				3D0E95AC130CC9AC00CB021F /* tab-map@2x.png */,
 				3D0E95AD130CC9AC00CB021F /* tab-setup@2x.png */,
-				3ACAE49512F39D9600F85B5D /* images */,
 				3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */,
 				3A39BA2313066F76006D40FA /* ball.png */,
 				3A7B497912EEB54F00F8AA17 /* whiteArrow.png */,
@@ -602,7 +617,6 @@
 				3A7B497812EEB50A00F8AA17 /* grayArrow@2x.png in Resources */,
 				3A7B497B12EEB54F00F8AA17 /* whiteArrow.png in Resources */,
 				3A7B497C12EEB54F00F8AA17 /* whiteArrow@2x.png in Resources */,
-				3ACAE49612F39D9600F85B5D /* images in Resources */,
 				3A39BA2413066F76006D40FA /* ball.png in Resources */,
 				3D0E9567130CAFDE00CB021F /* signup-bg-640x960.png in Resources */,
 				3D0E95AE130CC9AC00CB021F /* tab-cirkle@2x.png in Resources */,
@@ -613,6 +627,7 @@
 				3D0E95EF130CE7F700CB021F /* cirkle-29x29.png in Resources */,
 				3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */,
 				3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */,
+				3A01B279130E431600ADBF42 /* small-graph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +681,9 @@
 				3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */,
 				3A7B496B12EEB44600F8AA17 /* EGORefreshTableHeaderView.m in Sources */,
 				3A0208DD1303CB5A0017841B /* ImageUtils.m in Sources */,
+				3A3B20AB130FA20B0069BB29 /* UIImage+Alpha.m in Sources */,
+				3A3B20AC130FA20B0069BB29 /* UIImage+Resize.m in Sources */,
+				3A3B20AD130FA20B0069BB29 /* UIImage+RoundedCorner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

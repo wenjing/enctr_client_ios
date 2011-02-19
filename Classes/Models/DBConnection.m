@@ -11,7 +11,7 @@
 
 static sqlite3*   theDatabase = nil;
 
-#define MAIN_DATABASE_NAME @"kaya-meet-db.sql"
+#define MAIN_DATABASE_NAME @"Cirkle-db.sql"
 
 //#define TEST_DELETE_MEETS
 
