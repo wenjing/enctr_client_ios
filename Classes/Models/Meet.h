@@ -24,11 +24,6 @@ typedef enum {
     MeetType        type;
 	int				userCount ;
     NSMutableArray* meetUsers ;
-    
-	CGRect          textBounds;
-    CGRect          bubbleRect;
-    CGFloat         cellHeight;
-    UITableViewCellAccessoryType accessoryType;
 }
 
 @property (nonatomic, assign) sqlite_int64      meetId, postId;
@@ -40,15 +35,6 @@ typedef enum {
 @property (nonatomic, assign) MeetType       type;
 @property (nonatomic, assign) int			userCount;
 @property (nonatomic, retain) NSMutableArray *meetUsers;
-
-@property (nonatomic, assign) CGFloat       cellHeight;
-@property (nonatomic, assign) CGRect        textBounds;
-@property (nonatomic, assign) CGRect        bubbleRect;
-
-@property (nonatomic, assign) UITableViewCellAccessoryType accessoryType;
-
 - (NSString*) timestamp;
-- (void)updateAttribute;
-- (void)calcTextBounds:(int)textWidth;
 
 @end

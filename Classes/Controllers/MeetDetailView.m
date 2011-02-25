@@ -11,6 +11,7 @@
 #import "UACellBackgroundView.h"
 #import "kaya_meetAppDelegate.h"
 #import "StringUtil.h"
+#import "Timeline.h"
 
 @implementation MeetDetailView
 
@@ -36,7 +37,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+	Timelines = [[NSMutableArray array] retain];
 	// set title
 	static NSDateFormatter *dateFormatter = nil;
 	if (dateFormatter == nil) {
@@ -58,20 +59,22 @@
 	
 	if(  currentMeet.userCount == 1 ) {
 		friendsView.hidden = true ;
-		mapView = [[UIImageView alloc] initWithFrame:CGRectMake(16,25,288,90)] ;
+		mapView = [[HJManagedImageV alloc] initWithFrame:CGRectMake(16,25,288,90)] ;
 		//mapView.frame = CGRectMake(16,25,288,90) ;
 
 	} else {
 		hostButton.hidden = true ;
 		messageView.frame = CGRectMake(15,132,290,210);
-		mapView = [[UIImageView alloc] initWithFrame:CGRectMake(16,25,110,90)];
+		mapView = [[HJManagedImageV alloc] initWithFrame:CGRectMake(16,25,110,90)];
 		//mapView.frame = CGRectMake(16,25,110,90) ;
 		friendsView.frame = CGRectMake(128,25, 175,90);
 	}
 	[self.view addSubview:mapView];
+	/*
 	CALayer *ly = [mapView layer];
 	[ly setMasksToBounds:YES];
 	[ly setCornerRadius:5.0];
+	 */
 	[mapView release];
 	
 	// textView
@@ -157,6 +160,8 @@
 	[bt release];
 	AudioServicesDisposeSystemSoundID (soundFileObject);
     CFRelease (soundFileURLRef);
+	
+	[Timelines release];
     [super dealloc];
 }
 
@@ -193,8 +198,13 @@
 		return;
 	}
 	[currentMeet updateWithJsonDictionary:dic] ;
-	[self updateFriendList];
- 
+	[self updateFriendList ];
+//
+	[Timeline getTimelinesFromMt:currentMeet withDic:dic Timelines:Timelines];
+	
+	NSLog(@"loaded %d timelines", [Timelines count]);
+	
+	[friendsView reloadData];
 }
 
 - (void) updateFriendList
@@ -220,13 +230,18 @@
 	NSString *headmapurl1 = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=290x90&maptype=roadmap&format=png32&markers=color:green|size:small";
 	NSString *mapurl = [NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",currentMeet.userCount > 1 ?headmapurl0:headmapurl1,currentMeet.latitude,currentMeet.longitude];
 	mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	NSURL *url = [NSURL URLWithString:mapurl] ;
+	/*NSURL *url = [NSURL URLWithString:mapurl] ;
 	NSData *mapdata = [[NSData alloc] initWithContentsOfURL:url];
 	UIImage *uimap = [[UIImage alloc] initWithData:mapdata];
 	mapView.image = uimap; 
 	[mapdata release];
-	[uimap release];
-//	[url release];
+	[uimap release]; */
+	
+	mapView.url = [NSURL URLWithString:mapurl] ;
+	kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mapView waitUntilDone:YES];
+
+	//	[url release];
 
 }
 
@@ -280,29 +295,28 @@
 {
 	User* u = [self userAtIndex:indexPath.row];
     if (u == nil) return loadCell;
-    
+	HJManagedImageV *mi ;
     FriendViewCell* cell = (FriendViewCell*)[friendsView dequeueReusableCellWithIdentifier:@"FriendCell"];
     if (!cell) {
-        cell = [[[FriendViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FriendCell" ] autorelease];
-    }
+		cell = [[[FriendViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FriendCell" ] autorelease];
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+	} else {
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		[mi clear];
+	}
 	
+
 	cell.nameLabel.text   = u.name  ;
 	
 	NSString *picURL = u.profileImageUrl ;
 	if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-		NSURL  *url = [NSURL URLWithString:picURL] ;
-		NSData *imgData = [NSData dataWithContentsOfURL:url];
-		UIImage *aImage = [[UIImage alloc] initWithData:imgData];
-		CGSize itemSize  = CGSizeMake(40,40);
-		UIGraphicsBeginImageContext(itemSize);
-		CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
-		[aImage drawInRect:imageRect];
-		cell.friendImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		[aImage release];
-	} else {
-		cell.friendImageView.image = nil;
-	}
+
+		mi.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		mi.oid = [NSString stringWithFormat:@"user_%d",u.userId];
+		kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
+	} 
+	
 	return cell;
 }
 

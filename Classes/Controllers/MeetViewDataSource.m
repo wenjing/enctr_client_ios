@@ -42,7 +42,8 @@
 	}
 	reloading = NO ;
 	[refreshHeaderView refreshLastUpdatedDate];
-    return self;
+	
+	return self;
 }
 
 - (void)dealloc {
@@ -114,25 +115,23 @@
 		cell.primaryLabel.text   = sts.description  ;
 		cell.secondaryLabel.text = [NSString stringWithFormat:@" %@ %@", [sts timestamp], sts.source];
 		
-		NSString *picURL = NULL;
-		if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-			NSData *imgData = [[[NSData dataWithContentsOfURL:
-							   [NSURL URLWithString:picURL]] autorelease] retain];
-			UIImage *aImage = [[UIImage alloc] initWithData:imgData];
-			CGSize itemSize  = CGSizeMake(45,50);
-			UIGraphicsBeginImageContext(itemSize);
-			CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
-			[aImage drawInRect:imageRect];
-			cell.meetImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-			UIGraphicsEndImageContext();
-		} else {
-			cell.meetImageView.image = nil;
-		}
-        return cell; 
+		NSString *headmapurl = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=100x100&maptype=roadmap&format=png32&markers=color:green|size:small";
+		NSString *mapurl = [NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",headmapurl,sts.latitude,sts.longitude];
+		mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+		HJManagedImageV *mi ;
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		[mi clear];
+		[mi showLoadingWheel];
+		mi.url = [NSURL URLWithString:mapurl];
+		//[imgMan manage:mi];	
+		kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
     }
     else {
         return loadCell;
     }
+	return cell ;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

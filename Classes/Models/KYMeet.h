@@ -10,24 +10,6 @@
 
 @class Statement;
 
-#define IMAGE_PADDING       10
-#define H_MARGIN            10
-#define INDICATOR_WIDTH     (30 - H_MARGIN)
-#define DETAIL_BUTTON_WIDTH (45 - H_MARGIN)
-
-#define IMAGE_WIDTH         48
-#define USER_CELL_LEFT      42
-#define STAR_BUTTON_WIDTH   32
-
-#define TOP                 (16 + 1)
-#define LEFT                (IMAGE_PADDING * 2 + IMAGE_WIDTH)
-#define CELL_WIDTH          (320 - LEFT)
-#define TIMESTAMP_WIDTH     60
-#define TIMESTAMP_LEFT      (LEFT + CELL_WIDTH) - TIMESTAMP_WIDTH
-
-#define USER_CELL_WIDTH     (320 - USER_CELL_LEFT)
-#define DETAIL_CELL_WIDTH   (300 - USER_CELL_LEFT)
-
 typedef enum {
     MEET_ALL=-1,
     MEET_SOLO,
@@ -59,7 +41,6 @@ typedef enum {
 - (id)initWithJsonDictionary:(NSDictionary*)dic ;
 - (void)updateWithJsonDictionary:(NSDictionary*)dic ;
 
-- (void)updateAttribute;
 - (void)insertDB;
 - (void)deleteFromDB;
 

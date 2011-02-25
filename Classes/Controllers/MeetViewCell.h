@@ -3,19 +3,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HJManagedImageV.h"
 
 
 @interface MeetViewCell : UITableViewCell {
   UILabel *primaryLabel;
   UILabel *secondaryLabel;
-  UIImageView *meetImageView;
+  HJManagedImageV *meetImageView;
 }
 
 @property(nonatomic,retain)UILabel *primaryLabel;
 
 @property(nonatomic,retain)UILabel *secondaryLabel;
 
-@property(nonatomic,retain)UIImageView *meetImageView;
+@property(nonatomic,retain)HJManagedImageV *meetImageView;
 
 @end

@@ -22,9 +22,9 @@
 		nameLabel = [[UILabel alloc] init];
 		nameLabel.textAlignment = UITextAlignmentCenter;
 		nameLabel.font = [UIFont systemFontOfSize:15];
-		friendImageView = [[UIImageView alloc]init];
-		[friendImageView setClipsToBounds:YES];
-		friendImageView.layer.cornerRadius = 5.0 ;
+		friendImageView = [[HJManagedImageV alloc] init];
+		friendImageView.tag = 999;
+		
 		nameLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:nameLabel];
 		[self.contentView addSubview:friendImageView];

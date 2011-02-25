@@ -50,6 +50,7 @@
 									  soundFileURLRef,
 									  &soundFileObject
 									  );
+
 }
 
 - (void) viewDidUnload
@@ -72,8 +73,7 @@
     [super viewWillAppear:animated];
 	if (!isLoaded) {
 		// get all meets from server
-        [meetDataSource getUserMeets] ;
-		
+        [meetDataSource getUserMeets] ;		
     }else {
 		[self.tableView setContentOffset:contentOffset animated:false];
 		[self.tableView reloadData];
@@ -84,7 +84,7 @@
 {
 	[super viewDidAppear:animated];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	isLoaded = true;
+//	isLoaded = true;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -104,7 +104,7 @@
 
 - (void)didReceiveMemoryWarning 
 {
-//	[self resetMeets];
+	[self resetMeets];
 	[super didReceiveMemoryWarning];
 }
 
@@ -401,6 +401,7 @@ static SEL  clickedCancel  ;
         }
         [self.tableView endUpdates];
     }
+	[self.tableView reloadData];
 }
 
 - (void) meetsDidFailToUpdate:(MeetViewDataSource *)sender position:(int)position
