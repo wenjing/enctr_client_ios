@@ -11,6 +11,7 @@
 #import "MeetViewController.h"
 #import "MessageViewController.h"
 #import "LocationManager.h"
+#import "HJObjManager.h"
 
 typedef enum {
     TAB_MEETS=0,
@@ -20,7 +21,7 @@ typedef enum {
 } TAB_ITEM;
 
 
-@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, MKReverseGeocoderDelegate> {
+@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate/*, MKReverseGeocoderDelegate*/> {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
@@ -30,7 +31,8 @@ typedef enum {
 	int					 selectedTab;
 	BOOL				 initialized;
 	LocationManager*		location  ;
-	MKReverseGeocoder*		reverseGeocoder;
+	HJObjManager*		 objMan;
+//	MKReverseGeocoder*		reverseGeocoder;
 	float				 longitude, latitude, lerror  ;
     NSTimeInterval       autoRefreshInterval;
     NSTimer*             autoRefreshTimer;
@@ -43,6 +45,7 @@ typedef enum {
 @property (nonatomic, assign) MessageViewController  *messageView;
 @property (nonatomic, retain) NSString*	screenName;
 @property (nonatomic, assign) int selectedTab;
+@property (nonatomic, assign) HJObjManager *objMan;
 @property (nonatomic, readonly) float longitude, latitude, lerror;
 
 - (void)alert :(NSString*)title message:(NSString*)detail;

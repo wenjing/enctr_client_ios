@@ -101,17 +101,6 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								message, @"content", nil];
 	
-	// [NSString stringWithFormat:@"%ld", meetId],  @"meet_id",
-	
-	/* photo
-	if( photo != nil )
-	{
-		[self writeImageToTempFile:photo];
-		NSString  *fname = [NSString stringWithFormat:@"@%@",[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/kayameetTempFile.jpg"]];
-		NSLog(@"photo=%@",fname);
-		[dic  setObject:[NSString stringWithFormat:@"%@",fname] forKey:@"photo"];
-	}*/
-	
 	// reply to chat
 	if(chatId > 0)
 	{
@@ -127,12 +116,11 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	
 	if ( photo != nil ) {
 		param = [NSString stringWithFormat:@"--%@", KAYAMEET_FORM_BOUNDARY];
-		NSData *jpeg = UIImageJPEGRepresentation(photo, 0.5);
+		NSData *jpeg = UIImageJPEGRepresentation(photo, 0.8);
 		param = [param stringByAppendingString:@"\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"a.jpeg\"\r \n\r\n"];
 		param = [param stringByAppendingString:@"Content-Type: image/jpeg\r\n\r\n"];
 		[data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
 		[data appendData:[NSData dataWithData:jpeg]];
-
 	}	
 	[data appendData:[footer dataUsingEncoding:NSUTF8StringEncoding]];
 	

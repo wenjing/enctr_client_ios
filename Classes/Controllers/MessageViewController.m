@@ -8,7 +8,7 @@
 #import "SendImagePickerController.h"
 #import "MessageView.h"
 #import "REString.h"
-#import "ImageUtils.h"
+#import "UIImage+Resize.h"
 
 #define kShowAnimationkey   @"showAnimation"
 #define kHideAnimationKey   @"hideAnimation"
@@ -28,7 +28,6 @@
     text.font           = [UIFont systemFontOfSize:16];
     self.view.hidden    = true;
 	self.view.frame = [[UIScreen mainScreen] applicationFrame];
-	picture.layer.cornerRadius = 5.0;
 	
     textRange.location  = [text.text length];
     textRange.length    = 0;
@@ -146,7 +145,7 @@
 
 - (UIImage*)modifyPhoto:(UIImage *)image
 {
-    float width  = image.size.width;
+ /*   float width  = image.size.width;
     float height = image.size.height;
     float scale;
     
@@ -155,9 +154,11 @@
     }
     else {
         scale = 480.0 / height;
-    }
+    } 
 	
-	return scale >= 1.0 ? image : [image  scaleAndRotateImage:640];
+	return scale >= 1.0 ? image : [image  scaleAndRotateImage:640]; */
+	
+	return [image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh];
 }
 
 - (void)updateMessage
@@ -316,45 +317,28 @@
     // do nothing here
 }
 
-/*- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
-{
-    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-//      UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    }
-	
-    self.selectedPhoto = [self modifyPhoto:image] ;
-	
-	CGSize itemSize  = CGSizeMake(60,50);
-	UIGraphicsBeginImageContext(itemSize);
-	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
-	[self.selectedPhoto drawInRect:imageRect];
-	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-    photoButton.style = UIBarButtonItemStyleDone;
-    [navigation dismissModalViewControllerAnimated:true];
-
-}*/
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	[picker dismissModalViewControllerAnimated:YES];
-	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-	
+	UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     self.selectedPhoto = [self modifyPhoto:image] ;
+	self.picture.image = [self.selectedPhoto thumbnailImage:50 
+										  transparentBorder:2 
+											   cornerRadius:5.0 
+									   interpolationQuality:kCGInterpolationHigh];
 	
-	CGSize itemSize  = CGSizeMake(50,50);
+	/*CGSize itemSize  = CGSizeMake(50,50);
 	UIGraphicsBeginImageContext(itemSize);
 	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
 	[self.selectedPhoto drawInRect:imageRect];
 	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+	 UIGraphicsEndImageContext();*/
     photoButton.style = UIBarButtonItemStyleDone;
-	
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [navigation dismissModalViewControllerAnimated:true];
+    [navigation dismissModalViewControllerAnimated:YES];
 }
 
 - (void)showKeyboard
@@ -371,6 +355,7 @@
 - (void)sendDidSucceed:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
+//	[connection autorelease];
     connection = nil;
     if (sender.hasError) {
         [sender alert];

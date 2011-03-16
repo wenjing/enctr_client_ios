@@ -6,14 +6,16 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "KYMeet.h"
+#import "HJManagedImageV.h"
+
+
 
 @interface FriendViewCell : UITableViewCell {
 	UILabel *nameLabel;
-	UIImageView *friendImageView;
+	HJManagedImageV *friendImageView;
 }
 
 @property(nonatomic,retain)UILabel *nameLabel;
-@property(nonatomic,retain)UIImageView *friendImageView;
+@property(nonatomic,retain)HJManagedImageV *friendImageView;
 
 @end

@@ -91,16 +91,10 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	user_image.layer.cornerRadius = 5.0 ;
 	NSString *picURL = user.profileImageUrl ;
 	if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-		NSData *imgData = [NSData dataWithContentsOfURL:
-							 [NSURL URLWithString:picURL]] ;
-		UIImage *aImage = [[UIImage alloc] initWithData:imgData];
-		CGSize itemSize  = CGSizeMake(65,65);
-		UIGraphicsBeginImageContext(itemSize);
-		CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
-		[aImage drawInRect:imageRect];
-		user_image.image = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		[aImage release];
+		user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+		kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
 	} else {
 		user_image.image = nil;
 	}

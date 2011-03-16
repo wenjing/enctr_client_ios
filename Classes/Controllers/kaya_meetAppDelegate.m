@@ -26,6 +26,7 @@
 @synthesize loginView;
 @synthesize messageView;
 @synthesize selectedTab;
+@synthesize objMan;
 
 @synthesize longitude, latitude, lerror;
 
@@ -53,6 +54,7 @@
     }
 	
 	messageView = nil ;
+	objMan		= nil ;
 	selectedTab = TAB_MEETS;
     tabBarController.selectedIndex = selectedTab;
 	tabBarController.delegate = self ;
@@ -243,6 +245,7 @@
 	[loginView release];
     [window release];
 	[location release];
+	[objMan release];
     [super dealloc];
 }
 
@@ -273,6 +276,22 @@
     }
     messageView.navigation = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     return messageView;
+}
+
+- (HJObjManager *)objMan 
+{
+	if (objMan == nil) {
+		// Image cache 
+		objMan = [[HJObjManager alloc] init] ;
+		NSString* cacheDirectory = [NSHomeDirectory() stringByAppendingString:@"/Library/Caches/imgcache/Cirkle/"] ;
+		HJMOFileCache* fileCache = [[[HJMOFileCache alloc] initWithRootPath:cacheDirectory] autorelease];
+		objMan.fileCache = fileCache;
+		
+		fileCache.fileCountLimit = 100;
+		fileCache.fileAgeLimit = 60*60*24*7; //1 week
+		[fileCache trimCacheUsingBackgroundThread];
+	}
+	return objMan;
 }
 
 // message view return screen
@@ -353,6 +372,8 @@
 	//NSLog(@"Can't get current location.");
 }
 
+/* -- don't use Geocoder now
+
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
     //addressString = [NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode];
@@ -367,6 +388,7 @@
 	[reverseGeocoder release];
 }				 
 
+ -- */
 
 //
 // Common utilities

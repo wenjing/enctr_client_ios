@@ -22,9 +22,9 @@
 		nameLabel = [[UILabel alloc] init];
 		nameLabel.textAlignment = UITextAlignmentCenter;
 		nameLabel.font = [UIFont systemFontOfSize:15];
-		friendImageView = [[UIImageView alloc]init];
-		[friendImageView setClipsToBounds:YES];
-		friendImageView.layer.cornerRadius = 5.0 ;
+		friendImageView = [[HJManagedImageV alloc] init];
+		friendImageView.tag = 999;
+		
 		nameLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:nameLabel];
 		[self.contentView addSubview:friendImageView];
@@ -51,12 +51,12 @@
 	
 	CGRect frame;
 	
-	frame= CGRectMake(boundsX+2 ,2,  42, 42);
+	frame= CGRectMake(boundsX+5 ,5,  47, 47);
 	friendImageView.frame = frame;
 	
-	frame= CGRectMake(boundsX+45,10, 100, 20);
+	frame= CGRectMake(boundsX+57,5, 164, 47);
 	nameLabel.frame = frame;
-		
+	
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

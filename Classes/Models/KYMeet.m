@@ -20,9 +20,9 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
     KYMeet* dmb = (KYMeet*)b;
     int diff = dmb.timeAt - dma.timeAt;
     if (diff > 0)
-        return 1;
-    else if (diff < 0)
         return -1;
+    else if (diff < 0)
+        return 1;
     else
         return 0;
 }
@@ -178,32 +178,6 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	return [[[KYMeet alloc] initWithJsonDictionary:dic type:type] autorelease];
 }
 
-
-int sTextWidth[] = {
-    CELL_WIDTH,
-    USER_CELL_WIDTH,
-    DETAIL_CELL_WIDTH,
-};
-
-- (void)updateAttribute
-{
-    [super updateAttribute];
-    int textWidth = sTextWidth[type];
-
-    if (accessoryType == UITableViewCellAccessoryDetailDisclosureButton) {
-        textWidth -= DETAIL_BUTTON_WIDTH;
-    }
-    else if (type == KYMEET_TYPE_UPDATE) {
-        textWidth -= H_MARGIN;
-    }
-    else {
-        textWidth -= INDICATOR_WIDTH;
-    }
-    // Calculate text bounds and cell height here
-    //
-    [self calcTextBounds:textWidth];
-}
-
 + (KYMeet*)meetWithId:(sqlite_int64)aMeetId
 {
     static Statement *stmt = nil;
@@ -251,7 +225,6 @@ int sTextWidth[] = {
 		NSLog(@"KYMeet initial with stm error");
         return nil;
     }
-    [s updateAttribute];
     return s;
 }
 

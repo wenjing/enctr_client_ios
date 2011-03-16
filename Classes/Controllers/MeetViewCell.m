@@ -29,8 +29,8 @@
       secondaryLabel.textAlignment = UITextAlignmentLeft;
       secondaryLabel.font = [UIFont systemFontOfSize:9];
 	  secondaryLabel.backgroundColor = [UIColor clearColor];
-      meetImageView = [[UIImageView alloc]init];
-      
+	  meetImageView = [[HJManagedImageV alloc] init];
+	  meetImageView.tag = 999;
       [self.contentView addSubview:primaryLabel];
       [self.contentView addSubview:secondaryLabel];
       [self.contentView addSubview:meetImageView];

@@ -8,6 +8,7 @@
 #import <UIKit/UIActionSheet.h>
 #import <Foundation/Foundation.h>
 #import "DBConnection.h"
+#import "HJManagedImageV.h"
 #import "User.h"
 
 
@@ -29,7 +30,7 @@
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
 	IBOutlet UITextField*		urlField;
-	IBOutlet UIImageView*		user_image;
+	IBOutlet HJManagedImageV*	user_image;
 	
 	UIImagePickerController*	imgPicker ;
 	UINavigationController*		navigation;
