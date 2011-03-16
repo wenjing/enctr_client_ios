@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -57,6 +57,8 @@
 		3A636D1E12D44EB5008A8B47 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1612D44EB5008A8B47 /* MessageView.m */; };
 		3A636D1F12D44EB5008A8B47 /* SendImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */; };
 		3A636D2012D44EB5008A8B47 /* ProgressWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */; };
+		3A6CEE3B1318CB0800D705B2 /* TimelineTopicViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CEE3A1318CB0800D705B2 /* TimelineTopicViewCell.m */; };
+		3A6CEFF9131909E800D705B2 /* TimelineEncounterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CEFF7131909E800D705B2 /* TimelineEncounterViewCell.m */; };
 		3A6F1CD5127654E10044D6E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD4127654E10044D6E6 /* MapKit.framework */; };
 		3A6F1CD9127654ED0044D6E6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */; };
 		3A6F1CDD127655000044D6E6 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A6F1CDC127655000044D6E6 /* GameKit.framework */; };
@@ -94,6 +96,8 @@
 		3AF7B40D1279109C008F83BC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */; };
 		3AF7B46912791A2C008F83BC /* DBConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46812791A2C008F83BC /* DBConnection.m */; };
 		3AF7B46D12791A59008F83BC /* Statement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF7B46C12791A59008F83BC /* Statement.m */; };
+		3AF854821326A1D100676E02 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF8547F1326A1D100676E02 /* BaseTableViewCell.m */; };
+		3AF854831326A1D100676E02 /* TimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF854801326A1D100676E02 /* TimelineViewCell.m */; };
 		3AFC916812A6025E00BB0FB5 /* BlueTooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC916712A6025E00BB0FB5 /* BlueTooth.m */; };
 		3D0E9567130CAFDE00CB021F /* signup-bg-640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */; };
 		3D0E95AE130CC9AC00CB021F /* tab-cirkle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95AA130CC9AC00CB021F /* tab-cirkle@2x.png */; };
@@ -193,6 +197,10 @@
 		3A636D1812D44EB5008A8B47 /* SendImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendImagePickerController.m; path = Controllers/SendImagePickerController.m; sourceTree = "<group>"; };
 		3A636D1912D44EB5008A8B47 /* ProgressWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressWindow.h; path = Controllers/ProgressWindow.h; sourceTree = "<group>"; };
 		3A636D1A12D44EB5008A8B47 /* ProgressWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressWindow.m; path = Controllers/ProgressWindow.m; sourceTree = "<group>"; };
+		3A6CEE391318CB0800D705B2 /* TimelineTopicViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimelineTopicViewCell.h; path = Controllers/TimelineTopicViewCell.h; sourceTree = "<group>"; };
+		3A6CEE3A1318CB0800D705B2 /* TimelineTopicViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimelineTopicViewCell.m; path = Controllers/TimelineTopicViewCell.m; sourceTree = "<group>"; };
+		3A6CEFF7131909E800D705B2 /* TimelineEncounterViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimelineEncounterViewCell.m; path = Controllers/TimelineEncounterViewCell.m; sourceTree = "<group>"; };
+		3A6CEFF8131909E800D705B2 /* TimelineEncounterViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimelineEncounterViewCell.h; path = Controllers/TimelineEncounterViewCell.h; sourceTree = "<group>"; };
 		3A6F1CD4127654E10044D6E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A6F1CD8127654ED0044D6E6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3A6F1CDC127655000044D6E6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -255,6 +263,10 @@
 		3AF7B46812791A2C008F83BC /* DBConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBConnection.m; path = Models/DBConnection.m; sourceTree = "<group>"; };
 		3AF7B46B12791A59008F83BC /* Statement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Statement.h; path = Models/Statement.h; sourceTree = "<group>"; };
 		3AF7B46C12791A59008F83BC /* Statement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statement.m; path = Models/Statement.m; sourceTree = "<group>"; };
+		3AF8547E1326A1D100676E02 /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseTableViewCell.h; path = Controllers/BaseTableViewCell.h; sourceTree = "<group>"; };
+		3AF8547F1326A1D100676E02 /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseTableViewCell.m; path = Controllers/BaseTableViewCell.m; sourceTree = "<group>"; };
+		3AF854801326A1D100676E02 /* TimelineViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimelineViewCell.m; path = Controllers/TimelineViewCell.m; sourceTree = "<group>"; };
+		3AF854811326A1D100676E02 /* TimelineViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimelineViewCell.h; path = Controllers/TimelineViewCell.h; sourceTree = "<group>"; };
 		3AFC916612A6025E00BB0FB5 /* BlueTooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueTooth.h; path = Network/BlueTooth.h; sourceTree = "<group>"; };
 		3AFC916712A6025E00BB0FB5 /* BlueTooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueTooth.m; path = Network/BlueTooth.m; sourceTree = "<group>"; };
 		3D0E9566130CAFDE00CB021F /* signup-bg-640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "signup-bg-640x960.png"; path = "images/signup-bg-640x960.png"; sourceTree = "<group>"; };
@@ -392,6 +404,12 @@
 		3A03974D128DD82C004C2315 /* MeetViews */ = {
 			isa = PBXGroup;
 			children = (
+				3AF8547E1326A1D100676E02 /* BaseTableViewCell.h */,
+				3AF8547F1326A1D100676E02 /* BaseTableViewCell.m */,
+				3AF854801326A1D100676E02 /* TimelineViewCell.m */,
+				3AF854811326A1D100676E02 /* TimelineViewCell.h */,
+				3A6CEFF7131909E800D705B2 /* TimelineEncounterViewCell.m */,
+				3A6CEFF8131909E800D705B2 /* TimelineEncounterViewCell.h */,
 				28216C950DB411BC00E5133A /* MeetViewController.h */,
 				28216C960DB411BC00E5133A /* MeetViewController.m */,
 				3A0BD16E128DC0F200213D64 /* MeetViewCell.h */,
@@ -406,6 +424,8 @@
 				3A4269F712C675CB0091D520 /* MeetDetailView.m */,
 				3AF53C9012C9238600844457 /* meetDisplayMap.h */,
 				3AF53C9112C9238600844457 /* meetDisplayMap.m */,
+				3A6CEE391318CB0800D705B2 /* TimelineTopicViewCell.h */,
+				3A6CEE3A1318CB0800D705B2 /* TimelineTopicViewCell.m */,
 			);
 			name = MeetViews;
 			sourceTree = "<group>";
@@ -646,7 +666,7 @@
 				ORGANIZATIONNAME = "Kaya Labs, Inc.";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Cirkle" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -765,6 +785,10 @@
 				3A963B0C13137E69001BE108 /* HJObjManager.m in Sources */,
 				3A963B0D13137E69001BE108 /* HJWeakMutableArray.m in Sources */,
 				3A17B1EB1314DAAF00338E5D /* Timeline.m in Sources */,
+				3A6CEE3B1318CB0800D705B2 /* TimelineTopicViewCell.m in Sources */,
+				3A6CEFF9131909E800D705B2 /* TimelineEncounterViewCell.m in Sources */,
+				3AF854821326A1D100676E02 /* BaseTableViewCell.m in Sources */,
+				3AF854831326A1D100676E02 /* TimelineViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,25 +10,6 @@
 #import "User.h"
 #import "KYMeet.h"
 
-#define IMAGE_PADDING       10
-#define H_MARGIN            10
-#define INDICATOR_WIDTH     (30 - H_MARGIN)
-#define DETAIL_BUTTON_WIDTH (45 - H_MARGIN)
-
-#define IMAGE_WIDTH         48
-#define USER_CELL_LEFT      42
-#define STAR_BUTTON_WIDTH   32
-
-#define TOP                 (16 + 1)
-#define LEFT                (IMAGE_PADDING * 2 + IMAGE_WIDTH)
-#define CELL_WIDTH          (320 - LEFT)
-#define TIMESTAMP_WIDTH     60
-#define TIMESTAMP_LEFT      (LEFT + CELL_WIDTH) - TIMESTAMP_WIDTH
-
-#define USER_CELL_WIDTH     (320 - USER_CELL_LEFT)
-#define DETAIL_CELL_WIDTH   (300 - USER_CELL_LEFT)
-
-
 typedef enum {
 	TIMELINE_ENCOUNTER=0,
 	TIMELINE_JOIN,
@@ -50,6 +31,7 @@ typedef enum {
 	uint32_t		userCount	;
     NSArray*		meetUsers	;
 	
+	NSString*		timestamp ;
 	CGRect          textBounds;
     CGRect          bubbleRect;
     CGFloat         cellHeight;
@@ -62,7 +44,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray* comments;
 @property (nonatomic, assign) time_t timeAt ;
 @property (nonatomic, assign) TIMELINE_TYPE type;
-
+@property (nonatomic, retain) NSString *timestamp ;
 
 @property (nonatomic, assign) CGFloat       cellHeight;
 @property (nonatomic, assign) CGRect        textBounds;
@@ -78,7 +60,7 @@ typedef enum {
 - (id) initWithEncounter:(KYMeet*)meet;
 
 - (void)calcTextBounds:(int)textWidth;
-
+- (NSString *)timestamp ;
 + (int) getTimelinesFromMt:(KYMeet *)mt withDic:(NSDictionary*)dic Timelines:(NSMutableArray*)tls;
 
 @end

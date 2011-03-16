@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic, assign) MeetType       type;
 @property (nonatomic, assign) int			userCount;
 @property (nonatomic, retain) NSMutableArray *meetUsers;
+
 - (NSString*) timestamp;
 
 @end

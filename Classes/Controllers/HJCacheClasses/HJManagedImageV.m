@@ -8,8 +8,8 @@
 //  See http://www.markj.net/hjcache-iphone-image-cache/
 
 #import "HJManagedImageV.h"
-#import "UIImage+RoundedCorner.h"
-#import <QuartzCore/QuartzCore.h>
+
+
 @implementation HJManagedImageV
 
 
@@ -32,6 +32,7 @@
 		url=nil;
 		onImageTap = nil;
 		index = -1;
+		self.userInteractionEnabled = NO; //because want to treat it like a UIImageView. Just turn this back on if you want to catch taps.
     }
     return self;
 }
@@ -115,7 +116,6 @@
 	} else {
 		UIImage* modified = [self modifyImage:theImage modification:(int)mod];
 		[self setImage:modified];
-//TODO		[[ImageManager imageManager] cacheLoadedImage:self];
 	}
 }
 
@@ -135,11 +135,6 @@
 	imageView.autoresizingMask = ( UIViewAutoresizingFlexibleWidth || UIViewAutoresizingFlexibleHeight );
 	[self addSubview:imageView];
 	imageView.frame = self.bounds;
-	
-	CALayer *ly = [imageView layer];
-	[ly setMasksToBounds:YES];
-	[ly setCornerRadius:5.0];
- 
 	[imageView setNeedsLayout];
 	[self setNeedsLayout];
 	//NSLog(@"setImageCallback from %@ to %@",self,callbackOnSetImage);
@@ -147,7 +142,9 @@
 	[loadingWheel removeFromSuperview];
 	self.loadingWheel = nil;
 	self.hidden=NO;
-	[callbackOnSetImage managedImageSet:self];
+	if (image!=nil) {
+		[callbackOnSetImage managedImageSet:self];
+	}
 }
 
 -(void) showLoadingWheel {
@@ -167,6 +164,8 @@
 	[invo retain];
 	[onImageTap release];
 	onImageTap = invo;
+	self.userInteractionEnabled=YES; //because it's NO in the initializer, but if we want to get a callback on tap, 
+									 //then need to get touch events.
 }
 
 -(void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {

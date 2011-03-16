@@ -34,9 +34,9 @@
     
 	if (!session) {
 		
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
+        session = [[[GKSession alloc] initWithSessionID:@"kaya_meet_app"
 										   displayName:[NSString stringWithFormat:@"%@:%d:%@:%ld",user.name,user.userId,name,meet_id]
-										   sessionMode:GKSessionModeServer];
+										   sessionMode:GKSessionModeServer] retain];
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
@@ -56,9 +56,9 @@
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     
 	if (!session) {
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
+        session = [[[GKSession alloc] initWithSessionID:@"kaya_meet_app"
 										displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
-										sessionMode:GKSessionModePeer];
+										sessionMode:GKSessionModePeer] retain];
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
@@ -82,9 +82,9 @@
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     
 	if (!session) {
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
+        session = [[[GKSession alloc] initWithSessionID:@"kaya_meet_app"
 										   displayName:[NSString stringWithFormat:@"%@:%d_%d:%ld",user.name,now,user.userId,meet_id]
-										   sessionMode:GKSessionModePeer];
+										   sessionMode:GKSessionModePeer] retain];
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
@@ -121,6 +121,7 @@
 - (void) reset {
 	if ( mode != BT_FREE ) [self stopPeer];
 	aNumber = 0 ;
+	[session release];
 	session = nil;
 	[peerList removeAllObjects]  ;
 	[devNames removeAllObjects]  ;
@@ -248,7 +249,10 @@
 {
 	if (timer)    [timer invalidate];
 //	[picker release];
-	if ( mode != BT_FREE ) [self stopPeer];
+	if ( mode != BT_FREE ){
+		[self stopPeer];
+		[session release];
+	}
 	[peerList release];
 	[devNames release];
 	[super dealloc];

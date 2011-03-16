@@ -51,12 +51,12 @@
 	
 	CGRect frame;
 	
-	frame= CGRectMake(boundsX+2 ,2,  42, 42);
+	frame= CGRectMake(boundsX+5 ,5,  47, 47);
 	friendImageView.frame = frame;
 	
-	frame= CGRectMake(boundsX+45,10, 100, 20);
+	frame= CGRectMake(boundsX+57,5, 164, 47);
 	nameLabel.frame = frame;
-		
+	
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

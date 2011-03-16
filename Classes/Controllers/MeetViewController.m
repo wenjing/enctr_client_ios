@@ -73,7 +73,8 @@
     [super viewWillAppear:animated];
 	if (!isLoaded) {
 		// get all meets from server
-        [meetDataSource getUserMeets] ;		
+        //[meetDataSource getUserMeets] ;	
+		[self restoreAndLoadMeets:true] ;
     }else {
 		[self.tableView setContentOffset:contentOffset animated:false];
 		[self.tableView reloadData];
@@ -132,7 +133,7 @@
 - (void) resetMeets
 {
 	[meetDataSource removeAllMeets];
-//  [self.tableView reloadData];
+	[self.tableView reloadData];
 	isLoaded = false ;
 //	contentOffset = 0;
 }

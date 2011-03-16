@@ -7,7 +7,8 @@
 
 #import <UIKit/UIKit.h>
 #import "HJManagedImageV.h"
-//#import "KYMeet.h"
+
+
 
 @interface FriendViewCell : UITableViewCell {
 	UILabel *nameLabel;

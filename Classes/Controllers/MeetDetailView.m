@@ -6,7 +6,8 @@
 //
 #import <QuartzCore/QuartzCore.h>
 #import "MeetDetailView.h"
-#import "FriendViewCell.h"
+#import "TimelineTopicViewCell.h"
+#import "TimelineEncounterViewCell.h"
 #import "meetDisplayMap.h"
 #import "UACellBackgroundView.h"
 #import "kaya_meetAppDelegate.h"
@@ -17,7 +18,7 @@
 
 @synthesize currentMeet;
 
-@synthesize friendsView, mapView, messageView;
+@synthesize friendsView, TimelineEncounterCell, messageView;
 
 @synthesize soundFileURLRef, soundFileObject; 
 
@@ -38,7 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	Timelines = [[NSMutableArray array] retain];
-	// set title
+	// set Date title
 	static NSDateFormatter *dateFormatter = nil;
 	if (dateFormatter == nil) {
 		dateFormatter = [[NSDateFormatter alloc] init];
@@ -57,38 +58,11 @@
 	[self.navigationItem setRightBarButtonItem:rightBarButton animated:NO] ;
 	[rightBarButton release];
 	
-	if(  currentMeet.userCount == 1 ) {
-		friendsView.hidden = true ;
-		mapView = [[HJManagedImageV alloc] initWithFrame:CGRectMake(16,25,288,90)] ;
-		//mapView.frame = CGRectMake(16,25,288,90) ;
-
-	} else {
-		hostButton.hidden = true ;
-		messageView.frame = CGRectMake(15,132,290,210);
-		mapView = [[HJManagedImageV alloc] initWithFrame:CGRectMake(16,25,110,90)];
-		//mapView.frame = CGRectMake(16,25,110,90) ;
-		friendsView.frame = CGRectMake(128,25, 175,90);
-	}
-	[self.view addSubview:mapView];
-	/*
-	CALayer *ly = [mapView layer];
-	[ly setMasksToBounds:YES];
-	[ly setCornerRadius:5.0];
-	 */
-	[mapView release];
-	
-	// textView
-	messageView.layer.cornerRadius = 5.0;
-	messageView.font = [UIFont systemFontOfSize:13];
-	messageView.text = @"";
-	// actionButtons
-	
 	// set friendsView 
 	[friendsView setDelegate:self];
 	[friendsView setDataSource:self];
-	friendsView.layer.cornerRadius = 5.0;
 	friendsView.backgroundColor = [UIColor clearColor];
-	friendsView.separatorColor = [UIColor clearColor];
+	friendsView.separatorColor = [UIColor grayColor];
 	[friendsView setAlwaysBounceVertical:YES];
 	
 	// BT
@@ -153,10 +127,10 @@
 
 - (void)dealloc {
     [loadCell release] ;
-    if ( [ currentMeet.meetUsers count ] )
-    {
-	 [currentMeet.meetUsers removeAllObjects];
-    }
+//    if ( [ currentMeet.meetUsers count ] )
+//    {
+//	 [currentMeet.meetUsers removeAllObjects];
+//    }
 	[bt release];
 	AudioServicesDisposeSystemSoundID (soundFileObject);
     CFRelease (soundFileURLRef);
@@ -198,10 +172,10 @@
 		return;
 	}
 	[currentMeet updateWithJsonDictionary:dic] ;
-	[self updateFriendList ];
-//
 	[Timeline getTimelinesFromMt:currentMeet withDic:dic Timelines:Timelines];
 	
+	[self updateFriendList ];
+
 	NSLog(@"loaded %d timelines", [Timelines count]);
 	
 	[friendsView reloadData];
@@ -209,7 +183,7 @@
 
 - (void) updateFriendList
 {
-	int numInsert = [currentMeet.meetUsers count];
+	int numInsert = [Timelines count];
 	if (numInsert != 0) {
 		[self.friendsView beginUpdates];
 		NSMutableArray *insertion = [[[NSMutableArray alloc] init] autorelease];
@@ -219,30 +193,6 @@
 		[self.friendsView insertRowsAtIndexPaths:insertion withRowAnimation:UITableViewRowAnimationNone];
 		[self.friendsView endUpdates];
 	}
-	
-	if (currentMeet.latestChat == nil) 
-		self.messageView.text = [NSString stringWithFormat:@"@ %@",currentMeet.place] ;
-	else {
-		self.messageView.text = [NSString stringWithFormat:@"%@",currentMeet.latestChat] ;
-	}
-	// set MayImageView
-	NSString *headmapurl0 = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=110x90&maptype=roadmap&format=png32&markers=color:green|size:small";
-	NSString *headmapurl1 = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=290x90&maptype=roadmap&format=png32&markers=color:green|size:small";
-	NSString *mapurl = [NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",currentMeet.userCount > 1 ?headmapurl0:headmapurl1,currentMeet.latitude,currentMeet.longitude];
-	mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	/*NSURL *url = [NSURL URLWithString:mapurl] ;
-	NSData *mapdata = [[NSData alloc] initWithContentsOfURL:url];
-	UIImage *uimap = [[UIImage alloc] initWithData:mapdata];
-	mapView.image = uimap; 
-	[mapdata release];
-	[uimap release]; */
-	
-	mapView.url = [NSURL URLWithString:mapurl] ;
-	kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mapView waitUntilDone:YES];
-
-	//	[url release];
-
 }
 
 // Friend view list
@@ -263,6 +213,11 @@
 	return [currentMeet.meetUsers objectAtIndex:index] ;
 }
 
+- (Timeline *) TimelineAtIndex:(int)index 
+{
+	return [Timelines objectAtIndex:index] ;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return 1;
@@ -270,54 +225,116 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (currentMeet.meetUsers == nil) return 0 ;
-    else return [currentMeet.meetUsers count]  ;
+	return [Timelines count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return  currentMeet.userCount > 1 ? 45 : 90;
+	Timeline *tl = [self TimelineAtIndex:indexPath.row];
+	if (tl.type == TIMELINE_TOPIC &&  tl.img_url == nil ) return 110;
+	return  tl==nil? 50 : tl.type==TIMELINE_ENCOUNTER ? 360 : 357;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = [UIColor clearColor];
-	if ( [currentMeet.meetUsers count] < 2 ) return ;
+   cell.backgroundColor = [UIColor whiteColor ];
+   /* if ( [Timelines count] < 2 ) return ;
 	if ( indexPath.row == 0 ) {
 		[(UACellBackgroundView *)cell.backgroundView setPosition:UACellBackgroundViewPositionTop];
-	} else if ( indexPath.row == [currentMeet.meetUsers count]-1 ){
+	} else if ( indexPath.row == [Timelines count]-1 ){
 		[(UACellBackgroundView *)cell.backgroundView setPosition:UACellBackgroundViewPositionBottom];
 	} else {
 		[(UACellBackgroundView *)cell.backgroundView setPosition:UACellBackgroundViewPositionMiddle];
+	} */
+}
+
+- (UITableViewCell*)loadEncounterCell
+{
+	[[NSBundle mainBundle] loadNibNamed:@"MeetDetailView" owner:self options:nil];
+	
+	// tableView cell is already autoreleased
+	// return the tableViewCell Outlet, which was set when the nib was loaded
+	return TimelineEncounterCell;
+}
+
+- (UITableViewCell *)getEncounterCell:(UITableView *)tableView withTimeline:(Timeline *)tl
+{
+	TimelineEncounterViewCell *cell = (TimelineEncounterViewCell *)[friendsView dequeueReusableCellWithIdentifier:@"EncounterCell"];
+	HJManagedImageV *mi, *mu ;
+    if (cell == nil) {
+		cell = [[[TimelineEncounterViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EncounterCell"] autorelease];
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		mu = (HJManagedImageV*)[cell viewWithTag:998];
 	}
+	else {
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		mu = (HJManagedImageV*)[cell viewWithTag:998];
+		[mi clear];
+		[mu clear];
+	}
+		
+	NSString *headmapurl = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=245x123&maptype=roadmap&format=png32&markers=color:green|size:small";
+	NSString *mapurl = [NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",headmapurl,currentMeet.latitude,currentMeet.longitude];
+	mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	mu.url = [NSURL URLWithString:mapurl] ;
+	kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mu waitUntilDone:YES];
+		
+	User *u = [User userWithId:tl.uid];
+	mi = (HJManagedImageV*)[cell viewWithTag:999];
+	[mi clear];
+	mi.url = [NSURL URLWithString:[u.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	mi.oid = [NSString stringWithFormat:@"user_%d",u.userId];
+	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
+
+	cell.userNameLabel.text = u.name ;
+	cell.messageView.text = tl.topic  ;
+	cell.timeLabel.text = [tl timestamp];
+
+	return cell ;
+}
+	
+- (UITableViewCell *)getTopicCell:(UITableView*)tableView withTimeline:(Timeline *)tl 
+{
+	TimelineTopicViewCell *cell = (TimelineTopicViewCell*)[friendsView dequeueReusableCellWithIdentifier:@"TopicCell"];
+	HJManagedImageV *mi, *mu ;
+	if (!cell) {
+		cell = [[[TimelineTopicViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TopicCell" ] autorelease];
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		mu = (HJManagedImageV*)[cell viewWithTag:998];
+	
+	} else {
+		mi = (HJManagedImageV*)[cell viewWithTag:999];
+		mu = (HJManagedImageV*)[cell viewWithTag:998];
+		[mi clear];
+		[mu clear];
+	}
+	
+	User *u = [User userWithId:tl.uid];
+	cell.userNameLabel.text  = u.name ;
+	cell.timeLabel.text = [tl timestamp];
+	kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+	mi.url = [NSURL URLWithString:[u.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	mi.oid = [NSString stringWithFormat:@"user_%d",u.userId];
+	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
+	if ( tl.img_url != nil ) {
+		mu.url = [NSURL URLWithString:[tl.img_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mu waitUntilDone:YES];
+	}
+	
+	[cell update:tl] ;
+	 cell.messageView.text = tl.topic ;
+	[cell.messageView setNeedsDisplay];
+	return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	User* u = [self userAtIndex:indexPath.row];
-    if (u == nil) return loadCell;
-	HJManagedImageV *mi ;
-    FriendViewCell* cell = (FriendViewCell*)[friendsView dequeueReusableCellWithIdentifier:@"FriendCell"];
-    if (!cell) {
-		cell = [[[FriendViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FriendCell" ] autorelease];
-		mi = (HJManagedImageV*)[cell viewWithTag:999];
-	} else {
-		mi = (HJManagedImageV*)[cell viewWithTag:999];
-		[mi clear];
-	}
+	Timeline* tl = [self TimelineAtIndex:indexPath.row ];
+    if (tl == nil) return loadCell;
 	
-
-	cell.nameLabel.text   = u.name  ;
-	
-	NSString *picURL = u.profileImageUrl ;
-	if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-
-		mi.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-		mi.oid = [NSString stringWithFormat:@"user_%d",u.userId];
-		kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
-	} 
-	
-	return cell;
+	if ( tl.type == TIMELINE_ENCOUNTER ) return [self getEncounterCell:tableView withTimeline:tl];
+	else if ( tl.type == TIMELINE_TOPIC) return [self getTopicCell:tableView withTimeline:tl];
+	else return loadCell ;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -325,29 +342,6 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:TRUE];   
 }
 
-/* mapView 
-
--(MKAnnotationView *)mapView:(MKMapView *)mV viewForAnnotation:(id <MKAnnotation>)annotation {
-	MKPinAnnotationView *pinView = nil; 
-	if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-	if([annotation isKindOfClass:[meetDisplayMap class]])
-	{
-		static NSString *defaultPinID = @"com.kayameet.detailPin";
-		pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
-		if ( pinView == nil ) pinView = [[[MKPinAnnotationView alloc]
-										  initWithAnnotation:annotation reuseIdentifier:defaultPinID] autorelease];
-		pinView.pinColor = MKPinAnnotationColorPurple; 
-		pinView.canShowCallout = NO;
-		pinView.animatesDrop = NO;
-		pinView.annotation = annotation ;
-	} 
-//	else {
-//		[mapView.userLocation setTitle:@"you are here"];
-//	}
-	return pinView;
-}
- */
 
 // IBActions 
 

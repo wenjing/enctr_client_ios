@@ -317,29 +317,9 @@
     // do nothing here
 }
 
-/*- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
-{
-    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-//      UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    }
-	
-    self.selectedPhoto = [self modifyPhoto:image] ;
-	
-	CGSize itemSize  = CGSizeMake(60,50);
-	UIGraphicsBeginImageContext(itemSize);
-	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
-	[self.selectedPhoto drawInRect:imageRect];
-	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-    photoButton.style = UIBarButtonItemStyleDone;
-    [navigation dismissModalViewControllerAnimated:true];
-
-}*/
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	[picker dismissModalViewControllerAnimated:YES];
-	// UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     self.selectedPhoto = [self modifyPhoto:image] ;
 	self.picture.image = [self.selectedPhoto thumbnailImage:50 
@@ -351,7 +331,8 @@
 	UIGraphicsBeginImageContext(itemSize);
 	CGRect imageRect = CGRectMake(0.0,0.0,itemSize.width, itemSize.height);
 	[self.selectedPhoto drawInRect:imageRect];
-	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();	UIGraphicsEndImageContext();*/
+	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
+	 UIGraphicsEndImageContext();*/
     photoButton.style = UIBarButtonItemStyleDone;
 }
 
@@ -374,6 +355,7 @@
 - (void)sendDidSucceed:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
+//	[connection autorelease];
     connection = nil;
     if (sender.hasError) {
         [sender alert];

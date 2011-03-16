@@ -11,7 +11,7 @@
 @implementation Timeline
 
 @synthesize img_url, topic;
-@synthesize tid, uid, userCount, commentCount;
+@synthesize tid, uid, userCount, commentCount, timestamp;
 @synthesize meetUsers, comments;
 @synthesize timeAt ;
 @synthesize type ;
@@ -36,8 +36,10 @@
 	tl.tid				 = [[dic objectForKey:@"id"]     longValue];
 	tl.uid			     = [[dic objectForKey:@"user_id"] longValue];
 	tl.topic			 = [[dic objectForKey:@"content"] retain] ;
-	NSString	*tmp = [dic objectForKey:@"chatter_photo_small"] ;
-	if ( tmp != (NSString*)[NSNull null] ) tl.img_url = [tmp retain];
+	NSString	*tmp = [dic objectForKey:@"chatter_photo"] ;
+	
+	if ( tmp != (NSString*)[NSNull null] && [tmp length] > 2 ) 
+		 tl.img_url = [tmp retain];
 	
 	strptime([[dic objectForKey:@"updated_at"] UTF8String], "%FT%T%z",  &created) ;
 	tl.timeAt = timegm(&created);
@@ -64,7 +66,7 @@
 	tl.tid				 = [[dic objectForKey:@"id"]      longValue];
 	tl.uid			     = [[dic objectForKey:@"user_id"] longValue];
 	tl.topic			 = [[dic objectForKey:@"content"] retain] ;
-	NSString	*tmp = [dic objectForKey:@"chatter_photo_small"] ;
+	NSString	*tmp = [dic objectForKey:@"chatter_photo"] ;
 	if ( tmp != (NSString*)[NSNull null] ) tl.img_url = [tmp retain];
 	
 	strptime([[dic objectForKey:@"updated_at"] UTF8String], "%FT%T%z",  &created) ;
@@ -94,6 +96,10 @@
 	return self;
 }
 
+#define MAPURL_STRING @"http://maps.google.com/maps/api/staticmap?zoom=11&size=245x123&maptype=roadmap&format=png32&markers=color:green|size:small"
+
+
+
 - (id) initWithEncounter:(KYMeet*)meet
 {
 	[self initWithType:TIMELINE_ENCOUNTER withId:meet.meetId];
@@ -101,7 +107,11 @@
 	meetUsers = meet.meetUsers;
 	timeAt   = meet.timeAt;
 	uid		 = meet.user.userId;
-	topic	 = [[NSString stringWithFormat:@"%@", meet.description] retain];
+	topic	 = [[NSString stringWithFormat:@"%@", meet.place] retain];
+	
+	if ( meet.latitude != 0.0 && meet.longitude != 0.0 ) 
+		img_url = [[NSString stringWithFormat:@"%@|%lf,%lf&sensor=false",MAPURL_STRING, meet.latitude, meet.longitude] retain];
+	
 	return self;
 }
 
@@ -115,41 +125,9 @@
 	if ( topic )		[topic   release] ;
 	
 	//NSLog(@"release tl");
+	[timestamp release];
 	[super dealloc];
 }
-
-
-- (void)calcTextBounds:(int)textWidth
-{
-    CGRect bounds, result;
-    
-    if (type == TIMELINE_ENCOUNTER) {
-        bounds = CGRectMake(0, TOP, textWidth, 200);
-    }
-    else { // 
-        bounds = CGRectMake(0, 3, textWidth, 200);
-    }
-    
-    static UILabel *label = nil;
-    if (label == nil) {
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-    }
-    label.font = [UIFont systemFontOfSize:13];
-    label.text = topic;
-    result = [label textRectForBounds:bounds limitedToNumberOfLines:20];
-    
-    textBounds = CGRectMake(bounds.origin.x, bounds.origin.y, textWidth, result.size.height);
-    
-    if (type == TIMELINE_ENCOUNTER) {
-        result.size.height += 18 + 15 + 2;
-        if (result.size.height < IMAGE_WIDTH + 1) result.size.height = IMAGE_WIDTH + 1;
-    }
-    else {
-        result.size.height += 22;
-    }
-    cellHeight = result.size.height;
-}
-
 
 + (int) getTimelinesFromMt:(KYMeet*)mt withDic:(NSDictionary*)dic Timelines:(NSMutableArray*)tls
 {	int cnt ;
@@ -160,25 +138,54 @@
 		for ( cnt = 0 ; cnt < [tps count] ; cnt ++ ) {
 			NSDictionary *tp = (NSDictionary*)[tps objectAtIndex:cnt];
 			if ( ![tp isKindOfClass:[NSDictionary class]] ) continue ;
+			if ( [tp objectForKey:@"user_id"] == (NSString*)[NSNull null] ) continue ;
 			[tls addObject:[Timeline tlWithTopic:tp]];
 		}
 	}
 	return cnt+1 ;
 }
 
-
-int sTextWidth[] = {
-    CELL_WIDTH,
-    USER_CELL_WIDTH,
-    DETAIL_CELL_WIDTH,
-};
-
-- (void)updateAttribute
+- (NSString*)timestamp
 {
-    int textWidth = sTextWidth[type];
-	
+    // Calculate distance time string
     //
-    [self calcTextBounds:textWidth];
+    time_t now;
+    time(&now);
+	
+    int distance = (int)difftime(now, timeAt);
+    if (distance < 0) distance = 0;
+    
+    if (distance < 60) {
+        self.timestamp = [NSString stringWithFormat:@"%ds", distance];
+    }
+    else if (distance < 60 * 60) {  
+        distance = distance / 60;
+        self.timestamp = [NSString stringWithFormat:@"%dm",distance];
+    }  
+    else if (distance < 60 * 60 * 24) {
+        distance = distance / 60 / 60;
+        self.timestamp = [NSString stringWithFormat:@"%dh",distance];
+    }
+    else if (distance < 60 * 60 * 24 * 7) {
+        distance = distance / 60 / 60 / 24;
+        self.timestamp = [NSString stringWithFormat:@"%dd",distance];
+    }
+    else if (distance < 60 * 60 * 24 * 7 * 4) {
+        distance = distance / 60 / 60 / 24 / 7;
+        self.timestamp = [NSString stringWithFormat:@"%dw",distance];
+    }
+    else {
+        static NSDateFormatter *dateFormatter = nil;
+        if (dateFormatter == nil) {
+            dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        }
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeAt];        
+        self.timestamp = [dateFormatter stringFromDate:date];
+    }
+    return timestamp;
 }
 
 @end
