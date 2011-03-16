@@ -694,9 +694,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -704,9 +704,9 @@
 				GCC_PREFIX_HEADER = Cirkle_Prefix.pch;
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
+				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 			};
 			name = Debug;
 		};
@@ -714,17 +714,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Cirkle_Prefix.pch;
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
+				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

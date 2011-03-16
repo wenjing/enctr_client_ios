@@ -34,14 +34,15 @@
     
 	if (!session) {
 		
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
-										   displayName:[NSString stringWithFormat:@"%@:%d:%@:%ld",user.name,user.userId,name,meet_id]
-										   sessionMode:GKSessionModeServer];
+        	session = [[GKSession alloc] initWithSessionID:@"oncircles"
+			   displayName:[NSString stringWithFormat:@"%@:%d:%@:%ld",user.name,user.userId,name,meet_id]
+			   sessionMode:GKSessionModeServer];
+	}
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
-		mode = BT_HOST ;
-    }
+	mode = BT_HOST ;
+
 	NSLog(@"start host mode : %@", [session displayNameForPeer:session.peerID]);
 	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_SERVER_TIMEOUT
                                              target:self
@@ -56,20 +57,25 @@
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     
 	if (!session) {
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
-										displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
-										sessionMode:GKSessionModePeer];
+		//first time create the session
+        	session = [[GKSession alloc] initWithSessionID:@"oncircles"
+			displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
+			sessionMode:GKSessionModePeer];
+	}
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
+	NSLog(@"started PM session %x peer %x %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
+	mode = BT_PEER ;
+
+	//turn on the session
         session.available = YES;
-		NSLog(@"start Peer  %@", [session displayNameForPeer:session.peerID]);
-		mode = BT_PEER ;
-    }
+	//timer to stop the session
 	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_TIMEOUT
                                              target:self
                                            selector:@selector(bluetoothDidTimeout:userInfo:)
                                            userInfo:nil
                                             repeats:false];
+	return;
 }
 
 // start peer with meet_id from meet detail view
@@ -82,20 +88,22 @@
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     
 	if (!session) {
-        session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"
-										   displayName:[NSString stringWithFormat:@"%@:%d_%d:%ld",user.name,now,user.userId,meet_id]
-										   sessionMode:GKSessionModePeer];
+        	session = [[GKSession alloc] initWithSessionID:@"oncircles"
+			   displayName:[NSString stringWithFormat:@"%@:%d_%d:%ld",user.name,now,user.userId,meet_id]
+			   sessionMode:GKSessionModePeer];
+	}
         session.delegate = self;
         [session setDataReceiveHandler:self withContext:nil];
         session.available = YES;
-		NSLog(@"start Peer %@", [session displayNameForPeer:session.peerID]);
-		mode = BT_ADD ;
-    }
+	NSLog(@"start PM session %x peer %x %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
+	mode = BT_ADD ;
+	
 	timer = [NSTimer scheduledTimerWithTimeInterval:BLUETOOTH_TIMEOUT
                                              target:self
                                            selector:@selector(bluetoothDidTimeout:userInfo:)
                                            userInfo:nil
                                             repeats:false];
+	return;
 }
 
 -(void) bluetoothDidTimeout:(NSTimer*)aTimer userInfo:(id)userInfo
@@ -107,21 +115,25 @@
 
 - (void) stopPeer
 {
-    // Set up the session for the next connection
+    // invalidate a session
     //
-	NSLog(@"stop peer %@", [session displayNameForPeer:session.peerID]);
-    [session disconnectFromAllPeers];
+	NSLog(@"stop PM session %x peer %x %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
+    	[session disconnectFromAllPeers];
 	session.available = NO;
 	[session setDataReceiveHandler: nil withContext: nil];
 	session.delegate = nil;
 	mode=BT_FREE;
-	//	[session release];
+	//[session release];
 }
 
 - (void) reset {
+
+	NSLog(@"session reset: %x peer %x %@\n", session, session.peerID, [session displayNameForPeer:session.peerID]);
 	if ( mode != BT_FREE ) [self stopPeer];
 	aNumber = 0 ;
-	session = nil;
+	self.session = nil;
+	//[session release];
+	//session = nil;
 	[peerList removeAllObjects]  ;
 	[devNames removeAllObjects]  ;
 }
@@ -172,13 +184,21 @@
 	}
 	switch (state) {
 		case GKPeerStateAvailable:
+		//NSLog(@"GKPeerStateAvailable peer %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
                 if (peerList) {
+					//NSLog(@"reported peer available %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
 					//[peerList addObject:peerID];
-					[peerList addObject:[aSession displayNameForPeer:peerID]];
+					//[peerList addObject:[aSession displayNameForPeer:peerID]];
 					//	[session connectToPeer:peerID withTimeout:10];
-					peerChanged = YES;
-					aNumber ++ ;
+					//peerChanged = YES;
+					//aNumber ++ ;
                 }
+
+		//we probably should do this asynchronously - send connect request regardless if this peer is real
+		//we will only accept the peer if we get connected state
+		NSLog(@"connecting to peer %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
+		[aSession connectToPeer:peerID withTimeout:0];
+
 			if ([delegate respondsToSelector:@selector(BluetoothDidUpdate:peer:)]) {
 				[delegate BluetoothDidUpdate:self peer:peerID];
 			}
@@ -186,16 +206,28 @@
 
 		case GKPeerStateUnavailable:
                 if (peerList) {
+			NSLog(@"reported peer unavailable %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
              //         [peerList removeObject:peerID];
                         peerChanged = YES;
                 }
+
                 break;
 
 		case GKPeerStateConnected:
+			NSLog(@"peer state connected %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
 			   [self.session setDataReceiveHandler :self withContext:nil];
+
+			   //now we put this peer into accepted peerList
+			   [peerList addObject:[aSession displayNameForPeer:peerID]];
+			   aNumber++;
+			   peerChanged = YES;
+
 			// [self mySendData]; start off by sending data upon connection
 				break;
+
 		case GKPeerStateDisconnected:
+			NSLog(@"peer state disconnected %@\n", [aSession displayNameForPeer:peerID]);	
+			//I am doing nothing at this time
 				break;
 	}
 	if ( aNumber == BLUETOOTH_MAX_FRIEND ){
@@ -207,13 +239,17 @@
 
 - (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
 	NSError *error = nil;
+	
+	NSLog(@"received connection request %x %@\n", peerID, [session displayNameForPeer:peerID]);
+
 	[self.session acceptConnectionFromPeer:peerID error:&error];
 	if (error)
-		NSLog(@"%@",error);
+		NSLog(@"error in acceptConnectionFromPeer %@",error);
 }
 
 - (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error {
-	NSLog(@"%@",error);
+	//this would be normal for phantom peers
+	NSLog(@"connectionWithPeerFailed %x %@" ,peerID, error);
 }
 
 - (void)peerPickerController:(GKPeerPickerController *)picker didConnectToPeer:(NSString *)peerID {
@@ -249,6 +285,12 @@
 	if (timer)    [timer invalidate];
 //	[picker release];
 	if ( mode != BT_FREE ) [self stopPeer];
+
+	//reset won't be called, so I think we need to do these three things
+	self.session =nil;
+	[peerList removeAllObjects]  ;
+	[devNames removeAllObjects]  ;
+
 	[peerList release];
 	[devNames release];
 	[super dealloc];
