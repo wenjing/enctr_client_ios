@@ -41,6 +41,7 @@ typedef enum {
 
 // utilities
 
+- (int)findPeerName:(NSString*)name;
 - (NSString *)getPeerNameList ;
 - (NSString *)findHost ;
 - (NSString *)findMeet ;
