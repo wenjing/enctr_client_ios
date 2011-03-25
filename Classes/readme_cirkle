@@ -1,0 +1,27 @@
+Server API access:
+KYMeetClient
+KYMeetClient.getUserCirkles:params:withUserId
+KYMeetClient.getUserCirkles:params:withUserId:withFriendId
+KYMeetClient.getUserCirkles:params:withUserId:withCirkleId
+KYMeetClient.getUserCirkles:params:withUserId
+
+Data model & DB
+Timeline
+Timeline.initWithData:data:withId
+KYTimeline
++KYTimeline.getTimelinesFromDB:timelines
+KYTimeline.initWithJsonDictionary:dic:type:user
+KYTimeline.insertDB
+KYTimeline.deleteFromDB
++KYTimeline.timelineWithJsonDictionary:dic
++KYTimeline.timelineWithStatement:stmt
++KYTimeline.isExists:id
+
+Issues
+1) Spotty photo display
+2) Unfinished, keep updating. Unreliable network connect (drop of return message)?
+3) No reset after sending message when 2) happens. (old text and photo still remains)
+4) No update view after sending message. Have to manually update.
+5) Missing top drag update feature in meet flash back view.
+6) Shall auto update meet list after a specified period after a mpost is submitted.
+7) 

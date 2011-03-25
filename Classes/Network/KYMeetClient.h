@@ -14,9 +14,12 @@ typedef enum {
 	KAYAMEET_REQUEST_POST_INVITE,
     KAYAMEET_REQUEST_POST_MEET,
 	KAYAMEET_REQUEST_POST_MESSAGE,
+	KAYAMEET_REQUEST_POST_USERMESSAGE,
 	KAYAMEET_REQUEST_POST_PHOTO,
 	KAYAMEET_REQUEST_GET_MEET,
-	KAYAMEET_REQUEST_GET_USERMEETS
+	KAYAMEET_REQUEST_GET_USERMEETS,
+	KAYAMEET_REQUEST_GET_TIMELINES,
+	KAYAMEET_REQUEST_GET_CIRKLES
 } RequestType;
 
 
@@ -43,7 +46,15 @@ typedef enum {
 - (void)getMeet :(NSDictionary*)params withPostId:(uint32_t)postId ;
 - (void)getUserMeets :(NSDictionary*)params withUserId:(uint32_t)userId;
 
-- (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId toChatId:(int)chatId photoData:(UIImage*)photo;
+- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId;
+- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId;
+- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId;
+- (void)getCirkles   :(NSDictionary*)params withUserId:(uint32_t)userId;
+
+- (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId photoData:(UIImage*)photo;
+- (void)postMessage:(NSString*)message toUserId:(uint64_t)meetId photoData:(UIImage*)photo;
+- (void)postMessage:(NSString*)message toChatId:(uint64_t)meetId photoData:(UIImage*)photo;
+- (void)postMessage:(NSString*)message toUrl:(NSString*)url photoData:(UIImage*)photo;
 - (void)postInvite:(NSString*)emails byUserId:(uint32_t)userId byMeetId:(uint64_t)meetId custMessage:(NSString*)message;
 - (void)verify;
 - (void)alert;

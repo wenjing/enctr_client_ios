@@ -50,7 +50,7 @@
 									  soundFileURLRef,
 									  &soundFileObject
 									  );
-
+    HUD = nil;
 }
 
 - (void) viewDidUnload
@@ -138,13 +138,29 @@
 //	contentOffset = 0;
 }
 
+- (void) stopHUD
+{
+  if (HUD) {
+    //NSLog(@"HUD stop %@", self.navigationController.view);
+    [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+    HUD = nil;
+  }
+}
+
+- (void) startHUD
+{
+  [self stopHUD];
+  //NSLog(@"HUD start %@", self.navigationController.view);
+  HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+}
+
 //
 // called by appDelegate for initialization
 //
 - (void) restoreAndLoadMeets:(BOOL)load
 {
 	tab       = [self navigationController].tabBarItem.tag;
-	HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        [self startHUD];
 	HUD.labelText = @"load meets..";
 	if (meetDataSource) [meetDataSource release];
 	meetDataSource = [[MeetViewDataSource alloc] initWithController:self] ;
@@ -169,7 +185,7 @@
 	AudioServicesPlaySystemSound (soundFileObject);
 	// BT device connection
 	[bt   reset ] ;
-	HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        [self startHUD];
 	HUD.labelText = @"finding friend..";
 	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
 	[bt startPeer];
@@ -286,7 +302,7 @@ static SEL  clickedCancel  ;
 
 - (void) BluetoothDidFinished:(BluetoothConnect *)Bluetooth {
 
-	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];	
+        [self stopHUD];
 	self.navigationItem.rightBarButtonItem.enabled = true;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
 	
@@ -380,7 +396,7 @@ static SEL  clickedCancel  ;
 	//self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+        [self stopHUD];
     if (self.navigationController.tabBarController.selectedIndex == tab &&
         self.navigationController.topViewController == self) {
 		
@@ -410,7 +426,7 @@ static SEL  clickedCancel  ;
 	//self.navigationItem.leftBarButtonItem.enabled = true;
 	self.navigationItem.rightBarButtonItem.enabled = true;
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	[MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+        [self stopHUD];
 }
 
 // message return screen

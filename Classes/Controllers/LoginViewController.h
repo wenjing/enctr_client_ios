@@ -6,6 +6,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "KYMeetClient.h"
 
 @interface LoginViewController : UIViewController<UITextFieldDelegate>  {
 	IBOutlet UIView*		view ;

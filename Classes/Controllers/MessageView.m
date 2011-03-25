@@ -10,45 +10,50 @@
 
 @implementation MessageView
 
-@synthesize InReplyToChatId, InReplyToMeetId, isReplyFlag, isInviteFlag;
+@synthesize InReplyToChatId, InReplyToUserId, InReplyToMeetId, isReplyFlag, isInviteFlag;
 
 - (void)awakeFromNib
 {
     recipient.font = [UIFont systemFontOfSize:16];
     charCount.font = [UIFont boldSystemFontOfSize:16];
-    
     text.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"kayameet"];
-    NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToMeetId"];
-    InReplyToMeetId = [number longLongValue];
-	number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToChatId"];
 
-	if (InReplyToChatId) {
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToChatId"];
+    if (InReplyToChatId) {
         to.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"Reply-To"];
         recipient.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"recipient"];
     }
-	InReplyToChatId = [number longValue]-1;
+    InReplyToChatId = [number longValue]-1;
+
+    number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToUserId"];
+    InReplyToUserId = [number longLongValue];
+
+    number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToMeetId"];
+    InReplyToMeetId = [number longLongValue];
 }
 
-- (void)editReply:(KYMeet*)mt ofChatId:(uint32_t)chatId
+- (void)editReply:(sqlite_int64)chatId
 {
-    InReplyToMeetId   = mt.meetId;
     InReplyToChatId   = chatId;
-	isReplyFlag = true;
-	isInviteFlag = false;
+    InReplyToUserId   = 0;
+    InReplyToMeetId   = 0;
+    isReplyFlag = true;
+    isInviteFlag = false;
     to.text = @"In-Reply-To:";
     recipient.text = [NSString stringWithFormat:@"char %d",chatId] ;
     recipient.enabled = true;
     recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
 
-- (void)editInvite:(KYMeet*)mt
+- (void)editMessageUser:(User*)user
 {
-	InReplyToMeetId   = mt.meetId;
-	isReplyFlag = false;
-	isInviteFlag = true;
-    to.text = @"To :";
-    recipient.enabled = true;
-    recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+	InReplyToChatId = 0;
+	InReplyToUserId = user.userId;
+	InReplyToMeetId = 0;
+	isReplyFlag = false  ;
+	isInviteFlag = false ;
+	to.text = @"Post-To:";
+	recipient.enabled = false;
 }
 
 - (void)editMessage:(KYMeet*)mt
@@ -58,6 +63,18 @@
 	isInviteFlag = false ;
 	to.text = @"Post-To:";
 	recipient.enabled = false;
+}
+
+- (void)editInvite:(KYMeet*)mt
+{
+    InReplyToMeetId   = mt.meetId;
+    InReplyToUserId   = 0;
+    InReplyToChatId   = 0;
+    isReplyFlag = false;
+    isInviteFlag = true;
+    to.text = @"To :";
+    recipient.enabled = true;
+    recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
 
 - (void)createTransform:(BOOL)isDelete

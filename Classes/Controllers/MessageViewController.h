@@ -40,9 +40,10 @@
 @property(nonatomic, retain) UIImage*  selectedPhoto;
 @property(nonatomic, assign) UIImageView* picture;
 
+- (void)replyTo:(sqlite3_int64)cid;
+- (void)postToUser:(User*)user;
 - (void)postTo:(KYMeet*)mt;
 - (void)inviteTo:(KYMeet*)mt;
-- (void)replyTo:(KYMeet*)mt ofChatId:(uint32_t)cid;
 - (void)saveMessage;
 - (void)checkProgressWindowState;
 - (void)imagePickerControllerDidDisappear;

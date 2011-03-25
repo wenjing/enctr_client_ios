@@ -237,10 +237,10 @@
 	}
 }
 
-- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
+- (void)session:(GKSession *)session0 didReceiveConnectionRequestFromPeer:(NSString *)peerID {
 	NSError *error = nil;
 	
-	NSLog(@"received connection request %x %@\n", peerID, [session displayNameForPeer:peerID]);
+	NSLog(@"received connection request %x %@\n", peerID, [session0 displayNameForPeer:peerID]);
 
 	[self.session acceptConnectionFromPeer:peerID error:&error];
 	if (error)

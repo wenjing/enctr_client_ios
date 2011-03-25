@@ -25,5 +25,28 @@ CREATE TABLE meets (
 	'user_count' INTEGER,
 PRIMARY KEY(id,postid,type)
 );
+
 CREATE INDEX meet_ids on meets(id);
 CREATE INDEX post_ids on meets(postId);
+
+CREATE TABLE news (
+        'id'      INTEGER,
+        'odd'     INTEGER,
+        'data'    TEXT,
+PRIMARY KEY(id)
+);
+CREATE INDEX news_ids on news(id);
+CREATE INDEX news_odds on news(odd);
+
+CREATE TABLE cirkles (
+        'id'      INTEGER,
+        'odd'     INTEGER,
+        'uid'     INTEGER,
+        'cid'     INTEGER,
+        'data'    TEXT,
+PRIMARY KEY(id)
+);
+CREATE INDEX cirkle_ids on cirkles(id);
+CREATE INDEX cirkle_odds on cirkles(odd);
+CREATE INDEX cirkle_uids on cirkles(uid);
+CREATE INDEX cirkle_cids on cirkles(cid);
