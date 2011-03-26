@@ -15,8 +15,7 @@ typedef enum {
 } KAYA_MEET_BT_TYPE;
 
 
-@interface BluetoothConnect : NSObject<GKPeerPickerControllerDelegate, GKSessionDelegate>  {
-//	GKPeerPickerController  *picker  ;
+@interface BluetoothConnect : NSObject <GKSessionDelegate>  {
 	GKSession				*session ;
 	NSMutableArray			*peerList;
 	int					     aNumber ;
@@ -26,7 +25,6 @@ typedef enum {
 	NSMutableArray			*devNames;
 }
 
-//@property (nonatomic, retain) GKPeerPickerController *picker;
 @property (nonatomic, retain) GKSession *session;
 @property (nonatomic, retain) NSMutableArray *peerList, *devNames;
 @property (nonatomic, readwrite) KAYA_MEET_BT_TYPE mode;

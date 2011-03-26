@@ -108,6 +108,16 @@
 		3D0E95EF130CE7F700CB021F /* cirkle-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */; };
 		3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */; };
 		3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */; };
+		3DF4B8F013397D1100748045 /* EncounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EE13397D1100748045 /* EncounterViewController.m */; };
+		3DF4B8F113397D1100748045 /* EncounterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EF13397D1100748045 /* EncounterViewController.xib */; };
+		3DF4B9191339827300748045 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B9181339827300748045 /* SessionManager.m */; };
+		3DF4B9FE133A656F00748045 /* EncounterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B9FD133A656F00748045 /* EncounterCell.m */; };
+		3DF4BA03133A65E600748045 /* EncounterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4BA02133A65E600748045 /* EncounterView.m */; };
+		3DF4BB12133A9A0200748045 /* person1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4BB11133A9A0200748045 /* person1.png */; };
+		3DF4BB14133A9A0F00748045 /* person2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4BB13133A9A0F00748045 /* person2.png */; };
+		3DF4BB16133A9A1800748045 /* person3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4BB15133A9A1800748045 /* person3.png */; };
+		3DF4BB18133A9A2100748045 /* person4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4BB17133A9A2100748045 /* person4.png */; };
+		3DF4BB1A133A9A2900748045 /* person5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4BB19133A9A2900748045 /* person5.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -278,6 +288,20 @@
 		3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29.png"; path = "images/cirkle-29x29.png"; sourceTree = "<group>"; };
 		3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57.png"; path = "images/cirkle-57x57.png"; sourceTree = "<group>"; };
 		3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72.png"; path = "images/cirkle-72x72.png"; sourceTree = "<group>"; };
+		3DF4B8ED13397D1100748045 /* EncounterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterViewController.h; sourceTree = "<group>"; };
+		3DF4B8EE13397D1100748045 /* EncounterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterViewController.m; sourceTree = "<group>"; };
+		3DF4B8EF13397D1100748045 /* EncounterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EncounterViewController.xib; path = Classes/EncounterViewController.xib; sourceTree = "<group>"; };
+		3DF4B9171339827300748045 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
+		3DF4B9181339827300748045 /* SessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
+		3DF4B9FC133A656F00748045 /* EncounterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterCell.h; sourceTree = "<group>"; };
+		3DF4B9FD133A656F00748045 /* EncounterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterCell.m; sourceTree = "<group>"; };
+		3DF4BA01133A65E600748045 /* EncounterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterView.h; sourceTree = "<group>"; };
+		3DF4BA02133A65E600748045 /* EncounterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterView.m; sourceTree = "<group>"; };
+		3DF4BB11133A9A0200748045 /* person1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person1.png; sourceTree = "<group>"; };
+		3DF4BB13133A9A0F00748045 /* person2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person2.png; sourceTree = "<group>"; };
+		3DF4BB15133A9A1800748045 /* person3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person3.png; sourceTree = "<group>"; };
+		3DF4BB17133A9A2100748045 /* person4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person4.png; sourceTree = "<group>"; };
+		3DF4BB19133A9A2900748045 /* person5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person5.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,12 +395,13 @@
 				3A28F325129C4F32001F4F0D /* Cirkle-db.sql */,
 				3AA51E181284ED5F00D8565B /* Cirkle-Info.plist */,
 				3A6F1CCC127654210044D6E6 /* images */,
-				3AD41C3A12891FF8001B2E90 /* meetView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* moreView.xib */,
 				3A04AB8812D15677000B99FB /* placeView.xib */,
 				3ACA182D1288E5DD00D74450 /* setupView.xib */,
+				3DF4B8EF13397D1100748045 /* EncounterViewController.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				3AF7B3B71278F96F008F83BC /* LoginView.xib */,
+				3AD41C3A12891FF8001B2E90 /* meetView.xib */,
 				3A4269F812C675CB0091D520 /* MeetDetailView.xib */,
 				3A636D0B12D44B8A008A8B47 /* MessageView.xib */,
 			);
@@ -503,6 +528,11 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3DF4BB11133A9A0200748045 /* person1.png */,
+				3DF4BB13133A9A0F00748045 /* person2.png */,
+				3DF4BB15133A9A1800748045 /* person3.png */,
+				3DF4BB17133A9A2100748045 /* person4.png */,
+				3DF4BB19133A9A2900748045 /* person5.png */,
 				3A01B278130E431600ADBF42 /* small-graph@2x.png */,
 				3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */,
 				3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */,
@@ -558,6 +588,8 @@
 		3AA51D0F1284C2AB00D8565B /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3DF4B9171339827300748045 /* SessionManager.h */,
+				3DF4B9181339827300748045 /* SessionManager.m */,
 				3AFC916612A6025E00BB0FB5 /* BlueTooth.h */,
 				3AFC916712A6025E00BB0FB5 /* BlueTooth.m */,
 				3AA51E3E1284F37100D8565B /* KYMeetClient.h */,
@@ -620,10 +652,10 @@
 				3A636D1212D44EB5008A8B47 /* MessageViews */,
 				3A863252127D618200147E3B /* TabBarController.h */,
 				3A863253127D618200147E3B /* TabBarController.m */,
-				3AF7B3D5127908C3008F83BC /* LoginViewController.m */,
 				3AF7B3D6127908C3008F83BC /* LoginViewController.h */,
-				1D3623250D0F684500981E51 /* kaya_meetAppDelegate.m */,
+				3AF7B3D5127908C3008F83BC /* LoginViewController.m */,
 				1D3623240D0F684500981E51 /* kaya_meetAppDelegate.h */,
+				1D3623250D0F684500981E51 /* kaya_meetAppDelegate.m */,
 				3ACA18351288E62900D74450 /* SetupViewController.h */,
 				3ACA18361288E62900D74450 /* SetupViewController.m */,
 				3A03974D128DD82C004C2315 /* MeetViews */,
@@ -633,6 +665,12 @@
 				3A04AA5C12D02520000B99FB /* placeDisplayMap.m */,
 				3A04A94312D00522000B99FB /* PlaceViewController.h */,
 				3A04A94412D00522000B99FB /* PlaceViewController.m */,
+				3DF4BA01133A65E600748045 /* EncounterView.h */,
+				3DF4BA02133A65E600748045 /* EncounterView.m */,
+				3DF4B9FC133A656F00748045 /* EncounterCell.h */,
+				3DF4B9FD133A656F00748045 /* EncounterCell.m */,
+				3DF4B8ED13397D1100748045 /* EncounterViewController.h */,
+				3DF4B8EE13397D1100748045 /* EncounterViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -719,6 +757,12 @@
 				3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */,
 				3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */,
 				3A01B279130E431600ADBF42 /* small-graph@2x.png in Resources */,
+				3DF4B8F113397D1100748045 /* EncounterViewController.xib in Resources */,
+				3DF4BB12133A9A0200748045 /* person1.png in Resources */,
+				3DF4BB14133A9A0F00748045 /* person2.png in Resources */,
+				3DF4BB16133A9A1800748045 /* person3.png in Resources */,
+				3DF4BB18133A9A2100748045 /* person4.png in Resources */,
+				3DF4BB1A133A9A2900748045 /* person5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +833,10 @@
 				3A6CEFF9131909E800D705B2 /* TimelineEncounterViewCell.m in Sources */,
 				3AF854821326A1D100676E02 /* BaseTableViewCell.m in Sources */,
 				3AF854831326A1D100676E02 /* TimelineViewCell.m in Sources */,
+				3DF4B8F013397D1100748045 /* EncounterViewController.m in Sources */,
+				3DF4B9191339827300748045 /* SessionManager.m in Sources */,
+				3DF4B9FE133A656F00748045 /* EncounterCell.m in Sources */,
+				3DF4BA03133A65E600748045 /* EncounterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

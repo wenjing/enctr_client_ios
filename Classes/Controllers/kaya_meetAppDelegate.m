@@ -71,6 +71,17 @@
 	else {
 		[self postInit];
 	}
+	
+	// turn on this for on phone logging
+#if 0	
+#if TARGET_IPHONE_SIMULATOR == 0
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];
+    freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+#endif
+#endif
+	
 	[window makeKeyAndVisible];
     return YES;
 }

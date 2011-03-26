@@ -141,12 +141,7 @@
 - (id)initWithDelegate:(id)aDelegate {
 	[super init];
 	delegate = aDelegate;
-	// allocate and setup the peer picker controller
-	// not use the picker as for now
-//	picker  = [[GKPeerPickerController alloc] init];
-//	picker.delegate = self;
-//	picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
-//	[picker show];
+
 	peerList = [[NSMutableArray alloc] init];
 	devNames = [[NSMutableArray alloc] init];
 	aNumber = 0 ;
@@ -156,26 +151,6 @@
 }
 
 
-/*- (void)peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type {
-//}
-
-- (GKSession *) peerPickerController:(GKPeerPickerController *)picker
-	sessionForConnectionType:(GKPeerPickerConnectionType)type {
-	if ( session == nil ) {
-		session = [[GKSession alloc] initWithSessionID:@"kaya_meet_app"  displayName:nil sessionMode:GKSessionModePeer];
-		session.delegate = self;
-		[session setDataReceiveHandler:self withContext:nil];
-        session.available = YES;
-	}
-	return session;
-}
-
-- (void) loadPeerList
-{
-	if (peerList == nil ) 
-		peerList = [[NSMutableArray alloc] initWithArray:[session peersWithConnectionState:GKPeerStateAvailable]];
-}
-*/
 - (void)session:(GKSession *)aSession peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
 	BOOL peerChanged = NO;
 	if (mode == BT_HOST) {
@@ -184,16 +159,6 @@
 	}
 	switch (state) {
 		case GKPeerStateAvailable:
-		//NSLog(@"GKPeerStateAvailable peer %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
-                if (peerList) {
-					//NSLog(@"reported peer available %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
-					//[peerList addObject:peerID];
-					//[peerList addObject:[aSession displayNameForPeer:peerID]];
-					//	[session connectToPeer:peerID withTimeout:10];
-					//peerChanged = YES;
-					//aNumber ++ ;
-                }
-
 		//we probably should do this asynchronously - send connect request regardless if this peer is real
 		//we will only accept the peer if we get connected state
 		NSLog(@"connecting to peer %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
@@ -237,46 +202,24 @@
 	}
 }
 
-- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
+- (void)session:(GKSession *)aSession didReceiveConnectionRequestFromPeer:(NSString *)peerID {
 	NSError *error = nil;
 	
-	NSLog(@"received connection request %x %@\n", peerID, [session displayNameForPeer:peerID]);
+	NSLog(@"received connection request %x %@\n", peerID, [aSession displayNameForPeer:peerID]);
 
-	[self.session acceptConnectionFromPeer:peerID error:&error];
+	//there is only one session: self.session and aSession is the same
+	if (self.session != aSession) {
+		NSLog(@"What?! there are many sessions!\n");
+	}
+	[aSession acceptConnectionFromPeer:peerID error:&error];
+	
 	if (error)
 		NSLog(@"error in acceptConnectionFromPeer %@",error);
 }
 
-- (void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error {
+- (void)session:(GKSession *)aSession connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error {
 	//this would be normal for phantom peers
-	NSLog(@"connectionWithPeerFailed %x %@" ,peerID, error);
-}
-
-- (void)peerPickerController:(GKPeerPickerController *)picker didConnectToPeer:(NSString *)peerID {
-    NSLog(@"connection was successful! \n");
-}
-
-
-- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker {
-	NSLog(@"connection attempt was canceled\n");
-}
-
-
-- (void)mySendData {
-	// allocate the NSData
-	aNumber++;
-	NSData *myData = [[NSData alloc] initWithBytes:&aNumber length:sizeof(int)];
-	[session sendDataToAllPeers :myData withDataMode:GKSendDataReliable error:nil];
-	[myData autorelease];
-}
-
-
-- (void) receiveData:(NSData *)data fromPeer:(NSString *)peer inSession: (GKSession *)session context:(void *)context
-{
-	// Read the bytes in data and perform an application-specific action, then free the NSData object
-	[data getBytes:&aNumber length:sizeof(int)];
-	NSLog(@"received data: %i from: %s\n", aNumber, [peer UTF8String]);
-	[self mySendData];
+	NSLog(@"connectionWithPeerFailed %x %@ %@" ,peerID, [aSession displayNameForPeer:peerID], error);
 }
 
 
