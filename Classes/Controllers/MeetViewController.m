@@ -83,7 +83,7 @@
 		[self.tableView reloadData];
 	}
     // Debug cirkle data API
-    [self restoreAndLoadCirkles];
+    //[self restoreAndLoadCirkles];
 }
 
 -(void)restoreAndLoadCirkles
