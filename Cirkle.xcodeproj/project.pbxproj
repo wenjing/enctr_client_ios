@@ -11,6 +11,13 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1E3DB383133AC4EA00B5C8B1 /* Cirkle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */; };
+		1E3DB38A133AC57C00B5C8B1 /* QueryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB387133AC57C00B5C8B1 /* QueryProtocol.m */; };
+		1E3DB38B133AC57C00B5C8B1 /* RecordProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB389133AC57C00B5C8B1 /* RecordProtocol.m */; };
+		1E3DB38E133AC58600B5C8B1 /* CirkleQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB38D133AC58600B5C8B1 /* CirkleQuery.m */; };
+		1E3DB39C133AD64500B5C8B1 /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB399133AD64500B5C8B1 /* News.m */; };
+		1E3DB39D133AD64500B5C8B1 /* NewsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB39B133AD64500B5C8B1 /* NewsQuery.m */; };
+		1E3DB3A3133AD69400B5C8B1 /* Timeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB3A2133AD69400B5C8B1 /* Timeline.m */; };
 		28216C970DB411BC00E5133A /* MeetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* MeetViewController.m */; };
 		282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* moreView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
@@ -30,7 +37,6 @@
 		3A0FC734128A1D4C00BFC7F5 /* KYMeet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC733128A1D4C00BFC7F5 /* KYMeet.m */; };
 		3A0FC753128A508300BFC7F5 /* MeetViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */; };
 		3A0FC761128A513600BFC7F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0FC760128A513600BFC7F5 /* QuartzCore.framework */; };
-		3A17B1EB1314DAAF00338E5D /* Timeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A17B1EA1314DAAF00338E5D /* Timeline.m */; };
 		3A28F326129C4F32001F4F0D /* Cirkle-db.sql in Resources */ = {isa = PBXBuildFile; fileRef = 3A28F325129C4F32001F4F0D /* Cirkle-db.sql */; };
 		3A2A4569128E09BD001280BA /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2A4568128E09BD001280BA /* LocationManager.m */; };
 		3A2F898D12C9BFD300D465CD /* UACellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F898C12C9BFD300D465CD /* UACellBackgroundView.m */; };
@@ -126,6 +132,20 @@
 		1D3623250D0F684500981E51 /* kaya_meetAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = kaya_meetAppDelegate.m; path = Controllers/kaya_meetAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Cirkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cirkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1E3DB381133AC4EA00B5C8B1 /* Cirkle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cirkle.h; path = Models/Cirkle.h; sourceTree = "<group>"; };
+		1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Cirkle.m; path = Models/Cirkle.m; sourceTree = "<group>"; };
+		1E3DB386133AC57C00B5C8B1 /* QueryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueryProtocol.h; path = Models/QueryProtocol.h; sourceTree = "<group>"; };
+		1E3DB387133AC57C00B5C8B1 /* QueryProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QueryProtocol.m; path = Models/QueryProtocol.m; sourceTree = "<group>"; };
+		1E3DB388133AC57C00B5C8B1 /* RecordProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordProtocol.h; path = Models/RecordProtocol.h; sourceTree = "<group>"; };
+		1E3DB389133AC57C00B5C8B1 /* RecordProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordProtocol.m; path = Models/RecordProtocol.m; sourceTree = "<group>"; };
+		1E3DB38C133AC58600B5C8B1 /* CirkleQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CirkleQuery.h; path = Models/CirkleQuery.h; sourceTree = "<group>"; };
+		1E3DB38D133AC58600B5C8B1 /* CirkleQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CirkleQuery.m; path = Models/CirkleQuery.m; sourceTree = "<group>"; };
+		1E3DB398133AD64500B5C8B1 /* News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = News.h; path = Models/News.h; sourceTree = "<group>"; };
+		1E3DB399133AD64500B5C8B1 /* News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = News.m; path = Models/News.m; sourceTree = "<group>"; };
+		1E3DB39A133AD64500B5C8B1 /* NewsQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NewsQuery.h; path = Models/NewsQuery.h; sourceTree = "<group>"; };
+		1E3DB39B133AD64500B5C8B1 /* NewsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsQuery.m; path = Models/NewsQuery.m; sourceTree = "<group>"; };
+		1E3DB3A1133AD69400B5C8B1 /* Timeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timeline.h; path = Models/Timeline.h; sourceTree = "<group>"; };
+		1E3DB3A2133AD69400B5C8B1 /* Timeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timeline.m; path = Models/Timeline.m; sourceTree = "<group>"; };
 		28216C950DB411BC00E5133A /* MeetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewController.h; path = Controllers/MeetViewController.h; sourceTree = "<group>"; };
 		28216C960DB411BC00E5133A /* MeetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewController.m; path = Controllers/MeetViewController.m; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* moreView.xib */ = {isa = PBXFileReference; explicitFileType = file.xib; name = moreView.xib; path = Resources/moreView.xib; sourceTree = "<group>"; };
@@ -159,8 +179,6 @@
 		3A0FC751128A508300BFC7F5 /* MeetViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewDataSource.h; path = Controllers/MeetViewDataSource.h; sourceTree = "<group>"; };
 		3A0FC752128A508300BFC7F5 /* MeetViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewDataSource.m; path = Controllers/MeetViewDataSource.m; sourceTree = "<group>"; };
 		3A0FC760128A513600BFC7F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		3A17B1E91314DAAF00338E5D /* Timeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timeline.h; path = Models/Timeline.h; sourceTree = "<group>"; };
-		3A17B1EA1314DAAF00338E5D /* Timeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timeline.m; path = Models/Timeline.m; sourceTree = "<group>"; };
 		3A28F325129C4F32001F4F0D /* Cirkle-db.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cirkle-db.sql"; path = "Resources/Cirkle-db.sql"; sourceTree = "<group>"; };
 		3A2A4567128E09BD001280BA /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationManager.h; path = Models/LocationManager.h; sourceTree = "<group>"; };
 		3A2A4568128E09BD001280BA /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationManager.m; path = Models/LocationManager.m; sourceTree = "<group>"; };
@@ -329,10 +347,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3AF7B465127919C4008F83BC /* Models */,
 				3A3496F91294E3DB00AFFB30 /* JSON-NEW */,
 				3AA51D0F1284C2AB00D8565B /* Network */,
 				3AF7B46A12791A35008F83BC /* Controllers */,
-				3AF7B465127919C4008F83BC /* Models */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -343,6 +361,28 @@
 				1D6058910D05DD3D006BFB54 /* Cirkle.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1E3DB380133AC4C100B5C8B1 /* Cirkle */ = {
+			isa = PBXGroup;
+			children = (
+				1E3DB38C133AC58600B5C8B1 /* CirkleQuery.h */,
+				1E3DB38D133AC58600B5C8B1 /* CirkleQuery.m */,
+				1E3DB381133AC4EA00B5C8B1 /* Cirkle.h */,
+				1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */,
+			);
+			name = Cirkle;
+			sourceTree = "<group>";
+		};
+		1E3DB385133AC56100B5C8B1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				1E3DB386133AC57C00B5C8B1 /* QueryProtocol.h */,
+				1E3DB387133AC57C00B5C8B1 /* QueryProtocol.m */,
+				1E3DB388133AC57C00B5C8B1 /* RecordProtocol.h */,
+				1E3DB389133AC57C00B5C8B1 /* RecordProtocol.m */,
+			);
+			name = Protocol;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* kaya-meet */ = {
@@ -455,22 +495,26 @@
 			name = MeetViews;
 			sourceTree = "<group>";
 		};
-		3A17B1E81314DA3100338E5D /* Timeline */ = {
+		3A17B1E81314DA3100338E5D /* News */ = {
 			isa = PBXGroup;
 			children = (
-				3A17B1E91314DAAF00338E5D /* Timeline.h */,
-				3A17B1EA1314DAAF00338E5D /* Timeline.m */,
+				1E3DB3A1133AD69400B5C8B1 /* Timeline.h */,
+				1E3DB3A2133AD69400B5C8B1 /* Timeline.m */,
+				1E3DB398133AD64500B5C8B1 /* News.h */,
+				1E3DB399133AD64500B5C8B1 /* News.m */,
+				1E3DB39A133AD64500B5C8B1 /* NewsQuery.h */,
+				1E3DB39B133AD64500B5C8B1 /* NewsQuery.m */,
 			);
-			name = Timeline;
+			name = News;
 			sourceTree = "<group>";
 		};
-		3A2A456A128E09C4001280BA /* location */ = {
+		3A2A456A128E09C4001280BA /* Location */ = {
 			isa = PBXGroup;
 			children = (
 				3A2A4567128E09BD001280BA /* LocationManager.h */,
 				3A2A4568128E09BD001280BA /* LocationManager.m */,
 			);
-			name = location;
+			name = Location;
 			sourceTree = "<group>";
 		};
 		3A3496F91294E3DB00AFFB30 /* JSON-NEW */ = {
@@ -611,7 +655,7 @@
 			name = User;
 			sourceTree = "<group>";
 		};
-		3AA5396C128B4ED700E389BA /* meets */ = {
+		3AA5396C128B4ED700E389BA /* Meet */ = {
 			isa = PBXGroup;
 			children = (
 				3A0FC732128A1D4C00BFC7F5 /* KYMeet.h */,
@@ -619,7 +663,7 @@
 				3A0FC71E128A03B500BFC7F5 /* Meet.h */,
 				3A0FC724128A096D00BFC7F5 /* Meet.m */,
 			);
-			name = meets;
+			name = Meet;
 			sourceTree = "<group>";
 		};
 		3AA77C36128C79830078D931 /* Database */ = {
@@ -636,10 +680,12 @@
 		3AF7B465127919C4008F83BC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3A17B1E81314DA3100338E5D /* Timeline */,
+				1E3DB385133AC56100B5C8B1 /* Protocol */,
+				1E3DB380133AC4C100B5C8B1 /* Cirkle */,
+				3A17B1E81314DA3100338E5D /* News */,
 				3A5F339B12A8E75A008E9353 /* Accerometer */,
-				3A2A456A128E09C4001280BA /* location */,
-				3AA5396C128B4ED700E389BA /* meets */,
+				3A2A456A128E09C4001280BA /* Location */,
+				3AA5396C128B4ED700E389BA /* Meet */,
 				3AA5396B128B4EC100E389BA /* User */,
 				3AA77C36128C79830078D931 /* Database */,
 			);
@@ -828,7 +874,6 @@
 				3A963B0B13137E69001BE108 /* HJMOUserBase.m in Sources */,
 				3A963B0C13137E69001BE108 /* HJObjManager.m in Sources */,
 				3A963B0D13137E69001BE108 /* HJWeakMutableArray.m in Sources */,
-				3A17B1EB1314DAAF00338E5D /* Timeline.m in Sources */,
 				3A6CEE3B1318CB0800D705B2 /* TimelineTopicViewCell.m in Sources */,
 				3A6CEFF9131909E800D705B2 /* TimelineEncounterViewCell.m in Sources */,
 				3AF854821326A1D100676E02 /* BaseTableViewCell.m in Sources */,
@@ -837,6 +882,13 @@
 				3DF4B9191339827300748045 /* SessionManager.m in Sources */,
 				3DF4B9FE133A656F00748045 /* EncounterCell.m in Sources */,
 				3DF4BA03133A65E600748045 /* EncounterView.m in Sources */,
+				1E3DB383133AC4EA00B5C8B1 /* Cirkle.m in Sources */,
+				1E3DB38A133AC57C00B5C8B1 /* QueryProtocol.m in Sources */,
+				1E3DB38B133AC57C00B5C8B1 /* RecordProtocol.m in Sources */,
+				1E3DB38E133AC58600B5C8B1 /* CirkleQuery.m in Sources */,
+				1E3DB39C133AD64500B5C8B1 /* News.m in Sources */,
+				1E3DB39D133AD64500B5C8B1 /* NewsQuery.m in Sources */,
+				1E3DB3A3133AD69400B5C8B1 /* Timeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,7 +901,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -859,7 +911,7 @@
 				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 			};
 			name = Debug;
 		};
@@ -869,7 +921,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Cirkle_Prefix.pch;
@@ -877,7 +929,7 @@
 				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -886,15 +938,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
 				SDKROOT = iphoneos;
+				"SDKROOT[arch=*]" = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -904,14 +955,14 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.2]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.2]" = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

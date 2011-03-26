@@ -85,19 +85,28 @@
     [self edit];
 }
 
+- (void)replyTo:(sqlite_int64)cid
+{
+	isReplyMessage = true;
+	isInviteMessage = false;
+	[messageView editReply:cid];
+	[self edit];
+}
+
+- (void)postToUser:(User*)user
+{
+	isReplyMessage = false;
+	isInviteMessage = false;
+    [messageView editMessageUser:user];
+    [self edit];
+}
+
 - (void)postTo:(KYMeet*)mt
 {
 	isReplyMessage = false;
 	isInviteMessage = false;
     [messageView editMessage:mt];
     [self edit];
-}
-
-- (void)replyTo:(KYMeet*)mt ofChatId:(uint32_t)cid
-{
-	isReplyMessage = true;
-	[messageView editReply:mt ofChatId:cid];
-	[self edit];
 }
 
 - (void)inviteTo:(KYMeet *)mt
@@ -165,9 +174,13 @@
 {
     KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
 	
-	[client postMessage:text.text toMeetId:messageView.InReplyToMeetId 
-								  toChatId:messageView.isReplyFlag?messageView.InReplyToChatId:-1
-								 photoData:selectedPhoto ];
+    if  (messageView.isReplyFlag) {
+      [client postMessage:text.text toMeetId:messageView.InReplyToChatId photoData:selectedPhoto];
+//  } else if (messageView.isUserFlag) {
+//    [client postMessage:text.text toMeetId:messageView.InReplyToUserId photoData:selectedPhoto];
+    } else {
+      [client postMessage:text.text toMeetId:messageView.InReplyToMeetId photoData:selectedPhoto];
+    }
     [progressWindow show];
     connection = client;
 }

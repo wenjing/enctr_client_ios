@@ -14,7 +14,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
+	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
 	{
 		self.wantsFullScreenLayout = YES; // we want to overlap the status bar.
 		
@@ -34,7 +34,6 @@
 	password_field.text = pass;
 }
 
-
 - (IBAction)done: (id)sender
 {
 //	if (![username_field.text matches:@"^[0-9A-Za-z_@.]+$" withSubstring:nil]) {
@@ -43,9 +42,9 @@
 //    } else {
         [username_field resignFirstResponder];
         [password_field resignFirstResponder];
-		[self saveSettings];
-		KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(accountDidVerify:obj:)];
-		[client verify];
+	[self saveSettings];
+	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(accountDidVerify:obj:)];
+	[client verify];
 //	}
 
 }

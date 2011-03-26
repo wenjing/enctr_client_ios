@@ -32,6 +32,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
 
 - (void)dealloc
 {
+  [self cancel];
 	[requestURL release];
 	[connection release];
 	[buf release];

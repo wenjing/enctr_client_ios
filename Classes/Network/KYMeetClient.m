@@ -68,6 +68,44 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [super get:url param:params];
 }
 
+- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId
+{
+  needAuth      = true;
+  NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];
+  request = KAYAMEET_REQUEST_GET_TIMELINES;
+  // can pass parameters through body if needed
+  [super get:url param:params]; 
+}
+
+- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId
+{
+  needAuth      = true;
+  NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];
+   [params setValue:[NSString stringWithFormat:@"%ld", friendId] forKey:@"user_id"];
+  request = KAYAMEET_REQUEST_GET_TIMELINES;
+  // can pass parameters through body if needed
+  [super get:url param:params]; 
+}
+
+- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId
+{
+  needAuth      = true;
+  NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];
+  [params setValue:[NSString stringWithFormat:@"%ld", cirkleId] forKey:@"cirkle_id"];
+  request = KAYAMEET_REQUEST_GET_TIMELINES;
+  // can pass parameters through body if needed
+  [super get:url param:params]; 
+}
+
+- (void)getCirkles:(NSDictionary*)params withUserId:(uint32_t)userId
+{
+  needAuth      = true;
+  NSString *url = [NSString stringWithFormat:@"%@/users/%ld/cirkles", KAYAMEET_SITE_NAME,userId];
+  request = KAYAMEET_REQUEST_GET_CIRKLES;
+  // can pass parameters through body if needed
+  [super get:url param:params]; 
+}
+
 // post meet 
 
 - (void)postMeet:(NSDictionary*)params
@@ -91,22 +129,35 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 	[self post:url body:inviteString];
 }
 
+// post Message (including photo)
+- (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId photoData:(UIImage*)photo
+{
+	NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/chatters",KAYAMEET_SITE_NAME,meetId];
+  [self postMessage:message toUrl:url photoData:photo];
+}
 
 // post Message (including photo)
-- (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId toChatId:(int)chatId photoData:(UIImage*)photo
+- (void)postMessage:(NSString*)message toChatId:(uint64_t)chatId photoData:(UIImage *)photo
 {
-	needAuth = true;
+	NSString* url = [NSString stringWithFormat:@"%@/chatters/%ld/comments",KAYAMEET_SITE_NAME,chatId];
+  [self postMessage:message toUrl:url photoData:photo];
+}
+
+// post Message (including photo)
+- (void)postMessage:(NSString*)message toUserId:(uint64_t)userId photoData:(UIImage *)photo
+{
+	NSString* url = [NSString stringWithFormat:@"%@/users/%ld/chatters",KAYAMEET_SITE_NAME,userId];
+  [self postMessage:message toUrl:url photoData:photo];
+}
+
+- (void)postMessage:(NSString*)message toUrl:(NSString*)url photoData:(UIImage*)photo
+{
+  needAuth = true;
 	request = KAYAMEET_REQUEST_POST_MEET;
-	NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/chatters",KAYAMEET_SITE_NAME,meetId];
 	NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								message, @"content", nil];
 	
-	// reply to chat
-	if(chatId > 0)
-	{
-		[dic setObject:[NSString stringWithFormat:@"%d",chatId] forKey:@"reply_chat_id"];
-	}
-	[dic setObject:[NSString stringWithFormat:@"test %ld",meetId] forKey:@"testid"];
+	//[dic setObject:[NSString stringWithFormat:@"test %ld",meetId] forKey:@"testid"];
 	NSMutableData *data = [NSMutableData data];
 	// When the server can support Data transfer
 	NSString *param = [self nameValString:dic];

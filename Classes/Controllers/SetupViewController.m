@@ -279,8 +279,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 	kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
 	MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
 	[mc resetMeets];	// push login view
-	kaya_delegate.selectedTab = TAB_MEETS;
-    kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+  	//kaya_delegate.selectedTab = TAB_MEETS;
+        //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
 	[kaya_delegate 	openLoginView];
 	
 }

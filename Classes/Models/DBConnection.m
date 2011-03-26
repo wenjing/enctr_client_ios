@@ -75,6 +75,16 @@ const char *delete_meets_cache_sql =
 "DELETE FROM meets;"
 "COMMIT;"
 "VACUUM;";
+const char *delete_news_cache_sql = 
+"BEGIN;"
+"DELETE FROM news;"
+"COMMIT;"
+"VACUUM;";
+const char *delete_cirkles_cache_sql = 
+"BEGIN;"
+"DELETE FROM cirkles;"
+"COMMIT;"
+"VACUUM;";
 
 + (void)deleteDBCache
 {
@@ -85,9 +95,17 @@ const char *delete_meets_cache_sql =
         // ignore error
         NSLog(@"Error: failed to cleanup users chache (%s)", errmsg);
     }
-	if (sqlite3_exec(theDatabase, delete_meets_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
+    if (sqlite3_exec(theDatabase, delete_meets_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
         // ignore error
         NSLog(@"Error: failed to cleanup meets chache (%s)", errmsg);
+    }
+    if (sqlite3_exec(theDatabase, delete_news_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
+        // ignore error
+        NSLog(@"Error: failed to cleanup news chache (%s)", errmsg);
+    }
+    if (sqlite3_exec(theDatabase, delete_cirkles_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
+        // ignore error
+        NSLog(@"Error: failed to cleanup crikles chache (%s)", errmsg);
     }
 }
 

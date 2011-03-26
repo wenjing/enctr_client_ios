@@ -123,7 +123,9 @@
 	{
 		[self postInit];
 	}
-
+    // Bring to default view (meet list)
+    self.selectedTab = TAB_MEETS;
+    self.tabBarController.selectedIndex = TAB_MEETS;
 }
 
 - (void) postInit
@@ -131,9 +133,9 @@
 	screeName = [[[NSUserDefaults standardUserDefaults] stringForKey:@"screenName"] retain];
 	
 	// load views
-    NSArray *views = tabBarController.viewControllers;
-	UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
-	[(MeetViewController*)[nav topViewController] restoreAndLoadMeets:true] ;
+        //NSArray *views = tabBarController.viewControllers;
+	//UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
+	//[(MeetViewController*)[nav topViewController] restoreAndLoadMeets:true] ;
 
 	// set auto refresh
 	//
@@ -418,6 +420,7 @@ static UIAlertView *sAlert = nil ;
 							  otherButtonTitles:nil];
     [sAlert show];
     [sAlert release];
+    sAlert = nil;
 }
 
 
