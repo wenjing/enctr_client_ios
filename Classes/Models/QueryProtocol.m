@@ -1,3 +1,4 @@
+#import "kaya_meetAppDelegate.h"
 #import "QueryProtocol.h"
 
 @implementation QueryBase
@@ -6,23 +7,35 @@
 @synthesize action;
 @synthesize results;
 
-- (id)initWithDelegate:(id)delegate0 action:(SEL)action0
+- (id)initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0
 {
   [super init];
   self.delegate = delegate0;
   self.action = action0;
+  releaseAtCallBack = release0;
+  meetClient = nil;
   [self clear];
   return self;
 }
+
 - (void)dealloc
 {
   self.results = nil; 
+  if (meetClient) {
+    [meetClient cancel];
+    [meetClient release];
+  }
   [super dealloc];
 }
 
-- (id) recordClass;
+- (void)cancel
 {
-  return [RecordBase class];
+  if (meetClient != nil ) {
+    [meetClient cancel];
+    [meetClient release];
+    meetClient = nil;
+  }
+  [self clear];
 }
 
 - (BOOL)isExists:(sqlite_int64)aId
@@ -39,7 +52,7 @@
   return result;
 }
 
-- (NSArray*)getResult
+- (NSArray*)getResults
 {
   return [self results];
 }
@@ -47,10 +60,36 @@
 {
   return more;
 }
+- (BOOL)hasError
+{
+  return error;
+}
 - (void)clear
 {
   self.results = nil;
+  self.results = [NSMutableArray array]; // Prepare a empty array
   more = false;
+  error = false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+- (id)recordClass
+{
+  return [RecordBase class];
+}
+
+- (void)checkNetworkError:(KYMeetClient*)sender
+{
+  error = sender.hasError;
+  if (error && sender.statusCode == 401) { // authentication fail
+    kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+    [appDelegate openLoginView];
+  }
+}
+
+- (void)queryDidFinish:(id)obj
+{
+  [delegate performSelector:action withObject:self withObject:obj];
 }
 
 @end

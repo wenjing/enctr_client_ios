@@ -5,6 +5,7 @@
 @implementation RecordBase
 
 @synthesize id;
+@synthesize odd;
 
 + (NSString*)tableName
 {
@@ -13,13 +14,14 @@
 
 + (int)columnCount
 {
-  return 1;
+  return 2;
 }
 
-- (id)initWithId:(sqlite_int64)id0
+- (id)initWithId:(sqlite_int64)id0 withOdd:(sqlite_int64)odd0
 {
   [super init];
   self.id = id0;
+  self.odd = odd0;
   return self;
 }
 
@@ -32,7 +34,8 @@
 {
   int index = 0;
   [stmt bindString:[[self class] tableName] forIndex:++index];
-  [stmt bindInt64:[self id] forIndex:++index];
+  [stmt bindInt64:self.id forIndex:++index];
+  [stmt bindInt64:self.odd forIndex:++index];
   return index;
 }
 
@@ -66,7 +69,7 @@
     [stmt retain];
   }
   [stmt bindString:[[self class] tableName] forIndex:1];
-  [stmt bindInt64:[self id] forIndex:2];
+  [stmt bindInt64:self.id forIndex:2];
   [stmt step]; // ignore error
   return true;
 }

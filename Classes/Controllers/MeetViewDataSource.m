@@ -47,9 +47,13 @@
 }
 
 - (void)dealloc {
+      if (meetClient) {
 	[meetClient cancel];
 	[meetClient release];
+      }
+      if (userConfirmString) {
 	[userConfirmString release];
+      }
 	refreshHeaderView = nil;
 	[super dealloc];
 }

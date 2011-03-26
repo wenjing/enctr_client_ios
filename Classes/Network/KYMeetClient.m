@@ -68,7 +68,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [super get:url param:params];
 }
 
-- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId
+- (void)getNews:(NSDictionary*)params withUserId:(uint32_t)userId
 {
   needAuth      = true;
   NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];
@@ -77,7 +77,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super get:url param:params]; 
 }
 
-- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId
+- (void)getNews:(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId
 {
   needAuth      = true;
   NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];
@@ -87,7 +87,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super get:url param:params]; 
 }
 
-- (void)getTimelines:(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId
+- (void)getNews:(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId
 {
   needAuth      = true;
   NSString *url = [NSString stringWithFormat:@"%@/users/%ld/news", KAYAMEET_SITE_NAME,userId];

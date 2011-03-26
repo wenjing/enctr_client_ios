@@ -15,8 +15,8 @@
   [super dealloc];
 }
 
-// params: offset, limit, before_time, after_time
-- (void)query:(NSDictionary*)params withUpdate:(BOOL)update
+// options: offset, limit, before_time, after_time
+- (void)query:(NSDictionary*)options withUpdate:(BOOL)update
 {
 }
 

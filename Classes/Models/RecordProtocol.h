@@ -14,7 +14,9 @@
 @interface RecordBase : NSObject <RecordProtocol>
 {
   sqlite_int64 id;
+  sqlite_int64 odd;
 }
 @property (nonatomic, assign) sqlite_int64 id;
-- (id) initWithId:(sqlite_int64)id0;
+@property (nonatomic, assign) sqlite_int64 odd;
+- (id) initWithId:(sqlite_int64)id0 withOdd:(sqlite_int64)odd0;
 @end

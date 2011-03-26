@@ -6,4 +6,5 @@
 {
 }
 - (id)recordClass;
+- (id)trimData:(id)obj;
 @end

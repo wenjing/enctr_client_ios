@@ -3,10 +3,8 @@
 
 @interface News : RecordBase
 {
-  time_t time;
   NSString *data;
 }
-@property (nonatomic, assign) time_t    time;
 @property (nonatomic, retain) NSString  *data;
-- (id)initWithData:(NSString*)data0 withId:(sqlite_int64)id0 withTime:(time_t)time0;
+- (id)initWithData:(NSString*)data0 withId:(sqlite_int64)id0 withOdd:(sqlite_int64)odd0;
 @end

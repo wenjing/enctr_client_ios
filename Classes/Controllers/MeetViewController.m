@@ -7,6 +7,7 @@
 #import "MeetViewController.h"
 #import "kaya_meetAppDelegate.h"
 #import "AccelerometerFilter.h"
+#import "CirkleQuery.h"
 
 
 #define kUpdateFrequency	60.0
@@ -14,6 +15,8 @@
 
 @interface MeetViewController (Private)
 - (void)didLeaveTab:(UINavigationController*)navigationController;
+- (void)restoreAndLoadCirkles;
+- (void)cirklesDidLoad:(CirkleQuery*)sender;
 @end
 
 @implementation MeetViewController
@@ -79,6 +82,30 @@
 		[self.tableView setContentOffset:contentOffset animated:false];
 		[self.tableView reloadData];
 	}
+    // Debug cirkle data API
+    [self restoreAndLoadCirkles];
+}
+
+-(void)restoreAndLoadCirkles
+{
+    CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
+                                              releaseAtCallBack:true];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    [query query:options withUpdate:true];
+}
+- (void)cirklesDidLoad:(CirkleQuery*)sender
+{
+  NSLog(@"Load cirkle results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    if ([sender hasMore]) {
+      NSLog(@"  has more");
+    }
+    NSArray *results = [sender getResults];
+    NSLog(@"%@", results);
+  }
+  [sender clear];
 }
 
 - (void)viewDidAppear:(BOOL)animated

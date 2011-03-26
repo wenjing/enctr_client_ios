@@ -46,10 +46,10 @@ typedef enum {
 - (void)getMeet :(NSDictionary*)params withPostId:(uint32_t)postId ;
 - (void)getUserMeets :(NSDictionary*)params withUserId:(uint32_t)userId;
 
-- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId;
-- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId;
-- (void)getTimelines :(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId;
-- (void)getCirkles   :(NSDictionary*)params withUserId:(uint32_t)userId;
+- (void)getNews     :(NSDictionary*)params withUserId:(uint32_t)userId;
+- (void)getNews     :(NSDictionary*)params withUserId:(uint32_t)userId withFriendId:(uint32_t)friendId;
+- (void)getNews     :(NSDictionary*)params withUserId:(uint32_t)userId withCirkleId:(uint32_t)cirkleId;
+- (void)getCirkles  :(NSDictionary*)params withUserId:(uint32_t)userId;
 
 - (void)postMessage:(NSString*)message toMeetId:(uint64_t)meetId photoData:(UIImage*)photo;
 - (void)postMessage:(NSString*)message toUserId:(uint64_t)meetId photoData:(UIImage*)photo;
