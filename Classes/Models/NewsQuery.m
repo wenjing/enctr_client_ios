@@ -94,7 +94,7 @@
         trimmed = [self trimData:item];
       } else if ([key isEqualToString:@"marked_top_chatters"] ||
                  [key isEqualToString:@"marked_chatters"]) {
-        key = @"chatters";
+        key = [key isEqualToString:@"marked_top_chatters"] ? @"top_chatters" : @"chatters";
         NSArray *chatters = [self trimData:item];
         trimmed = [NSMutableArray array];
         for (int nn = 0; nn < [chatters count]; ++nn) {
@@ -103,7 +103,7 @@
         }
       } else if ([key isEqualToString:@"marked_top_users"] ||
                  [key isEqualToString:@"marked_users"]) {
-        key = @"users";
+        key = [key isEqualToString:@"marked_top_users"] ? @"top_users" : @"users";
         NSArray *users = [self trimData:item];
         trimmed = [NSMutableArray array];
         for (int nn = 0; nn < [users count]; ++nn) {
