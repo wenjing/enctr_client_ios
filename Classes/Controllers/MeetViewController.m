@@ -8,6 +8,7 @@
 #import "kaya_meetAppDelegate.h"
 #import "AccelerometerFilter.h"
 #import "CirkleQuery.h"
+#import "NewsQuery.h"
 
 
 #define kUpdateFrequency	60.0
@@ -17,6 +18,8 @@
 - (void)didLeaveTab:(UINavigationController*)navigationController;
 - (void)restoreAndLoadCirkles;
 - (void)cirklesDidLoad:(CirkleQuery*)sender;
+- (void)restoreAndLoadNews;
+- (void)newsDidLoad:(NewsQuery*)sender;
 @end
 
 @implementation MeetViewController
@@ -84,6 +87,8 @@
 	}
     // Debug cirkle data API
     //[self restoreAndLoadCirkles];
+    // Debug new data API
+    //[self restoreAndLoadNews];
 }
 
 -(void)restoreAndLoadCirkles
@@ -96,6 +101,29 @@
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
   NSLog(@"Load cirkle results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    if ([sender hasMore]) {
+      NSLog(@"  has more");
+    }
+    NSArray *results = [sender getResults];
+    NSLog(@"%@", results);
+  }
+  [sender clear];
+}
+
+-(void)restoreAndLoadNews
+{
+  NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
+                                        releaseAtCallBack:true];
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  [query query:options withUpdate:true];
+}
+
+- (void) newsDidLoad:(NewsQuery*)sender
+{
+  NSLog(@"Load news results");
   if ([sender hasError]) {
     NSLog(@"  has error");
   } else {
