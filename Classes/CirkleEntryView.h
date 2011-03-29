@@ -10,28 +10,47 @@
 #import "HJManagedImageV.h"
 #import "CirkleSummary.h"
 
+#define GENERIC_MARGIN			5
+#define	PIC_WIDTH				47
+#define PIC_HEIGHT              PIC_WIDTH
+#define LG_PIC_SIZE             54
+
+#define NAME_TOP_X				(GENERIC_MARGIN+GENERIC_MARGIN+PIC_WIDTH)
+#define	NAME_TOP_WIDTH			205
+
+#define LOGO_TOP_X				(NAME_TOP_X+NAME_TOP_WIDTH+GENERIC_MARGIN)
+#define LOGO_TOP_Y				(GENERIC_MARGIN+12)
+#define LOGO_WIDTH				24
+
+#define	TIME_TOP_X				(LOGO_TOP_X+LOGO_WIDTH+5)
+#define TIME_TOP_Y				(GENERIC_MARGIN+17)
+#define TIME_WIDTH				24
+
+#define CONTENT_TOP_X			NAME_TOP_X
+#define CONTENT_TOP_Y			(GENERIC_MARGIN + PIC_WIDTH + GENERIC_MARGIN)
+#define CONTENT_WIDTH			244
+
+#define MAIN_FONT_SIZE			12
+#define MIN_MAIN_FONT_SIZE		10
+#define SECONDARY_FONT_SIZE		10
+#define MIN_SECONDARY_FONT_SIZE 10
+
 @interface CirkleEntryView : UIView {
     //data     
     CirkleSummary *circle;
     HJManagedImageV *userImage;
     NSMutableArray *images;
-	UIImage		*circleLogo;
-	NSString	*timeString;
     CGSize      size;
 }
-@property (nonatomic, retain) NSString *nameString;
-@property (nonatomic, retain) UIImage *pic;
-@property (nonatomic, retain) UIImage *circleLogo;
-@property (nonatomic, retain) NSString *timeString;
-@property (nonatomic, retain) NSString *contentString;
+
 @property (nonatomic, retain) HJManagedImageV *userImage;
 @property (nonatomic, retain) NSMutableArray *images;
-@property (nonatomic) NSInteger userId;
+
 @property (nonatomic, retain) CirkleSummary *circle;
 @property (nonatomic) CGSize size;
 
 //use this method to update time string when timer fires off
-- (void)updateTimeString;
+- (NSString *)updateTimeString;
 
 //use this to set - right after init
 - (void)setCircle:(CirkleSummary *)aCircle;

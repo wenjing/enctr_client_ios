@@ -9,49 +9,27 @@
 #import "CirkleEntryView.h"
 #import "kaya_meetAppDelegate.h"
 
-#define GENERIC_MARGIN			5
-#define	PIC_WIDTH				47
-
-#define NAME_TOP_X				(GENERIC_MARGIN+GENERIC_MARGIN+PIC_WIDTH)
-#define	NAME_TOP_WIDTH			205
-
-#define LOGO_TOP_X				(NAME_TOP_X+NAME_TOP_WIDTH+GENERIC_MARGIN)
-#define LOGO_TOP_Y				(GENERIC_MARGIN+12)
-#define LOGO_WIDTH				24
-
-#define	TIME_TOP_X				(LOGO_TOP_X+LOGO_WIDTH+5)
-#define TIME_TOP_Y				(GENERIC_MARGIN+17)
-#define TIME_WIDTH				24
-
-#define CONTENT_TOP_X			NAME_TOP_X
-#define CONTENT_TOP_Y			(GENERIC_MARGIN + PIC_WIDTH + GENERIC_MARGIN)
-#define CONTENT_WIDTH			244
-
-#define MAIN_FONT_SIZE			12
-#define MIN_MAIN_FONT_SIZE		10
-#define SECONDARY_FONT_SIZE		10
-#define MIN_SECONDARY_FONT_SIZE 10
-
 @implementation CirkleEntryView
-@synthesize nameString;
-@synthesize pic;
-@synthesize circleLogo;
-@synthesize timeString;
-@synthesize contentString;
+
+
+////@synthesize circleLogo;
+//@synthesize timeString;
+
 @synthesize userImage;
-@synthesize userId;
+
 @synthesize circle;
 @synthesize images;
 @synthesize size;
 
+// Don't allocate memory resource here
 - (void)setCircle:(CirkleSummary *)aCircle {
     
     circle = aCircle;
     
     // variable text
-    UIFont *mainFont = [UIFont systemFontOfSize:12];
+    UIFont *mainFont = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
     
-    CGRect drawRect = CGRectMake(57, 0, 244, 9999.0);
+    CGRect drawRect = CGRectMake(2*GENERIC_MARGIN+PIC_WIDTH, 0, CONTENT_WIDTH, 9999.0);
     NSString *varString = circle.contentString;
     
     size = [varString sizeWithFont:mainFont 
@@ -59,26 +37,16 @@
     
     //NSLog(@"cell variable Text Size = %@", NSStringFromCGSize(size));
     
-    // check circle.score
-    if (circle.score==1) {
-        circleLogo = [UIImage imageNamed:@"circle_logo_1.png"];
-    } else if (circle.score==2) {
-        circleLogo = [UIImage imageNamed:@"circle_logo_2.png"];
-    } else {
-        circleLogo = [UIImage imageNamed:@"circle_logo_3.png"];
-    }
-    
-    // calculate time string
-    [self updateTimeString];
-    
     //set the user image url
     kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
     User *user = circle.user;
     
-    [userImage clear];
-	userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
-	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+    if (user!=nil) {
+        [userImage clear];
+        userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+    }
     
     NSEnumerator *enumerator = [circle.imageUrl objectEnumerator];
     NSEnumerator *image_enum = [images objectEnumerator];
@@ -120,13 +88,13 @@
 
 }
 
-//when the time string change, we need to redisplay
-//this is the onlt thing that changes over time in this cell
 
-- (void)updateTimeString
+- (NSString *)updateTimeString
 {
     // Calculate distance time string
     //
+    NSString *timeString;
+    
     time_t now;
     time(&now);
     
@@ -135,23 +103,23 @@
     if (distance < 0) distance = 0;
     
     if (distance < 60) {
-        self.timeString = [NSString stringWithFormat:@"%ds", distance];
+        timeString = [NSString stringWithFormat:@"%ds", distance];
     }
     else if (distance < 60 * 60) {  
         distance = distance / 60;
-        self.timeString = [NSString stringWithFormat:@"%dm",distance];
+        timeString = [NSString stringWithFormat:@"%dm",distance];
     }  
     else if (distance < 60 * 60 * 24) {
         distance = distance / 60 / 60;
-        self.timeString = [NSString stringWithFormat:@"%dh",distance];
+        timeString = [NSString stringWithFormat:@"%dh",distance];
     }
     else if (distance < 60 * 60 * 24 * 7) {
         distance = distance / 60 / 60 / 24;
-        self.timeString = [NSString stringWithFormat:@"%dd",distance];
+        timeString = [NSString stringWithFormat:@"%dd",distance];
     }
     else if (distance < 60 * 60 * 24 * 7 * 4) {
         distance = distance / 60 / 60 / 24 / 7;
-        self.timeString = [NSString stringWithFormat:@"%dw",distance];
+        timeString = [NSString stringWithFormat:@"%dw",distance];
     }
     else {
         //to-do: i have not enough space to display it - readjust cell view
@@ -163,11 +131,11 @@
         }
         
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:circle.timeAt];        
-        self.timeString = [dateFormatter stringFromDate:date];
+        timeString = [dateFormatter stringFromDate:date];
     }
     
     //NSLog(@"timestring is %@", timeString);
-    return;
+    return timeString;
 }
 
 
@@ -234,10 +202,11 @@
 		[mainTextColor set];
         
 		// Draw the picture
+        /* no need any more
 		point = CGPointMake(boundsX+GENERIC_MARGIN, GENERIC_MARGIN);
 		
 		[pic drawAtPoint:point];
-		
+		*/
 		// Draw name
 		point = CGPointMake(boundsX + NAME_TOP_X, GENERIC_MARGIN);
 		[circle.nameString drawAtPoint:point 
@@ -249,11 +218,23 @@
 			 baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
 		
 		// Draw logo
+        // check circle.score
+        UIImage *logo;
+        
+        if (circle.score==1) {
+            logo = [UIImage imageNamed:@"circle_logo_1.png"];
+        } else if (circle.score==2) {
+            logo = [UIImage imageNamed:@"circle_logo_2.png"];
+        } else {
+            logo = [UIImage imageNamed:@"circle_logo_3.png"];
+        }
+
 		point = CGPointMake(boundsX + LOGO_TOP_X, LOGO_TOP_Y);
-		[circleLogo drawAtPoint:point];
+		[logo drawAtPoint:point];
 		
 		// Draw timestring
 		[secondaryTextColor set];
+        NSString *timeString = [self updateTimeString];
         
 		point = CGPointMake(boundsX + TIME_TOP_X, TIME_TOP_Y);
 		[timeString drawAtPoint:point 
@@ -279,7 +260,7 @@
 		
 		// Draw flashback icon
 		icon = [UIImage imageNamed:@"flashback_icon.png"];
-		point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + 5 + 5);
+		point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + GENERIC_MARGIN + GENERIC_MARGIN);
 		[icon drawAtPoint:point];
 		
 		//that's it
@@ -289,14 +270,10 @@
 
 - (void)dealloc
 {
-    [nameString release];
-	[pic release];
-	[circleLogo release];
-	[timeString release];
-	[contentString release];
     [images removeAllObjects];
     [images release];
-    
+    [userImage release];
+    [circle release];
     [super dealloc];
 }
 

@@ -10,6 +10,7 @@
 #import "CirkleEntryCell.h"
 #import "CirkleQuery.h"
 #import "CirkleSummary.h"
+#import "CirkleEntryView.h"
 
 @implementation CirkleViewController
 @synthesize listCircles;
@@ -123,23 +124,23 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *SimpleTableIdentifier = @"SimpleTableIdentifier";
+	static NSString *CircleTableIdentifier = @"CircleTableIdentifier";
 	NSUInteger row = [indexPath row];
 	
-	CirkleEntryCell	*cell = (CirkleEntryCell *)[tableView dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
+	CirkleEntryCell	*cell = (CirkleEntryCell *)[tableView dequeueReusableCellWithIdentifier:CircleTableIdentifier];
 	if (cell == nil) {
 		cell = [[[CirkleEntryCell alloc] 
 				 initWithStyle:UITableViewCellStyleDefault 
-				 reuseIdentifier:SimpleTableIdentifier] autorelease];
+				 reuseIdentifier:CircleTableIdentifier] autorelease];
+        NSLog(@"A new circle view cell allocated, row %d", row);
     }
     
-    //cell.circle = [listCircles objectAtIndex:row];
     [cell setCircle:[listCircles objectAtIndex:row]];
     
     //refactor later
     CGSize sizeOfFrame = [cell getSize];
     
-    cell.frame = CGRectMake(0.0, 0.0, 320.0, 57.0+sizeOfFrame.height+5+47+5);
+    cell.frame = CGRectMake(0.0, 0.0, 320.0, GENERIC_MARGIN*2+PIC_WIDTH+sizeOfFrame.height+GENERIC_MARGIN*2+PIC_WIDTH);
 
 	return cell;
 }
@@ -184,17 +185,18 @@
     
     CirkleSummary *circle = [listCircles objectAtIndex:row];
 
-	CGRect drawRect = CGRectMake(57, 0.0, 244, 9999.0);
+	CGRect drawRect = CGRectMake(GENERIC_MARGIN*2+PIC_WIDTH, 0.0, CONTENT_WIDTH, 9999.0);
 	
 	CGSize size = [circle.contentString sizeWithFont:[UIFont systemFontOfSize:12] 
                             constrainedToSize:drawRect.size];
 	
-	//NSLog(@"Row content Text Size = %@", NSStringFromCGSize(size));
-	if (1) {//if we have photo - 
-		return (57+size.height+5+54+5);
+	NSLog(@"Row %d content Text Size = %@", row, NSStringFromCGSize(size));
+	if ([circle.imageUrl count] > 0) {//if we have photo - 
+		return (GENERIC_MARGIN*2+PIC_WIDTH+size.height+GENERIC_MARGIN*2+LG_PIC_SIZE);
 	}
-	return (57+size.height+5);
     
+	return (GENERIC_MARGIN*2+PIC_WIDTH+size.height+GENERIC_MARGIN);
+
 }
 
 
