@@ -128,6 +128,7 @@
 		[mi clear];
 		[mi showLoadingWheel];
 		mi.url = [NSURL URLWithString:mapurl];
+        
 		//[imgMan manage:mi];	
 		kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
 		[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:mi waitUntilDone:YES];
