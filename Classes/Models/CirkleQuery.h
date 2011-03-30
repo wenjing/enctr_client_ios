@@ -6,5 +6,6 @@
 {
 }
 - (id)recordClass;
+- (void)cirklesDidReceive:(KYMeetClient*)sender obj:(NSObject*)obj;
 - (id)trimData:(id)obj;
 @end
