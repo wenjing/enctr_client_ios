@@ -173,7 +173,7 @@
     //refactor later
     CGSize sizeOfFrame = [cell getSize];
     
-    cell.frame = CGRectMake(0.0, 0.0, 320.0, GENERIC_MARGIN*2+PIC_WIDTH+sizeOfFrame.height+GENERIC_MARGIN*2+PIC_WIDTH);
+    cell.frame = CGRectMake(0.0, 0.0, 320.0, GENERIC_MARGIN*2+PIC_WIDTH+sizeOfFrame.height+GENERIC_MARGIN*2+LG_PIC_SIZE);
 
 	return cell;
 }

@@ -66,23 +66,54 @@
                 mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 
                 [imageUrl addObject:[NSString stringWithString:mapurl]];
-
+                
+                //pick the first act
+                if (contentString==nil) {
+                    time_t encounterTime;
+                    
+                    NSString *stringtime = [act objectForKey:@"timestamp"] ;
+                    struct tm structtm;
+                    
+                    if ( stringtime ) {
+                        strptime([stringtime UTF8String], "%FT%T%z",  &structtm) ;
+                        encounterTime   = timegm(&structtm);
+                    
+                        static NSDateFormatter *dateFormatter = nil;
+                        if (dateFormatter == nil) {
+                            dateFormatter = [[NSDateFormatter alloc] init];
+                            [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+                            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                        }
+                        
+                        NSDate *date = [NSDate dateWithTimeIntervalSince1970:encounterTime];        
+                        NSString *timeString = [dateFormatter stringFromDate:date];
+                        
+                        contentString = [[NSString alloc] initWithFormat:@"Encounter at %@", timeString];
+                    }
+                }
+                
             } else if ([actType isEqualToString:@"photo"]) {
                 //read image url
                 [imageUrl addObject: [[act objectForKey:@"url"] retain]]; //retain?
+                //pick the first act
+                if (contentString==nil) {
+                    NSString *photoString = [act objectForKey:@"content"];
+                    User *poster = [act objectForKey:@"user"];
+                    
+                    if (poster) {
+                        contentString = [[NSString alloc] initWithFormat:@"%@ posted photo: \"%@\".", poster.name, photoString];
+                    } else {
+                        contentString = [[NSString alloc] initWithFormat:@"Photo posted: \"%@\".", photoString];
+                    }
+                }
+
             }
             
         }
+        
     }
     
-    //make some fake contentString for testing
-    if (cId % 2) {
-		contentString = [[NSString alloc] initWithFormat:@"Jibber jabber gabble babble cackle clack prate twiddle twaddle mutter stutter utter splutter blate chatter patter tattle prattle chew the rag crack spiel spout spit it out tell the world and quack"];
-	}
-	else {
-		contentString = [[NSString alloc] initWithFormat:@"I will see you on Monday!"];
-	}
-    
+    //NSLog(@"contentString is %@", contentString);
     return self;
 }
 @end

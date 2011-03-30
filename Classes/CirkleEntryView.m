@@ -67,7 +67,7 @@
     
     while ((imgurl = [enumerator nextObject])) {
         
-        drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(54+5), CONTENT_TOP_Y + size.height + 5, PIC_WIDTH, PIC_WIDTH);
+        drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(54+5), CONTENT_TOP_Y + size.height + 5, LG_PIC_SIZE, LG_PIC_SIZE);
         img = [image_enum nextObject];
         img.frame = drawRect;
                 
