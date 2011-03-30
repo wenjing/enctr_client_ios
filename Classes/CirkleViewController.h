@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "CirkleQuery.h"
+#import "EGORefreshTableHeaderView.h"
 
-@interface CirkleViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface CirkleViewController : UITableViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource> {
     NSMutableArray *listCircles;
-    UITableView *circleTableView;
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;
 }
 @property (nonatomic, retain) NSMutableArray *listCircles;
-@property (nonatomic, retain) IBOutlet UITableView *circleTableView;
 
 - (void)restoreAndLoadCirkles;
 - (void)cirklesDidLoad:(CirkleQuery*)sender;
