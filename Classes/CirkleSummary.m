@@ -21,12 +21,35 @@
 @synthesize imageUrl;
 @synthesize contentString;
 
+// Why isn't this in template?
+- (void)dealloc
+{
+    [nameString release];
+    [avatarUrl release];
+    [user release];
+    [imageUrl removeAllObjects];
+    [imageUrl release];
+    [contentString release];
+    [super dealloc];
+}
+
 - (id)initWithJsonDictionary:(NSDictionary*)dic {
     //get current time
     time_t now;
     time(&now);	
     
     cId = [[dic objectForKey:@"id"] longLongValue];
+    
+    NSString *typeString = [dic objectForKey:@"type"];
+    if ([typeString isEqualToString:@"private"]) {
+        type = CIRCLE_TYPE_PRIVATE;
+    } else if ([typeString isEqualToString:@"cirkle"]) {
+        type = CIRCLE_TYPE_CIRCLE;
+    } else if ([typeString isEqualToString:@"solo"]) {
+        type = CIRCLE_TYPE_SOLO;
+    } else {
+        NSLog(@"Incorrect circle summary type string");
+    }
     
     nameString = [[dic objectForKey:@"name"] retain];
     
@@ -94,16 +117,16 @@
                 
             } else if ([actType isEqualToString:@"photo"]) {
                 //read image url
-                [imageUrl addObject: [[act objectForKey:@"url"] retain]]; //retain?
+                [imageUrl addObject: [[act objectForKey:@"url"] retain]]; //retain
                 //pick the first act
                 if (contentString==nil) {
                     NSString *photoString = [act objectForKey:@"content"];
                     User *poster = [act objectForKey:@"user"];
                     
                     if (poster) {
-                        contentString = [[NSString alloc] initWithFormat:@"%@ posted photo: \"%@\".", poster.name, photoString];
+                        contentString = [[NSString alloc] initWithFormat:@"%@ shared photo: \"%@\".", poster.name, photoString];
                     } else {
-                        contentString = [[NSString alloc] initWithFormat:@"Photo posted: \"%@\".", photoString];
+                        contentString = [[NSString alloc] initWithFormat:@"Photo shared: \"%@\".", photoString];
                     }
                 }
 
@@ -116,4 +139,9 @@
     //NSLog(@"contentString is %@", contentString);
     return self;
 }
+
+- (BOOL)isACircle {
+    return (type == CIRCLE_TYPE_CIRCLE);
+}
+
 @end

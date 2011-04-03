@@ -11,6 +11,7 @@
 #import "CirkleQuery.h"
 #import "CirkleSummary.h"
 #import "CirkleEntryView.h"
+#import "CirkleDetailViewController.h"
 
 @implementation CirkleViewController
 @synthesize listCircles;
@@ -217,7 +218,9 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSUInteger row = [indexPath row];
-	NSString *rowValue = [listCircles objectAtIndex:row];
+    CirkleSummary *aCircle = [listCircles objectAtIndex:row];
+    /*
+	NSString *rowValue = aCircle.nameString;
 	
 	NSString *message = [[NSString alloc] initWithFormat:@"You selected %@", rowValue];
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Row Selected!" 
@@ -228,7 +231,18 @@
 	[alert show];
 	[message release];
 	[alert release];
+     */
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+    CirkleDetailViewController *detailViewController = [[CirkleDetailViewController alloc] initWithNibName:@"CirkleDetailViewController" bundle:nil];
+    // ...
+    // Pass the selected object to the new view controller.
+    detailViewController.summary = aCircle;
+    
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    [detailViewController release];
+    
 }
 
 

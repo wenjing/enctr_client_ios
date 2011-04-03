@@ -67,7 +67,8 @@
     
     while ((imgurl = [enumerator nextObject])) {
         
-        drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(54+5), CONTENT_TOP_Y + size.height + 5, LG_PIC_SIZE, LG_PIC_SIZE);
+        drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(LG_PIC_SIZE+GENERIC_MARGIN), 
+                              CONTENT_TOP_Y + size.height + 5, LG_PIC_SIZE, LG_PIC_SIZE);
         img = [image_enum nextObject];
         img.frame = drawRect;
                 
@@ -103,38 +104,39 @@
     if (distance < 0) distance = 0;
     
     if (distance < 60) {
-        timeString = [NSString stringWithFormat:@"%ds", distance];
+        timeString = [NSString stringWithFormat:@"%dsec", distance];
     }
     else if (distance < 60 * 60) {  
         distance = distance / 60;
-        timeString = [NSString stringWithFormat:@"%dm",distance];
+        timeString = [NSString stringWithFormat:@"%dmin",distance];
     }  
     else if (distance < 60 * 60 * 24) {
         distance = distance / 60 / 60;
-        timeString = [NSString stringWithFormat:@"%dh",distance];
+        timeString = [NSString stringWithFormat:@"%dhr",distance];
     }
     else if (distance < 60 * 60 * 24 * 7) {
         distance = distance / 60 / 60 / 24;
-        timeString = [NSString stringWithFormat:@"%dd",distance];
+        timeString = [NSString stringWithFormat:@"%dday",distance];
     }
     else if (distance < 60 * 60 * 24 * 7 * 4) {
         distance = distance / 60 / 60 / 24 / 7;
-        timeString = [NSString stringWithFormat:@"%dw",distance];
+        timeString = [NSString stringWithFormat:@"%dwk",distance];
     }
     else {
         //to-do: i have not enough space to display it - readjust cell view
         static NSDateFormatter *dateFormatter = nil;
         if (dateFormatter == nil) {
             dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            
+            NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"dMMM" options:0
+                                                                      locale:[NSLocale currentLocale]];
+            [dateFormatter setDateFormat:formatString];
         }
-        
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:circle.timeAt];        
         timeString = [dateFormatter stringFromDate:date];
     }
     
-    //NSLog(@"timestring is %@", timeString);
+    NSLog(@"timestring is %@", timeString);
     return timeString;
 }
 
@@ -242,7 +244,7 @@
                        withFont:secondaryFont 
                     minFontSize:MIN_SECONDARY_FONT_SIZE 
                  actualFontSize:NULL 
-                  lineBreakMode:UILineBreakModeTailTruncation 
+                  lineBreakMode:UILineBreakModeTailTruncation
              baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
 		
 		// Content

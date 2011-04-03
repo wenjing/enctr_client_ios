@@ -101,11 +101,28 @@
     [self edit];
 }
 
+- (void)postToUserWithId:(sqlite_int64)userid
+{
+	isReplyMessage = false;
+	isInviteMessage = false;
+    [messageView editMessageUserWithId:userid];
+    [self edit];
+}
+
+
 - (void)postTo:(KYMeet*)mt
 {
 	isReplyMessage = false;
 	isInviteMessage = false;
     [messageView editMessage:mt];
+    [self edit];
+}
+
+- (void)postToWithId:(sqlite_int64)cid
+{
+	isReplyMessage = false;
+	isInviteMessage = false;
+    [messageView editMessageWithId:cid];
     [self edit];
 }
 
@@ -176,8 +193,8 @@
 	
     if  (messageView.isReplyFlag) {
       [client postMessage:text.text toMeetId:messageView.InReplyToChatId photoData:selectedPhoto];
-//  } else if (messageView.isUserFlag) {
-//    [client postMessage:text.text toMeetId:messageView.InReplyToUserId photoData:selectedPhoto];
+  } else if (messageView.isUserFlag) {
+    [client postMessage:text.text toUserId:messageView.InReplyToUserId photoData:selectedPhoto];
     } else {
       [client postMessage:text.text toMeetId:messageView.InReplyToMeetId photoData:selectedPhoto];
     }

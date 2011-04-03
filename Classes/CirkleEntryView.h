@@ -16,7 +16,7 @@
 #define LG_PIC_SIZE             54
 
 #define NAME_TOP_X				(GENERIC_MARGIN+GENERIC_MARGIN+PIC_WIDTH)
-#define	NAME_TOP_WIDTH			205
+#define	NAME_TOP_WIDTH			195
 
 #define LOGO_TOP_X				(NAME_TOP_X+NAME_TOP_WIDTH+GENERIC_MARGIN)
 #define LOGO_TOP_Y				(GENERIC_MARGIN+12)
@@ -24,7 +24,7 @@
 
 #define	TIME_TOP_X				(LOGO_TOP_X+LOGO_WIDTH+5)
 #define TIME_TOP_Y				(GENERIC_MARGIN+17)
-#define TIME_WIDTH				24
+#define TIME_WIDTH				29
 
 #define CONTENT_TOP_X			NAME_TOP_X
 #define CONTENT_TOP_Y			(GENERIC_MARGIN + PIC_WIDTH + GENERIC_MARGIN)
@@ -33,7 +33,7 @@
 #define MAIN_FONT_SIZE			12
 #define MIN_MAIN_FONT_SIZE		10
 #define SECONDARY_FONT_SIZE		10
-#define MIN_SECONDARY_FONT_SIZE 10
+#define MIN_SECONDARY_FONT_SIZE 8
 
 @interface CirkleEntryView : UIView {
     //data     

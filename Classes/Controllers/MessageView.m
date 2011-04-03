@@ -10,7 +10,7 @@
 
 @implementation MessageView
 
-@synthesize InReplyToChatId, InReplyToUserId, InReplyToMeetId, isReplyFlag, isInviteFlag;
+@synthesize InReplyToChatId, InReplyToUserId, InReplyToMeetId, isReplyFlag, isInviteFlag, isUserFlag;
 
 - (void)awakeFromNib
 {
@@ -52,6 +52,21 @@
 	InReplyToMeetId = 0;
 	isReplyFlag = false  ;
 	isInviteFlag = false ;
+    isUserFlag = true;
+	to.text = @"Post-To:";
+	recipient.enabled = false;
+}
+
+//editMessageUser only requires an sqlite_int64, this version dis-entangles the KYMeet struct dependency
+//make sure these two methods are identical
+- (void)editMessageUserWithId:(sqlite_int64)id
+{
+	InReplyToChatId = 0;
+	InReplyToUserId = id;
+	InReplyToMeetId = 0;
+	isReplyFlag = false  ;
+	isInviteFlag = false ;
+    isUserFlag = true;
 	to.text = @"Post-To:";
 	recipient.enabled = false;
 }
@@ -59,6 +74,18 @@
 - (void)editMessage:(KYMeet*)mt
 {
 	InReplyToMeetId = mt.meetId ;
+	isReplyFlag = false  ;
+	isInviteFlag = false ;
+	to.text = @"Post-To:";
+	recipient.enabled = false;
+}
+
+//editMessage only requires an sqlite_int64, this version dis-entangles the KYMeet struct dependency
+//make sure these two methods are identical
+
+- (void)editMessageWithId:(sqlite_int64)id
+{
+    InReplyToMeetId = id ;
 	isReplyFlag = false  ;
 	isInviteFlag = false ;
 	to.text = @"Post-To:";
