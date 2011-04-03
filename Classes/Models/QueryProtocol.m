@@ -9,47 +9,47 @@
 
 - (id)initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0
 {
-  [super init];
-  self.delegate = delegate0;
-  self.action = action0;
-  releaseAtCallBack = release0;
-  meetClient = nil;
-  [self clear];
+  self = [super init];
+  if (self != nil) {
+    self.delegate = delegate0;
+    self.action = action0;
+    releaseAtCallBack = release0;
+    meetClient = nil;
+    [self clear];
+  }
   return self;
 }
 
 - (void)dealloc
 {
   self.results = nil; 
-  if (meetClient) {
-    [meetClient cancel];
-    [meetClient release];
-  }
+  [self cancel];
   [super dealloc];
+}
+
+- (void)clear
+{
+  [self cancel];
+  self.results = nil;
+  self.results = [NSMutableArray array]; // Prepare a empty array
+  queryStatus = QUERY_STATUS_INIT;
+  queryMode = QUERY_MODE_LOCAL;
 }
 
 - (void)cancel
 {
   if (meetClient != nil ) {
     [meetClient cancel];
-    [meetClient release];
+    [meetClient autorelease];
     meetClient = nil;
+    queryStatus = QUERY_STATUS_INIT;
+    queryMode = QUERY_MODE_LOCAL;
   }
-  [self clear];
 }
 
-- (BOOL)isExists:(sqlite_int64)aId
+- (BOOL)isPending
 {
-  static Statement *stmt = nil;
-  if (stmt == nil) {
-      stmt = [DBConnection statementWithQuery:"SELECT id FROM ? WHERE id=?"];
-      [stmt retain];
-    }
-  [stmt bindString:[[self recordClass] tableName] forIndex:1];
-  [stmt bindInt64:aId forIndex:2];
-  BOOL result = ([stmt step] == SQLITE_ROW) ? true : false;
-  [stmt reset];
-  return result;
+  return queryStatus == QUERY_STATUS_PENDING && meetClient != nil;
 }
 
 - (NSArray*)getResults
@@ -58,30 +58,33 @@
 }
 - (BOOL)hasMore
 {
-  return more;
+  return queryStatus == QUERY_STATUS_MORE;
 }
 - (BOOL)hasError
 {
-  return error;
+  return queryStatus == QUERY_STATUS_ERROR;
 }
-- (void)clear
+- (BOOL)hasUpdate
 {
-  self.results = nil;
-  self.results = [NSMutableArray array]; // Prepare a empty array
-  more = false;
-  error = false;
+  return queryStatus != QUERY_STATUS_NOUPDATE;
+}
+- (int) getStatus
+{
+  return queryStatus;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-- (id)recordClass
++ (id)recordClass
 {
   return [RecordBase class];
 }
 
 - (void)checkNetworkError:(KYMeetClient*)sender
 {
-  error = sender.hasError;
-  if (error && sender.statusCode == 401) { // authentication fail
+  if (sender.hasError) {
+    queryStatus = QUERY_STATUS_ERROR;
+  }
+  if ([self hasError] && sender.statusCode == 401) { // authentication fail
     kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
     [appDelegate openLoginView];
   }

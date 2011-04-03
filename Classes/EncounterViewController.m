@@ -10,6 +10,7 @@
 #import "EncounterView.h"
 #import "EncounterCell.h"
 #import "User.h"
+#import "StringUtil.h"
 #import "kaya_meetAppDelegate.h"
 
 @implementation EncounterViewController
@@ -114,7 +115,7 @@
 	}
 	
 	//update view
-	NSMutableArray* indexPathsDelete = [[NSMutableArray alloc] init];
+	NSMutableArray* indexPathsDelete = [NSMutableArray array];
 	NSInteger rows = [self.foundPeers count];
 	
 	[self.peerTableView beginUpdates];

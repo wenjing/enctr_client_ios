@@ -40,7 +40,7 @@
 @property(nonatomic, retain) UIImage*  selectedPhoto;
 @property(nonatomic, assign) UIImageView* picture;
 
-- (void)replyTo:(sqlite3_int64)cid;
+- (void)replyTo:(sqlite3_uint64)cid;
 - (void)postToUser:(User*)user;
 - (void)postTo:(KYMeet*)mt;
 - (void)inviteTo:(KYMeet*)mt;

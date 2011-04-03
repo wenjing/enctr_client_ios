@@ -178,7 +178,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
 	return [[[KYMeet alloc] initWithJsonDictionary:dic type:type] autorelease];
 }
 
-+ (KYMeet*)meetWithId:(sqlite_int64)aMeetId
++ (KYMeet*)meetWithId:(sqlite_uint64)aMeetId
 {
     static Statement *stmt = nil;
     if (stmt == nil) {
@@ -228,7 +228,7 @@ static NSInteger sortByDateDesc(id a, id b, void *context)
     return s;
 }
 
-+ (BOOL)isExists:(sqlite_int64)aMeetId
++ (BOOL)isExists:(sqlite_uint64)aMeetId
 {
     static Statement *stmt = nil;
     if (stmt == nil) {

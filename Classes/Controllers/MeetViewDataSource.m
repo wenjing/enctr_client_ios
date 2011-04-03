@@ -325,7 +325,7 @@
             if (![dic isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
-            sqlite_int64 meetId = [[dic objectForKey:@"id"] longLongValue];
+            sqlite_uint64 meetId = [[dic objectForKey:@"id"] longLongValue];
 			// check if meet in DB
             if (![KYMeet isExists:meetId ]) {
 				// add meet from Server

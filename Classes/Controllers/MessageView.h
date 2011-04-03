@@ -15,20 +15,20 @@
     IBOutlet UIBarButtonItem*   sendButton;
     IBOutlet UILabel*           charCount;
     NSString*                   inReplyToChat;
-    sqlite_int64		InReplyToChatId;
-    sqlite_int64		InReplyToUserId;
-    sqlite_int64		InReplyToMeetId, savedId;  
+    sqlite_uint64		InReplyToChatId;
+    sqlite_uint64		InReplyToUserId;
+    sqlite_uint64		InReplyToMeetId, savedId;  
     NSString*                   undoBuffer;    
 	
     BOOL	isReplyFlag, isInviteFlag ;
 }
-@property (nonatomic, assign) sqlite_int64 InReplyToChatId ;
-@property (nonatomic, assign) sqlite_int64 InReplyToUserId ;
-@property (nonatomic, assign) sqlite_int64 InReplyToMeetId ;
+@property (nonatomic, assign) sqlite_uint64 InReplyToChatId ;
+@property (nonatomic, assign) sqlite_uint64 InReplyToUserId ;
+@property (nonatomic, assign) sqlite_uint64 InReplyToMeetId ;
 @property (nonatomic, assign) BOOL     isReplyFlag, isInviteFlag ;
 
 - (IBAction) clear:(id)sender;
-- (void)editReply:(sqlite_int64)cid;
+- (void)editReply:(sqlite_uint64)cid;
 - (void)editMessageUser:(User*)mt ;
 - (void)editMessage:(KYMeet*)mt ;
 - (void)editInvite:(KYMeet *)mt ;

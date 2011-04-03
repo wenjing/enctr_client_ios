@@ -85,7 +85,7 @@
     [self edit];
 }
 
-- (void)replyTo:(sqlite_int64)cid
+- (void)replyTo:(sqlite_uint64)cid
 {
 	isReplyMessage = true;
 	isInviteMessage = false;

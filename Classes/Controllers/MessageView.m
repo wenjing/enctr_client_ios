@@ -32,7 +32,7 @@
     InReplyToMeetId = [number longLongValue];
 }
 
-- (void)editReply:(sqlite_int64)chatId
+- (void)editReply:(sqlite_uint64)chatId
 {
     InReplyToChatId   = chatId;
     InReplyToUserId   = 0;
