@@ -96,7 +96,8 @@
     CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
                                               releaseAtCallBack:true];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    [query query:options withUpdate:true];
+    BOOL update = false;
+    [query query:options withUpdate:update];
 }
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
@@ -117,7 +118,7 @@
 
 -(void)restoreAndLoadNews
 {
-  NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
+  NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
                                         releaseAtCallBack:true];
   NSMutableDictionary *options = [NSMutableDictionary dictionary];
   BOOL update = false;
@@ -126,7 +127,7 @@
   [options setObject:[NSNumber numberWithInt:limit] forKey:@"limit"];
   [options setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
   //[options setObject:[NSNumber numberWithInt:friend_id] forKey:@"friend_id"];
-  [options setObject:[NSNumber numberWithInt:cirkle_id] forKey:@"cirkle_id"];
+  //[options setObject:[NSNumber numberWithInt:cirkle_id] forKey:@"cirkle_id"];
   [query query:options withUpdate:update];
 }
 

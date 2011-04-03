@@ -19,9 +19,9 @@
 @synthesize errorMessage;
 @synthesize errorDetail;
 
-//NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
+NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 
-NSString *KAYAMEET_SITE_NAME = @"http:/0.0.0.0:3000" ;
+//NSString *KAYAMEET_SITE_NAME = @"http:/0.0.0.0:3000" ;
 
 - (id)initWithTarget:(id)aDelegate action:(SEL)anAction
 {
