@@ -46,12 +46,28 @@
 - (void)restoreAndLoadNews {
     NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
                                        releaseAtCallBack:true];
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    
+    NSMutableDictionary *options;
+    
+    NSString *idString = [[NSString alloc] initWithFormat:@"%lld", summary.cId];
+    
+    //user or circle
+    if (summary.type == CIRCLE_TYPE_CIRCLE) {
+        options = [[NSMutableDictionary alloc] initWithObjectsAndKeys:idString, @"cirkle_id", nil];
+    } else {
+        options = [[NSMutableDictionary alloc] initWithObjectsAndKeys:idString, @"friend_id", nil];
+    }
+    
+    //NSLog(@"cid %lld, option dictionary: %@", summary.cId, options);
+    
     [query query:options withUpdate:true];
+    
+    [idString release]; //should i?
+    [options release];
 }
 
 - (void)newsDidLoad:(NewsQuery*)sender {
-    NSLog(@"Load news results");
+    //NSLog(@"Load news results");
     if ([sender hasError]) {
         NSLog(@"  has error");
     } else {
@@ -59,13 +75,13 @@
             NSLog(@"  has more");
         }
         NSArray *results = [sender getResults];
-        NSLog(@"%@", results);
+        //NSLog(@"%@", results);
         
         // build listDetails
         [listDetails removeAllObjects];
         NSInteger count = [results count];
         
-        NSLog(@"start building %d circleDetails\n", count);
+        //NSLog(@"start building %d circleDetails\n", count);
         
         for (int i=0; i<count; i++) {
             
@@ -266,7 +282,7 @@
 	return (GENERIC_MARGIN+PIC_HEIGHT+GENERIC_MARGIN+picSize+GENERIC_MARGIN+
             height+GENERIC_MARGIN+
             rowsOfImages*( LG_PIC_SIZE+GENERIC_MARGIN)+
-            GENERIC_MARGIN);
+            GENERIC_MARGIN+CD_COMBUT_HEIGHT+GENERIC_MARGIN);
 }
 
 /*

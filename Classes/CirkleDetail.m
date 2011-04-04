@@ -157,7 +157,8 @@
         return;
     }
     
-    user = (User *)[userArray objectAtIndex:0];
+    //to-do: double check if we really need this user pointer saved
+    user = (User *)[[userArray objectAtIndex:0] retain];
     if (user != nil) {
         nameString = [[NSString alloc] initWithString:user.name];
         //no need for avatar - the view gets it directly from circleDetail object
@@ -166,18 +167,18 @@
         NSLog(@"Error reading user from topic dictionary");
     }
     
-    NSLog(@"name %@",nameString);
+    //NSLog(@"name %@",nameString);
         
     //init imageUrl
     imageUrl = [[NSMutableArray alloc] init];
     
-    NSString *photoUrl = [dic objectForKey:@"chatter_photo"];
+    NSString *photoUrl = [[dic objectForKey:@"chatter_photo"] retain];
     if ((photoUrl) && [photoUrl isKindOfClass:[NSString class]]) {
         [imageUrl addObject:[photoUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     
     //first the content string at photo level
-    NSString *tContent = [dic objectForKey:@"content"];
+    NSString *tContent = [dic objectForKey:@"content"]; //no retain
     if ((tContent) && [tContent isKindOfClass:[NSString class]]) {
         if (contentString==nil) {
             contentString = [[NSMutableString alloc] initWithCapacity:20];
@@ -198,9 +199,9 @@
                 continue;
             }
             //content
-            NSString *aContent = [aChatter objectForKey:@"content"];
+            NSString *aContent = [aChatter objectForKey:@"content"]; //no retain
             //user
-            NSArray *aUser = [aChatter objectForKey:@"user"];
+            NSArray *aUser = [aChatter objectForKey:@"user"]; //no retain
             if (![aUser isKindOfClass:[NSArray class]]) {
                 NSLog(@"Bad format from CirkleDetail chatter user");
                 continue;
@@ -218,19 +219,20 @@
         }
     } //end of get chatter string
     
-    NSLog(@"comments %@", contentString);
+    //NSLog(@"comments %@", contentString);
 }
 
 - (id)initWithJsonDictionary:(NSDictionary*)aDic {
     //get current time
-    time_t now;
-    time(&now);	
-    
-    //Note: current return dictionary is in incorrect format. We will insist on correct format and ignore other results
+    //time_t now;
+    //time(&now);	
     
     //read type 
     NSString *eventType = [aDic objectForKey:@"type"];
     type = 0;
+    
+    //read ID at top level
+    cId = [[aDic objectForKey:@"id"] longLongValue];
     
     //get time of the latest update - this time is refreshed
     struct tm   timeStruct;

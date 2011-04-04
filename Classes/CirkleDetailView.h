@@ -37,6 +37,9 @@
 #define CD_NAME_TOP_Y			(GENERIC_MARGIN + PIC_WIDTH + GENERIC_MARGIN + CD_MAP_SIZE + GENERIC_MARGIN)
 #define CD_CONTENT_WIDTH		253
 
+#define CD_COMBUT_WIDTH         60
+#define CD_COMBUT_HEIGHT        20
+
 #define MAIN_FONT_SIZE			12
 #define MIN_MAIN_FONT_SIZE		10
 #define SECONDARY_FONT_SIZE		10
@@ -50,6 +53,7 @@
     CGSize      size_names;
     NSInteger   rowsOfImages;
     CGSize      size_comments;
+    UIButton    *commentButton;
 }
 
 @property (nonatomic, retain) HJManagedImageV *userImage;
@@ -58,6 +62,8 @@
 @property (nonatomic, retain) CirkleDetail *circleDetail;
 @property (nonatomic) CGSize size_names, size_comments;
 @property (nonatomic) NSInteger rowsOfImages;
+
+@property (nonatomic, retain) UIButton *commentButton;
 
 //use this method to update time string when timer fires off
 - (NSString *)updateTimeString;
@@ -69,5 +75,7 @@
 
 //after set is completed, use this tor return size
 - (NSInteger)getSize;
+
+- (void)addComment:(UIButton *)sender;
 
 @end

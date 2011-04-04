@@ -136,7 +136,7 @@
         timeString = [dateFormatter stringFromDate:date];
     }
     
-    NSLog(@"timestring is %@", timeString);
+    //NSLog(@"timestring is %@", timeString);
     return timeString;
 }
 

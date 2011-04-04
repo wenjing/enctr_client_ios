@@ -17,7 +17,7 @@
 @interface CirkleSummary : NSObject {
     sqlite_int64    cId;
     NSString        *nameString;
-    NSString        *avatarUrl;
+//    NSString        *avatarUrl;
     time_t          timeAt;
     NSInteger       score;
     NSInteger       type;
@@ -28,7 +28,7 @@
 
 @property (nonatomic) sqlite_int64    cId;
 @property (nonatomic, retain) NSString        *nameString;
-@property (nonatomic, retain) NSString        *avatarUrl;
+//@property (nonatomic, retain) NSString        *avatarUrl;
 @property (nonatomic) time_t          timeAt;
 @property (nonatomic) NSInteger       score;
 @property (nonatomic) NSInteger       type;

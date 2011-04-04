@@ -17,6 +17,7 @@
 @synthesize size_names;
 @synthesize size_comments;
 @synthesize rowsOfImages;
+@synthesize commentButton;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -59,6 +60,7 @@
     [images release];
     [userImage release];
     [circleDetail release];
+    //don't release comment button here - autorelease
     [super dealloc];
 }
 
@@ -71,6 +73,29 @@
     } else if (circleDetail.type == CD_TYPE_TOPIC) {
         [self topicDetailSet];
     }
+    
+    // comment button
+    if (commentButton == nil) {
+        commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        commentButton.backgroundColor = [UIColor clearColor];
+        commentButton.titleLabel.font = [UIFont systemFontOfSize:MIN_SECONDARY_FONT_SIZE];
+    
+        [commentButton setTitle:@"comment" forState:UIControlStateNormal];
+    }
+    
+    [commentButton addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    //fontSize = [translationButton.titleLabel.text sizeWithFont:translationButton.titleLabel.font];      
+    CGRect buttonFrame = CGRectMake(CD_NAME_TOP_X, 
+                                    [self getSize] - CD_COMBUT_HEIGHT - GENERIC_MARGIN, 
+                                    CD_COMBUT_WIDTH,
+                                    CD_COMBUT_HEIGHT);
+    
+    [commentButton setFrame:buttonFrame];
+
+    [self addSubview:commentButton];
+    //NSLog(@"add comment button to %@", circleDetail.nameString);
     
     [self setNeedsDisplay];
 }
@@ -141,6 +166,7 @@
         [self addSubview:img];
     }
 
+    
 }
 - (void) encounterDetailSet {
     
@@ -271,7 +297,7 @@
                 size_names.height+GENERIC_MARGIN+
                 rowsOfImages*( LG_PIC_SIZE+GENERIC_MARGIN)+
                 size_comments.height+
-                GENERIC_MARGIN);
+                GENERIC_MARGIN+CD_COMBUT_HEIGHT+GENERIC_MARGIN);
     
 }
 
@@ -431,10 +457,18 @@
         [circleDetail.contentString drawInRect:drawRect withFont:mainFont];
     }
     
-    // Draw comment button
-    
     //that's it
 }
 
+- (void) addComment:(UIButton *)sender {
+    //need to know which topic's button is pressed
+    kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+	MessageViewController *mV = appDelegate.messageView ;
+    if (self.circleDetail.type == CD_TYPE_TOPIC ) {
+        [mV replyTo:self.circleDetail.cId];
+    } else if (self.circleDetail.type == CD_TYPE_ENCOUNETR) {
+        [mV postToWithId:self.circleDetail.cId];
+    }
+}
 
 @end

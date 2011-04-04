@@ -192,7 +192,7 @@
     KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
 	
     if  (messageView.isReplyFlag) {
-      [client postMessage:text.text toMeetId:messageView.InReplyToChatId photoData:selectedPhoto];
+      [client postMessage:text.text toChatId:messageView.InReplyToChatId photoData:selectedPhoto];
   } else if (messageView.isUserFlag) {
     [client postMessage:text.text toUserId:messageView.InReplyToUserId photoData:selectedPhoto];
     } else {

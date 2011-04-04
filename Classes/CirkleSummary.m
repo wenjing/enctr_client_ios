@@ -13,7 +13,7 @@
 @implementation CirkleSummary
 @synthesize cId;
 @synthesize nameString;
-@synthesize avatarUrl;
+//@synthesize avatarUrl;
 @synthesize timeAt;
 @synthesize score;
 @synthesize type;
@@ -25,7 +25,7 @@
 - (void)dealloc
 {
     [nameString release];
-    [avatarUrl release];
+    //[avatarUrl release]; not used
     [user release];
     [imageUrl removeAllObjects];
     [imageUrl release];
@@ -40,7 +40,8 @@
     
     cId = [[dic objectForKey:@"id"] longLongValue];
     
-    NSString *typeString = [dic objectForKey:@"type"];
+    NSString *typeString = [dic objectForKey:@"type"]; 
+    
     if ([typeString isEqualToString:@"private"]) {
         type = CIRCLE_TYPE_PRIVATE;
     } else if ([typeString isEqualToString:@"cirkle"]) {

@@ -67,7 +67,6 @@
 							<string key="NSResourceName">tab-handshake.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<reference key="IBUITabBar" ref="795333663"/>
 					</object>
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="1034742383"/>
@@ -95,7 +94,6 @@
 						<object class="IBUIViewController" id="951109946">
 							<reference key="IBUIToolbarItems" ref="0"/>
 							<object class="IBUINavigationItem" key="IBUINavigationItem" id="133701872">
-								<reference key="IBUINavigationBar"/>
 								<string key="IBUITitle">Encounter</string>
 								<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="1003880491">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -132,7 +130,6 @@
 								<string key="NSResourceName">tab-live.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							<reference key="IBUITabBar" ref="795333663"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="1034742383"/>
@@ -196,7 +193,6 @@
 								<string key="NSResourceName">tab-cirkle.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							<reference key="IBUITabBar" ref="795333663"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="1034742383"/>
@@ -246,7 +242,6 @@
 								<string key="NSResourceName">tab-map.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							<reference key="IBUITabBar" ref="795333663"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="1034742383"/>
@@ -296,7 +291,6 @@
 								<string key="NSResourceName">tab-setup.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							<reference key="IBUITabBar" ref="795333663"/>
 						</object>
 						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="1034742383"/>
@@ -360,7 +354,6 @@
 					<int key="NSvFlags">266</int>
 					<string key="NSFrame">{{0, 431}, {320, 49}}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView"/>
 					<object class="NSColor" key="IBUIBackgroundColor">
 						<int key="NSColorSpace">3</int>
@@ -369,15 +362,6 @@
 					<bool key="IBUIClipsSubviews">YES</bool>
 					<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 					<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-					<object class="NSMutableArray" key="IBUIItems">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<reference ref="291589542"/>
-						<reference ref="802438451"/>
-						<reference ref="568270971"/>
-						<reference ref="257365854"/>
-						<reference ref="829563079"/>
-					</object>
-					<reference key="IBUISelectedItem" ref="568270971"/>
 				</object>
 			</object>
 			<object class="IBUIWindow" id="380026005">
