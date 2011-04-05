@@ -130,7 +130,7 @@
 }
 
 + (int) getTimelinesFromMt:(KYMeet*)mt withDic:(NSDictionary*)dic Timelines:(NSMutableArray*)tls
-{	int cnt ;
+{	int cnt = 0;
 
 	[tls addObject:[[[Timeline alloc] initWithEncounter:mt] autorelease] ];
 	NSArray *tps = (NSArray *)[dic objectForKey:@"topics"];

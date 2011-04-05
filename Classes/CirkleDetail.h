@@ -14,7 +14,7 @@
 #define CD_TYPE_TOPIC       2
 
 @interface CirkleDetail : NSObject {
-    sqlite_int64    cId;
+    sqlite_uint64    cId;
     NSString        *nameString;
     NSString        *addrString;
     NSString        *avatarUrl;
@@ -26,7 +26,7 @@
     NSMutableString *contentString;
 
 }
-@property (nonatomic) sqlite_int64    cId;
+@property (nonatomic) sqlite_uint64    cId;
 @property (nonatomic, retain) NSString        *nameString;
 @property (nonatomic, retain) NSString        *addrString;
 @property (nonatomic, retain) NSString        *avatarUrl;

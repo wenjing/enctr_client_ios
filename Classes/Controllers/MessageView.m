@@ -32,7 +32,7 @@
     InReplyToMeetId = [number longLongValue];
 }
 
-- (void)editReply:(sqlite_int64)chatId
+- (void)editReply:(sqlite_uint64)chatId
 {
     InReplyToChatId   = chatId;
     InReplyToUserId   = 0;
@@ -59,7 +59,7 @@
 
 //editMessageUser only requires an sqlite_int64, this version dis-entangles the KYMeet struct dependency
 //make sure these two methods are identical
-- (void)editMessageUserWithId:(sqlite_int64)id
+- (void)editMessageUserWithId:(sqlite_uint64)id
 {
 	InReplyToChatId = 0;
 	InReplyToUserId = id;
@@ -83,7 +83,7 @@
 //editMessage only requires an sqlite_int64, this version dis-entangles the KYMeet struct dependency
 //make sure these two methods are identical
 
-- (void)editMessageWithId:(sqlite_int64)id
+- (void)editMessageWithId:(sqlite_uint64)id
 {
     InReplyToMeetId = id ;
 	isReplyFlag = false  ;

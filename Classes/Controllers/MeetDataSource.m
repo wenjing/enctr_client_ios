@@ -87,7 +87,7 @@ static NSInteger sortByDate(id a, id b, void *context)
     return [meets objectAtIndex:j]   ;
 }
 
--(KYMeet*)meetById:(sqlite_int64)meetId
+-(KYMeet*)meetById:(sqlite_uint64)meetId
 {
     for (int i = 0; i < [meets count]; ++i) {
         KYMeet* sts = [meets objectAtIndex:i];

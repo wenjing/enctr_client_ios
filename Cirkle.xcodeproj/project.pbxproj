@@ -18,6 +18,7 @@
 		1E3DB39C133AD64500B5C8B1 /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB399133AD64500B5C8B1 /* News.m */; };
 		1E3DB39D133AD64500B5C8B1 /* NewsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB39B133AD64500B5C8B1 /* NewsQuery.m */; };
 		1E3DB3A3133AD69400B5C8B1 /* Timeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB3A2133AD69400B5C8B1 /* Timeline.m */; };
+		1EE88C191345795E009CA84F /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EE88C181345795E009CA84F /* Statistics.m */; };
 		28216C970DB411BC00E5133A /* MeetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* MeetViewController.m */; };
 		282CCBFE0DB6C98000C4EA27 /* moreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* moreView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
@@ -163,6 +164,9 @@
 		1E3DB39B133AD64500B5C8B1 /* NewsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NewsQuery.m; path = Models/NewsQuery.m; sourceTree = "<group>"; };
 		1E3DB3A1133AD69400B5C8B1 /* Timeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timeline.h; path = Models/Timeline.h; sourceTree = "<group>"; };
 		1E3DB3A2133AD69400B5C8B1 /* Timeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timeline.m; path = Models/Timeline.m; sourceTree = "<group>"; };
+		1EE88C171345795E009CA84F /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Statistics.h; path = Models/Statistics.h; sourceTree = "<group>"; };
+		1EE88C181345795E009CA84F /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Statistics.m; path = Models/Statistics.m; sourceTree = "<group>"; };
+		1EE88C1A13457975009CA84F /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singleton.h; path = Others/Singleton.h; sourceTree = "<group>"; };
 		28216C950DB411BC00E5133A /* MeetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeetViewController.h; path = Controllers/MeetViewController.h; sourceTree = "<group>"; };
 		28216C960DB411BC00E5133A /* MeetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeetViewController.m; path = Controllers/MeetViewController.m; sourceTree = "<group>"; };
 		282CCBFD0DB6C98000C4EA27 /* moreView.xib */ = {isa = PBXFileReference; explicitFileType = file.xib; name = moreView.xib; path = Resources/moreView.xib; sourceTree = "<group>"; };
@@ -420,15 +424,17 @@
 			name = Cirkle;
 			sourceTree = "<group>";
 		};
-		1E3DB385133AC56100B5C8B1 /* Protocol */ = {
+		1EE88C1613457916009CA84F /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				1EE88C171345795E009CA84F /* Statistics.h */,
+				1EE88C181345795E009CA84F /* Statistics.m */,
 				1E3DB386133AC57C00B5C8B1 /* QueryProtocol.h */,
 				1E3DB387133AC57C00B5C8B1 /* QueryProtocol.m */,
 				1E3DB388133AC57C00B5C8B1 /* RecordProtocol.h */,
 				1E3DB389133AC57C00B5C8B1 /* RecordProtocol.m */,
 			);
-			name = Protocol;
+			name = Misc;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* kaya-meet */ = {
@@ -446,6 +452,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				1EE88C1A13457975009CA84F /* Singleton.h */,
 				3A963AF013137E69001BE108 /* HJCacheClasses */,
 				3A3B20A5130FA20B0069BB29 /* UIImage+Alpha.h */,
 				3A3B20A6130FA20B0069BB29 /* UIImage+Alpha.m */,
@@ -735,7 +742,7 @@
 		3AF7B465127919C4008F83BC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1E3DB385133AC56100B5C8B1 /* Protocol */,
+				1EE88C1613457916009CA84F /* Misc */,
 				1E3DB380133AC4C100B5C8B1 /* Cirkle */,
 				3A17B1E81314DA3100338E5D /* News */,
 				3A5F339B12A8E75A008E9353 /* Accerometer */,
@@ -973,6 +980,7 @@
 				3DC1F7651343C49000CC81AF /* CirkleDetailView.m in Sources */,
 				3DC1F7681343D82400CC81AF /* CirkleDetailCell.m in Sources */,
 				3DC1F76C1343DAC700CC81AF /* CirkleDetailViewController.m in Sources */,
+				1EE88C191345795E009CA84F /* Statistics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,3 +1085,4 @@
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
+

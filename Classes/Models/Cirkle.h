@@ -3,8 +3,9 @@
 
 @interface Cirkle : RecordBase
 {
-  NSString *data;
+  NSDictionary *data;
 }
-@property (nonatomic, retain) NSString  *data;
-- (id)initWithData:(NSString*)data0 withId:(sqlite_int64)id0 withOdd:(sqlite_int64)odd0;
+@property (nonatomic, retain) NSDictionary *data;
++ (int)columnCount;
+- (id)initWithData:(NSDictionary*)data0 withId:(sqlite_uint64)id0 withOdd:(sqlite_uint64)odd0;
 @end

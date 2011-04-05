@@ -96,7 +96,8 @@
     CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
                                               releaseAtCallBack:true];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    [query query:options withUpdate:true];
+    BOOL update = false;
+    [query query:options withUpdate:update];
 }
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
@@ -106,6 +107,8 @@
   } else {
     if ([sender hasMore]) {
       NSLog(@"  has more");
+    } else if ([sender hasUpdate]) {
+      NSLog(@"  has update");      
     }
     NSArray *results = [sender getResults];
     NSLog(@"%@", results);
@@ -115,10 +118,17 @@
 
 -(void)restoreAndLoadNews
 {
-  NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
+  NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
                                         releaseAtCallBack:true];
   NSMutableDictionary *options = [NSMutableDictionary dictionary];
-  [query query:options withUpdate:true];
+  BOOL update = false;
+  int limit = 10, offset = 0;
+  sqlite3_int64 friend_id = 1, cirkle_id = 15587;
+  [options setObject:[NSNumber numberWithInt:limit] forKey:@"limit"];
+  [options setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
+  //[options setObject:[NSNumber numberWithInt:friend_id] forKey:@"friend_id"];
+  //[options setObject:[NSNumber numberWithInt:cirkle_id] forKey:@"cirkle_id"];
+  [query query:options withUpdate:update];
 }
 
 - (void) newsDidLoad:(NewsQuery*)sender
@@ -129,6 +139,8 @@
   } else {
     if ([sender hasMore]) {
       NSLog(@"  has more");
+    } else if ([sender hasUpdate]) {
+      NSLog(@"  has update");      
     }
     NSArray *results = [sender getResults];
     NSLog(@"%@", results);

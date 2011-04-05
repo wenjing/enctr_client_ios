@@ -8,6 +8,7 @@
 
 #import "CirkleDetailView.h"
 #import "kaya_meetAppDelegate.h"
+#import "CirkleDetailViewController.h"
 
 @implementation CirkleDetailView
 
@@ -76,7 +77,7 @@
     
     // comment button
     if (commentButton == nil) {
-        commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect]; //auto-released
         commentButton.backgroundColor = [UIColor clearColor];
         commentButton.titleLabel.font = [UIFont systemFontOfSize:MIN_SECONDARY_FONT_SIZE];
     
@@ -364,7 +365,7 @@
 	
 	// Color and font for the secondary text items
 	UIColor *secondaryTextColor = nil;
-	UIFont *secondaryFont = [UIFont systemFontOfSize:SECONDARY_FONT_SIZE];
+	//UIFont *secondaryFont = [UIFont systemFontOfSize:SECONDARY_FONT_SIZE];
 	
 	mainTextColor = [UIColor blackColor];
 	secondaryTextColor = [UIColor darkGrayColor];
@@ -469,6 +470,15 @@
     } else if (self.circleDetail.type == CD_TYPE_ENCOUNETR) {
         [mV postToWithId:self.circleDetail.cId];
     }
+    
+    //Need a function refresh this cell from server, and be called from messageView when it is done
+    /*
+    UITableView *tv = (UITableView *) self.superview.superview.superview;
+    CirkleDetailViewController *vc = (CirkleDetailViewController *) tv.dataSource;
+    NSLog(@"refreshing circleDetailView");
+    
+    [vc restoreAndLoadNews:true];
+     */
 }
 
 @end

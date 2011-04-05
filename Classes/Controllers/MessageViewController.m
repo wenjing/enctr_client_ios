@@ -85,7 +85,7 @@
     [self edit];
 }
 
-- (void)replyTo:(sqlite_int64)cid
+- (void)replyTo:(sqlite_uint64)cid
 {
 	isReplyMessage = true;
 	isInviteMessage = false;
@@ -101,7 +101,7 @@
     [self edit];
 }
 
-- (void)postToUserWithId:(sqlite_int64)userid
+- (void)postToUserWithId:(sqlite_uint64)userid
 {
 	isReplyMessage = false;
 	isInviteMessage = false;
@@ -118,7 +118,7 @@
     [self edit];
 }
 
-- (void)postToWithId:(sqlite_int64)cid
+- (void)postToWithId:(sqlite_uint64)cid
 {
 	isReplyMessage = false;
 	isInviteMessage = false;

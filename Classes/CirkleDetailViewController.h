@@ -17,8 +17,9 @@
 @property (nonatomic, retain) NSMutableArray *listDetails;
 @property (nonatomic, retain) CirkleSummary *summary;
 
-- (void)restoreAndLoadNews;
+- (void)restoreAndLoadNews:(BOOL)withUpdate;
 - (void)newsDidLoad:(NewsQuery*)sender;
+- (void)newsDidUpdate:(NewsQuery*)sender;
 
 - (IBAction)composeAction:(id)sender;
 

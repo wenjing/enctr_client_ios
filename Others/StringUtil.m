@@ -2,6 +2,7 @@
 //  StringUtil.m
 //
 
+#import <CommonCrypto/CommonDigest.h>
 #import "StringUtil.h"
 
 static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; 
@@ -160,7 +161,39 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 	return [dateFormatter stringFromDate:date]   ;
 }
 
+- (time_t)dateValue
+{
+  struct tm time0;
+  strptime([self UTF8String], "%FT%T%z", &time0);
+  return timegm(&time0);
+}
+
+- (NSString *)md5
+{
+ const char *cStr = [self UTF8String];
+ unsigned char result[16];
+ CC_MD5( cStr, strlen(cStr), result );
+ return [NSString stringWithFormat:
+  @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+  result[0], result[1], result[2], result[3], 
+  result[4], result[5], result[6], result[7],
+  result[8], result[9], result[10], result[11],
+  result[12], result[13], result[14], result[15]
+  ]; 
+}
+
+- (uint64_t)md5AsInt64
+{
+ const char *cStr = [self UTF8String];
+ unsigned char result[16];
+ CC_MD5( cStr, strlen(cStr), result );
+ uint64_t part1=0, part2=0;
+ int nn;
+ for (nn = 0; nn < 8; ++nn) {
+   part1 += (part1 << 8) + result[nn];
+   part2 += (part2 << 8) + result[nn+8];
+ }
+ return (part1+part2); // let it overflow, may loss 1 bit
+}
+
 @end
-
-
-

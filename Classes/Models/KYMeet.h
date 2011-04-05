@@ -25,16 +25,16 @@ typedef enum {
 	NSString*		latestChat;
 }
 
-@property (getter=_meetId, setter=setMeetId:) sqlite_int64  kymeetId;
+@property (getter=_meetId, setter=setMeetId:) sqlite_uint64  kymeetId;
 @property (nonatomic, retain) User*         user;
 @property (nonatomic, retain) NSString*     source;
 @property (nonatomic, retain) NSString*      place;
 @property (nonatomic, retain) NSString*      latestChat;
 
-+ (KYMeet*)meetWithId:(sqlite_int64)kymeetId;
++ (KYMeet*)meetWithId:(sqlite_uint64)kymeetId;
 + (KYMeet*)meetWithJsonDictionary:(NSDictionary*)dic type:(MeetType)type;
 + (KYMeet*)initWithStatement:(Statement*)statement;
-+ (BOOL)isExists:(sqlite_int64)kymeetId;
++ (BOOL)isExists:(sqlite_uint64)kymeetId;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic type:(MeetType)type user:(User*)aUser;
 - (id)initWithJsonDictionary:(NSDictionary*)dic type:(MeetType)type ;

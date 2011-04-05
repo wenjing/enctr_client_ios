@@ -46,6 +46,7 @@
         userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
         [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+        //NSLog(@"user %d name %@ url %@ full url=%@", user.userId, user.name, user.profileImageUrl, userImage.url);
     }
     
     NSEnumerator *enumerator = [circle.imageUrl objectEnumerator];

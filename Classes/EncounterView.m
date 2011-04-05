@@ -34,6 +34,7 @@
 @synthesize greetingString;
 @synthesize pic;
 @synthesize userImage;
+@synthesize uID;
 
 - (void)setPeerName:(NSString *)newNameString
              peerId:(NSInteger)uid
@@ -126,7 +127,7 @@
 		[mainTextColor set];
 		
 		if (row!=0) {
-			boundsX = boundsX + 24.0;
+			//boundsX = boundsX + 24.0;
 		}
 		// Draw the picture
 		point = CGPointMake(boundsX+GENERIC_MARGIN, GENERIC_MARGIN);

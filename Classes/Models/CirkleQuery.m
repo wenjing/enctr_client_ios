@@ -5,18 +5,7 @@
 #import "DBConnection.h"
 #import "KYMeetClient.h"
 #import "CirkleQuery.h"
-
-@implementation CirkleQuery
-
-- (id)recordClass
-{
-  return [Cirkle class];
-}
-
-- (void)dealloc 
-{
-  [super dealloc];
-}
+#import "Statistics.h"
 
 // Usage sample
 /*
@@ -48,52 +37,137 @@
 }
 */
 
-// params: offset, limit, before_time, after_time
+@implementation CirkleQuery
+
++ (id)recordClass
+{
+  return [Cirkle class];
+}
+
+- (void)dealloc 
+{
+  [super dealloc];
+}
+
+// In case of update (sync with remote server), retrieve all updated records from server after
+// latest record time. Save (or replace) them to local DB and query the whole records from DB.
+// Otherwise, just query and return the whole records from DB.
 - (void)query:(NSDictionary*)options withUpdate:(BOOL)update
 {
-  [self cancel];
-  meetClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(cirklesDidReceive:obj:)];
-  uint32_t user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"] ;
-  //NSNumber *friend_id = [options objectForKey:@"friend_id"];
-  //NSNumber *cirkle_id = [options objectForKey:@"cirkle_id"];
-  NSMutableDictionary *param = [NSMutableDictionary dictionary];
-  //offset = 0;
-  //limit = 10;
-  //[param setObject:[NSString stringWithFormat:@"%d", limit] forKey:@"limit" ];
-  //if (friend_id) {
-  //  [meetClient getCirkles:param withUserId:user_id withFriendId:[friend_id intValue]];
-  //} else if (cirkle_id) {
-  //  [meetClient getCirkles:param withUserId:user_id withCirkleId:[cirkle_id intValue]];
-  //} else {
+  [self clear];
+
+  meetClient = [[KYMeetClient alloc] initWithTarget:self
+                                     action:@selector(cirklesDidReceive:obj:)];
+  queryMode = QUERY_MODE_LOCAL;
+  uint32_t user_id = [[NSUserDefaults standardUserDefaults]
+                                        integerForKey:@"KYUserId"] ;
+
+  CirkleStat *stat = [CirkleStat retrieve:nil];
+  if (stat.lastQuery == 0) { // First query, DB must be empty
+    update = true;
+  }
+  NSMutableDictionary *param = nil;
+  if (update) {
+    queryMode = QUERY_MODE_UPDATE;
+    param = [NSMutableDictionary dictionary];
+    if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
+      [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
+    }
+  }
+
+  queryStatus = QUERY_STATUS_PENDING;
+  if (param) { // get from remote server
     [meetClient getCirkles:param withUserId:user_id];
-  //}
+  } else { // call callback function directly with empty object.
+    KYMeetClient *meet_client = meetClient;
+    [self cirklesDidReceive:meetClient obj:[NSArray array]]; 
+    [meet_client autorelease];
+  }
+}
+
+// Combine id and type to form a (BYRD) unique int64 integer as DB id.
+static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
+{
+  NSString *str = [NSString stringWithFormat:@"id=%d type=%s", id0, type];
+  return [str md5AsInt64];
 }
 
 - (void)cirklesDidReceive:(KYMeetClient*)sender obj:(NSObject*)obj
 {
-  meetClient = nil;
-  more = true;
+  if (![self isPending]) return; // Ignore cancelled callback
+  meetClient = nil; // Do not release here, it will be autorelease inside client
+  queryStatus = QUERY_STATUS_OK;
   [self checkNetworkError:sender];
-  if (error) return;
-  if (!obj) return;
-  if (![obj isKindOfClass:[NSArray class]]) return;
+  if ([self hasError]) return;
+  if (!obj || ![obj isKindOfClass:[NSArray class]]) {
+    queryStatus = QUERY_STATUS_ERROR;
+    return;
+  }
 
-  NSArray *array = (NSArray *)obj;
-  //NSLog(@"%@", array);
-  NSEnumerator *iter = [array objectEnumerator];
+  CirkleStat *stat = [CirkleStat retrieve:nil];
+  time_t now; time(&now); stat.lastQuery = now;
+
+  // Process results and save to DB
+  [DBConnection beginTransaction];
+  NSArray *net_res = (NSArray *)obj; //NSLog(@"%@", net_res);
+  NSEnumerator *iter = [net_res objectEnumerator];
   id item;
   while ((item = [iter nextObject])) {
-    id trimmed= [self trimData:item];
-    [results addObject:trimmed];
+    // Save each item to DB
+    NSDictionary *dic = item;
+    sqlite3_uint64 id0 = [[dic objectForKey:@"id"] integerValue];
+    NSString *type = [dic objectForKey:@"type"];
+    NSString *timestamp = [dic objectForKey:@"timestamp"];
+    sqlite3_uint64 hashed_id = GetHashId(id0, [type UTF8String]);
+    sqlite3_uint64 odd = [timestamp dateValue]; // odd is purely based on timestamp.
+    Cirkle *cirkle = [[Cirkle alloc] initWithData:dic withId:hashed_id withOdd:odd];
+    time_t timestamp_val = [timestamp dateValue];
+    if (stat.latestTime == 0 || stat.latestTime < timestamp_val) {
+      stat.latestTime = timestamp_val;
+    }
+    if (stat.earliestTime == 0 || stat.earliestTime > timestamp_val) {
+      stat.earliestTime = timestamp_val;
+    }
+    [cirkle persist]; // save to DB
+    [cirkle release];
   }
+
+  // Check if having any update (only for update more)
+  if (queryMode == QUERY_MODE_UPDATE && [net_res count] == 0) {
+    queryStatus = QUERY_STATUS_NOUPDATE;
+
+  // Only try getting result from DB if there are some updates or
+  // it is none-update mode.
+  } else {
+
+    // Get from DB
+    // It might look quite a waste by a saving/retirve (serialize/deserialize) cycle.
+    // It will be more efficient to process and set result right after save to DB operation
+    // without retrieving from DB. However, some query might be partial and the order is
+    // may not be necessary as exactly what we would like. It will be safer to make the first
+    // step to purely sync local DB with remote server. And the actuall query at the 2nd step
+    // regardless update is required or not.
+    self.results = [NSMutableArray arrayWithCapacity:1024];
+    NSArray *res = [Cirkle queryDB:@"" withOffset:0 withLimit:-1]; // full query
+    iter = [res objectEnumerator];
+    while ((item = [iter nextObject])) {
+      Cirkle *cirkle = item;
+      id trimmed= [self trimData:cirkle.data ];
+      [results addObject:trimmed];
+    }
+  }
+  [stat persist]; // update statistics
+  [DBConnection commitTransaction];
+
   [self queryDidFinish:nil];
+  if (releaseAtCallBack) [self autorelease];
 }
 
 - (id)trimData:(id)obj
 {
   id result = obj;
   if ([obj isKindOfClass:[NSArray class]]) {
-    result = [NSMutableArray array];
+    result = [NSMutableArray arrayWithCapacity:[obj count]];
     NSEnumerator *iter = [obj objectEnumerator];
     id item;
     while ((item = [iter nextObject])) {
@@ -112,9 +186,9 @@
         User *user = [User userWithJsonDictionary:item];
         //id is_new_user = [item objectForKey:@"is_new_user"];
         //if (!is_new_user) is_new_user = [NSNull null];
-        [DBConnection beginTransaction];
-        [user updateDB] ;
-        [DBConnection commitTransaction];
+        //[DBConnection beginTransaction];
+        [user updateDB];
+        //[DBConnection commitTransaction];
         trimmed = user;
         //trimmed = [NSMutableArray array];
         //[trimmed addObject:user];

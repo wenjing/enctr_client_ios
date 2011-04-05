@@ -43,9 +43,18 @@
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 
-- (void)restoreAndLoadNews {
-    NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
+- (void)restoreAndLoadNews:(BOOL)withUpdate {
+    
+    NewsQuery *query;
+    
+    if (withUpdate) {
+        query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidUpdate:)
                                        releaseAtCallBack:true];
+    } else {
+        //first time load
+        query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
+                                releaseAtCallBack:true];
+    }
     
     NSMutableDictionary *options;
     
@@ -60,7 +69,7 @@
     
     //NSLog(@"cid %lld, option dictionary: %@", summary.cId, options);
     
-    [query query:options withUpdate:true];
+    [query query:options withUpdate:withUpdate];
     
     [idString release]; //should i?
     [options release];
@@ -99,7 +108,47 @@
     }
     
     [sender clear];
+    
+    //immediately followed by an update
+    [self restoreAndLoadNews:true];
 
+}
+
+- (void)newsDidUpdate:(NewsQuery*)sender {
+    //NSLog(@"Load news results");
+    if ([sender hasError]) {
+        NSLog(@"  has error");
+    } else {
+        if ([sender hasMore]) {
+            NSLog(@"  has more");
+        }
+        NSArray *results = [sender getResults];
+        NSLog(@"%@", results);
+        
+        // adding new items to listDetails
+        NSInteger count = [results count];
+        
+        NSLog(@"start adding %d circleDetails\n", count);
+        
+        for (int i=0; i<count; i++) {
+            
+            NSDictionary *dic = [results objectAtIndex:i];
+            
+            CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
+            
+            //insert to the top
+            [listDetails insertObject:circleDetail atIndex:0];
+            
+            //NSLog(@"adding %d-th circleDetail to list\n", i);
+            //if (i>100)
+            //    break;
+        }
+        
+        [self.tableView reloadData];
+    }
+    
+    [sender clear];
+    
 }
 
 - (IBAction)composeAction:(id)sender
@@ -125,7 +174,7 @@
     listDetails = [[NSMutableArray alloc] init];
     self.title = [[NSString alloc] initWithFormat:@"%@",summary.nameString];
     
-    [self restoreAndLoadNews];
+    [self restoreAndLoadNews:false];
     
     // add compose button as the nav bar's custom right view
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose

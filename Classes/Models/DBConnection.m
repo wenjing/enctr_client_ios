@@ -85,6 +85,11 @@ const char *delete_cirkles_cache_sql =
 "DELETE FROM cirkles;"
 "COMMIT;"
 "VACUUM;";
+const char *delete_statistics_cache_sql = 
+"BEGIN;"
+"DELETE FROM statistics;"
+"COMMIT;"
+"VACUUM;";
 
 + (void)deleteDBCache
 {
@@ -105,7 +110,11 @@ const char *delete_cirkles_cache_sql =
     }
     if (sqlite3_exec(theDatabase, delete_cirkles_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
         // ignore error
-        NSLog(@"Error: failed to cleanup crikles chache (%s)", errmsg);
+        NSLog(@"Error: failed to cleanup cirkles chache (%s)", errmsg);
+    }
+    if (sqlite3_exec(theDatabase, delete_statistics_cache_sql, NULL, NULL, &errmsg) != SQLITE_OK) {
+        // ignore error
+        NSLog(@"Error: failed to cleanup statistics chache (%s)", errmsg);
     }
 }
 
@@ -195,6 +204,11 @@ const char *optimize_sql = "VACUUM; ANALYZE";
 {
     NSString *sqlite3err = [NSString stringWithUTF8String:sqlite3_errmsg(theDatabase)];
     [[kaya_meetAppDelegate getAppDelegate] alert:@"Local cache db error" message:sqlite3err];
+}
+
++ (sqlite3_uint64)lastInsertId
+{
+    return sqlite3_last_insert_rowid(theDatabase);
 }
 
 @end

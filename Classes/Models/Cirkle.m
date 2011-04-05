@@ -11,26 +11,38 @@
 
 + (int)columnCount
 {
-  return [[super class] columnCount] + 1;
+  return [[self superclass] columnCount] + 1;
 }
 
-- (id)initWithData:(NSString*)data0 withId:(sqlite_int64)id0 withOdd:(sqlite_int64)odd0
+- (id)initWithData:(NSDictionary*)data0 withId:(sqlite_uint64)id0 withOdd:(sqlite_uint64)odd0
 {
-  [super initWithId:id0 withOdd:odd0];
-  self.data = data0;
+  self = [super initWithId:id0 withOdd:odd0];
+  if (self != nil) {
+    self.data = data0;
+  }
+  return self;
+}
+
+- (id)initWithStmt:(Statement*)stmt
+{
+  self = [super initWithStmt:stmt];
+  if (self != nil) {
+    int index = [[self superclass] columnCount];
+    self.data = [NSDictionary deserialize:[stmt getString:index++]];
+  }
   return self;
 }
 
 - (void)dealloc
 {
-  data = NULL;
+  self.data = nil;
   [super dealloc];
 }
 
-- (int)bindStmt:(Statement*)stmt
+- (int)bindStmt:(Statement*)stmt isWithId:(BOOL)with_id
 {
-  int index = [super bindStmt:stmt];
-  [stmt bindString:data forIndex:++index];
+  int index = [super bindStmt:stmt isWithId:with_id];
+  [stmt bindString:[data serialize] forIndex:++index];
   return index;
 }
 

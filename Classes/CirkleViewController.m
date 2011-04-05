@@ -44,16 +44,18 @@
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 
--(void)restoreAndLoadCirkles
+-(void)restoreAndLoadCirkles:(BOOL)withUpdate
 {
     CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self 
                                                       action:@selector(cirklesDidLoad:)
                                            releaseAtCallBack:true];
     
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    [query query:options withUpdate:true];
     
     _reloading = YES;
+    
+    //this query may or may not be asynchronous, so always do reloading first
+    [query query:options withUpdate:withUpdate];
     
     //the query object is released when call to cirklesDidLoad: returns
 }
@@ -68,35 +70,41 @@
     } else {
         
         if ([sender hasMore]) {
-            //NSLog(@"  has more");
+            NSLog(@"  has more");
         }
         
         NSArray *results = [sender getResults];
         //NSLog(@"%@", results);
         
-        // build listCircles
-        [listCircles removeAllObjects];
+        //if the result is not empty, then rebuild listCircles
+
         NSInteger count = [results count];
         
-        //NSLog(@"start building %d circles\n", count);
+        if (count > 0) {
+            [listCircles removeAllObjects];
         
-        for (int i=0; i<count; i++) {
+            NSLog(@"start rebuilding %d circles\n", count);
+        
+            for (int i=0; i<count; i++) {
 
-            NSDictionary *dic = [results objectAtIndex:i];
+                NSDictionary *dic = [results objectAtIndex:i];
         
-            CirkleSummary *circle = [[CirkleSummary alloc] initWithJsonDictionary:dic];
+                CirkleSummary *circle = [[CirkleSummary alloc] initWithJsonDictionary:dic];
         
-            [listCircles addObject:circle];
-            //NSLog(@"adding %d-th circle to list\n", i);
+                [listCircles addObject:circle];
+                //NSLog(@"adding %d-th circle to list\n", i);
+            }
+        
+            //NSLog(@"%@", listCircles);
+            [self.tableView reloadData];
         }
-        //NSLog(@"%@", listCircles);
-        [self.tableView reloadData];
     }
 
     [sender clear];
     
     _reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    
 }
 
 
@@ -122,11 +130,11 @@
 		[view release];
 		
 	}
-	
+    
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
-
-    [self restoreAndLoadCirkles];
+    
+    [self restoreAndLoadCirkles:false];
 
 }
 
@@ -268,7 +276,7 @@
 	
 	//[self reloadTableViewDataSource];
 	//[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
-    [self restoreAndLoadCirkles];
+    [self restoreAndLoadCirkles:true];
 	
 }
 

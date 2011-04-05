@@ -132,7 +132,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	
-    UITableViewCell *cell;
+    UITableViewCell *cell = nil;
     UILabel		*label;
     UITextField *text;
     switch (indexPath.section) {

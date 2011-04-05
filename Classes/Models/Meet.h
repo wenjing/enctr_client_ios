@@ -14,8 +14,8 @@ typedef enum {
 
 @interface Meet : NSObject
 {
-    sqlite_int64    meetId;  // Server meet id
-	sqlite_int64    postId;  // Post meet id 
+    sqlite_uint64    meetId;  // Server meet id
+	sqlite_uint64    postId;  // Post meet id 
 	NSString*       description;   // meet description
     
     time_t          timeAt, updateAt;
@@ -26,7 +26,7 @@ typedef enum {
     NSMutableArray* meetUsers ;
 }
 
-@property (nonatomic, assign) sqlite_int64      meetId, postId;
+@property (nonatomic, assign) sqlite_uint64      meetId, postId;
 @property (nonatomic, retain) NSString*         description;
 
 @property (nonatomic, assign) time_t            updateAt, timeAt;

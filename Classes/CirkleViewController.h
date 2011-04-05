@@ -17,7 +17,7 @@
 }
 @property (nonatomic, retain) NSMutableArray *listCircles;
 
-- (void)restoreAndLoadCirkles;
+- (void)restoreAndLoadCirkles:(BOOL)withUpdate;
 - (void)cirklesDidLoad:(CirkleQuery*)sender;
 
 @end

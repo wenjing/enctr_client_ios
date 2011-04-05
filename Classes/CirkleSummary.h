@@ -15,7 +15,7 @@
 #define CIRCLE_TYPE_SOLO        3
 
 @interface CirkleSummary : NSObject {
-    sqlite_int64    cId;
+    sqlite_uint64    cId;
     NSString        *nameString;
 //    NSString        *avatarUrl;
     time_t          timeAt;
@@ -26,7 +26,7 @@
     NSString        *contentString;
 }
 
-@property (nonatomic) sqlite_int64    cId;
+@property (nonatomic) sqlite_uint64    cId;
 @property (nonatomic, retain) NSString        *nameString;
 //@property (nonatomic, retain) NSString        *avatarUrl;
 @property (nonatomic) time_t          timeAt;

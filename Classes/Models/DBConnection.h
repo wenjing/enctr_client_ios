@@ -27,5 +27,6 @@
 + (Statement*)statementWithQuery:(const char*)sql;
 
 + (void)alert;
++ (sqlite3_uint64)lastInsertId;
 
 @end
