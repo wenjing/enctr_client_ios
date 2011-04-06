@@ -34,11 +34,14 @@
     NSRange                     textRange;
 
     UINavigationController*     navigation;
+    //delegate to callback when sent
+    id                          delegate;
 }
 
 @property(nonatomic, assign) UINavigationController* navigation;
 @property(nonatomic, retain) UIImage*  selectedPhoto;
 @property(nonatomic, assign) UIImageView* picture;
+@property(nonatomic, retain) id delegate;
 
 - (void)replyTo:(sqlite3_uint64)cid;
 - (void)postToUser:(User*)user;

@@ -17,34 +17,6 @@
          landmarkName = "-drawRect:"
          landmarkType = "5">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/Controllers/MessageView.m"
-         timestampString = "323723498.137502"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
-         landmarkName = "-editMessageUser:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/Controllers/MessageView.m"
-         timestampString = "323723500.502618"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "62"
-         endingLineNumber = "62"
-         landmarkName = "@implementation MessageView"
-         landmarkType = "3">
-      </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>
       <SymbolicBreakpoint

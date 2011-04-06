@@ -12,10 +12,12 @@
 
 @interface CirkleViewController : UITableViewController <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource> {
     NSMutableArray *listCircles;
+    CirkleQuery *query;
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
 }
 @property (nonatomic, retain) NSMutableArray *listCircles;
+@property (nonatomic, retain) CirkleQuery *query;
 
 - (void)restoreAndLoadCirkles:(BOOL)withUpdate;
 - (void)cirklesDidLoad:(CirkleQuery*)sender;

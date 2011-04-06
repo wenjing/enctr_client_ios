@@ -16,10 +16,16 @@
 #define GPS_BUTTON_INDEX    2
 #define CAMERA_BUTTON_INDEX 3
 
+// declare the delegate methods
+@interface NSObject (MessageViewControllerDelegate)
+- (void)messageViewControllerDidFinish;
+@end
+
 @implementation MessageViewController
 
 @synthesize navigation;
 @synthesize selectedPhoto, picture;
+@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,6 +37,8 @@
 	
     textRange.location  = [text.text length];
     textRange.length    = 0;
+    
+    delegate = nil;
     
     return self;
 }
@@ -404,6 +412,13 @@
 		[appDelegate sendMessageDidSucceed:dic];
     }       
  */
+    // notify the delegator: whoever that may be
+    //NSLog(@"sendDidSucceed: delegate %@", delegate);
+    
+    [delegate messageViewControllerDidFinish];
+    delegate = nil;
+    
+    //to-do: cleanup also needs to be done when fail - cancel or delete
     text.text = @"";
     messageView.InReplyToMeetId = 0;
 	messageView.InReplyToChatId = 0;

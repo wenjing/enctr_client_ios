@@ -51,14 +51,8 @@
 
 - (void)restoreAndLoadNews:(BOOL)withUpdate {
     
-    if (withUpdate) {
-        [query initWithTarget:self action:@selector(newsDidUpdate:)
-                                       releaseAtCallBack:false];
-    } else {
-        //first time load
-        [query initWithTarget:self action:@selector(newsDidLoad:)
+    [query initWithTarget:self action:@selector(newsDidLoad:)
                                 releaseAtCallBack:false];
-    }
     
     NSMutableDictionary *options;
     
@@ -73,6 +67,7 @@
     
     //NSLog(@"cid %lld, option dictionary: %@", summary.cId, options);
     
+    //Warning: this calls back synchronously if withUpdate is false
     [query query:options withUpdate:withUpdate];
     
     [idString release]; //should i? yes
@@ -80,6 +75,7 @@
 }
 
 - (void)newsDidLoad:(NewsQuery*)sender {
+    
     //NSLog(@"Load news results");
     if ([sender hasError]) {
         NSLog(@"  has error");
@@ -88,13 +84,16 @@
             NSLog(@"  has more");
         }
         NSArray *results = [sender getResults];
-        //NSLog(@"%@", results);
+        //if (!firstTime)
+            //NSLog(@"new circleDetail %@", results);
         
         // build listDetails
-        [listDetails removeAllObjects];
         NSInteger count = [results count];
+        if (count > 0) {
+            [listDetails removeAllObjects];
+        }
         
-        //NSLog(@"start building %d circleDetails\n", count);
+        NSLog(@"start building %d circleDetails\n", count);
         
         for (int i=0; i<count; i++) {
             
@@ -112,14 +111,11 @@
     }
     
     [sender clear];
-    
-    //immediately followed by an update
-    [self restoreAndLoadNews:true];
-
 }
 
 - (void)newsDidUpdate:(NewsQuery*)sender {
-    //NSLog(@"Load news results");
+    NSLog(@"Load news results: withUpdate %d", [sender queryUpdate]);
+    
     if ([sender hasError]) {
         NSLog(@"  has error");
     } else {
@@ -127,7 +123,7 @@
             NSLog(@"  has more");
         }
         NSArray *results = [sender getResults];
-        NSLog(@"%@", results);
+        //NSLog(@"%@", results);
         
         // adding new items to listDetails
         NSInteger count = [results count];
@@ -163,11 +159,21 @@
     kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
 	MessageViewController *mV = appDelegate.messageView ;
 	
+    //set delegate
+    mV.delegate = self;
+    
     if ([summary isACircle]) {
         [mV postToWithId:summary.cId];
     } else {
         [mV postToUserWithId:summary.cId];
     }
+}
+
+// delegate to messageViewController
+- (void) messageViewControllerDidFinish {
+    //NSLog(@"messageViewControllerDidFinish called");
+    // update data
+    [self restoreAndLoadNews:true];
 }
 
 #pragma mark - View lifecycle
@@ -183,7 +189,11 @@
     // alloc query object
     query = [NewsQuery alloc];
     
+    //first get local db cache - this is synchronous function call
     [self restoreAndLoadNews:false];
+    
+    //then request update which will come back asynchronously
+    [self restoreAndLoadNews:true];
     
     // add compose button as the nav bar's custom right view
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
@@ -221,6 +231,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    //NSLog(@"viewWillAppear circleDetail");
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -15,6 +15,7 @@
 
 @implementation CirkleViewController
 @synthesize listCircles;
+@synthesize query;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +30,10 @@
 {
     [listCircles removeAllObjects];
     [listCircles release];
+    if (query) {
+        [query clear];
+    }
+    [query release];
     _refreshHeaderView=nil;
     [super dealloc];
 }
@@ -46,22 +51,23 @@
 
 -(void)restoreAndLoadCirkles:(BOOL)withUpdate
 {
-    CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self 
-                                                      action:@selector(cirklesDidLoad:)
-                                           releaseAtCallBack:true];
+    [query initWithTarget:self 
+                       action:@selector(cirklesDidLoad:)
+            releaseAtCallBack:false];
     
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     
     _reloading = YES;
     
-    //this query may or may not be asynchronous, so always do reloading first
+    //this query calls back synchronously if withUpdate is false, so always do reloading first
     [query query:options withUpdate:withUpdate];
     
-    //the query object is released when call to cirklesDidLoad: returns
 }
 
+// first time load from db cache
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
+    
     //NSLog(@"Load cirkle results");
     if ([sender hasError]) {
         
@@ -74,7 +80,8 @@
         }
         
         NSArray *results = [sender getResults];
-        //NSLog(@"%@", results);
+    
+        //NSLog(@"new circles: %@", results);
         
         //if the result is not empty, then rebuild listCircles
 
@@ -117,6 +124,8 @@
     // reload circles every time view is reloaded
     listCircles = [[NSMutableArray alloc] init];
     
+    query = [CirkleQuery alloc];
+    
     if (_refreshHeaderView == nil) {
 		
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:
@@ -135,7 +144,13 @@
 	[_refreshHeaderView refreshLastUpdatedDate];
     
     [self restoreAndLoadCirkles:false];
+    
+    // followed immediately by an update
+    [self restoreAndLoadCirkles:true];
 
+    // stay selection
+    self.clearsSelectionOnViewWillAppear = NO;
+    
 }
 
 - (void)viewDidUnload
@@ -146,7 +161,33 @@
     
     [listCircles removeAllObjects];
     self.listCircles = nil;
+    if (query) {
+        [query clear];
+    }
+    [query release];
+    query = nil;
     _refreshHeaderView=nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSLog(@"viewWillAppear circleView");
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

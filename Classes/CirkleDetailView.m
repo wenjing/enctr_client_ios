@@ -461,24 +461,32 @@
     //that's it
 }
 
+
+- (void) messageViewControllerDidFinish {
+    //NSLog(@"circleDetailView got callback");
+    //update data
+    
+    UITableView *tv = (UITableView *) self.superview.superview.superview;
+    CirkleDetailViewController *vc = (CirkleDetailViewController *) tv.dataSource;
+    //NSLog(@"refreshing circleDetail");
+    
+    [vc restoreAndLoadNews:true];
+    
+}
+
 - (void) addComment:(UIButton *)sender {
     //need to know which topic's button is pressed
     kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
 	MessageViewController *mV = appDelegate.messageView ;
+    
+    mV.delegate = self;
+    
     if (self.circleDetail.type == CD_TYPE_TOPIC ) {
         [mV replyTo:self.circleDetail.cId];
     } else if (self.circleDetail.type == CD_TYPE_ENCOUNETR) {
         [mV postToWithId:self.circleDetail.cId];
     }
     
-    //Need a function refresh this cell from server, and be called from messageView when it is done
-    /*
-    UITableView *tv = (UITableView *) self.superview.superview.superview;
-    CirkleDetailViewController *vc = (CirkleDetailViewController *) tv.dataSource;
-    NSLog(@"refreshing circleDetailView");
-    
-    [vc restoreAndLoadNews:true];
-     */
 }
 
 @end
