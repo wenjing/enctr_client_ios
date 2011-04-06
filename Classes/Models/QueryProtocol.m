@@ -6,6 +6,7 @@
 @synthesize delegate;
 @synthesize action;
 @synthesize results;
+@synthesize queryOptions;
 
 - (id)initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0
 {
@@ -22,8 +23,7 @@
 
 - (void)dealloc
 {
-  self.results = nil; 
-  [self cancel];
+  [self clear];
   [super dealloc];
 }
 
@@ -32,8 +32,9 @@
   [self cancel];
   self.results = nil;
   self.results = [NSMutableArray array]; // Prepare a empty array
+  queryOptions = nil;
   queryStatus = QUERY_STATUS_INIT;
-  queryMode = QUERY_MODE_LOCAL;
+  queryAction = QUERY_ACTION_LOCAL;
 }
 
 - (void)cancel
@@ -43,7 +44,7 @@
     [meetClient autorelease];
     meetClient = nil;
     queryStatus = QUERY_STATUS_INIT;
-    queryMode = QUERY_MODE_LOCAL;
+    queryAction = QUERY_ACTION_LOCAL;
   }
 }
 
@@ -93,6 +94,7 @@
 - (void)queryDidFinish:(id)obj
 {
   [delegate performSelector:action withObject:self withObject:obj];
+  if (releaseAtCallBack) [self autorelease];
 }
 
 @end

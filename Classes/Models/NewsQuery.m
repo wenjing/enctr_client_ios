@@ -7,32 +7,14 @@
 
 @implementation NewsQuery
 
-@synthesize queryOptions;
-
 + (id)recordClass
 {
   return [News class];
 }
 
-- (id)initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0
-{
-  self = [super initWithTarget:delegate0 action:action0 releaseAtCallBack:release0];
-  if (self != nil) {
-    self.queryOptions = nil;
-  }
-  return self;
-}
-
 - (void)dealloc 
 {
-  self.queryOptions = nil;
   [super dealloc];
-}
-
-- (void)cancel
-{
-  self.queryOptions = nil;
-  [super cancel];
 }
 
 static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
@@ -48,7 +30,8 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   [self clear];
 
   self.queryOptions = options;
-  queryMode = QUERY_MODE_LOCAL;
+  queryStatus = QUERY_STATUS_PENDING;
+  queryAction = QUERY_ACTION_LOCAL;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(newsDidReceive:obj:)];
   uint32_t user_id = [[NSUserDefaults standardUserDefaults]
@@ -72,28 +55,32 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   //}
   NSMutableDictionary *param = nil;
   if (!update) {
-    if (stat.hasMore) { // do no try retrieving more if we know there ain't anymore
-    int retrieve_more = 0;
-    if (limit) { // check if local DB has enough records
-      int limit_val = [limit integerValue];
-      int offset_val = offset ? [offset integerValue] : 0;
-      NSString *stmt = GetStmt(friend_id_val, cirkle_id_val);
-      int count = [News countDB:stmt withOffset:0 withLimit:limit_val];
-      retrieve_more = limit_val+offset_val+1 - count;
+    if (stat.lastQuery != 0 && stat.hasMore) {
+      // Do not try loading from server if this is the first time query. A subsequent update mode
+      // query shall follow anyway.
+      // Do not try retrieving more if we know there ain't anymore
+      int retrieve_more = 0;
+      if (limit) { // check if local DB has enough records
+        int limit_val = [limit integerValue];
+        int offset_val = offset ? [offset integerValue] : 0;
+        NSString *stmt = GetStmt(friend_id_val, cirkle_id_val);
+        int count = [News countDB:stmt withOffset:0 withLimit:limit_val];
+        retrieve_more = limit_val+offset_val+1 - count;
+      }
+      if (retrieve_more > 0 || !limit) { // not enough, try getting more from remote server
+        queryAction = QUERY_ACTION_RETRIEVE;
+        param = [NSMutableDictionary dictionary];
+        // earliestTime must exist
+        if (stat.earliestTime != 0) {
+          [param setObject:[NSString dateString:stat.earliestTime-1] forKey:@"before_time"];
+        }
+        if (limit) {
+          [param setObject:[NSString stringWithFormat:@"%d", retrieve_more] forKey:@"limit"];
+        }
+      }
     }
-    if (retrieve_more > 0 || !limit) { // not enough, try getting more from remote server
-      queryMode = QUERY_MODE_RETRIEVE_MORE;
-      param = [NSMutableDictionary dictionary];
-      // earliestTime must exist
-      if (stat.earliestTime != 0) {
-        [param setObject:[NSString dateString:stat.earliestTime-1] forKey:@"before_time"];
-      }
-      if (limit) {
-        [param setObject:[NSString stringWithFormat:@"%d", retrieve_more] forKey:@"limit"];
-      }
-    }}
   } else {
-    queryMode = QUERY_MODE_UPDATE;
+    queryAction = QUERY_ACTION_UPDATE;
     param = [NSMutableDictionary dictionary];
     if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
       [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
@@ -107,9 +94,8 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
       int offset_val = offset ? [offset integerValue] : 0;
       [param setObject:[NSString stringWithFormat:@"%d", limit_val+offset_val+1] forKey:@"limit"];
     }
-  } 
+  }
 
-  queryStatus = QUERY_STATUS_PENDING;
   if (param) { // get from remote server
     if (friend_id) {
       [meetClient getNews:param withUserId:user_id withFriendId:friend_id_val];
@@ -128,8 +114,11 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
 static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t cirkle_id,
                                 const char *type, const char *timestamp)
 {
-  NSString *str = [NSString stringWithFormat:@"id=%qu friend_id=%qu cirkle_id=%qu type=%s timestamp=%s",
-                                             id0, friend_id, cirkle_id, type, timestamp];
+//NSString *str = [NSString stringWithFormat:@"id=%qu friend_id=%qu cirkle_id=%qu type=%s timestamp=%s",
+//                                           id0, friend_id, cirkle_id, type, timestamp];
+// Ignore timestamp, overwrite existing record
+  NSString *str = [NSString stringWithFormat:@"id=%qu friend_id=%qu cirkle_id=%qu type=%s",
+                                             id0, friend_id, cirkle_id, type];
   return [str md5AsInt64];
 }
 
@@ -139,12 +128,13 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
   [self checkNetworkError:sender];
-  if ([self hasError]) return;
-  if (!obj || ![obj isKindOfClass:[NSArray class]]) {
+  if ([self hasError] &&
+      !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
+    [self queryDidFinish:nil];
     return;
   }
-  
+
   NSNumber *friend_id = [queryOptions objectForKey:@"friend_id"];
   NSNumber *cirkle_id = [queryOptions objectForKey:@"cirkle_id"];
   NSNumber *offset = [queryOptions objectForKey:@"offset"];
@@ -171,16 +161,17 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
 
   // This will leave a hole in DB and in table model data. To keep integrity,
   // remove all old records.
-  if (queryMode == QUERY_MODE_UPDATE) {
+  if (queryAction == QUERY_ACTION_UPDATE) {
     if (limit_val > 0 && net_count > limit_val+offset_val) {
       [News deleteAllDB:stmt];
       stat.latestTime = stat.earliestTime = 0;
-      stat.hasMore = true; // no sure any more
+      stat.hasMore = true; // not sure any more
     }
     // Do not return more than number of new records.
-    if (limit_val < 0 || limit_val+offset_val >= net_count) {
-      limit_valx = limit_val = net_count-offset_val;
-    }
+    // Like Cirkles, in update mode, return all or nothing
+    //if (limit_val < 0 || limit_val+offset_val >= net_count) {
+    //  limit_valx = limit_val = net_count-offset_val;
+    //}
   }
 
   // Process results and save to DB
@@ -210,13 +201,12 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   }
 
   // Check if having any update (only for update more)
-  if (queryMode == QUERY_MODE_UPDATE && net_count == 0) {
+  if (queryAction == QUERY_ACTION_UPDATE && net_count == 0) {
     queryStatus = QUERY_STATUS_NOUPDATE;
 
   // Only try getting result from DB if there are some updates or
   // it is none-update mode.
   } else {
-
     NSMutableArray *db_res = (NSMutableArray *)[News queryDB:stmt withOffset:offset_val 
                                                                   withLimit:limit_valx];
     iter = [db_res objectEnumerator];
@@ -234,7 +224,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
     }
   }
   // Check if has retrieved all records from remote server or not
-  if (queryMode == QUERY_MODE_RETRIEVE_MORE && ![self hasMore]) {
+  if (queryAction == QUERY_ACTION_RETRIEVE && ![self hasMore]) {
     // Tried retrieve however get less than requested, there must be
     // no more older records in remote server left not retrieved.
     stat.hasMore = false;
@@ -245,7 +235,6 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   [DBConnection commitTransaction];
 
   [self queryDidFinish:nil];
-  if (releaseAtCallBack) [self autorelease];
 }
 
 - (id)trimData:(id)obj
