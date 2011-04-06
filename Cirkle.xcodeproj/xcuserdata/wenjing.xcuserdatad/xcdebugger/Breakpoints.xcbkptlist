@@ -18,18 +18,32 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Classes/CirkleDetailViewController.m"
-         timestampString = "323661172.034531"
+         filePath = "Classes/Controllers/MessageView.m"
+         timestampString = "323723498.137502"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "47"
-         endingLineNumber = "47"
-         landmarkName = "-restoreAndLoadNews"
+         startingLineNumber = "48"
+         endingLineNumber = "48"
+         landmarkName = "-editMessageUser:"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/Controllers/MessageView.m"
+         timestampString = "323723500.502618"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "62"
+         endingLineNumber = "62"
+         landmarkName = "@implementation MessageView"
+         landmarkType = "3">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

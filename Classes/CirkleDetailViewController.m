@@ -14,6 +14,7 @@
 @implementation CirkleDetailViewController
 @synthesize listDetails;
 @synthesize summary;
+@synthesize query;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,6 +30,11 @@
     [listDetails removeAllObjects];
     [listDetails release];
     [summary release];
+    //first cancel, then release
+    if (query) {
+        [query clear];
+    }
+    [query release];
     [super dealloc];
 }
 
@@ -45,15 +51,13 @@
 
 - (void)restoreAndLoadNews:(BOOL)withUpdate {
     
-    NewsQuery *query;
-    
     if (withUpdate) {
-        query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidUpdate:)
-                                       releaseAtCallBack:true];
+        [query initWithTarget:self action:@selector(newsDidUpdate:)
+                                       releaseAtCallBack:false];
     } else {
         //first time load
-        query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
-                                releaseAtCallBack:true];
+        [query initWithTarget:self action:@selector(newsDidLoad:)
+                                releaseAtCallBack:false];
     }
     
     NSMutableDictionary *options;
@@ -71,8 +75,8 @@
     
     [query query:options withUpdate:withUpdate];
     
-    [idString release]; //should i?
-    [options release];
+    [idString release]; //should i? yes
+    [options release]; //query need to retain it
 }
 
 - (void)newsDidLoad:(NewsQuery*)sender {
@@ -127,24 +131,26 @@
         
         // adding new items to listDetails
         NSInteger count = [results count];
+        // it's all or nothing - do nothing if it's empty
+        if (count != 0) {
+            NSLog(@"start rebuilding %d circleDetails\n", count);
+            [listDetails removeAllObjects];
+            
+            for (int i=0; i<count; i++) {
+            
+                NSDictionary *dic = [results objectAtIndex:i];
+            
+                CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
+            
+                [listDetails addObject:circleDetail];
+            
+                //NSLog(@"adding %d-th circleDetail to list\n", i);
+                //if (i>100)
+                //    break;
+            }
         
-        NSLog(@"start adding %d circleDetails\n", count);
-        
-        for (int i=0; i<count; i++) {
-            
-            NSDictionary *dic = [results objectAtIndex:i];
-            
-            CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
-            
-            //insert to the top
-            [listDetails insertObject:circleDetail atIndex:0];
-            
-            //NSLog(@"adding %d-th circleDetail to list\n", i);
-            //if (i>100)
-            //    break;
+            [self.tableView reloadData];
         }
-        
-        [self.tableView reloadData];
     }
     
     [sender clear];
@@ -174,6 +180,9 @@
     listDetails = [[NSMutableArray alloc] init];
     self.title = [[NSString alloc] initWithFormat:@"%@",summary.nameString];
     
+    // alloc query object
+    query = [NewsQuery alloc];
+    
     [self restoreAndLoadNews:false];
     
     // add compose button as the nav bar's custom right view
@@ -202,6 +211,11 @@
     [listDetails removeAllObjects];
     self.listDetails = nil;
     [summary release];
+    if (query) {
+        [query clear];
+    }
+    [query release];
+    query = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
