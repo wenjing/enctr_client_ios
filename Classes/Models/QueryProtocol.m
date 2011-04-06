@@ -7,6 +7,7 @@
 @synthesize action;
 @synthesize results;
 @synthesize queryOptions;
+@synthesize queryUpdate;
 
 - (id)initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0
 {
@@ -33,6 +34,7 @@
   self.results = nil;
   self.results = [NSMutableArray array]; // Prepare a empty array
   queryOptions = nil;
+  queryUpdate = false;
   queryStatus = QUERY_STATUS_INIT;
   queryAction = QUERY_ACTION_LOCAL;
 }

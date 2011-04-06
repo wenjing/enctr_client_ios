@@ -57,6 +57,7 @@
   [self clear];
 
   self.queryOptions = options;
+  self.queryUpdate = update;
   queryStatus = QUERY_STATUS_PENDING;
   queryAction = QUERY_ACTION_LOCAL;
   CirkleStat *stat = [CirkleStat retrieve:nil];
@@ -65,9 +66,9 @@
   uint32_t user_id = [[NSUserDefaults standardUserDefaults]
                                         integerForKey:@"KYUserId"] ;
 
-  //if (stat.lastQuery == 0) { // First query, DB must be empty
-  //  update = true;
-  //}
+  /*if (stat.lastQuery == 0) { // First query, DB must be empty
+    update = true;
+  }*/
   if (update) {
     queryAction = QUERY_ACTION_UPDATE;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];

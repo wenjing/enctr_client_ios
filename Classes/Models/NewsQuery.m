@@ -30,6 +30,7 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   [self clear];
 
   self.queryOptions = options;
+  self.queryUpdate = update;
   queryStatus = QUERY_STATUS_PENDING;
   queryAction = QUERY_ACTION_LOCAL;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
@@ -50,7 +51,7 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   NSString *stat_key = [NSString stringWithFormat:@"uid=%qu:cid=%qu",
                                     friend_id_val, cirkle_id_val];
   NewsStat *stat = [NewsStat retrieve:stat_key];
-  //if (stat.lastQuery == 0) { // First query, DB must be empty
+  //if (stat.lastQuery == 0) { // First query, auto load from server
   //  update = true;
   //}
   NSMutableDictionary *param = nil;
@@ -148,6 +149,12 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   int offset_val = offset ? [offset integerValue] : 0;
   int limit_val = limit ? [limit integerValue] : -1;
   int limit_valx = limit_val > 0 ? limit_val+1 : -1;
+  NSString *filter_type = [queryOptions objectForKey:@"filter_type"];
+  NSNumber *filter_id = [queryOptions objectForKey:@"filter_id"];
+  uint64_t filter_id_val = 0;
+  if (filter_type && filter_id && queryAction == QUERY_ACTION_UPDATE) {
+    filter_id_val = [filter_id integerValue];
+  }
 
   NSString *stmt = GetStmt(friend_id_val, cirkle_id_val);
   NSString *stat_key = [NSString stringWithFormat:@"uid=%qu:cid=%qu",
@@ -162,7 +169,8 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   // This will leave a hole in DB and in table model data. To keep integrity,
   // remove all old records.
   if (queryAction == QUERY_ACTION_UPDATE) {
-    if (limit_val > 0 && net_count > limit_val+offset_val) {
+    if (filter_id_val == 0 &&
+        limit_val > 0 && net_count > limit_val+offset_val) {
       [News deleteAllDB:stmt];
       stat.latestTime = stat.earliestTime = 0;
       stat.hasMore = true; // not sure any more
@@ -182,6 +190,10 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
     NSDictionary *dic = item;
     sqlite3_uint64 id0 = [[dic objectForKey:@"id"] integerValue];
     NSString *type = [dic objectForKey:@"type"];
+    if (filter_id_val != 0 &&
+        !(filter_id_val == id0 && [filter_type isEqualToString:type])) {
+      continue; // skip this one
+    }
     NSString * timestamp = [dic objectForKey:@"timestamp"];
     sqlite3_uint64 hashed_id = GetHashId(id0, friend_id_val, cirkle_id_val,
                                          [type UTF8String], [timestamp UTF8String]);
@@ -197,6 +209,10 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
       stat.earliestTime = timestamp_val;
     }
     [news persist]; // save to DB
+    if (filter_id_val != 0) {
+      id trimmed= [self trimData:news.data];
+      [results addObject:trimmed];
+    }
     [news release];
   }
 
@@ -206,12 +222,12 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
 
   // Only try getting result from DB if there are some updates or
   // it is none-update mode.
-  } else {
+  } else if (filter_id_val == 0) { // Filter mode has already processed results
     NSMutableArray *db_res = (NSMutableArray *)[News queryDB:stmt withOffset:offset_val 
                                                                   withLimit:limit_valx];
-    iter = [db_res objectEnumerator];
     self.results = [NSMutableArray arrayWithCapacity:
                                       ((limit_val>0&&limit_val<1024)?limit_val:1024)];
+    iter = [db_res objectEnumerator];
     while ((item = [iter nextObject])) {
       if (limit_val > 0 && [results count] >= limit_val) {
         // There are more to come, but do not add to results
@@ -219,7 +235,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
         break;
       }
       News *news = item;
-      id trimmed= [self trimData:news.data ];
+      id trimmed= [self trimData:news.data];
       [results addObject:trimmed];
     }
   }
@@ -231,7 +247,9 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   }
 
   // This is a very special case, update mode retrieved more than required.
-  [stat persist]; // update statistics
+  if (filter_id_val == 0) { // update statistics, but only when not at filter mode
+    [stat persist];
+  }
   [DBConnection commitTransaction];
 
   [self queryDidFinish:nil];

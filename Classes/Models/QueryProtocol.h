@@ -30,6 +30,7 @@ enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
   NSMutableArray *results;
   KYMeetClient *meetClient;
   NSDictionary *queryOptions;
+  BOOL queryUpdate;
   int queryStatus;
   int queryAction;
 }
@@ -37,6 +38,7 @@ enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, retain) NSMutableArray *results;
 @property (nonatomic, retain) NSDictionary *queryOptions;
+@property (nonatomic, assign) BOOL queryUpdate;
 + (id)recordClass;
 - (void)checkNetworkError:(KYMeetClient*)sender;
 - (void)queryDidFinish:(id)obj;
