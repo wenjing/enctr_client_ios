@@ -19,7 +19,7 @@
   -(BOOL)     isPending;
 @end
 
-enum {QUERY_MODE_LOCAL, QUERY_MODE_UPDATE, QUERY_MODE_RETRIEVE_MORE};
+enum {QUERY_ACTION_LOCAL, QUERY_ACTION_UPDATE, QUERY_ACTION_RETRIEVE};
 enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
       QUERY_STATUS_MORE, QUERY_STATUS_NOUPDATE, QUERY_STATUS_ERROR};
 @interface QueryBase : NSObject <QueryProtocol>
@@ -29,12 +29,16 @@ enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
   BOOL releaseAtCallBack;
   NSMutableArray *results;
   KYMeetClient *meetClient;
+  NSDictionary *queryOptions;
+  BOOL queryUpdate;
   int queryStatus;
-  int queryMode;
+  int queryAction;
 }
 @property (nonatomic, assign) id delegate;
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, retain) NSMutableArray *results;
+@property (nonatomic, retain) NSDictionary *queryOptions;
+@property (nonatomic, assign) BOOL queryUpdate;
 + (id)recordClass;
 - (void)checkNetworkError:(KYMeetClient*)sender;
 - (void)queryDidFinish:(id)obj;

@@ -56,29 +56,27 @@
 {
   [self clear];
 
+  self.queryOptions = options;
+  self.queryUpdate = update;
+  queryStatus = QUERY_STATUS_PENDING;
+  queryAction = QUERY_ACTION_LOCAL;
+  CirkleStat *stat = [CirkleStat retrieve:nil];
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(cirklesDidReceive:obj:)];
-  queryMode = QUERY_MODE_LOCAL;
   uint32_t user_id = [[NSUserDefaults standardUserDefaults]
                                         integerForKey:@"KYUserId"] ;
 
-  CirkleStat *stat = [CirkleStat retrieve:nil];
-  if (stat.lastQuery == 0) { // First query, DB must be empty
+  /*if (stat.lastQuery == 0) { // First query, DB must be empty
     update = true;
-  }
-  NSMutableDictionary *param = nil;
+  }*/
   if (update) {
-    queryMode = QUERY_MODE_UPDATE;
-    param = [NSMutableDictionary dictionary];
+    queryAction = QUERY_ACTION_UPDATE;
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
     if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
       [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
     }
-  }
-
-  queryStatus = QUERY_STATUS_PENDING;
-  if (param) { // get from remote server
     [meetClient getCirkles:param withUserId:user_id];
-  } else { // call callback function directly with empty object.
+  } else { // Call callback function directly with empty object.
     KYMeetClient *meet_client = meetClient;
     [self cirklesDidReceive:meetClient obj:[NSArray array]]; 
     [meet_client autorelease];
@@ -98,9 +96,10 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
   [self checkNetworkError:sender];
-  if ([self hasError]) return;
-  if (!obj || ![obj isKindOfClass:[NSArray class]]) {
+  if ([self hasError] &&
+      !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
+    [self queryDidFinish:nil];
     return;
   }
 
@@ -110,6 +109,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   // Process results and save to DB
   [DBConnection beginTransaction];
   NSArray *net_res = (NSArray *)obj; //NSLog(@"%@", net_res);
+  int net_count = [net_res count];
   NSEnumerator *iter = [net_res objectEnumerator];
   id item;
   while ((item = [iter nextObject])) {
@@ -133,13 +133,12 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   }
 
   // Check if having any update (only for update more)
-  if (queryMode == QUERY_MODE_UPDATE && [net_res count] == 0) {
+  if (queryAction == QUERY_ACTION_UPDATE && net_count == 0) {
     queryStatus = QUERY_STATUS_NOUPDATE;
 
   // Only try getting result from DB if there are some updates or
   // it is none-update mode.
   } else {
-
     // Get from DB
     // It might look quite a waste by a saving/retirve (serialize/deserialize) cycle.
     // It will be more efficient to process and set result right after save to DB operation
@@ -160,7 +159,6 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   [DBConnection commitTransaction];
 
   [self queryDidFinish:nil];
-  if (releaseAtCallBack) [self autorelease];
 }
 
 - (id)trimData:(id)obj
