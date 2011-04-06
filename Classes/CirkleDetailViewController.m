@@ -172,8 +172,9 @@
 // delegate to messageViewController
 - (void) messageViewControllerDidFinish {
     //NSLog(@"messageViewControllerDidFinish called");
-    // update data
+    // update data after a new topic
     [self restoreAndLoadNews:true];
+    
 }
 
 #pragma mark - View lifecycle

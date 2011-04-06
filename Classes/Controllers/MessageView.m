@@ -76,6 +76,7 @@
 	InReplyToMeetId = mt.meetId ;
 	isReplyFlag = false  ;
 	isInviteFlag = false ;
+    isUserFlag = false ;
 	to.text = @"Post-To:";
 	recipient.enabled = false;
 }
@@ -88,6 +89,7 @@
     InReplyToMeetId = id ;
 	isReplyFlag = false  ;
 	isInviteFlag = false ;
+    isUserFlag = false ;
 	to.text = @"Post-To:";
 	recipient.enabled = false;
 }

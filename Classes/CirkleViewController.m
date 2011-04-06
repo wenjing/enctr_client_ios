@@ -172,7 +172,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear circleView");
+    //NSLog(@"viewWillAppear circleView");
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
