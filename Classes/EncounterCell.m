@@ -26,12 +26,14 @@
 }
 
 - (void)setPeerName:(NSString *)peerName 
+             peerId:(NSInteger)peerId
 		   greeting:(NSString *)greetingText 
 			peerPic:(UIImage *)peerPic 
 				row:(NSInteger)peerRow {
 	row = peerRow;
 	//we just pass these to the view
 	[encounterView setPeerName:peerName
+                        peerId:peerId
 					  greeting:greetingText
 					  picImage:peerPic
 						   row:peerRow];

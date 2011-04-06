@@ -27,4 +27,6 @@ CVS
 *.swp
 *~
 
-
+# XCode 4
+Cirkle.xcodeproj/xcuserdata/*
+Cirkle.xcodeproj/project.xcworkspace/xcuserdata/*

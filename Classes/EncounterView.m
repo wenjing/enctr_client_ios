@@ -7,6 +7,9 @@
 //
 
 #import "EncounterView.h"
+#import "HJManagedImageV.h"
+#import "User.h"
+#import "kaya_meetAppDelegate.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor \
 	 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
@@ -15,12 +18,26 @@
 //usage
 //UIColor color = UIColorFromRGB(0xF7F7F7);
 
+#define GENERIC_MARGIN			5
+#define	PIC_WIDTH				47
+
+#define NAME_TOP_X				(GENERIC_MARGIN+GENERIC_MARGIN+PIC_WIDTH)
+#define	NAME_TOP_WIDTH			205
+
+#define MAIN_FONT_SIZE			12
+#define MIN_MAIN_FONT_SIZE		10
+#define SECONDARY_FONT_SIZE		10
+#define MIN_SECONDARY_FONT_SIZE 10
+
 @implementation EncounterView
 @synthesize nameString;
 @synthesize greetingString;
 @synthesize pic;
+@synthesize userImage;
+@synthesize uID;
 
 - (void)setPeerName:(NSString *)newNameString
+             peerId:(NSInteger)uid
 		   greeting:(NSString *)newGreetingString
 			 picImage:(UIImage *)newPic
 				row:(NSInteger)newRow
@@ -29,6 +46,18 @@
 	self.greetingString = newGreetingString;
 	self.pic = newPic;
 	row = newRow;
+    uID = uid;
+    // assume this is called only once for now
+    
+    //set the user image url
+    kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+    User *user = [User userWithId:uid];
+    
+    [userImage clear];
+	userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+
 	[self setNeedsDisplay];
 }
 
@@ -39,19 +68,26 @@
     [super dealloc];
 }
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        CGRect contentRect = self.bounds;
+        CGFloat boundsX = contentRect.origin.x;
+        
+        CGRect drawRect = CGRectMake(boundsX+GENERIC_MARGIN, GENERIC_MARGIN, PIC_WIDTH, PIC_WIDTH);
+        
+        userImage = [[HJManagedImageV alloc] initWithFrame:drawRect];
+        
+        [self addSubview:userImage];
+    }
+    return self;
+}
+
 - (void)drawRect:(CGRect)rect {
 	
 	//define layout
-#define GENERIC_MARGIN			5
-#define	PIC_WIDTH				47
-	
-#define NAME_TOP_X				(GENERIC_MARGIN+GENERIC_MARGIN+PIC_WIDTH)
-#define	NAME_TOP_WIDTH			205
-	
-#define MAIN_FONT_SIZE			12
-#define MIN_MAIN_FONT_SIZE		10
-#define SECONDARY_FONT_SIZE		10
-#define MIN_SECONDARY_FONT_SIZE 10
 	
 	// Font for name
 	UIFont *nameFont = [UIFont boldSystemFontOfSize:12];
@@ -91,12 +127,13 @@
 		[mainTextColor set];
 		
 		if (row!=0) {
-			boundsX = boundsX + 24.0;
+			//boundsX = boundsX + 24.0;
 		}
 		// Draw the picture
 		point = CGPointMake(boundsX+GENERIC_MARGIN, GENERIC_MARGIN);
 		
 		[pic drawAtPoint:point];
+        
 		
 		// Draw name
 		point = CGPointMake(boundsX + NAME_TOP_X, GENERIC_MARGIN);

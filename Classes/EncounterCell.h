@@ -18,6 +18,7 @@
 
 - (void)redisplay;
 - (void)setPeerName:(NSString *)peerName 
+             peerId:(NSInteger) peerId
 		   greeting:(NSString *)greetingText
 			peerPic:(UIImage *)peerPic 
 				row:(NSInteger)peerRow;

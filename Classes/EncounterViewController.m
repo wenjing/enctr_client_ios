@@ -155,7 +155,7 @@
 -(IBAction) confirmButtonPressed {
 	
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Another encounter" 
-													message:@"in your friend circle"
+													message:@"in your circles"
 												   delegate:nil 
 										  cancelButtonTitle:@"Okay" 
 										  otherButtonTitles:nil];
@@ -335,11 +335,11 @@
 		cell.frame = CGRectMake(0.0, 0.0, 320.0, 57.0);
 	}
 	
-	UIImage *image = [UIImage imageNamed:@"person1.png"];
+	UIImage *image = [UIImage imageNamed:@"unknown-person.png"];
 
 	NSArray *chunks = [[foundPeers objectAtIndex:row] componentsSeparatedByString: @":"];
 	NSInteger userId = [[chunks objectAtIndex:1] intValue];
-	
+/*	
 	User *user = [User userWithId:userId];
 	if (user) {
 		//to-do: Use HJCache to get image via user.profileImageUrl
@@ -363,8 +363,10 @@
 				break;
 		}
 	}
+ */
 	
 	[cell setPeerName:[chunks objectAtIndex:0]
+               peerId:userId
 			 greeting:@"Hi, glad to meet you!"
 			  peerPic:image
 				  row:row];

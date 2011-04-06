@@ -42,7 +42,9 @@
 
 - (void)replyTo:(sqlite3_uint64)cid;
 - (void)postToUser:(User*)user;
+- (void)postToUserWithId:(sqlite_uint64)userid;
 - (void)postTo:(KYMeet*)mt;
+- (void)postToWithId:(sqlite_uint64)cid;
 - (void)inviteTo:(KYMeet*)mt;
 - (void)saveMessage;
 - (void)checkProgressWindowState;
