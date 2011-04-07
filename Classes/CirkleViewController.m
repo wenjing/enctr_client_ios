@@ -51,20 +51,26 @@
 
 -(void)restoreAndLoadCirkles:(BOOL)withUpdate
 {
-    [query initWithTarget:self 
-                       action:@selector(cirklesDidLoad:)
-            releaseAtCallBack:false];
     
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     
     _reloading = YES;
     
-    //this query calls back synchronously if withUpdate is false, so always do reloading first
-    [query query:options withUpdate:withUpdate];
+    if (!withUpdate) {
+        CirkleQuery *firstQuery = [[CirkleQuery alloc] initWithTarget:self 
+                                                               action:@selector(cirklesDidLoad:)
+                                                    releaseAtCallBack:true];
+        [firstQuery query:options withUpdate:withUpdate];
+    } else {
+        [query initWithTarget:self 
+                   action:@selector(cirklesDidLoad:)
+            releaseAtCallBack:false];
+    
+        [query query:options withUpdate:withUpdate];
+    }
     
 }
 
-// first time load from db cache
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
     
@@ -111,7 +117,12 @@
     
     _reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    
+   
+    if (sender != query) {
+        //must set to true
+        [self restoreAndLoadCirkles:true];
+    }
+ 
 }
 
 
@@ -144,10 +155,9 @@
 	[_refreshHeaderView refreshLastUpdatedDate];
     
     [self restoreAndLoadCirkles:false];
-    
-    // followed immediately by an update
-    [self restoreAndLoadCirkles:true];
 
+    //[self restoreAndLoadCirkles:true];
+    
     // stay selection
     self.clearsSelectionOnViewWillAppear = NO;
     

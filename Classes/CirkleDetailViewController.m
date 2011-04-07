@@ -50,10 +50,7 @@
 #pragma mark Data Source Loading / Reloading Methods
 
 - (void)restoreAndLoadNews:(BOOL)withUpdate {
-    
-    [query initWithTarget:self action:@selector(newsDidLoad:)
-                                releaseAtCallBack:false];
-    
+        
     NSMutableDictionary *options;
     
     NSString *idString = [[NSString alloc] initWithFormat:@"%lld", summary.cId];
@@ -67,8 +64,22 @@
     
     //NSLog(@"cid %lld, option dictionary: %@", summary.cId, options);
     
-    //Warning: this calls back synchronously if withUpdate is false
-    [query query:options withUpdate:withUpdate];
+    //we need to get around not to reuse the same query in short time frame
+    //this is a band-aid, does not solve the problem in the worse case
+    if (!withUpdate) {
+        //first time
+        NewsQuery *firstQuery = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
+                                                releaseAtCallBack:true]; 
+        //the above object will be released when callback returns
+        //this may or may not be synchronous
+        [firstQuery query:options withUpdate:withUpdate];
+    } else {
+        [query initWithTarget:self action:@selector(newsDidUpdate:)
+            releaseAtCallBack:false];
+
+        //Warning: this callback SHOULD be asynchronous
+        [query query:options withUpdate:withUpdate];
+    }
     
     [idString release]; //should i? yes
     [options release]; //query need to retain it
@@ -111,6 +122,9 @@
     }
     
     [sender clear];
+    
+    //start a new one, MUST set with true
+    [self restoreAndLoadNews:true];
 }
 
 - (void)newsDidUpdate:(NewsQuery*)sender {

@@ -45,7 +45,7 @@
 	
 	session.delegate = self;
 	
-	NSLog(@"started session %x id %x name %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
+	NSLog(@"started session %@ id %@ name %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
 	
 	//turn on the session
 	session.available = YES;
@@ -61,7 +61,7 @@
 		return;
 	}
 	
-	NSLog(@"stoping session %x id %x name %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
+	NSLog(@"stoping session %@ id %@ name %@", session, session.peerID, [session displayNameForPeer:session.peerID]);
 	
 	[session disconnectFromAllPeers];
 	
@@ -112,7 +112,7 @@
 				break;
 			}
 			
-			NSLog(@"connecting to peer %x name %@\n", peerID, [aSession displayNameForPeer:peerID]);
+			NSLog(@"connecting to peer %@ name %@\n", peerID, [aSession displayNameForPeer:peerID]);
 			
 			[aSession connectToPeer:peerID withTimeout:0];
 
@@ -121,14 +121,14 @@
 		case GKPeerStateUnavailable:
 			
 			if (peerList) {
-				NSLog(@"peer unavailable %x name %@\n", peerID, [aSession displayNameForPeer:peerID]);
+				NSLog(@"peer unavailable %@ name %@\n", peerID, [aSession displayNameForPeer:peerID]);
 			}
 			
 			break;
 			
 		case GKPeerStateConnected:
 			
-			NSLog(@"peer state connected %x name %@\n", peerID, [aSession displayNameForPeer:peerID]);
+			NSLog(@"peer state connected %@ name %@\n", peerID, [aSession displayNameForPeer:peerID]);
 			
 			[peerList addObject:[aSession displayNameForPeer:peerID]];
 			
@@ -138,7 +138,7 @@
 			
 		case GKPeerStateDisconnected:
 			
-			NSLog(@"peer state disconnected %x name %@\n", peerID, [aSession displayNameForPeer:peerID]);	
+			NSLog(@"peer state disconnected %@ name %@\n", peerID, [aSession displayNameForPeer:peerID]);	
 			
 			break;
 			
@@ -152,7 +152,7 @@
 - (void)session:(GKSession *)aSession didReceiveConnectionRequestFromPeer:(NSString *)peerID {
 	NSError *error = nil;
 	
-	NSLog(@"received connection request from peer %x name %@\n", peerID, [aSession displayNameForPeer:peerID]);
+	NSLog(@"received connection request from peer %@ name %@\n", peerID, [aSession displayNameForPeer:peerID]);
 	
 	[aSession acceptConnectionFromPeer:peerID error:&error];
 	
@@ -163,7 +163,7 @@
 
 - (void)session:(GKSession *)aSession connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error {
 	//this would be normal for phantom peers
-	NSLog(@"connectionWithPeerFailed %x name %@ : %@" ,peerID, [aSession displayNameForPeer:peerID], error);
+	NSLog(@"connectionWithPeerFailed %@ name %@ : %@" ,peerID, [aSession displayNameForPeer:peerID], error);
 }
 
 
