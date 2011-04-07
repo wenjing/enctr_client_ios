@@ -125,6 +125,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
 
 - (void)newsDidReceive:(KYMeetClient*)sender obj:(NSObject*)obj
 {
+  //NSLog(@"%@", obj);
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;

@@ -8,6 +8,7 @@
 @optional
   -(id)       initWithTarget:(id)delegate0 action:(SEL)action0 releaseAtCallBack:(BOOL)release0;
   -(void)     query:(NSDictionary*)options withUpdate:(BOOL)update;
+  -(void)     save:(NSDictionary*)options withObject:(id)obj;
   -(void)     cancel;
   -(BOOL)     isCancelled;
   -(NSArray*) getResults;
@@ -19,7 +20,7 @@
   -(BOOL)     isPending;
 @end
 
-enum {QUERY_ACTION_LOCAL, QUERY_ACTION_UPDATE, QUERY_ACTION_RETRIEVE};
+enum {QUERY_ACTION_LOCAL, QUERY_ACTION_UPDATE, QUERY_ACTION_RETRIEVE, QUERY_ACTION_SAVE};
 enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
       QUERY_STATUS_MORE, QUERY_STATUS_NOUPDATE, QUERY_STATUS_ERROR};
 @interface QueryBase : NSObject <QueryProtocol>

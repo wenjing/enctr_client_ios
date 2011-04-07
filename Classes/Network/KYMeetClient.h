@@ -7,22 +7,24 @@
 
 #import <UIKit/UIKit.h>
 #import "KYConnection.h"
+#import "User.h"
 
 typedef enum {
-    KAYAMEET_REQUEST_LOGIN,
-	KAYAMEET_REQUEST_SIGNIN,
-	KAYAMEET_REQUEST_POST_INVITE,
-    KAYAMEET_REQUEST_POST_MEET,
-	KAYAMEET_REQUEST_POST_MESSAGE,
-	KAYAMEET_REQUEST_POST_USERMESSAGE,
-	KAYAMEET_REQUEST_POST_PHOTO,
-	KAYAMEET_REQUEST_GET_MEET,
-	KAYAMEET_REQUEST_GET_USERMEETS,
-	KAYAMEET_REQUEST_GET_TIMELINES,
-	KAYAMEET_REQUEST_GET_CIRKLES
+  KAYAMEET_REQUEST_LOGIN,
+  KAYAMEET_REQUEST_SIGNIN,
+  KAYAMEET_REQUEST_POST_INVITE,
+  KAYAMEET_REQUEST_POST_USER,
+  KAYAMEET_REQUEST_PUT_USER,
+  KAYAMEET_REQUEST_POST_MEET,
+  KAYAMEET_REQUEST_POST_MESSAGE,
+  KAYAMEET_REQUEST_POST_USERMESSAGE,
+  KAYAMEET_REQUEST_POST_PHOTO,
+  KAYAMEET_REQUEST_GET_USER,
+  KAYAMEET_REQUEST_GET_MEET,
+  KAYAMEET_REQUEST_GET_USERMEETS,
+  KAYAMEET_REQUEST_GET_TIMELINES,
+  KAYAMEET_REQUEST_GET_CIRKLES
 } RequestType;
-
-
 
 @interface KYMeetClient : KYConnection
 {
@@ -41,6 +43,10 @@ typedef enum {
 @property(nonatomic, copy) NSString* errorDetail;
 
 - (id)initWithTarget:(id)delegate action:(SEL)action;
+
+- (void)postUser:(NSDictionary*)params withUser:(User*)user;
+- (void)getUser :(NSDictionary*)params withUserId:(uint32_t)userId;
+
 - (void)postMeet:(NSDictionary*)params ;
 - (void)getMeet :(NSDictionary*)params withMeetId:(uint32_t)meetId ;
 - (void)getMeet :(NSDictionary*)params withPostId:(uint32_t)postId ;
