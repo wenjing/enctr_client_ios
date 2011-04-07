@@ -235,6 +235,10 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [delegate performSelector:action withObject:self withObject:nil];    
 }
 
+#pragma -
+#pragma NSURLConnection Delegate Methods inherited from KYConnection
+
+// For failures
 - (void)KYConnectionDidFailWithError:(NSError*)error
 {
     hasError = true;
@@ -271,6 +275,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [self autorelease];
 }
 
+// For completed 
 - (void)KYConnectionDidFinishLoading:(NSString*)content
 {
     switch (statusCode) {

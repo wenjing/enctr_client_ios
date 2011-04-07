@@ -102,6 +102,7 @@
     [self edit];
 }
 
+// in active use
 - (void)replyTo:(sqlite_uint64)cid
 {
 	isReplyMessage = true;
@@ -110,6 +111,7 @@
 	[self edit];
 }
 
+// to-do: clean up
 - (void)postToUser:(User*)user
 {
 	isReplyMessage = false;
@@ -118,6 +120,7 @@
     [self edit];
 }
 
+// in active use
 - (void)postToUserWithId:(sqlite_uint64)userid
 {
 	isReplyMessage = false;
@@ -126,7 +129,7 @@
     [self edit];
 }
 
-
+// to-do: clean up
 - (void)postTo:(KYMeet*)mt
 {
 	isReplyMessage = false;
@@ -135,6 +138,7 @@
     [self edit];
 }
 
+// in active use
 - (void)postToWithId:(sqlite_uint64)cid
 {
 	isReplyMessage = false;
@@ -184,8 +188,11 @@
 	[[self.view layer] addAnimation:animation forKey:kHideAnimationKey];
 }
 
+// This is to cancel a send while the spinning wheel is on (not the editing window)
+// the sender is the progress view
 - (void)cancel: (id)sender
 {
+    // this is the connection being worked on
     if (connection) {
         [connection cancel];
         [connection autorelease];
@@ -215,7 +222,7 @@
 
 - (void)updateMessage
 {
-    KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
+    KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidCallback:obj:)];
 	
     if  (messageView.isReplyFlag) {
         //comment
@@ -238,7 +245,7 @@
 - (void)inviteMessage
 {
 	uint32_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
-	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
+	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidCallback:obj:)];
 	[client postInvite:recipient.text
 			  byUserId:userId
 			  byMeetId:messageView.InReplyToMeetId 
@@ -272,6 +279,7 @@
 	 */
 }
 
+/*
 //
 // PicClient delegate
 //
@@ -302,6 +310,7 @@
     [progressWindow hide];
 }
 
+*/
 
 //
 // Photo Uploading
@@ -414,7 +423,13 @@
     [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.1];
 }
 
-- (void)sendDidSucceed:(KYMeetClient*)sender obj:(NSObject*)obj;
+#pragma -
+#pragma KYMeetClient delegate methods
+
+// All responses from NSURLConnection are returned here. But KYMeetClient/KYConnection strips most info
+// off and only return a Dictionary here. Let's hope this is sufficient to handle all we need.
+//
+- (void)sendDidCallback:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
 
@@ -437,7 +452,7 @@
     }       
  */
     // notify the delegator: whoever that may be
-    //NSLog(@"sendDidSucceed: delegate %@", delegate);
+    //NSLog(@"sendDidCallback: delegate %@", delegate);
     
     [delegate messageViewControllerDidFinish];
     delegate = nil;
