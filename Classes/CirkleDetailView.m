@@ -480,6 +480,7 @@
 	MessageViewController *mV = appDelegate.messageView ;
     
     mV.delegate = self;
+    [mV showCamera:NO];
     
     if (self.circleDetail.type == CD_TYPE_TOPIC ) {
         [mV replyTo:self.circleDetail.cId];

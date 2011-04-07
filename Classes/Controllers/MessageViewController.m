@@ -50,6 +50,10 @@
 	[super dealloc];
 }
 
+- (void)showCamera:(BOOL)yesOrNo {
+    photoButton.enabled = yesOrNo;
+}
+
 //comment is called "Reply" - renamed to Comment
 //topic is called "Message"
 - (void)edit

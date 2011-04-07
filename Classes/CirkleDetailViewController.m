@@ -162,6 +162,8 @@
     //set delegate
     mV.delegate = self;
     
+    [mV showCamera:YES];
+    
     if ([summary isACircle]) {
         [mV postToWithId:summary.cId];
     } else {

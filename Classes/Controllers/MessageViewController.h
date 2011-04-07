@@ -52,6 +52,7 @@
 - (void)saveMessage;
 - (void)checkProgressWindowState;
 - (void)imagePickerControllerDidDisappear;
+- (void)showCamera:(BOOL)yesOrNo;
 
 - (IBAction)showPeoplePickerController;
 - (IBAction) close:   (id) sender;
