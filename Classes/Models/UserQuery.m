@@ -4,10 +4,9 @@
 #import "User.h"
 #import "DBConnection.h"
 #import "KYMeetClient.h"
-#import "CirkleQuery.h"
-#import "Statistics.h"
+#import "UserQuery.h"
 
-@implementation CirkleQuery
+@implementation UserQuery
 
 //+ (id)recordClass
 //{
@@ -29,8 +28,8 @@
   queryAction = QUERY_ACTION_LOCAL;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(usersDidReceive:obj:)];
-  uint32_t user_id = [options integerForKey:@"user_id"] ;
-  User *user = [User userWithId];
+  uint32_t user_id = [[options objectForKey:@"user_id"] integerValue];
+  User *user = [User userWithId:user_id];
   if (user) { // Not in local DB
     queryAction = QUERY_ACTION_UPDATE;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
@@ -47,7 +46,7 @@
   [self clear];
 
   self.queryOptions = options;
-  self.queryUpdate = update;
+  self.queryUpdate = false;
   queryStatus = QUERY_STATUS_PENDING;
   queryAction = QUERY_ACTION_SAVE;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
@@ -65,7 +64,7 @@
   [self checkNetworkError:sender];
   if ([self hasError] &&
       !obj || (![obj isKindOfClass:[NSArray class]] &&
-               ![obj isKindOfClass:[NSDictionay class]] &&
+               ![obj isKindOfClass:[NSDictionary class]] &&
                ![obj isKindOfClass:[User class]])) {
     queryStatus = QUERY_STATUS_ERROR;
     [self queryDidFinish:nil];
@@ -86,7 +85,7 @@
     while ((item = [iter nextObject])) {
       // Save each item to DB
       NSDictionary *dic = item;
-      User *user = [User userWithJsonDictionary];
+      User *user = [User userWithJsonDictionary:dic];
       [user updateDB];
       [results addObject:user];
     }
