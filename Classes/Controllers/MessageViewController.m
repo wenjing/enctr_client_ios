@@ -40,6 +40,7 @@
     
     delegate = nil;
     
+    [progressWindow hide];
     return self;
 }
 
@@ -204,11 +205,14 @@
     KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
 	
     if  (messageView.isReplyFlag) {
-      [client postMessage:text.text toChatId:messageView.InReplyToChatId photoData:selectedPhoto];
-  } else if (messageView.isUserFlag) {
-    [client postMessage:text.text toUserId:messageView.InReplyToUserId photoData:selectedPhoto];
+        //comment
+        [client postMessage:text.text toChatId:messageView.InReplyToChatId photoData:selectedPhoto];
+    } else if (messageView.isUserFlag) {
+        //topic to user
+        [client postMessage:text.text toUserId:messageView.InReplyToUserId photoData:selectedPhoto];
     } else {
-      [client postMessage:text.text toMeetId:messageView.InReplyToMeetId photoData:selectedPhoto];
+        //topic to circle
+        [client postMessage:text.text toMeetId:messageView.InReplyToMeetId photoData:selectedPhoto];
     }
     [progressWindow show];
     connection = client;
@@ -234,13 +238,12 @@
 - (IBAction) send: (id) sender
 {
     int length = [text.text length];
-    if (length == 0) {
+    //disallow if no text AND no photo
+    if ((length == 0) && (selectedPhoto == nil)) {
         sendButton.enabled = false;
         return;
     }
         
-    //[progressWindow show];
-
 	if ( isInviteMessage ) {
 		[self inviteMessage] ;
 	} else {
@@ -275,6 +278,7 @@
     }
     [sender release];
     connection = nil;
+    [progressWindow hide];
 }
 
 - (void)KYMeetPicClientDidFail:(KYMeetClient*)sender error:(NSString*)error detail:(NSString*)detail
@@ -376,6 +380,9 @@
 	self.picture.image = UIGraphicsGetImageFromCurrentImageContext();
 	 UIGraphicsEndImageContext();*/
     photoButton.style = UIBarButtonItemStyleDone;
+    
+    //allow to send a photo alone
+    sendButton.enabled = true;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -397,7 +404,7 @@
 - (void)sendDidSucceed:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
-//	[connection autorelease];
+
     connection = nil;
     if (sender.hasError) {
         [sender alert];
