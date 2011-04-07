@@ -156,12 +156,20 @@
 	[messageView saveMessage];
 }
 
+//the cancel button calls this, not cancel
 - (IBAction) close: (id) sender
 {
     [recipient resignFirstResponder];
     [text resignFirstResponder];
     self.view.hidden = true;
-    if (isInviteMessage) text.text = @"" ;
+    
+    // wipe out all data, including the trash can
+    text.text = @"" ;
+    [selectedPhoto release];
+    selectedPhoto = nil;
+    picture.image = nil;
+    [messageView clearTrash];
+    
 	CATransition *animation = [CATransition animation];
  	[animation setDelegate:self];
     [animation setType:kCATransitionPush];
@@ -180,6 +188,7 @@
         connection = nil;
     }
     [progressWindow hide];
+    
 }
 
 - (UIImage*)modifyPhoto:(UIImage *)image
@@ -370,7 +379,7 @@
     self.selectedPhoto = [self modifyPhoto:image] ;
 	self.picture.image = [self.selectedPhoto thumbnailImage:50 
 										  transparentBorder:2 
-											   cornerRadius:5.0 
+											   cornerRadius:0 
 									   interpolationQuality:kCGInterpolationHigh];
 	
 	/*CGSize itemSize  = CGSizeMake(50,50);

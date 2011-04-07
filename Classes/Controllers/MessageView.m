@@ -203,6 +203,12 @@
     }
 }
 
+- (void)clearTrash
+{
+    [undoBuffer release];
+    undoBuffer = nil;
+}
+
 - (void)setCharCount
 {
     int length = [text.text length];

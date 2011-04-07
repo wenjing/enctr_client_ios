@@ -36,5 +36,6 @@
 - (void)editInvite:(KYMeet *)mt ;
 - (void)setCharCount;
 - (void)saveMessage ;
+- (void)clearTrash;
 
 @end
