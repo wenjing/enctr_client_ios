@@ -51,6 +51,7 @@
 - (BOOL)setObject:(id)obj forKey:(NSString*)key withSubKey:(NSString*)sub_key;
 - (BOOL)removeObjectForKey:(NSString*)key withSubKey:(NSString*)sub_key;
 
+- (void)clear;
 - (void)synchronize;
 - (BOOL)load;
 - (BOOL)save;
