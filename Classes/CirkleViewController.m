@@ -155,8 +155,6 @@
 	[_refreshHeaderView refreshLastUpdatedDate];
     
     [self restoreAndLoadCirkles:false];
-
-    //[self restoreAndLoadCirkles:true];
     
     // stay selection
     self.clearsSelectionOnViewWillAppear = NO;

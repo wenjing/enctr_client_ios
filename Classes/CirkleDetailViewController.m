@@ -206,11 +206,8 @@
     // alloc query object
     query = [NewsQuery alloc];
     
-    //first get local db cache - this is synchronous function call
+    //first get local db cache
     [self restoreAndLoadNews:false];
-    
-    //then request update which will come back asynchronously
-    [self restoreAndLoadNews:true];
     
     // add compose button as the nav bar's custom right view
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
