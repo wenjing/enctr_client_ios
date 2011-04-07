@@ -12,6 +12,7 @@
 
 @synthesize InReplyToChatId, InReplyToUserId, InReplyToMeetId, isReplyFlag, isInviteFlag, isUserFlag;
 
+// initialize when it's loaded from nib
 - (void)awakeFromNib
 {
     recipient.font = [UIFont systemFontOfSize:16];
@@ -19,10 +20,13 @@
     text.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"kayameet"];
 
     NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToChatId"];
+    /*
     if (InReplyToChatId) {
+        // do not show this
         to.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"Reply-To"];
         recipient.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"recipient"];
-    }
+
+    } */
     InReplyToChatId = [number longValue]-1;
 
     number = [[NSUserDefaults standardUserDefaults] objectForKey:@"InReplyToUserId"];
@@ -39,10 +43,13 @@
     InReplyToMeetId   = 0;
     isReplyFlag = true;
     isInviteFlag = false;
+    isUserFlag = false;
+    /* remove
     to.text = @"In-Reply-To:";
     recipient.text = [NSString stringWithFormat:@"char %d",chatId] ;
     recipient.enabled = true;
     recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+     */
 }
 
 - (void)editMessageUser:(User*)user
@@ -101,6 +108,7 @@
     InReplyToChatId   = 0;
     isReplyFlag = false;
     isInviteFlag = true;
+    isUserFlag = false;
     to.text = @"To :";
     recipient.enabled = true;
     recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
@@ -237,6 +245,7 @@
 {
     [super layoutSubviews];
     
+    /* remove this
     if (isReplyFlag) {
         to.hidden = false;
         to.frame = CGRectMake(9, 0, 50, 43);
@@ -248,7 +257,8 @@
         text.frame = CGRectMake(5, 44, 310, 112);
 		address.hidden = true ;
 		charCount.hidden = false;
-    }else if (isInviteFlag) {
+    }else */
+    if (isInviteFlag) {
         to.hidden = false;
         to.frame = CGRectMake(9, 0, 50, 43);
         
@@ -271,6 +281,7 @@
 
 - (void)drawRect:(CGRect)rect 
 {
+    /* remove
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (isReplyFlag) {
         CGContextSetLineWidth(context, 1);
@@ -281,6 +292,7 @@
         };
         CGContextStrokeLineSegments(context, points, 2);
     }
+     */
 }
 
 - (void)dealloc {

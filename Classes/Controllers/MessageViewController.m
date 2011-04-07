@@ -49,11 +49,12 @@
 	[super dealloc];
 }
 
-
+//comment is called "Reply" - renamed to Comment
+//topic is called "Message"
 - (void)edit
 {
 	if ( isReplyMessage ) {
-		self.navigationItem.title = @"Reply";
+		self.navigationItem.title = @"Comment";
 	}else if ( isInviteMessage ) {
 		self.navigationItem.title = @"Invite";
 	}else {
@@ -68,9 +69,12 @@
     self.view.hidden = false;
     didPost = false;
 	
+    // remove recipient
+    /*
     if (isReplyMessage && [recipient.text length] == 0) {
         [recipient becomeFirstResponder];
-    }else if (isInviteMessage ) {
+    }else*/ 
+    if (isInviteMessage ) {
 		[recipient becomeFirstResponder];
     } else {
         [text becomeFirstResponder];
