@@ -11,6 +11,7 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1E1FA989134DA09A004A20A5 /* UserQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1FA988134DA09A004A20A5 /* UserQuery.m */; };
 		1E3DB383133AC4EA00B5C8B1 /* Cirkle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */; };
 		1E3DB38A133AC57C00B5C8B1 /* QueryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB387133AC57C00B5C8B1 /* QueryProtocol.m */; };
 		1E3DB38B133AC57C00B5C8B1 /* RecordProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DB389133AC57C00B5C8B1 /* RecordProtocol.m */; };
@@ -150,6 +151,8 @@
 		1D3623250D0F684500981E51 /* kaya_meetAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = kaya_meetAppDelegate.m; path = Controllers/kaya_meetAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Cirkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cirkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1E1FA987134DA099004A20A5 /* UserQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserQuery.h; path = Models/UserQuery.h; sourceTree = "<group>"; };
+		1E1FA988134DA09A004A20A5 /* UserQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserQuery.m; path = Models/UserQuery.m; sourceTree = "<group>"; };
 		1E3DB381133AC4EA00B5C8B1 /* Cirkle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cirkle.h; path = Models/Cirkle.h; sourceTree = "<group>"; };
 		1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Cirkle.m; path = Models/Cirkle.m; sourceTree = "<group>"; };
 		1E3DB386133AC57C00B5C8B1 /* QueryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueryProtocol.h; path = Models/QueryProtocol.h; sourceTree = "<group>"; };
@@ -709,6 +712,8 @@
 		3AA5396B128B4EC100E389BA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				1E1FA987134DA099004A20A5 /* UserQuery.h */,
+				1E1FA988134DA09A004A20A5 /* UserQuery.m */,
 				3A0FC71B128A027700BFC7F5 /* UserStore.h */,
 				3A0FC71C128A027700BFC7F5 /* UserStore.m */,
 				3A0FC7151289D89D00BFC7F5 /* User.h */,
@@ -981,6 +986,7 @@
 				3DC1F7681343D82400CC81AF /* CirkleDetailCell.m in Sources */,
 				3DC1F76C1343DAC700CC81AF /* CirkleDetailViewController.m in Sources */,
 				1EE88C191345795E009CA84F /* Statistics.m in Sources */,
+				1E1FA989134DA09A004A20A5 /* UserQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1085,4 +1091,3 @@
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
-
