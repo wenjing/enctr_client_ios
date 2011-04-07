@@ -161,7 +161,9 @@
         image_enum = [images objectEnumerator];
         img = [image_enum nextObject];
         img.frame = drawRect;
-    
+        
+        [img showLoadingWheel];
+        
         img.url = [NSURL URLWithString:imgurl];
         [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:img waitUntilDone:YES];
         [self addSubview:img];

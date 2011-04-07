@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/CirkleDetailView.m"
-         timestampString = "323715059.71705"
+         timestampString = "323839324.71601"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "389"
-         endingLineNumber = "389"
+         startingLineNumber = "391"
+         endingLineNumber = "391"
          landmarkName = "-drawRect:"
          landmarkType = "5">
       </FileBreakpoint>
