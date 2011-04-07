@@ -297,6 +297,7 @@
     // ...
     // Pass the selected object to the new view controller.
     detailViewController.summary = aCircle;
+    detailViewController.upperController = self;
     
     [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
