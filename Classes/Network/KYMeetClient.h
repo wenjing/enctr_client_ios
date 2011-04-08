@@ -23,7 +23,9 @@ typedef enum {
   KAYAMEET_REQUEST_GET_MEET,
   KAYAMEET_REQUEST_GET_USERMEETS,
   KAYAMEET_REQUEST_GET_TIMELINES,
-  KAYAMEET_REQUEST_GET_CIRKLES
+  KAYAMEET_REQUEST_GET_CIRKLES,
+  KAYAMEET_REQUEST_UPDATE_MEET,
+  KAYAMEET_REQUEST_CONFIRM_INVITATION
 } RequestType;
 
 @interface KYMeetClient : KYConnection
@@ -62,6 +64,10 @@ typedef enum {
 - (void)postMessage:(NSString*)message toChatId:(uint64_t)meetId photoData:(UIImage*)photo;
 - (void)postMessage:(NSString*)message toUrl:(NSString*)url photoData:(UIImage*)photo;
 - (void)postInvite:(NSString*)emails byUserId:(uint32_t)userId byMeetId:(uint64_t)meetId custMessage:(NSString*)message;
+
+- (void)updateMeet:(NSString*)name toMeetId:(uint64_t)meetId;
+- (void)confirmInvitation:(BOOL)confirm toMeetId:(uint64_t)meetId;
+
 - (void)verify;
 - (void)alert;
 

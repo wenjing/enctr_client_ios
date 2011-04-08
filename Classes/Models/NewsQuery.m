@@ -57,9 +57,9 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   NSMutableDictionary *param = nil;
   if (!update) {
     if (stat.lastQuery != 0 && stat.hasMore) {
-      // Do not try loading from server if this is the first time query. A subsequent update mode
-      // query shall follow anyway.
-      // Do not try retrieving more if we know there ain't anymore
+      // Do not try loading from server if this is the first time query. A subsequent
+      // update mode query shall follow anyway.
+      // Do not try retrieving more if we know there ain't anymore.
       int retrieve_more = 0;
       if (limit) { // check if local DB has enough records
         int limit_val = [limit integerValue];
@@ -160,8 +160,17 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   NSString *stmt = GetStmt(friend_id_val, cirkle_id_val);
   NSString *stat_key = [NSString stringWithFormat:@"uid=%qu:cid=%qu",
                                     friend_id_val, cirkle_id_val];
-  NewsStat *stat = [NewsStat retrieve:stat_key];
-  time_t now; time(&now); stat.lastQuery = now;
+  NewsStat *stat = nil;
+  if (filter_id_val == 0) {
+    stat = [NewsStat retrieve:stat_key];
+  } else { // Do not update stat for filter mode, create a dummy one
+    stat = [[[NewsStat alloc] init] autorelease];
+  }
+  BOOL was_empty = stat.lastQuery == 0;
+  if (queryAction == QUERY_ACTION_RETRIEVE ||
+      queryAction == QUERY_ACTION_UPDATE) { // Do not record pure local query
+    time_t now; time(&now); stat.lastQuery = now;
+  }
 
   [DBConnection beginTransaction];
   NSArray *net_res = (NSArray *)obj; //NSLog(@"%@", net_res);
@@ -241,13 +250,14 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
     }
   }
   // Check if has retrieved all records from remote server or not
-  if (queryAction == QUERY_ACTION_RETRIEVE && ![self hasMore]) {
+  if (![self hasMore] &&
+      (queryAction == QUERY_ACTION_RETRIEVE ||
+       queryAction == QUERY_ACTION_UPDATE && was_empty)) {
     // Tried retrieve however get less than requested, there must be
     // no more older records in remote server left not retrieved.
     stat.hasMore = false;
   }
 
-  // This is a very special case, update mode retrieved more than required.
   if (filter_id_val == 0) { // update statistics, but only when not at filter mode
     [stat persist];
   }

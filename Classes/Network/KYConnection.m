@@ -178,6 +178,31 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+-(void)delete:(NSString*)aURL
+{
+  [connection release];
+  [buf release];
+  statusCode = 0;
+  self.requestURL = aURL;
+    
+  NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)aURL,
+                                                (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
+  [URL autorelease];
+  NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
+                                                     cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                 timeoutInterval:NETWORK_TIMEOUT];
+    
+  [req setHTTPMethod:@"DELETE"];
+  [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  [req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+  [self addAuthHeader:req];
+  
+  buf = [[NSMutableData data] retain];
+  connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+  [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
 - (void)cancel
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;    

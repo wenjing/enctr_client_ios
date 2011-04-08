@@ -18,6 +18,8 @@
   [super dealloc];
 }
 
+// If update is true, force to fetch from server even the user already exists 
+// in local DB.
 - (void)query:(NSDictionary*)options withUpdate:(BOOL)update
 {
   [self clear];
@@ -29,8 +31,8 @@
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(usersDidReceive:obj:)];
   uint32_t user_id = [[options objectForKey:@"user_id"] integerValue];
-  User *user = [User userWithId:user_id];
-  if (user) { // Not in local DB
+  User *user = update ? nil : [User userWithId:user_id];
+  if (!user) { // Not in local DB
     queryAction = QUERY_ACTION_UPDATE;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [meetClient getUser:param withUserId:user_id];
@@ -84,7 +86,7 @@
     id item;
     while ((item = [iter nextObject])) {
       // Save each item to DB
-      NSDictionary *dic = item;
+      NSDictionary *dic = [item objectForKey:@"user"];
       User *user = [User userWithJsonDictionary:dic];
       [user updateDB];
       [results addObject:user];

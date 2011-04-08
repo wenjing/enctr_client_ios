@@ -9,10 +9,9 @@
 #import "AccelerometerFilter.h"
 #import "CirkleQuery.h"
 #import "NewsQuery.h"
-
+#import "UserQuery.h"
 
 #define kUpdateFrequency	60.0
-
 
 @interface MeetViewController (Private)
 - (void)didLeaveTab:(UINavigationController*)navigationController;
@@ -20,6 +19,11 @@
 - (void)cirklesDidLoad:(CirkleQuery*)sender;
 - (void)restoreAndLoadNews;
 - (void)newsDidLoad:(NewsQuery*)sender;
+- (void)loadUser;
+- (void)userDidLoad:(UserQuery*)sender;
+- (void)createUser;
+- (void)updateUser;
+- (void)userDidSave:(UserQuery*)sender;
 @end
 
 @implementation MeetViewController
@@ -52,10 +56,7 @@
     self.soundFileURLRef = (CFURLRef) [tapSound retain];
 	
     // Create a system sound object representing the sound file.
-    AudioServicesCreateSystemSoundID (
-									  soundFileURLRef,
-									  &soundFileObject
-									  );
+    AudioServicesCreateSystemSoundID(soundFileURLRef, &soundFileObject);
     HUD = nil;
 }
 
@@ -89,15 +90,81 @@
     //[self restoreAndLoadCirkles];
     // Debug new data API
     //[self restoreAndLoadNews];
+    // Debug user API
+    //[self loadUser];
+    //[self createUser];
+    //[self updateUser];
+}
+
+-(void)loadUser
+{
+  UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidLoad:)
+                                        releaseAtCallBack:true];
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  uint64_t user_id = 2;
+  BOOL update = false;
+  [options setObject:[NSNumber numberWithInt:user_id] forKey:@"user_id"];
+  [query query:options withUpdate:update];
+}
+- (void)userDidLoad:(UserQuery*)sender
+{
+  NSLog(@"Load user results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    User *user = [[sender getResults] objectAtIndex:0];
+    NSLog(@"%d %@ %@ %@", user.userId, user.name, user.email, user.profileImageUrl);
+  }
+  [sender clear];
+}
+
+-(void)createUser
+{
+  UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidSave:)
+                                     releaseAtCallBack:true];
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  uint64_t user_id = 0;
+  NSString *password = @"password";
+  User *user = [[[User alloc] initWithId:user_id] autorelease];
+  user.name = @"Test Saver 1";
+  user.email = @"test.saver1@kaya-labs.com";
+  user.password = password;
+  user.profileImage = nil;
+  [query save:options withObject:user];
+}
+-(void)updateUser
+{
+  UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidSave:)
+                                        releaseAtCallBack:true];
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  uint64_t user_id = 4239;
+  NSString *password = nil;
+  User *user = [[[User alloc] initWithId:user_id] autorelease];
+  user.name = @"Test Saver A";
+  user.email = @"test.saver1@kaya-labs.com";
+  user.password = password;
+  user.profileImage = nil;
+  [query save:options withObject:user];
+}
+- (void)userDidSave:(UserQuery*)sender
+{
+  NSLog(@"Save user results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    User *user = [[sender getResults] objectAtIndex:0];
+    NSLog(@"%d %@ %@ %@", user.userId, user.name, user.email, user.profileImageUrl);
+  }
+  [sender clear];
 }
 
 -(void)restoreAndLoadCirkles
 {
-    CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
-                                              releaseAtCallBack:true];
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    BOOL update = false;
-    [query query:options withUpdate:update];
+  CirkleQuery *query = [[CirkleQuery alloc] initWithTarget:self action:@selector(cirklesDidLoad:)
+                                            releaseAtCallBack:true];
+  NSMutableDictionary *options = [NSMutableDictionary dictionary];
+  BOOL update = true;
+  [query query:options withUpdate:update];
 }
 - (void)cirklesDidLoad:(CirkleQuery*)sender
 {
@@ -121,13 +188,16 @@
   NewsQuery *query = [[NewsQuery alloc] initWithTarget:self action:@selector(newsDidLoad:)
                                         releaseAtCallBack:true];
   NSMutableDictionary *options = [NSMutableDictionary dictionary];
-  BOOL update = false;
-  int limit = 10, offset = 0;
-  sqlite3_int64 friend_id = 1, cirkle_id = 15587;
-  [options setObject:[NSNumber numberWithInt:limit] forKey:@"limit"];
-  [options setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
+  BOOL update = true;
+  int limit = 100, offset = 0;
+  sqlite3_int64 friend_id = 1, cirkle_id = 15587, filter_id = 6;
+  NSString *filter_type = @"encounter";
+  //[options setObject:[NSNumber numberWithInt:limit] forKey:@"limit"];
+  //[options setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
   //[options setObject:[NSNumber numberWithInt:friend_id] forKey:@"friend_id"];
   //[options setObject:[NSNumber numberWithInt:cirkle_id] forKey:@"cirkle_id"];
+  //[options setObject:filter_type forKey:@"filter_type"];
+  //[options setObject:[NSNumber numberWithInt:filter_id] forKey:@"filter_id"];
   [query query:options withUpdate:update];
 }
 
