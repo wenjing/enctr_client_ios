@@ -225,7 +225,7 @@
 	if (webClient) 
 		return;
 	
-	webClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidPost:obj:)];
+	webClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
     // NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
 	kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
@@ -246,14 +246,15 @@
 	// [self appendMeet:sts];
 	
 	NSLog(@"postToServer sending mpost to webClient");
-	// post meet from server
+	// post meet to server
     [webClient postMeet:postMessage];
 	
 }
 
-- (void)meetDidPost:(KYMeetClient*)sender obj:(NSObject*)obj
+// Callback delgate method
+- (void)encounterDidPost:(KYMeetClient*)sender obj:(NSObject*)obj
 {
-	//don't release the client - why??
+	//don't release the client - it does [self autorelease]!
 	webClient = nil;
 	/*
     [loadCell.spinner stopAnimating];
@@ -261,7 +262,7 @@
 	reloading = NO;
 	*/
     if (sender.hasError) {
-		NSLog(@"meetDidPost webClient send error");
+		NSLog(@"encounterDidPost webClient send error");
 		/*
 		if ([controller respondsToSelector:@selector(meetsDidFailToUpdate:position:)]) {
             [controller meetsDidFailToUpdate:self position:insertPosition];

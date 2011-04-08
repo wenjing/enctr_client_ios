@@ -118,6 +118,8 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [self postOrPut:aURL data:data cmd:@"PUT"];
 }
 
+// POST encounter with this
+
 -(void)postOrPut:(NSString*)aURL body:(NSString*)body cmd:(NSString*)cmd
 {
   [connection release];
