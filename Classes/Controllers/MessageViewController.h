@@ -18,7 +18,7 @@
     IBOutlet UITextField*               recipient;
     IBOutlet UIButton*					address;
    	IBOutlet ProgressWindow*            progressWindow;
-    IBOutlet UINavigationItem*  navigationItem;
+    IBOutlet UINavigationItem*          navigationItem;
 	
     IBOutlet UIBarButtonItem*           sendButton;
     IBOutlet UIBarButtonItem*           photoButton;

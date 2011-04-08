@@ -16,7 +16,7 @@
 #define GPS_BUTTON_INDEX    2
 #define CAMERA_BUTTON_INDEX 3
 
-// declare the delegate methods
+// Declare the delegate methods
 @interface NSObject (MessageViewControllerDelegate)
 - (void)messageViewControllerDidFinish;
 @end
@@ -47,6 +47,8 @@
 - (void)dealloc 
 {
     [selectedPhoto release];
+    [delegate release];
+    
 	[super dealloc];
 }
 
@@ -426,9 +428,7 @@
 #pragma -
 #pragma KYMeetClient delegate methods
 
-// All responses from NSURLConnection are returned here. But KYMeetClient/KYConnection strips most info
-// off and only return a Dictionary here. Let's hope this is sufficient to handle all we need.
-//
+// All responses from NSURLConnection are returned here. 
 - (void)sendDidCallback:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
@@ -436,6 +436,7 @@
     connection = nil;
     if (sender.hasError) {
         [sender alert];
+        
         return;
     }
 
@@ -451,12 +452,11 @@
 		[appDelegate sendMessageDidSucceed:dic];
     }       
  */
-    // notify the delegator: whoever that may be
+    // notify the delegator for DidFinish
     //NSLog(@"sendDidCallback: delegate %@", delegate);
     
     [delegate messageViewControllerDidFinish];
-    delegate = nil;
-    
+
     //to-do: cleanup also needs to be done when fail - cancel or delete
     text.text = @"";
     messageView.InReplyToMeetId = 0;
@@ -466,8 +466,11 @@
     textRange.location = 0;
     textRange.length = 0;
     [self close:self];
+    /* don't do this
 	selectedPhoto = nil;
 	picture.image = nil;
+    */
+    
     didPost =  true ;
 }
 
