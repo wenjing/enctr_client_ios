@@ -284,7 +284,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
         statusCode = 401;
         [self authError];
         //We always callback the requester
-        [delegate performSelector:action withObject:self withObject:nil];
+        //[delegate performSelector:action withObject:self withObject:nil];
     }
     else {
         self.errorMessage = @"Connection Failed";
@@ -322,7 +322,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
         case 401: // Not Authorized: either you need to provide authentication credentials, or the credentials provided aren't valid.
             hasError = true;
             [self authError];
-            [delegate performSelector:action withObject:self withObject:nil];
+            //[delegate performSelector:action withObject:self withObject:nil];
             goto out;
             
         case 304: // Not Modified: there was no new data to return.
