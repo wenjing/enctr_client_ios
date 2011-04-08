@@ -16,7 +16,7 @@
 #define GPS_BUTTON_INDEX    2
 #define CAMERA_BUTTON_INDEX 3
 
-// declare the delegate methods
+// Declare the delegate methods
 @interface NSObject (MessageViewControllerDelegate)
 - (void)messageViewControllerDidFinish;
 @end
@@ -47,6 +47,8 @@
 - (void)dealloc 
 {
     [selectedPhoto release];
+    [delegate release];
+    
 	[super dealloc];
 }
 
@@ -102,6 +104,7 @@
     [self edit];
 }
 
+// in active use
 - (void)replyTo:(sqlite_uint64)cid
 {
 	isReplyMessage = true;
@@ -110,6 +113,7 @@
 	[self edit];
 }
 
+// to-do: clean up
 - (void)postToUser:(User*)user
 {
 	isReplyMessage = false;
@@ -118,6 +122,7 @@
     [self edit];
 }
 
+// in active use
 - (void)postToUserWithId:(sqlite_uint64)userid
 {
 	isReplyMessage = false;
@@ -126,7 +131,7 @@
     [self edit];
 }
 
-
+// to-do: clean up
 - (void)postTo:(KYMeet*)mt
 {
 	isReplyMessage = false;
@@ -135,6 +140,7 @@
     [self edit];
 }
 
+// in active use
 - (void)postToWithId:(sqlite_uint64)cid
 {
 	isReplyMessage = false;
@@ -184,8 +190,11 @@
 	[[self.view layer] addAnimation:animation forKey:kHideAnimationKey];
 }
 
+// This is to cancel a send while the spinning wheel is on (not the editing window)
+// the sender is the progress view
 - (void)cancel: (id)sender
 {
+    // this is the connection being worked on
     if (connection) {
         [connection cancel];
         [connection autorelease];
@@ -215,7 +224,7 @@
 
 - (void)updateMessage
 {
-    KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
+    KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidCallback:obj:)];
 	
     if  (messageView.isReplyFlag) {
         //comment
@@ -238,7 +247,7 @@
 - (void)inviteMessage
 {
 	uint32_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
-	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidSucceed:obj:)];
+	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidCallback:obj:)];
 	[client postInvite:recipient.text
 			  byUserId:userId
 			  byMeetId:messageView.InReplyToMeetId 
@@ -272,6 +281,7 @@
 	 */
 }
 
+/*
 //
 // PicClient delegate
 //
@@ -302,6 +312,7 @@
     [progressWindow hide];
 }
 
+*/
 
 //
 // Photo Uploading
@@ -414,13 +425,18 @@
     [self performSelector:@selector(showKeyboard) withObject:nil afterDelay:0.1];
 }
 
-- (void)sendDidSucceed:(KYMeetClient*)sender obj:(NSObject*)obj;
+#pragma -
+#pragma KYMeetClient delegate methods
+
+// All responses from NSURLConnection are returned here. 
+- (void)sendDidCallback:(KYMeetClient*)sender obj:(NSObject*)obj;
 {
     [progressWindow hide];
 
     connection = nil;
     if (sender.hasError) {
         [sender alert];
+        
         return;
     }
 
@@ -436,12 +452,11 @@
 		[appDelegate sendMessageDidSucceed:dic];
     }       
  */
-    // notify the delegator: whoever that may be
-    //NSLog(@"sendDidSucceed: delegate %@", delegate);
+    // notify the delegator for DidFinish
+    //NSLog(@"sendDidCallback: delegate %@", delegate);
     
     [delegate messageViewControllerDidFinish];
-    delegate = nil;
-    
+
     //to-do: cleanup also needs to be done when fail - cancel or delete
     text.text = @"";
     messageView.InReplyToMeetId = 0;
@@ -451,8 +466,11 @@
     textRange.location = 0;
     textRange.length = 0;
     [self close:self];
+    /* don't do this
 	selectedPhoto = nil;
 	picture.image = nil;
+    */
+    
     didPost =  true ;
 }
 

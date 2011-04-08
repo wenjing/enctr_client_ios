@@ -55,7 +55,7 @@
 	
 	messageView = nil ;
 	objMan		= nil ;
-	selectedTab = TAB_MEETS;
+	selectedTab = TAB_CIRCLES;
     tabBarController.selectedIndex = selectedTab;
 	tabBarController.delegate = self ;
 	[window addSubview:tabBarController.view];
@@ -123,9 +123,9 @@
 	{
 		[self postInit];
 	}
-    // Bring to default view (meet list)
-    self.selectedTab = TAB_MEETS;
-    self.tabBarController.selectedIndex = TAB_MEETS;
+    // Bring to default view
+    self.selectedTab = TAB_CIRCLES;
+    self.tabBarController.selectedIndex = TAB_CIRCLES;
 }
 
 - (void) postInit
@@ -315,8 +315,8 @@
     if ( selectedTab == TAB_MEETS) {
         nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_MEETS];
     }
-    else if (selectedTab == TAB_PLACE) {
-        nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_PEOPLE];
+    else if (selectedTab == TAB_PLACES) {
+        nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:TAB_PLACES];
     }
     UIViewController *c = nav.topViewController;
     if ([c respondsToSelector:@selector(messageViewAnimationDidFinish)]) {

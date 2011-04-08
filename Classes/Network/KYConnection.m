@@ -32,11 +32,13 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
 
 - (void)dealloc
 {
-  [self cancel];
-  [requestURL release];
-  [connection release];
-  [buf release];
-  [super dealloc];
+    [self cancel];
+    
+    [requestURL release];
+
+    [connection release];
+    [buf release];
+    [super dealloc];
 }
 
 
@@ -116,6 +118,8 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [self postOrPut:aURL data:data cmd:@"PUT"];
 }
 
+// POST encounter with this
+
 -(void)postOrPut:(NSString*)aURL body:(NSString*)body cmd:(NSString*)cmd
 {
   [connection release];
@@ -147,6 +151,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+// This is where we send POSTs
 -(void)postOrPut:(NSString*)aURL data:(NSData*)data cmd:(NSString*)cmd
 {
   [connection release];
@@ -203,26 +208,18 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+// Here is how we cancel this connection
 - (void)cancel
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;    
     if (connection) {
+        
+        //Cancel NSURLConnection
         [connection cancel];
+        
         [connection autorelease];
         connection = nil;
     }
-}
-
-- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)aResponse
-{
-  [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-  NSHTTPURLResponse *resp = (NSHTTPURLResponse*)aResponse;
-  if (resp) {
-      statusCode = resp.statusCode;
-      [self KYConnectionDidReceieveResponse:aResponse];
-  }
-
-  [buf setLength:0];
 }
 
 - (void)KYConnectionDidReceieveResponse:(NSURLResponse *)aResponse
@@ -230,6 +227,31 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   // leave for subclass implement
 }
 
+- (void)KYConnectionDidFailWithError:(NSError*)error
+{
+    // To be implemented in subclass
+}
+
+- (void)KYConnectionDidFinishLoading:(NSString*)content
+{
+    // To be implemented in subclass
+    // return back to connectionDidFinishLoading
+}
+
+#pragma -
+#pragma NSURLConnection Delegation Methods
+
+- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)aResponse
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    NSHTTPURLResponse *resp = (NSHTTPURLResponse*)aResponse;
+    if (resp) {
+        statusCode = resp.statusCode;
+        [self KYConnectionDidReceieveResponse:aResponse];
+    }
+    
+    [buf setLength:0];
+}
 
 - (void)connection:(NSURLConnection *)aConn didReceiveData:(NSData *)data
 {
@@ -255,12 +277,6 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
     buf = nil;
 }
 
-
-- (void)KYConnectionDidFailWithError:(NSError*)error
-{
-    // To be implemented in subclass
-}
-
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConn
 {
     
@@ -276,12 +292,9 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
    connection = nil;
 }
 
-- (void)KYConnectionDidFinishLoading:(NSString*)content
-{
-  // To be implemented in subclass
-  // return back to connectionDidFinishLoading
-}
 
+#pragma -
+#pragma KYConnection Utilities
 
 // Utilities
 

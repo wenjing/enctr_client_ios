@@ -18,6 +18,9 @@
 @synthesize hasError;
 @synthesize errorMessage;
 @synthesize errorDetail;
+@synthesize postParams;
+@synthesize errorCode;
+@synthesize toBeRetried;
 
 NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 
@@ -28,6 +31,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [super initWithDelegate:aDelegate];
     action = anAction;
     hasError = false;
+    toBeRetried = false;
+    errorCode = nil;
     return self;
 }
 
@@ -35,6 +40,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
     [errorMessage release];
     [errorDetail release];
+    [postParams release];
+    
     [super dealloc];
 }
 
@@ -155,9 +162,13 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   NSString* url = [NSString stringWithFormat:@"%@/mposts",KAYAMEET_SITE_NAME];
   NSString *postString = [KYConnection generateBodyString:nil params:params];
   
+    //retain the params for requester's use
+    postParams = params;
+    
   //NSLog(@"%@ -d %@",url,postString);
   [self post:url body:postString];
 }
+
 
 // post Invitation
 - (void)postInvite:(NSString*)invitee  byUserId:(uint32_t)userId byMeetId:(uint64_t)meetId custMessage:(NSString*)message
@@ -256,16 +267,24 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 - (void)authError
 {
     self.errorMessage = @"Authentication Failed";
-    self.errorDetail  = @"Wrong username/Email and password combination.";    
+    self.errorDetail  = @"Wrong account/email and password combination.";    
     [delegate performSelector:action withObject:self withObject:nil];    
 }
 
+#pragma -
+#pragma NSURLConnection Delegate Methods inherited from KYConnection
+
+// For failures Always callback!!
 - (void)KYConnectionDidFailWithError:(NSError*)error
 {
     hasError = true;
+    errorCode = error;
+    
     if (error.code ==  NSURLErrorUserCancelledAuthentication) {
         statusCode = 401;
         [self authError];
+        //We always callback the requester
+        [delegate performSelector:action withObject:self withObject:nil];
     }
     else {
         self.errorMessage = @"Connection Failed";
@@ -296,34 +315,38 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [self autorelease];
 }
 
+// For completed Always callback!!
 - (void)KYConnectionDidFinishLoading:(NSString*)content
 {
     switch (statusCode) {
         case 401: // Not Authorized: either you need to provide authentication credentials, or the credentials provided aren't valid.
             hasError = true;
             [self authError];
+            [delegate performSelector:action withObject:self withObject:nil];
             goto out;
             
         case 304: // Not Modified: there was no new data to return.
             [delegate performSelector:action withObject:self withObject:nil];
             goto out;
       
-    case 200: // OK: everything went awesome.
+        case 200: // OK: everything went awesome.
         case 400: // Bad Request: your request is invalid, and we'll return an error message that tells you why. 
         case 403: // Forbidden: we understand your request, but are refusing to fulfill it.  An accompanying error message should explain why.
         break;
-    case 500: // Internal Server Error: we did something wrong. 
+            
+        case 500: // Internal Server Error: we did something wrong. 
         case 404: // Not Found: either you're requesting an invalid URI or the resource in question doesn't exist (ex: no such user). 
         case 502: // Bad Gateway: returned if  is down or being upgraded.
         case 503: // Service Unavailable: the  servers are up, but are overloaded with requests.  Try again later.
+        
         default:
-        {
-            hasError = true;
-            self.errorMessage = @"Server responded with an error";
-            self.errorDetail  = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
-            [delegate performSelector:action withObject:self withObject:nil];
-            goto out;
-        }
+            {
+                hasError = true;
+                self.errorMessage = @"Server responded with an error";
+                self.errorDetail  = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
+                [delegate performSelector:action withObject:self withObject:nil];
+                goto out;
+            }
     }
 
     NSObject *obj = [content JSONValue];
@@ -373,6 +396,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
  */
 }
 
+// The request asks for an alert
 - (void)alert
 {
     [[kaya_meetAppDelegate getAppDelegate] alert:errorMessage message:errorDetail];

@@ -15,6 +15,7 @@
 @synthesize listDetails;
 @synthesize summary;
 @synthesize query;
+@synthesize upperController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -74,7 +75,7 @@
         //this may or may not be synchronous
         [firstQuery query:options withUpdate:withUpdate];
     } else {
-        [query initWithTarget:self action:@selector(newsDidUpdate:)
+        [query initWithTarget:self action:@selector(newsDidLoad:)
             releaseAtCallBack:false];
 
         //Warning: this callback SHOULD be asynchronous
@@ -95,38 +96,40 @@
             NSLog(@"  has more");
         }
         NSArray *results = [sender getResults];
-        //if (!firstTime)
-            //NSLog(@"new circleDetail %@", results);
+        
+        //NSLog(@"new circleDetail %@", results);
         
         // build listDetails
         NSInteger count = [results count];
         if (count > 0) {
             [listDetails removeAllObjects];
+        
+        
+            NSLog(@"start building %d circleDetails\n", count);
+        
+            for (int i=0; i<count; i++) {
+            
+                NSDictionary *dic = [results objectAtIndex:i];
+            
+                CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
+            
+                [listDetails addObject:circleDetail];
+                
+            }
+        
+            [self.tableView reloadData];
         }
-        
-        NSLog(@"start building %d circleDetails\n", count);
-        
-        for (int i=0; i<count; i++) {
-            
-            NSDictionary *dic = [results objectAtIndex:i];
-            
-            CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
-            
-            [listDetails addObject:circleDetail];
-            //NSLog(@"adding %d-th circleDetail to list\n", i);
-            //if (i>100)
-            //    break;
-        }
-        
-        [self.tableView reloadData];
     }
     
     [sender clear];
     
-    //start a new one, MUST set with true
-    [self restoreAndLoadNews:true];
+    //start a new one, MUST set with true, if this is first query
+    if (sender != query) {
+        [self restoreAndLoadNews:true];
+    }
 }
 
+// unused any more
 - (void)newsDidUpdate:(NewsQuery*)sender {
     NSLog(@"Load news results: withUpdate %d", [sender queryUpdate]);
     
@@ -191,6 +194,10 @@
     // update data after a new topic
     [self restoreAndLoadNews:true];
     
+    // also update circle summary view
+    NSLog(@"Refreshing circle summary");
+    
+    [upperController restoreAndLoadCirkles:true];
 }
 
 #pragma mark - View lifecycle

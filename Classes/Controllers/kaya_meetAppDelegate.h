@@ -15,8 +15,9 @@
 
 typedef enum {
     TAB_MEETS=0,
-    TAB_PEOPLE,
-    TAB_PLACE,
+    TAB_CIRCLES,
+    TAB_ENCOUNTER,
+    TAB_PLACES,
     TAB_SETUP
 } TAB_ITEM;
 
