@@ -36,5 +36,6 @@
 -(IBAction) confirmButtonPressed;
 
 - (void)postToServer:(NSMutableDictionary*)postMessage;
+- (void)retryPostToServer;
 
 @end

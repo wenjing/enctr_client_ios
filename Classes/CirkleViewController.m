@@ -12,6 +12,8 @@
 #import "CirkleSummary.h"
 #import "CirkleEntryView.h"
 #import "CirkleDetailViewController.h"
+#import "kaya_meetAppDelegate.h"
+#import "EncounterViewController.h"
 
 @implementation CirkleViewController
 @synthesize listCircles;
@@ -62,9 +64,8 @@
                                                     releaseAtCallBack:true];
         [firstQuery query:options withUpdate:withUpdate];
     } else {
-        [query initWithTarget:self 
-                   action:@selector(cirklesDidLoad:)
-            releaseAtCallBack:false];
+        if (query)
+            [query clear];
     
         [query query:options withUpdate:withUpdate];
     }
@@ -111,18 +112,24 @@
             //NSLog(@"%@", listCircles);
             [self.tableView reloadData];
         }
+        
+        if (sender != query) {
+            //must set to true
+            [self restoreAndLoadCirkles:true];
+        }
+
     }
 
-    [sender clear];
+    //[sender clear];
     
     _reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-   
+/*   
     if (sender != query) {
         //must set to true
         [self restoreAndLoadCirkles:true];
     }
- 
+*/ 
 }
 
 
@@ -136,6 +143,10 @@
     listCircles = [[NSMutableArray alloc] init];
     
     query = [CirkleQuery alloc];
+    [query initWithTarget:self 
+                   action:@selector(cirklesDidLoad:)
+        releaseAtCallBack:false];
+    
     
     if (_refreshHeaderView == nil) {
 		
@@ -329,6 +340,18 @@
 	//[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
     [self restoreAndLoadCirkles:true];
 	
+    //retry unsuccessful encounter posts
+    kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+    
+    UINavigationController* nav = (UINavigationController*)[del getAppTabController:TAB_ENCOUNTER];
+	EncounterViewController* evc = (EncounterViewController*)[nav.viewControllers objectAtIndex:0]  ;
+    
+    if (evc) {
+        //hook #1
+        [evc retryPostToServer];
+    } else {
+        NSLog(@"Internal Error: could not find encounterViewController!");
+    }
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{

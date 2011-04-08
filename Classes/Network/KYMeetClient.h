@@ -34,6 +34,7 @@ typedef enum {
     BOOL        hasError;
     NSString*   errorMessage;
     NSString*   errorDetail;
+    BOOL        toBeRetried;
     NSDictionary*   postParams;
     NSError*    errorCode;
 }
@@ -45,6 +46,7 @@ typedef enum {
 @property(nonatomic, copy) NSString* errorDetail;
 @property(nonatomic, retain) NSDictionary* postParams;
 @property(nonatomic, retain) NSError* errorCode;
+@property(nonatomic) BOOL toBeRetried;
 
 - (id)initWithTarget:(id)delegate action:(SEL)action;
 

@@ -20,6 +20,7 @@
 @synthesize errorDetail;
 @synthesize postParams;
 @synthesize errorCode;
+@synthesize toBeRetried;
 
 NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 
@@ -30,6 +31,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [super initWithDelegate:aDelegate];
     action = anAction;
     hasError = false;
+    toBeRetried = false;
+    errorCode = nil;
     return self;
 }
 
@@ -38,7 +41,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [errorMessage release];
     [errorDetail release];
     [postParams release];
-    [errorCode release];
+    
     [super dealloc];
 }
 

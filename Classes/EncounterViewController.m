@@ -146,14 +146,14 @@
 
 -(IBAction) confirmButtonPressed {
 	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Another encounter" 
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter" 
 													message:@"in your circles"
 												   delegate:nil 
-										  cancelButtonTitle:@"Okay" 
+										  cancelButtonTitle:@"OK" 
 										  otherButtonTitles:nil];
 	[alert show];
 	[alert release];
-	
+
 	//stop session
 	if (sessionManager) {
 		[sessionManager stopSession];
@@ -216,7 +216,6 @@
 	//the client object is created on the spot
     
 	KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
-    // NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
 	kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
 	
@@ -234,6 +233,7 @@
     postClient.postParams = postMessage;
     
     // retain the Client
+    [postClient retain];
     [postRequests addObject:postClient];
     
 	NSLog(@"postToServer sending mpost to server");
@@ -251,7 +251,7 @@
     
     while ((client = [enumerator nextObject])) {
         if (client == sender) {
-            NSLog(@"encounterDidPost found the postClient");
+            //NSLog(@"encounterDidPost found the postClient");
             
             break;
         }
@@ -261,30 +261,119 @@
         NSLog(@"Internal Error - encounterDidPost could not find the client!");
         return;
     }
-    
-    if (sender.hasError) {
-		NSLog(@"encounterDidPost post send error");
-		
-        if (sender.statusCode == 401) { // authentication fail
-            kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
-            [appDelegate openLoginView];
+
+    // For unhandled errors - we report and give up
+    if (sender.hasError && 
+        (sender.errorCode.domain != NSURLErrorDomain ||
+         sender.errorCode.code != NSURLErrorNotConnectedToInternet)) {
+        
+            // we alert the user and give up
+            NSLog(@"encounterDidPost post send error code: %@", sender.errorCode);
+        
+            [sender alert];
+            return;
         }
-        [sender alert];
-    }
-	
+    
     if (client) {
-        if (client.hasError && client.statusCode == NSURLErrorNotConnectedToInternet) {
-            //retry
-            NSLog(@"Network not available at this time - we will retry later");
-            //cheat for now
-            [postRequests removeObject:client];
-            client = nil;
+        if (client.hasError && 
+            client.errorCode.domain == NSURLErrorDomain &&
+            client.errorCode.code == NSURLErrorNotConnectedToInternet) {
+            //prepare for retry
+            //NSLog(@"Network not available at this time - we will retry later");
+            client.toBeRetried = true;
+            
+            //Don't bother user
+            /*
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"The network appears not available" 
+                                                            message:@"This encounter will be recorded when network does become available later"
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+            */
         } else {
             //remove
             [postRequests removeObject:client];
-            client = nil; //this dude does self autorelease
+            
+            //Don't tell user
+            /*
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter" 
+                                                            message:@"in your circles"
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+             */
         }
     }
+}
+
+- (void)retryPostToServer {
+    // Look for the client
+    //NSEnumerator *enumerator = [postRequests objectEnumerator];
+    KYMeetClient *client;
+    NSInteger count=0;
+    NSMutableArray *retryList = [NSMutableArray array];
+    
+    //find all to be retried
+    for (client in postRequests) {
+        if (client.toBeRetried) {
+            [retryList addObject:client];
+        }
+    }
+    
+    [postRequests removeObjectsInArray:retryList];
+    
+    for (client in retryList) {
+        //to avoid depdency on client behavior, create a new client
+        KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
+        
+        // copy the postMessage dictionary
+        postClient.postParams = client.postParams;
+        
+        // add the new client to list
+        [postRequests addObject:postClient];
+        
+        // post meet to server
+        [postClient postMeet:postClient.postParams];
+        
+        count++;
+    }
+    
+    [retryList removeAllObjects];
+
+    /*
+    while ((client = [enumerator nextObject])) {
+        if (client.toBeRetried) {
+            //Add this to retryList
+            [retryList addObject:<#(id)#>
+            NSLog(@"retryPostToServer found an encounter post to retry");
+            
+            //to avoid depdency on client behavior, create a new client
+            KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
+            
+            // retain the postMessage dictionary
+            postClient.postParams = client.postParams;
+            
+            // retain the Client
+            [postClient retain];
+            [postRequests addObject:postClient];
+            
+            // post meet to server
+            [postClient postMeet:postClient.postParams];
+            
+            //
+            //release the old client
+            [client release];
+            
+            count++;
+        }
+    }
+    */
+    
+    NSLog(@"retryPostToServer done with %d posts retried", count);
 }
 
 #pragma mark -

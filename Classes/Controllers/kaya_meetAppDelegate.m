@@ -123,9 +123,9 @@
 	{
 		[self postInit];
 	}
-    // Bring to default view (meet list)
-    self.selectedTab = TAB_MEETS;
-    self.tabBarController.selectedIndex = TAB_MEETS;
+    // Bring to default view
+    self.selectedTab = TAB_CIRCLES;
+    self.tabBarController.selectedIndex = TAB_CIRCLES;
 }
 
 - (void) postInit
