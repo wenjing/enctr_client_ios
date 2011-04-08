@@ -13,22 +13,24 @@
 @interface EncounterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	UITableView *peerTableView;
 	UIActivityIndicatorView *spinner;
-	KYMeetClient *webClient;
+	
+    NSMutableArray *postRequests;
 	SessionManager	*sessionManager;
 	NSMutableArray	*foundPeers;
 	//need a reference my own identity or circle
 	GKSessionMode	currentMode;
-	//may need a timer?
+	
 	UIBarButtonItem *refreshButton;
 	UIBarButtonItem *confirmButton;
 }
-@property (nonatomic, retain) KYMeetClient *webClient;
+
 @property (nonatomic, retain) SessionManager *sessionManager;
 @property (nonatomic, retain) NSMutableArray *foundPeers;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *refreshButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *confirmButton;
 @property (nonatomic, retain) IBOutlet UITableView *peerTableView;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) NSMutableArray *postRequests;
 
 -(IBAction) refreshButtonPressed;
 -(IBAction) confirmButtonPressed;

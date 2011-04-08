@@ -19,8 +19,8 @@
 @synthesize refreshButton;
 @synthesize confirmButton;
 @synthesize peerTableView;
-@synthesize webClient;
 @synthesize spinner;
+@synthesize postRequests;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 
@@ -28,7 +28,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
-		webClient = nil;
     }
     return self;
 }
@@ -38,19 +37,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-/* we moved to tab selected	
-	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
-	
-	foundPeers = [[NSMutableArray alloc] initWithObjects:[NSString stringWithFormat:@"%@:%d",user.name,user.userId], nil];
-	
-	sessionManager = [[SessionManager alloc] initWithDelegate:self];
-	
-	//to-do: change mode as our identity changes
-	currentMode = GKSessionModePeer;
-	//webClient may be working, don't set it to nil here
-	
-	[sessionManager startSession:GKSessionModePeer];
- */
+    // Other initialization moved to tab selected	
+    postRequests = [[NSMutableArray alloc] init];
 }
 
 
@@ -78,7 +66,7 @@
 	[foundPeers release];
 	[sessionManager stopSession];
 	[sessionManager release];
-	//webClient is working asynchronously, do not cancel nor release
+	//Client is working asynchronously, do not cancel nor release
 	[refreshButton release];
 	[confirmButton release];
 	[spinner release];
@@ -90,11 +78,15 @@
 	[foundPeers release];
 	[sessionManager stopSession];
 	[sessionManager release];
-	[webClient cancel];
-	[webClient release];
+	
 	[refreshButton release];
 	[confirmButton release];
 	[spinner release];
+    
+    //dealloc calls cancel
+    [postRequests removeAllObjects];
+    [postRequests release];
+    
     [super dealloc];
 }
 
@@ -193,7 +185,7 @@
 	[foundPeers release];
 	[sessionManager stopSession];
 	[sessionManager release];
-	//webClient is working asynchronously, do not cancel nor release
+	//Client is working asynchronously, do not cancel nor release
 	[spinner stopAnimating];
 }
 
@@ -208,7 +200,7 @@
 	
 	//to-do: change mode as our identity changes
 	currentMode = GKSessionModePeer;
-	//webClient may be working, don't set it to nil here
+	//Client may be working, don't set it to nil here
 	
 	[sessionManager startSession:GKSessionModePeer];
 	confirmButton.enabled = YES;
@@ -221,11 +213,9 @@
 #pragma mark KYMeetClient Methods
 
 - (void)postToServer:(NSMutableDictionary *)postMessage {
-	//the client object is created on the spot?
-	if (webClient) 
-		return;
-	
-	webClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
+	//the client object is created on the spot
+    
+	KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
     // NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	
 	kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
@@ -240,69 +230,61 @@
 	[postMessage setObject:[NSString stringWithFormat:@"%lf",del.longitude] forKey:@"lng"];
 	[postMessage setObject:[NSString stringWithFormat:@"%f", del.lerror]    forKey:@"lerror"];
 	
-	// record the post as sent
-	// NEED keep the temporary meet here until post receieved
-	// KYMeet* sts = [KYMeet meetWithJsonDictionary:param type:KYMEET_TYPE_TEMP] ;
-	// [self appendMeet:sts];
-	
-	NSLog(@"postToServer sending mpost to webClient");
+    // retain the postMessage dictionary
+    postClient.postParams = postMessage;
+    
+    // retain the Client
+    [postRequests addObject:postClient];
+    
+	NSLog(@"postToServer sending mpost to server");
 	// post meet to server
-    [webClient postMeet:postMessage];
+    [postClient postMeet:postMessage];
 	
 }
 
 // Callback delgate method
 - (void)encounterDidPost:(KYMeetClient*)sender obj:(NSObject*)obj
 {
-	//don't release the client - it does [self autorelease]!
-	webClient = nil;
-	/*
-    [loadCell.spinner stopAnimating];
-	[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:controller.tableView];
-	reloading = NO;
-	*/
-    if (sender.hasError) {
-		NSLog(@"encounterDidPost webClient send error");
-		/*
-		if ([controller respondsToSelector:@selector(meetsDidFailToUpdate:position:)]) {
-            [controller meetsDidFailToUpdate:self position:insertPosition];
+    // Look for the client
+    NSEnumerator *enumerator = [postRequests objectEnumerator];
+    KYMeetClient *client = nil;
+    
+    while ((client = [enumerator nextObject])) {
+        if (client == sender) {
+            NSLog(@"encounterDidPost found the postClient");
+            
+            break;
         }
-        */
+    }
+    
+    if (client == nil) {
+        NSLog(@"Internal Error - encounterDidPost could not find the client!");
+        return;
+    }
+    
+    if (sender.hasError) {
+		NSLog(@"encounterDidPost post send error");
+		
         if (sender.statusCode == 401) { // authentication fail
             kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
             [appDelegate openLoginView];
         }
         [sender alert];
     }
-	/*
-	NSDictionary *dic = (NSDictionary*)obj ;
-	if ([dic isKindOfClass:[NSDictionary class]])
-		dic = [dic objectForKey:@"mpost"] ;
-    if ([dic isKindOfClass:[NSDictionary class]]) {
-		// remove post array
-		//[self removeLastMeet] ;
-		//[DBConnection beginTransaction];
-		// KYMeet* sts = [KYMeet meetWithJsonDictionary:dic type:KYMEET_TYPE_SENT];
-		//[sts insertDB];
-		//[self insertSentMeet:sts atIndex:insertPosition];
-		//[DBConnection commitTransaction];
-		NSString *collision = [dic objectForKey:@"collision"] ;
-		kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
-		if ( collision != (NSString *)[NSNull null] && collision == @"1" )
-			[appDelegate alert: @"Post Meet Collision !"   message:nil]; 
-		else										  
-			[appDelegate alert: @"Post Meet Success   !"   message:nil];
-		//[self getUserMeets];
-	}
-    else {
-		// didn't get meet back from response
-		return;
-    }
-	//if ([controller respondsToSelector:@selector(meetsDidUpdate:count:insertAt:)]) {
-    //    [controller meetsDidUpdate:self count:1 insertAt:insertPosition];
-	//}
-	*/
 	
+    if (client) {
+        if (client.hasError && client.statusCode == NSURLErrorNotConnectedToInternet) {
+            //retry
+            NSLog(@"Network not available at this time - we will retry later");
+            //cheat for now
+            [postRequests removeObject:client];
+            client = nil;
+        } else {
+            //remove
+            [postRequests removeObject:client];
+            client = nil; //this dude does self autorelease
+        }
+    }
 }
 
 #pragma mark -
