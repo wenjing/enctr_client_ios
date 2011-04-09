@@ -30,14 +30,16 @@
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
 	IBOutlet UITextField*		urlField;
-	IBOutlet HJManagedImageV*	user_image;
-	
+	IBOutlet HJManagedImageV*   user_image;
+    IBOutlet UIImageView*       pickedImageView;
+	UIImage*                    profileImage;
 	UIImagePickerController*	imgPicker ;
 	UINavigationController*		navigation;
+    BOOL                        nameChanged, emailChanged, passwordChanged;
 }
 
 @property(nonatomic, assign) UINavigationController* navigation;
-
+ 
 - (IBAction) Save   : (id)sender ;
 - (IBAction) logout : (id)sender ;
 -(void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;

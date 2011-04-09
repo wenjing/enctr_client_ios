@@ -9,6 +9,7 @@
 #import "kaya_meetAppDelegate.h"
 #import "CirkleViewController.h"
 #import "Statistics.h"
+#import "UIImage+Resize.h"
 
 enum {
     SECTION_ACCOUNT,
@@ -77,20 +78,27 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
  
     navigation = self.navigationController ;
     self.navigationItem.title = @"Account Setup";
+    
+    nameChanged=NO;
+    emailChanged=NO;
+    passwordChanged=NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     nameField.text  = user.name;
     emailField.text = user.email;
     locationField.text = user.location;
     passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
     phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
-//    user_image
+    
+    //user_image
     [user_image setClipsToBounds:YES];
-    user_image.layer.cornerRadius = 5.0 ;
+    user_image.layer.cornerRadius = 0 ;
+    
     NSString *picURL = user.profileImageUrl ;
     if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
         user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -100,6 +108,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     } else {
         user_image.image = nil;
     }
+ 
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -124,7 +133,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_USERIMAGE) {
-        return 70;
+        return 57;
     }
     else {
         return 45;
@@ -255,6 +264,21 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    //check which one
+    if (textField == nameField)
+        nameChanged=YES;
+    else if (textField == emailField)
+        emailChanged=YES;
+    else if (textField == passwordField)
+        passwordChanged=YES;
+    
+}
+
+- (BOOL) validateEmail: (NSString *) candidate {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"; 
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
+    
+    return [emailTest evaluateWithObject:candidate];
 }
 
 - (void)dealloc {
@@ -298,6 +322,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (IBAction) Save : (id) sender {
     NSLog(@"Saving setup changes");
+    
+    
 }
 
 - (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex
@@ -317,8 +343,19 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
     [picker dismissModalViewControllerAnimated:YES];
-    //imageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    
+    if (image!=nil) {
+        profileImage = [image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh];
+    
+        pickedImageView.image = [profileImage thumbnailImage:47 
+                                        transparentBorder:0 
+                                             cornerRadius:0 
+                                     interpolationQuality:kCGInterpolationHigh];
+    }
 }
 
 @end
