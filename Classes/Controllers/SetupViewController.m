@@ -7,7 +7,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SetupViewController.h"
 #import "kaya_meetAppDelegate.h"
+#import "CirkleViewController.h"
 #import "Statistics.h"
+#import "UIImage+Resize.h"
+#import "User.h"
+#import "UserQuery.h"
 
 enum {
     SECTION_ACCOUNT,
@@ -59,6 +63,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 @implementation SetupViewController
 @synthesize navigation;
+@synthesize holder;
 
 #define LABLE_TAG        1
 #define TEXTFIELD_TAG    2
@@ -76,20 +81,35 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
  
     navigation = self.navigationController ;
     self.navigationItem.title = @"Account Setup";
+    
+    holder = [[User alloc] init];
+    
+    //disable save button
+    self.navigationItem.rightBarButtonItem.enabled = false;
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    
+    [holder release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     nameField.text  = user.name;
     emailField.text = user.email;
     locationField.text = user.location;
     passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
     phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
-//    user_image
+    
+    //user_image
     [user_image setClipsToBounds:YES];
-    user_image.layer.cornerRadius = 5.0 ;
+    user_image.layer.cornerRadius = 0 ;
+    
     NSString *picURL = user.profileImageUrl ;
     if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
         user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -99,6 +119,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     } else {
         user_image.image = nil;
     }
+ 
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -123,7 +144,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SECTION_USERIMAGE) {
-        return 70;
+        return 57;
     }
     else {
         return 45;
@@ -254,10 +275,32 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    //check which one
+    if (textField == nameField) {
+        holder.name = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+    else if (textField == emailField) {
+        holder.email = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+    else if (textField == passwordField) {
+        holder.password = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+}
+
+- (BOOL) validateEmail: (NSString *) candidate {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"; 
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
+    
+    return [emailTest evaluateWithObject:candidate];
 }
 
 - (void)dealloc {
     [super dealloc];
+    
+    [holder release];
 }
 
 
@@ -285,11 +328,57 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     [mc resetMeets];    // push login view
     //kaya_delegate.selectedTab = TAB_MEETS;
     //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+    
+    //clear up circle view controller data
+    UINavigationController* nav = (UINavigationController*)[kaya_delegate getAppTabController:TAB_CIRCLES];
+	CirkleViewController* cvc= (CirkleViewController *)[nav.viewControllers objectAtIndex:0];
+    [cvc clear];
+    
     [kaya_delegate     openLoginView];
     
 }
 
+-(void)userDidSave:(UserQuery *)sender
+{
+    if ([sender hasError]) {
+        NSLog(@"userDidSave has error");
+        
+        //to-do: this is a little more complicated
+    } else {
+        User *nuser = [[sender getResults] objectAtIndex:0];
+        NSLog(@"userDidSave : %d %@ %@ %@", nuser.userId, nuser.name, nuser.email, nuser.profileImageUrl);
+        
+        //clear our own data
+        holder.name = nil;
+        holder.email = nil;
+        holder.password = nil;
+        holder.profileImage = nil;
+        
+        self.navigationItem.rightBarButtonItem.enabled = false;
+    }
+    
+    [sender clear];
+
+}
+
 - (IBAction) Save : (id) sender {
+    NSLog(@"Saving setup changes");
+    
+    if (holder.name!=nil || 
+        holder.email!=nil ||
+        holder.password!=nil || 
+        holder.profileImage!=nil) {
+        
+        //one time use query auto released
+        UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidSave:)
+                                           releaseAtCallBack:true];
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+        
+        holder.userId = user.userId;
+        //holder.name = @"Bessy Mooo";        
+        [query save:options withObject:holder];
+    }
+    
 }
 
 - (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex
@@ -309,8 +398,19 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
     [picker dismissModalViewControllerAnimated:YES];
-    //imageView.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    
+    if (image!=nil) {
+        holder.profileImage = [[image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh] retain];
+    
+        pickedImageView.image = [holder.profileImage thumbnailImage:47 
+                                        transparentBorder:0 
+                                             cornerRadius:0 
+                                     interpolationQuality:kCGInterpolationHigh];
+    }
 }
 
 @end

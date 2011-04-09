@@ -24,19 +24,23 @@
 	IBOutlet UITableViewCell*	Facebook;
 	IBOutlet UITableViewCell*	Twitter;
 	
+    IBOutlet UIBarButtonItem*   saveButton;
+    
 	IBOutlet UITextField*		nameField;
 	IBOutlet UITextField*		emailField;
 	IBOutlet UITextField*		passwordField;
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
 	IBOutlet UITextField*		urlField;
-	IBOutlet HJManagedImageV*	user_image;
-	
+	IBOutlet HJManagedImageV*   user_image;
+    IBOutlet UIImageView*       pickedImageView;
 	UIImagePickerController*	imgPicker ;
 	UINavigationController*		navigation;
+    User*                       holder;
 }
 
 @property(nonatomic, assign) UINavigationController* navigation;
+@property(nonatomic, retain) User* holder;
 
 - (IBAction) Save   : (id)sender ;
 - (IBAction) logout : (id)sender ;
