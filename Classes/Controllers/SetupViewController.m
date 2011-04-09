@@ -310,20 +310,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 }
 
 - (IBAction) logout : (id) sender {
-    // reset uname/passwd/kyuid
-    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
-    [[NSUserDefaults standardUserDefaults] setInteger:0     forKey:@"KYUserId"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    // reset statistics information
-    [[Statistics sharedStatistics] clear];
-
-    // delete local DB
-    [DBConnection deleteDBCache] ;
-
     kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
+    [kaya_delegate clear];
     MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
     [mc resetMeets];    // push login view
     //kaya_delegate.selectedTab = TAB_MEETS;

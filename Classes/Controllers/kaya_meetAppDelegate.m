@@ -7,6 +7,7 @@
 
 #import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
+#import "Statistics.h"
 
 @interface NSObject (kaya_meetAppDelegate)
 - (void)didLeaveTab :(UINavigationController*)navigationController;
@@ -49,8 +50,9 @@
 	NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 	int  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
-		// delete other user's DB data
-        [DBConnection deleteDBCache];
+	// delete other user's DB data
+        //[DBConnection deleteDBCache];
+        [self reset];
     }
 	
 	messageView = nil ;
@@ -254,6 +256,7 @@
 
 
 - (void)dealloc {
+    [self clear];
     [tabBarController release];
 	[loginView release];
     [window release];
@@ -445,6 +448,30 @@ static UIAlertView *sAlert = nil ;
 {
 	UINavigationController* nav = (UINavigationController*)[self getAppTabController:TAB_MEETS];
 	return (MeetViewController*)[nav.viewControllers objectAtIndex:0]  ;
+}
+
+-(void)reset
+{
+    // reset users information
+    [UserStore clear];
+
+    // reset statistics information
+    [[Statistics sharedStatistics] clear];
+
+    // delete local DB
+    [DBConnection deleteDBCache] ;
+}
+
+-(void)clear
+{
+    // reset uname/passwd/kyuid
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
+    [[NSUserDefaults standardUserDefaults] setInteger:0     forKey:@"KYUserId"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self reset];
 }
 
 @end

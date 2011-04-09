@@ -59,4 +59,6 @@ typedef enum {
 + (BOOL)isMyScreenName:(NSString*)screen_name;
 + (kaya_meetAppDelegate*)getAppDelegate;
 - (MeetViewController*)getAppMeetViewController;
+- (void)reset;
+- (void)clear;
 @end

@@ -128,8 +128,8 @@
 {
   KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidEdit:obj:)];
   uint64_t meet_id = 15587;
-  NSString *invitee = @"test.saver1@kaya-labs.com";
-  NSString *message = @"You are invited";
+  NSString *invitee = @"test.saver2@kaya-labs.com";
+  NSString *message = @"You are invited too";
   [client postInvite:invitee byUserId:0 byMeetId:meet_id custMessage:message];
 }
 - (void)userDidInvite:(KYMeetClient*)sender obj:(NSObject*)obj
