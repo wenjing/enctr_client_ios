@@ -21,5 +21,6 @@
 
 - (void)restoreAndLoadCirkles:(BOOL)withUpdate;
 - (void)cirklesDidLoad:(CirkleQuery*)sender;
+- (void)clear;
 
 @end

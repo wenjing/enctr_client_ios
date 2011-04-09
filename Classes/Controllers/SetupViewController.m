@@ -7,6 +7,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SetupViewController.h"
 #import "kaya_meetAppDelegate.h"
+#import "CirkleViewController.h"
 #import "Statistics.h"
 
 enum {
@@ -285,11 +286,18 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     [mc resetMeets];    // push login view
     //kaya_delegate.selectedTab = TAB_MEETS;
     //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+    
+    //clear up circle view controller data
+    UINavigationController* nav = (UINavigationController*)[kaya_delegate getAppTabController:TAB_CIRCLES];
+	CirkleViewController* cvc= (CirkleViewController *)[nav.viewControllers objectAtIndex:0];
+    [cvc clear];
+    
     [kaya_delegate     openLoginView];
     
 }
 
 - (IBAction) Save : (id) sender {
+    NSLog(@"Saving setup changes");
 }
 
 - (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex

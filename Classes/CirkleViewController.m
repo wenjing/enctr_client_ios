@@ -48,6 +48,13 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+// called by logout to clear 
+// to-do: do i need to consider that a circleDetail view may be on??
+- (void)clear {
+    [listCircles removeAllObjects];
+    [self.tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
 
@@ -168,7 +175,7 @@
     [self restoreAndLoadCirkles:false];
     
     // stay selection
-    self.clearsSelectionOnViewWillAppear = NO;
+    //self.clearsSelectionOnViewWillAppear = NO;
     
 }
 
