@@ -133,7 +133,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
-    [self queryDidFinish:nil];
+    [self queryDidFinish];
     return;
   }
 
@@ -263,7 +263,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   }
   [DBConnection commitTransaction];
 
-  [self queryDidFinish:nil];
+  [self queryDidFinish];
 }
 
 - (id)trimData:(id)obj

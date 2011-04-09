@@ -72,9 +72,12 @@
   if (update) {
     queryAction = QUERY_ACTION_UPDATE;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
-      [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
+    if (stat.lastQuery != 0) {
+      [param setObject:[NSString dateString:stat.lastQuery-1] forKey:@"after_time"];
     }
+    //if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
+    //  [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
+    //}
     [meetClient getCirkles:param withUserId:user_id];
   } else { // Call callback function directly with empty object.
     KYMeetClient *meet_client = meetClient;
@@ -99,7 +102,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
-    [self queryDidFinish:nil];
+    [self queryDidFinish];
     return;
   }
 
@@ -153,14 +156,16 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
     iter = [res objectEnumerator];
     while ((item = [iter nextObject])) {
       Cirkle *cirkle = item;
-      id trimmed= [self trimData:cirkle.data ];
-      [results addObject:trimmed];
+      id trimmed= [self trimData:cirkle.data];
+      if (![trimmed objectForKey:@"is_deleted"]) { // skip deleted cirkles
+        [results addObject:trimmed];
+      }
     }
   }
   [stat persist]; // update statistics
   [DBConnection commitTransaction];
 
-  [self queryDidFinish:nil];
+  [self queryDidFinish];
 }
 
 - (id)trimData:(id)obj
@@ -182,7 +187,8 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
     while ((key = [iter nextObject])) {
       id item = [obj objectForKey:key];
       id trimmed = nil;
-      if ([key isEqualToString:@"user"]) {
+      if ([key isEqualToString:@"user"] ||
+          [key isEqualToString:@"inviter"]) {
         User *user = [User userWithJsonDictionary:item];
         //id is_new_user = [item objectForKey:@"is_new_user"];
         //if (!is_new_user) is_new_user = [NSNull null];

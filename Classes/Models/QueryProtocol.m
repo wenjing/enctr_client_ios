@@ -93,10 +93,10 @@
   }
 }
 
-- (void)queryDidFinish:(id)obj
+- (void)queryDidFinish
 {
   if (delegate && action) {
-    [delegate performSelector:action withObject:self withObject:obj];
+    [delegate performSelector:action withObject:self];
   }
   if (releaseAtCallBack) [self autorelease];
 }
