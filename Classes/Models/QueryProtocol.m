@@ -95,7 +95,9 @@
 
 - (void)queryDidFinish:(id)obj
 {
-  [delegate performSelector:action withObject:self withObject:obj];
+  if (delegate && action) {
+    [delegate performSelector:action withObject:self withObject:obj];
+  }
   if (releaseAtCallBack) [self autorelease];
 }
 

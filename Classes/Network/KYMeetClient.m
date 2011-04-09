@@ -127,7 +127,8 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   
   NSMutableData *data = [NSMutableData data];
   NSString *param = [self nameValString:dic];
-  NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
+  //NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
+  NSString *footer = [NSString stringWithFormat:@"--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
   [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
   
   if (user.profileImage != nil) {
@@ -137,7 +138,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     param = [param stringByAppendingString:@"Content-Type: image/jpeg\r\n\r\n"];
     [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
     [data appendData:[NSData dataWithData:jpeg]];
-  }  
+  }
   [data appendData:[footer dataUsingEncoding:NSUTF8StringEncoding]];
   
   if (user.userId == 0) { // new user, post
@@ -147,7 +148,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
     [super post:url data:data] ;
   } else {
     needAuth = true;
-    NSString *url = [NSString stringWithFormat:@"%@/users", KAYAMEET_SITE_NAME];
+    NSString *url = [NSString stringWithFormat:@"%@/users/%ld", KAYAMEET_SITE_NAME, user.userId];
     request = KAYAMEET_REQUEST_PUT_USER;
     [super put:url data:data];
   }
@@ -227,6 +228,30 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super post:url data:data] ;
 }
 
+- (void)updateMeet:(NSString*)name toMeetId:(uint64_t)meetId
+{
+  needAuth = true;
+  NSString* url = [NSString stringWithFormat:@"%@/meets/%ld",KAYAMEET_SITE_NAME,meetId];
+  NSString *body = [NSString stringWithFormat:@"&name=%@",name] ;
+  request = KAYAMEET_REQUEST_UPDATE_MEET;
+  [super put:url body:body];
+}
+
+- (void)confirmInvitation:(BOOL)confirm toMeetId:(uint64_t)meetId
+{
+  needAuth = true;
+  request = KAYAMEET_REQUEST_CONFIRM_INVITATION;
+  if (confirm) {
+    NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/confirm",KAYAMEET_SITE_NAME,meetId];
+    //NSString *body = [NSString string];
+    NSString *body = nil;
+    [super post:url body:body];
+  } else {
+    NSString* url = [NSString stringWithFormat:@"%@/meets/%ld/decline",KAYAMEET_SITE_NAME,meetId];
+    [super delete:url];
+  }
+}
+
 // login
 - (void)verify
 {
@@ -259,7 +284,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
         statusCode = 401;
         [self authError];
         //We always callback the requester
-        [delegate performSelector:action withObject:self withObject:nil];
+        //[delegate performSelector:action withObject:self withObject:nil];
     }
     else {
         self.errorMessage = @"Connection Failed";
@@ -297,7 +322,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
         case 401: // Not Authorized: either you need to provide authentication credentials, or the credentials provided aren't valid.
             hasError = true;
             [self authError];
-            [delegate performSelector:action withObject:self withObject:nil];
+            //[delegate performSelector:action withObject:self withObject:nil];
             goto out;
             
         case 304: // Not Modified: there was no new data to return.

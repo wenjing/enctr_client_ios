@@ -28,6 +28,7 @@ extern NSString *KAYAMEET_FORM_BOUNDARY;
 - (void)post:(NSString*)aURL data:(NSData*)data;
 - (void)put:(NSString*)aURL body:(NSString*)body;
 - (void)put:(NSString*)aURL data:(NSData*)data;
+- (void)delete:(NSString*)aURL;
 - (void)cancel;
 
 - (void)postOrPut:(NSString*)aURL body:(NSString*)body cmd:(NSString*)cmd;

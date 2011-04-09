@@ -104,7 +104,9 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   }
 
   CirkleStat *stat = [CirkleStat retrieve:nil];
-  time_t now; time(&now); stat.lastQuery = now;
+  if (queryAction == QUERY_ACTION_UPDATE) {
+    time_t now; time(&now); stat.lastQuery = now;
+  }
 
   // Process results and save to DB
   [DBConnection beginTransaction];
