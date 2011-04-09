@@ -10,6 +10,8 @@
 #import "CirkleViewController.h"
 #import "Statistics.h"
 #import "UIImage+Resize.h"
+#import "User.h"
+#import "UserQuery.h"
 
 enum {
     SECTION_ACCOUNT,
@@ -61,6 +63,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 @implementation SetupViewController
 @synthesize navigation;
+@synthesize holder;
 
 #define LABLE_TAG        1
 #define TEXTFIELD_TAG    2
@@ -79,9 +82,17 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     navigation = self.navigationController ;
     self.navigationItem.title = @"Account Setup";
     
-    nameChanged=NO;
-    emailChanged=NO;
-    passwordChanged=NO;
+    holder = [[User alloc] init];
+    
+    //disable save button
+    self.navigationItem.rightBarButtonItem.enabled = false;
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    
+    [holder release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -265,13 +276,18 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     //check which one
-    if (textField == nameField)
-        nameChanged=YES;
-    else if (textField == emailField)
-        emailChanged=YES;
-    else if (textField == passwordField)
-        passwordChanged=YES;
-    
+    if (textField == nameField) {
+        holder.name = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+    else if (textField == emailField) {
+        holder.email = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+    else if (textField == passwordField) {
+        holder.password = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
 }
 
 - (BOOL) validateEmail: (NSString *) candidate {
@@ -283,6 +299,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (void)dealloc {
     [super dealloc];
+    
+    [holder release];
 }
 
 
@@ -320,9 +338,46 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
 }
 
+-(void)userDidSave:(UserQuery *)sender
+{
+    if ([sender hasError]) {
+        NSLog(@"userDidSave has error");
+        
+        //to-do: this is a little more complicated
+    } else {
+        User *nuser = [[sender getResults] objectAtIndex:0];
+        NSLog(@"userDidSave : %d %@ %@ %@", nuser.userId, nuser.name, nuser.email, nuser.profileImageUrl);
+        
+        //clear our own data
+        holder.name = nil;
+        holder.email = nil;
+        holder.password = nil;
+        holder.profileImage = nil;
+        
+        self.navigationItem.rightBarButtonItem.enabled = false;
+    }
+    
+    [sender clear];
+
+}
+
 - (IBAction) Save : (id) sender {
     NSLog(@"Saving setup changes");
     
+    if (holder.name!=nil || 
+        holder.email!=nil ||
+        holder.password!=nil || 
+        holder.profileImage!=nil) {
+        
+        //one time use query auto released
+        UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidSave:)
+                                           releaseAtCallBack:true];
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
+        
+        holder.userId = user.userId;
+        //holder.name = @"Bessy Mooo";        
+        [query save:options withObject:holder];
+    }
     
 }
 
@@ -349,9 +404,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     
     if (image!=nil) {
-        profileImage = [image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh];
+        holder.profileImage = [[image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh] retain];
     
-        pickedImageView.image = [profileImage thumbnailImage:47 
+        pickedImageView.image = [holder.profileImage thumbnailImage:47 
                                         transparentBorder:0 
                                              cornerRadius:0 
                                      interpolationQuality:kCGInterpolationHigh];

@@ -729,6 +729,7 @@
 						<int key="objectID">201</int>
 						<reference key="object" ref="357488315"/>
 						<reference key="parent" ref="200225192"/>
+						<string key="objectName">Bar Button Item - Save</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">224</int>

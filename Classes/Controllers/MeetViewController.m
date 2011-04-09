@@ -88,7 +88,7 @@
 	}
     // Debug cirkle data API
     //[self restoreAndLoadCirkles];
-    // Debug new data API
+    // Debug news data API
     //[self restoreAndLoadNews];
     // Debug user API
     //[self loadUser];
