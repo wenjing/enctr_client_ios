@@ -17,14 +17,13 @@
 	IBOutlet UITableViewCell*	Name;
 	IBOutlet UITableViewCell*	Email;
 	IBOutlet UITableViewCell*	Password;
+    IBOutlet UITableViewCell*	Logout;
 	IBOutlet UITableViewCell*	Location;
 	IBOutlet UITableViewCell*	Url;
 	IBOutlet UITableViewCell*	Phone;
 	IBOutlet UITableViewCell*   Image;
 	IBOutlet UITableViewCell*	Facebook;
 	IBOutlet UITableViewCell*	Twitter;
-	
-    IBOutlet UIBarButtonItem*   saveButton;
     
 	IBOutlet UITextField*		nameField;
 	IBOutlet UITextField*		emailField;
@@ -43,7 +42,9 @@
 @property(nonatomic, retain) User* holder;
 
 - (IBAction) Save   : (id)sender ;
+- (IBAction) Cancel : (id)sender ;
+
 - (IBAction) logout : (id)sender ;
--(void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 @end

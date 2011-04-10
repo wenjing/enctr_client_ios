@@ -95,7 +95,7 @@
         
         NSArray *results = [sender getResults];
     
-        //NSLog(@"new circles: %@", results);
+        NSLog(@"Loaded circles: %@", results);
         
         //if the result is not empty, then rebuild listCircles
 
