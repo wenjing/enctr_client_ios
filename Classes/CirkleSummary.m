@@ -65,7 +65,7 @@
     
     user = [[dic objectForKey:@"user"] retain];
     
-    NSLog(@"Parse circle: user profile image url %@", user.profileImageUrl);
+    //NSLog(@"Parse circle: user profile image url %@", user.profileImageUrl);
     
     imageUrl = [[NSMutableArray alloc] init];
     

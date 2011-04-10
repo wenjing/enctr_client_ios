@@ -85,7 +85,7 @@
     //NSLog(@"Load cirkle results");
     if ([sender hasError]) {
         
-        NSLog(@"Network error while updating circle view");
+        NSLog(@"Network agent error while updating circle view");
         
     } else {
         
@@ -95,7 +95,7 @@
         
         NSArray *results = [sender getResults];
     
-        NSLog(@"Loaded circles: %@", results);
+        //NSLog(@"Loaded circles: %@", results);
         
         //if the result is not empty, then rebuild listCircles
 

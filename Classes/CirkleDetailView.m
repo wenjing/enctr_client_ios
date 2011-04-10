@@ -60,7 +60,7 @@
     [images removeAllObjects];
     [images release];
     [userImage release];
-    [circleDetail release];
+    circleDetail = nil; //we didn't alloc it
     //don't release comment button here - autorelease
     [super dealloc];
 }
@@ -132,6 +132,7 @@
     // always clear it
     [userImage clear];
     if (user!=nil) {
+        //NSLog(@"circle detail user url: %@", user.profileImageUrl);
         userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         //userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
         [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
@@ -225,7 +226,7 @@
     if (user!=nil) {
         [userImage clear];
         userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+        //userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
         [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
     }
 */    
