@@ -997,9 +997,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1007,9 +1007,9 @@
 				GCC_PREFIX_HEADER = Cirkle_Prefix.pch;
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
-				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				PROVISIONING_PROFILE = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
 			};
 			name = Debug;
 		};
@@ -1017,17 +1017,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Cirkle_Prefix.pch;
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
-				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
-				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				PROVISIONING_PROFILE = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
+				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "30ABFB89-C30B-43B5-B7E4-6098BBD3E0A2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1036,8 +1036,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
