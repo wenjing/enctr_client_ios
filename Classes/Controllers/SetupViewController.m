@@ -332,12 +332,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
     //check which one
     if (( textField == nameField) && (![user.name isEqualToString:textField.text])) {
         holder.name = [[NSString alloc] initWithString:textField.text];
@@ -356,6 +350,33 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         self.navigationItem.rightBarButtonItem.enabled = true;
         self.navigationItem.leftBarButtonItem.enabled = true;
     }
+
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    /*
+    //check which one
+    if (( textField == nameField) && (![user.name isEqualToString:textField.text])) {
+        holder.name = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+        self.navigationItem.leftBarButtonItem.enabled = true;
+    }
+    else if ((textField == emailField) && (![user.email isEqualToString:textField.text])) {
+        holder.email = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+        self.navigationItem.leftBarButtonItem.enabled = true;
+    }
+    else if ((textField == passwordField) && (![user.password isEqualToString:textField.text])){
+        //to-do: the comparison doesn't really work - user.password is null not there probably for security
+        //so every time user clicks on the password field we think he may have changed it
+        holder.password = [[NSString alloc] initWithString:textField.text];
+        self.navigationItem.rightBarButtonItem.enabled = true;
+        self.navigationItem.leftBarButtonItem.enabled = true;
+    }
+     */
 }
 
 // to-do: user name check?

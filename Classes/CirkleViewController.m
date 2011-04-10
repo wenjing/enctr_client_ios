@@ -85,7 +85,7 @@
     //NSLog(@"Load cirkle results");
     if ([sender hasError]) {
         
-        NSLog(@"Network error while updating circle view");
+        NSLog(@"Network agent error while updating circle view");
         
     } else {
         

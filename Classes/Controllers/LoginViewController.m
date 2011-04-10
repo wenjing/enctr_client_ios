@@ -9,6 +9,7 @@
 #import "REstring.h"
 #import "KYMeetClient.h"
 #import "User.h"
+#import "CirkleViewController.h"
 
 @implementation LoginViewController
 
@@ -69,6 +70,14 @@
 		[[NSUserDefaults standardUserDefaults] setObject:user.screenName    forKey:@"screenName"]   ;
         [self dismissModalViewControllerAnimated:true];
         [[kaya_meetAppDelegate getAppDelegate] closeLoginView];
+/*        
+        // now is the time to refresh circle view because viewDidLoad is already gone
+        kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
+        UINavigationController* nav = (UINavigationController*)[kaya_delegate getAppTabController:TAB_CIRCLES];
+        CirkleViewController* cvc= (CirkleViewController *)[nav.viewControllers objectAtIndex:0];
+        
+        [cvc restoreAndLoadCirkles:false];
+*/         
 	}
 }
 
