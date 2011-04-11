@@ -35,7 +35,7 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   queryAction = QUERY_ACTION_LOCAL;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(newsDidReceive:obj:)];
-  uint32_t user_id = [[NSUserDefaults standardUserDefaults]
+  uint64_t user_id = [[NSUserDefaults standardUserDefaults]
                                         integerForKey:@"KYUserId"] ;
   NSNumber *friend_id = [options objectForKey:@"friend_id"];
   NSNumber *cirkle_id = [options objectForKey:@"cirkle_id"];

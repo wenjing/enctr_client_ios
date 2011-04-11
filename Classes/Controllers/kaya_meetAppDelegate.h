@@ -52,11 +52,13 @@ typedef enum {
 - (void)alert :(NSString*)title message:(NSString*)detail;
 - (void)openLoginView;
 - (void)postInit;
-- (void)closeLoginView;
+- (void)closeLoginView:(NSInteger)selectTab;
 - (void) getLocation;
 - (UINavigationController*)getAppTabController:(int)selectTab;
 - (void)messageViewAnimationDidFinish ;
 + (BOOL)isMyScreenName:(NSString*)screen_name;
 + (kaya_meetAppDelegate*)getAppDelegate;
 - (MeetViewController*)getAppMeetViewController;
+- (void)selectSetupView;
+
 @end

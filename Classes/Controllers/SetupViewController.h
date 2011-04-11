@@ -13,7 +13,10 @@
 
 
 @interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate> {
-	User  *user ;
+    
+    // current active user info
+	User*                       user ;
+    
 	IBOutlet UITableViewCell*	Name;
 	IBOutlet UITableViewCell*	Email;
 	IBOutlet UITableViewCell*	Password;
@@ -31,11 +34,20 @@
 	IBOutlet UITextField*		phoneField;
 	IBOutlet UITextField*		locationField;
 	IBOutlet UITextField*		urlField;
+    
+    // the current image
 	IBOutlet HJManagedImageV*   user_image;
+    
+    // the picked image, to be updated to
     IBOutlet UIImageView*       pickedImageView;
+    
 	UIImagePickerController*	imgPicker ;
 	UINavigationController*		navigation;
+    
+    // holder for updated information
     User*                       holder;
+    BOOL                        passwordFieldChanged;
+    BOOL                        signupMode;
 }
 
 @property(nonatomic, assign) UINavigationController* navigation;
@@ -43,8 +55,8 @@
 
 - (IBAction) Save   : (id)sender ;
 - (IBAction) Cancel : (id)sender ;
-
 - (IBAction) logout : (id)sender ;
 - (void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void)textFieldDidChange:(UITextField *)textField;
 
 @end

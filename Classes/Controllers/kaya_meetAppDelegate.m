@@ -47,7 +47,9 @@
 	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
 	NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
 	NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
-	int  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
+    
+	uint64_t  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
+    
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
 		// delete other user's DB data
         [DBConnection deleteDBCache];
@@ -55,11 +57,15 @@
 	
 	messageView = nil ;
 	objMan		= nil ;
+    
+    /* move this to after login is done, otherwise the circle view doesn't know who
 	selectedTab = TAB_CIRCLES;
     tabBarController.selectedIndex = selectedTab;
+     */
 	tabBarController.delegate = self ;
 	[window addSubview:tabBarController.view];
 	
+    
     // login if needed.
 	
 	if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
@@ -69,6 +75,10 @@
 		[self openLoginView];
 	}
 	else {
+        // no login needed, load tab
+        selectedTab = TAB_CIRCLES;
+        tabBarController.selectedIndex = selectedTab;
+                
 		[self postInit];
 	}
 	
@@ -107,25 +117,36 @@
     }
 }
 
+- (void)selectSetupView
+{
+    selectedTab = TAB_SETUP;
+    tabBarController.selectedIndex = selectedTab;
+}
+
 - (void)openLoginView 
 {
-	if( loginView ) return ;
+	if( loginView ) 
+        return ;
+    
 	initialized = false;
 	loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];	
     UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
     [nav presentModalViewController:loginView animated:YES];
 }
 
-- (void)closeLoginView
+// the loginViewController calls this when login succeeded or to sign up
+- (void)closeLoginView:(NSInteger)selectTab
 {
     loginView = nil;
-	if ( !initialized )
+    
+    selectedTab = selectTab;
+    tabBarController.selectedIndex = selectedTab;
+    
+	if ((selectTab==TAB_CIRCLES) && !initialized )
 	{
 		[self postInit];
 	}
-    // Bring to default view
-    self.selectedTab = TAB_CIRCLES;
-    self.tabBarController.selectedIndex = TAB_CIRCLES;
+
 }
 
 - (void) postInit

@@ -88,8 +88,18 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     [super viewDidLoad];
     
+    //if still no user_id, it must be for signup, otherwise you must first login to get here
+    uint64_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
+    if (userId==0) {
+        NSLog(@"Signing up a new user");
+        signupMode = YES;
+        nameField.text  = @"";
+        emailField.text = @"";
+        passwordField.text = @"";
+    } else {
+    
     // fill current user info
-    user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    user = [User userWithId:userId];
     nameField.text  = user.name;
     emailField.text = user.email;
     locationField.text = user.location;
@@ -109,6 +119,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     } else {
         user_image.image = nil;
     }
+    }
 
     navigation = self.navigationController ;
     self.navigationItem.title = @"Settings";
@@ -120,6 +131,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     //disable cancel button
     self.navigationItem.leftBarButtonItem.enabled = false;
+    
+    [passwordField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    passwordFieldChanged = NO;
 }
 
 - (void)viewDidUnload
@@ -330,55 +344,67 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
+
+// return button hit
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    //check which one
-    if (( textField == nameField) && (![user.name isEqualToString:textField.text])) {
-        holder.name = [[NSString alloc] initWithString:textField.text];
+    //NSLog(@"textFieldShouldReturn");
+    if(signupMode) {
+        //check all required fields are properly filled
+        if (([nameField.text length] <3) ||
+            ([emailField.text length] <3) || 
+            ([passwordField.text length] <3) )
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Some required field not properly filled" 
+                                                            message:@"Will provide better feedback later"
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        } else {
+            //ok
+            self.navigationItem.rightBarButtonItem.enabled = true;
+            self.navigationItem.leftBarButtonItem.enabled = true;
+        }
+    } else {
+        //update mode
+    //check all fields if anyone has changed
+    NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+    
+    if ((![user.name isEqualToString:nameField.text]) ||
+        (![user.email isEqualToString:emailField.text]) ||
+        (![password isEqualToString:passwordField.text])) {
         self.navigationItem.rightBarButtonItem.enabled = true;
         self.navigationItem.leftBarButtonItem.enabled = true;
+    } else {
+        if (holder.profileImage==nil) {
+            //no change even if user clicked or used keyboard
+            self.navigationItem.rightBarButtonItem.enabled = false;
+            self.navigationItem.leftBarButtonItem.enabled = false;
+        }
     }
-    else if ((textField == emailField) && (![user.email isEqualToString:textField.text])) {
-        holder.email = [[NSString alloc] initWithString:textField.text];
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
     }
-    else if ((textField == passwordField) && (![user.password isEqualToString:textField.text])){
-        //to-do: the comparison doesn't really work - user.password is null not there probably for security
-        //so every time user clicks on the password field we think he may have changed it
-        holder.password = [[NSString alloc] initWithString:textField.text];
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
-    }
-
+    
     [textField resignFirstResponder];
     return YES;
 }
 
+// user clicked away - resigned as firstresponder
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    /*
-    //check which one
-    if (( textField == nameField) && (![user.name isEqualToString:textField.text])) {
-        holder.name = [[NSString alloc] initWithString:textField.text];
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
-    }
-    else if ((textField == emailField) && (![user.email isEqualToString:textField.text])) {
-        holder.email = [[NSString alloc] initWithString:textField.text];
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
-    }
-    else if ((textField == passwordField) && (![user.password isEqualToString:textField.text])){
-        //to-do: the comparison doesn't really work - user.password is null not there probably for security
-        //so every time user clicks on the password field we think he may have changed it
-        holder.password = [[NSString alloc] initWithString:textField.text];
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
-    }
-     */
+    //NSLog(@"textFieldDidEndEditing");
+
 }
 
+// password field did change
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    NSLog(@"textFieldDidChange");
+    if (textField==passwordField) {
+        passwordFieldChanged = YES;
+    }
+}
 // to-do: user name check?
 
 // to-do: basic validation may be nice
@@ -402,7 +428,12 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (IBAction) logout : (id) sender {
     
-    // reset uname/passwd/kyuid
+    if (signupMode) {
+        [[kaya_meetAppDelegate getAppDelegate]    openLoginView];
+        return;
+    }
+    
+    // reset uname/passwd/kyuid and prevUsername - forget who I am
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
@@ -416,6 +447,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     [DBConnection deleteDBCache] ;
 
     kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
+    
+    //clear up meetview
     MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
     [mc resetMeets];    // push login view
     //kaya_delegate.selectedTab = TAB_MEETS;
@@ -451,26 +484,48 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         User *nuser = [[sender getResults] objectAtIndex:0];
         NSLog(@"userDidSave : %d %@ %@ %@", nuser.userId, nuser.name, nuser.email, nuser.profileImageUrl);
         
-        //clear our own data
-        holder.name = nil;
-        holder.email = nil;
-        holder.password = nil;
-        holder.profileImage = nil;
-        
         self.navigationItem.rightBarButtonItem.enabled = false;
         self.navigationItem.leftBarButtonItem.enabled = false;
         
-        //i'm not clearing the picked image
+        if (signupMode) {
+            //do auto login
+            //first save settings
+            [[NSUserDefaults standardUserDefaults] setObject:holder.name forKey:@"username"];
+            [[NSUserDefaults standardUserDefaults] setObject:holder.name forKey:@"prevUsername"];
+            [[NSUserDefaults standardUserDefaults] setObject:holder.password forKey:@"password"];
+            
+            NSLog(@"holder: %d %@ %@ %@", nuser.userId, holder.name, holder.email, holder.password);
+            
+            [[NSUserDefaults standardUserDefaults] setInteger:nuser.userId forKey:@"KYUserId"];
+            //is this used?
+            [[NSUserDefaults standardUserDefaults] setObject:nuser.screenName forKey:@"screenName"];
+            
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            //[nuser updateDB];
+            
+            //switch to circle view
+            self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:TAB_CIRCLES];
+            
+        } else {
+            //i'm not clearing the picked image
         
-        //Notify user
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Saved" 
+            //Notify user
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Saved" 
                                                         message:nil 
                                                        delegate:nil 
                                               cancelButtonTitle:@"OK" 
                                               otherButtonTitles:nil];
-        [alert show];
-        [alert release];
+            [alert show];
+            [alert release];
+        }
     }
+    
+    //clear our own data
+    holder.name = nil;
+    holder.email = nil;
+    holder.password = nil;
+    holder.profileImage = nil;
     
     [sender clear];
 
@@ -490,7 +545,12 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     self.navigationItem.rightBarButtonItem.enabled = false;
     self.navigationItem.leftBarButtonItem.enabled = false;
-    
+
+    if (signupMode) {
+        nameField.text  = @"";
+        emailField.text = @"";
+        passwordField.text = @"";
+    } else {
     // reset shown text
     user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
     nameField.text  = user.name;
@@ -512,11 +572,65 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     } else {
         user_image.image = nil;
     }
+    }
 }
 
 - (IBAction) Save : (id) sender {
+    
+    if (signupMode) {
+        
+        if(![nameField.text isEqualToString:@""] &&
+           ![emailField.text isEqualToString:@""] &&
+           ![passwordField.text isEqualToString:@""])
+        {
+            NSLog(@"Registering a new user");
+            
+            self.navigationItem.rightBarButtonItem.enabled = false;
+            self.navigationItem.leftBarButtonItem.enabled = false;
+            
+            holder.name = [[NSString alloc] initWithString:nameField.text];
+            holder.email = [[NSString alloc] initWithString:emailField.text];
+            holder.password = [[NSString alloc] initWithString:passwordField.text];
+            holder.userId = 0;
+            
+            //one time use query auto released
+            UserQuery *query = [[UserQuery alloc] initWithTarget:self action:@selector(userDidSave:)
+                                               releaseAtCallBack:true];
+            NSMutableDictionary *options = [NSMutableDictionary dictionary];
+            
+            holder.userId = user.userId;
+            //holder.name = @"Bessy Mooo";        
+            [query save:options withObject:holder];
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Some required field not filled" 
+                                                            message:@"Will provide better feedback later"
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
+        return;
+    }
+    
     NSLog(@"Saving setup changes");
     
+    //check all textfields
+    if (![user.name isEqualToString:nameField.text]) {
+        holder.name = [[NSString alloc] initWithString:nameField.text];
+    }
+    
+    if (![user.email isEqualToString:emailField.text]) {
+        holder.email = [[NSString alloc] initWithString:emailField.text];
+    }
+    
+    NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+    
+    if (![password isEqualToString:passwordField.text]) {
+        holder.password = [[NSString alloc] initWithString:passwordField.text];
+    }
+        
     if (holder.name!=nil || 
         holder.email!=nil ||
         holder.password!=nil || 
