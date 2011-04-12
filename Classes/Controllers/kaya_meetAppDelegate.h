@@ -22,7 +22,7 @@ typedef enum {
 } TAB_ITEM;
 
 
-@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate/*, MKReverseGeocoderDelegate*/> {
+@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UIAccelerometerDelegate/*, MKReverseGeocoderDelegate*/> {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
@@ -38,6 +38,11 @@ typedef enum {
     NSTimeInterval       autoRefreshInterval;
     NSTimer*             autoRefreshTimer;
     NSDate*              lastRefreshDate;
+    
+    //accleerameter
+    HighpassFilter          *filter;
+    CFURLRef		soundFileURLRef;
+	SystemSoundID	soundFileObject;
 }
 
 @property (nonatomic, readonly) IBOutlet UIWindow *window;
@@ -48,6 +53,8 @@ typedef enum {
 @property (nonatomic, assign) int selectedTab;
 @property (nonatomic, assign) HJObjManager *objMan;
 @property (nonatomic, readonly) float longitude, latitude, lerror;
+@property (readwrite) CFURLRef		  soundFileURLRef;
+@property (readonly)  SystemSoundID   soundFileObject;
 
 - (void)alert :(NSString*)title message:(NSString*)detail;
 - (void)openLoginView;

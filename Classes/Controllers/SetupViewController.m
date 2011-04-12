@@ -490,8 +490,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         if (signupMode) {
             //do auto login
             //first save settings
-            [[NSUserDefaults standardUserDefaults] setObject:holder.name forKey:@"username"];
-            [[NSUserDefaults standardUserDefaults] setObject:holder.name forKey:@"prevUsername"];
+            [[NSUserDefaults standardUserDefaults] setObject:holder.email forKey:@"username"];
+            [[NSUserDefaults standardUserDefaults] setObject:holder.email forKey:@"prevUsername"];
             [[NSUserDefaults standardUserDefaults] setObject:holder.password forKey:@"password"];
             
             NSLog(@"holder: %d %@ %@ %@", nuser.userId, holder.name, holder.email, holder.password);

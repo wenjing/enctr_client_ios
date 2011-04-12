@@ -7,6 +7,9 @@
 
 #import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
+#import "AccelerometerFilter.h"
+
+#define kUpdateFrequency	60.0
 
 @interface NSObject (kaya_meetAppDelegate)
 - (void)didLeaveTab :(UINavigationController*)navigationController;
@@ -29,7 +32,7 @@
 @synthesize objMan;
 
 @synthesize longitude, latitude, lerror;
-
+@synthesize soundFileURLRef, soundFileObject;
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -168,6 +171,51 @@
         [self setNextTimer:autoRefreshInterval];
     }
     initialized = true;
+    
+    // accelerometer
+	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0 / kUpdateFrequency];
+	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+	
+	filter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0] ;
+	filter.adaptive = NO ;
+    
+    // sound
+	// Create the URL for the source audio file. The URLForResource:withExtension: method is
+    //    new in iOS 4.0.
+    NSURL *tapSound   = [[NSBundle mainBundle] URLForResource: @"tap"
+                                                withExtension: @"aif"];
+	
+    // Store the URL as a CFURLRef instance
+    self.soundFileURLRef = (CFURLRef) [tapSound retain];
+	
+    // Create a system sound object representing the sound file.
+    AudioServicesCreateSystemSoundID(soundFileURLRef, &soundFileObject);
+    
+    [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+}
+
+#pragma -
+#pragma Accelerometer Delegate Method
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
+	static int count = 0 ;
+	// Update the accelerometer graph view	
+	[filter addAcceleration:acceleration];
+	float total = filter.x+filter.y+filter.z ;
+	if (total < 2.0 ) return ;
+	count ++ ;
+	if (count > 2) {
+		//NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
+		count = 0 ;
+		[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+        AudioServicesPlaySystemSound (soundFileObject);
+        UINavigationController *nav = [self.tabBarController.viewControllers objectAtIndex:TAB_ENCOUNTER];
+        UIViewController *evc = [nav.viewControllers objectAtIndex:0];
+        if ([evc respondsToSelector:@selector(didSelectTab:)]) {
+            [evc didSelectTab:nav];
+        }
+		self.tabBarController.selectedViewController = nav;
+	}
 }
 
 - (void)setNextTimer:(NSTimeInterval)interval
@@ -280,6 +328,11 @@
     [window release];
 	[location release];
 	[objMan release];
+    
+    [filter release];
+	AudioServicesDisposeSystemSoundID (soundFileObject);
+    CFRelease (soundFileURLRef);
+    
     [super dealloc];
 }
 
@@ -298,6 +351,10 @@
     c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didSelectTab:)]) {
         [c didSelectTab:nav];
+    }
+    if (selectedTab != TAB_ENCOUNTER) {
+        //enable accelerometer
+        [[UIAccelerometer sharedAccelerometer] setDelegate:self];
     }
 }
 

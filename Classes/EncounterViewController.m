@@ -187,6 +187,7 @@
 	[sessionManager release];
 	//Client is working asynchronously, do not cancel nor release
 	[spinner stopAnimating];
+    
 }
 
 - (void)didSelectTab:(UINavigationController*)navigationController
