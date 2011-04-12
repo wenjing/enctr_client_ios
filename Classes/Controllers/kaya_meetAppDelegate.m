@@ -9,6 +9,7 @@
 #import "DBConnection.h"
 #import "AccelerometerFilter.h"
 
+
 #define kUpdateFrequency	60.0
 
 @interface NSObject (kaya_meetAppDelegate)
@@ -154,6 +155,8 @@
 
 - (void) postInit
 {
+    NSLog(@"postInit should be called only once");
+    
 	screeName = [[[NSUserDefaults standardUserDefaults] stringForKey:@"screenName"] retain];
 	
 	// load views
@@ -207,6 +210,9 @@
 	if (count > 2) {
 		//NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
 		count = 0 ;
+        
+        //Warning: DidDeselectTab is NOT called when we jump over like this!
+        //but only MeetVIew and EncounterView use this call - should not be a real problem
 		[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
         AudioServicesPlaySystemSound (soundFileObject);
         UINavigationController *nav = [self.tabBarController.viewControllers objectAtIndex:TAB_ENCOUNTER];

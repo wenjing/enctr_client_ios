@@ -14,8 +14,8 @@
 #import "HJObjManager.h"
 
 typedef enum {
-    TAB_MEETS=0,
     TAB_CIRCLES,
+    TAB_MEETS,
     TAB_ENCOUNTER,
     TAB_PLACES,
     TAB_SETUP

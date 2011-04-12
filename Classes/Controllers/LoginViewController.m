@@ -10,6 +10,7 @@
 #import "KYMeetClient.h"
 #import "User.h"
 #import "CirkleViewController.h"
+#import "SetupViewController.h"
 
 @implementation LoginViewController
 
@@ -58,8 +59,9 @@
 //        [[kaya_meetAppDelegate getAppDelegate] alert:@"Invalid screen name" 
 //								message:@"Username can only contain letters, numbers and '_'"];
 //    } else {
-        [username_field resignFirstResponder];
-        [password_field resignFirstResponder];
+    
+    [username_field resignFirstResponder];
+    [password_field resignFirstResponder];
 	[self saveSettings];
 	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(accountDidVerify:obj:)];
 	[client verify];
@@ -77,16 +79,24 @@
 		NSDictionary* usr_info = (NSDictionary*)[dic objectForKey:@"user"];
 
 		User *user = [User userWithJsonDictionary:usr_info]  ;
-		/*
+		
 		 NSLog(@"name : %@",  [usr_info objectForKey:@"name"]);
 		 NSLog(@"id   : %@",  [usr_info objectForKey:@"id"]);
 		 NSLog(@"email : %@", [usr_info objectForKey:@"email"]);
-		*/
+		
 		[user updateDB] ;
-		[[NSUserDefaults standardUserDefaults] setInteger:user.userId		forKey:@"KYUserId"]   ;
-		[[NSUserDefaults standardUserDefaults] setObject:user.screenName    forKey:@"screenName"]   ;
+		[[NSUserDefaults standardUserDefaults] setInteger:user.userId		forKey:@"KYUserId"];
+		[[NSUserDefaults standardUserDefaults] setObject:user.screenName    forKey:@"screenName"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        UINavigationController* nav = [[kaya_meetAppDelegate getAppDelegate].tabBarController.viewControllers objectAtIndex:TAB_SETUP];
+        SetupViewController *svc = [nav.viewControllers objectAtIndex:0];
+        NSLog(@"login calling initSetupView");
+        [svc initSetupView];
+        
         [self dismissModalViewControllerAnimated:true];
         [[kaya_meetAppDelegate getAppDelegate] closeLoginView:TAB_CIRCLES];
+        
 /*        
         // now is the time to refresh circle view because viewDidLoad is already gone
         kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];

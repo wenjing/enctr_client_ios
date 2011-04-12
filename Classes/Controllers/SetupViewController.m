@@ -88,52 +88,16 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     [super viewDidLoad];
     
-    //if still no user_id, it must be for signup, otherwise you must first login to get here
-    uint64_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
-    if (userId==0) {
-        NSLog(@"Signing up a new user");
-        signupMode = YES;
-        nameField.text  = @"";
-        emailField.text = @"";
-        passwordField.text = @"";
-    } else {
+    NSLog(@"setupView did load");
     
-    // fill current user info
-    user = [User userWithId:userId];
-    nameField.text  = user.name;
-    emailField.text = user.email;
-    locationField.text = user.location;
-    passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
-    phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
- 
-    // current user_image
-    [user_image setClipsToBounds:YES];
-    user_image.layer.cornerRadius = 0 ;
-    
-    NSString *picURL = user.profileImageUrl ;
-    if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-        user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
-        kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
-    } else {
-        user_image.image = nil;
-    }
-    }
-
     navigation = self.navigationController ;
     self.navigationItem.title = @"Settings";
     
     holder = [[User alloc] init];
     
-    //disable save button
-    self.navigationItem.rightBarButtonItem.enabled = false;
-    
-    //disable cancel button
-    self.navigationItem.leftBarButtonItem.enabled = false;
-    
     [passwordField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    passwordFieldChanged = NO;
+    
+    [self initSetupView];
 }
 
 - (void)viewDidUnload
@@ -147,31 +111,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     [super viewDidAppear:animated];
 
-    /*
-    // when user  comes back, refresh all back to current setting again
-    // so leaving the settings view is equivalent of canceling all modifications
-    
-    user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
-    nameField.text  = user.name;
-    emailField.text = user.email;
-    locationField.text = user.location;
-    passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
-    phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
-    
-    // current user_image
-    [user_image setClipsToBounds:YES];
-    user_image.layer.cornerRadius = 0 ;
-    
-    NSString *picURL = user.profileImageUrl ;
-    if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-        user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
-        kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
-    } else {
-        user_image.image = nil;
-    }
-     */
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -427,37 +366,38 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 }
 
 - (IBAction) logout : (id) sender {
-    
-    if (signupMode) {
-        [[kaya_meetAppDelegate getAppDelegate]    openLoginView];
-        return;
-    }
+    NSLog(@"logout");
     
     // reset uname/passwd/kyuid and prevUsername - forget who I am
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
-    [[NSUserDefaults standardUserDefaults] setInteger:0     forKey:@"KYUserId"];
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"KYUserId"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
-    // reset statistics information
-    [[Statistics sharedStatistics] clear];
-
-    // delete local DB
-    [DBConnection deleteDBCache] ;
 
     kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
     
-    //clear up meetview
-    MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
-    [mc resetMeets];    // push login view
-    //kaya_delegate.selectedTab = TAB_MEETS;
-    //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+    //this portion only for update
+    if (!signupMode) {
+        // reset statistics information
+        [[Statistics sharedStatistics] clear];
+        
+        // delete local DB
+        [DBConnection deleteDBCache] ;
+        
+        //clear up meetview
+        MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
+        [mc resetMeets];    // push login view
+        //kaya_delegate.selectedTab = TAB_MEETS;
+        //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
+        
+        //clear up circle view controller data
+        UINavigationController* nav = (UINavigationController*)[kaya_delegate getAppTabController:TAB_CIRCLES];
+        CirkleViewController* cvc= (CirkleViewController *)[nav.viewControllers objectAtIndex:0];
+        [cvc clear];
+    }
     
-    //clear up circle view controller data
-    UINavigationController* nav = (UINavigationController*)[kaya_delegate getAppTabController:TAB_CIRCLES];
-	CirkleViewController* cvc= (CirkleViewController *)[nav.viewControllers objectAtIndex:0];
-    [cvc clear];
+    [self initSetupView];
     
     [kaya_delegate     openLoginView];
     
@@ -478,7 +418,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         [alert show];
         [alert release];
         
-        [self Cancel:self];
+        [self initSetupView];
         
     } else {
         User *nuser = [[sender getResults] objectAtIndex:0];
@@ -531,48 +471,63 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 }
 
-- (IBAction) Cancel:(id)sender {
-    NSLog(@"Canceling setup changes");
+- (void)initSetupView {
+    NSLog(@"Resetting settings view");
     
     // clear working image
     pickedImageView.image = nil;
     
     // clear holder
-    holder.name = nil;
-    holder.email = nil;
-    holder.password = nil;
-    holder.profileImage = nil;
+    if(holder!=nil) {
+        holder.name = nil;
+        holder.email = nil;
+        holder.password = nil;
+        holder.profileImage = nil;
+    }
     
     self.navigationItem.rightBarButtonItem.enabled = false;
     self.navigationItem.leftBarButtonItem.enabled = false;
 
+    //if still no user_id, it must be for signup, otherwise you must first login to get here
+    uint64_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
+    if (userId==0) {
+        NSLog(@"user id %lld",userId);
+        signupMode = YES;
+    } else
+        signupMode = NO;
+    
     if (signupMode) {
         nameField.text  = @"";
         emailField.text = @"";
         passwordField.text = @"";
-    } else {
-    // reset shown text
-    user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
-    nameField.text  = user.name;
-    emailField.text = user.email;
-    locationField.text = user.location;
-    passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
-    phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
-    
-    // current user_image
-    [user_image setClipsToBounds:YES];
-    user_image.layer.cornerRadius = 0 ;
-    
-    NSString *picURL = user.profileImageUrl ;
-    if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
-        user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
-        kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
-    } else {
         user_image.image = nil;
+    } else {
+        // reset shown text
+        user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+        
+        NSLog(@"init: %d %@ %@", user.userId, user.name, user.email);
+        nameField.text  = user.name;
+        emailField.text = user.email;
+        locationField.text = user.location;
+        passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
+        phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
+    
+        // current user_image
+        [user_image setClipsToBounds:YES];
+        user_image.layer.cornerRadius = 0 ;
+    
+        NSString *picURL = user.profileImageUrl ;
+        if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
+            user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+            kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+            [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
+        } else {
+            user_image.image = nil;
+        }
     }
-    }
+    
+    passwordFieldChanged = NO;
 }
 
 - (IBAction) Save : (id) sender {
@@ -598,7 +553,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
                                                releaseAtCallBack:true];
             NSMutableDictionary *options = [NSMutableDictionary dictionary];
             
-            holder.userId = user.userId;
+            //holder.userId = user.userId;
             //holder.name = @"Bessy Mooo";        
             [query save:options withObject:holder];
             

@@ -317,6 +317,8 @@
     detailViewController.summary = aCircle;
     detailViewController.upperController = self;
     
+    detailViewController.hidesBottomBarWhenPushed = YES;
+    
     [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
     

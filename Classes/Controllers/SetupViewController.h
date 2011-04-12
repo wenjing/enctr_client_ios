@@ -54,9 +54,9 @@
 @property(nonatomic, retain) User* holder;
 
 - (IBAction) Save   : (id)sender ;
-- (IBAction) Cancel : (id)sender ;
 - (IBAction) logout : (id)sender ;
 - (void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)textFieldDidChange:(UITextField *)textField;
+- (void)initSetupView;
 
 @end
