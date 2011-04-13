@@ -33,6 +33,23 @@
 	NSString *pass = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 	username_field.text = user;
 	password_field.text = pass;
+    
+    // Create signup button
+    UIButton *signupButton = [[UIButton alloc] initWithFrame:CGRectMake(107.0f, 331.0f, 106.0f, 37.0f)];
+    
+    [signupButton setBackgroundImage:[[UIImage imageNamed:@"green-button-sm.png"] stretchableImageWithLeftCapWidth:12.0 topCapHeight:0.0] forState:UIControlStateNormal];
+    
+    signupButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    signupButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    
+    [signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
+    [signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    [self.view addSubview:signupButton];
+    
+    [signupButton addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction)done: (id)sender
@@ -69,7 +86,7 @@
 		[[NSUserDefaults standardUserDefaults] setInteger:user.userId		forKey:@"KYUserId"]   ;
 		[[NSUserDefaults standardUserDefaults] setObject:user.screenName    forKey:@"screenName"]   ;
         [self dismissModalViewControllerAnimated:true];
-        [[kaya_meetAppDelegate getAppDelegate] closeLoginView];
+        [[kaya_meetAppDelegate getAppDelegate] closeLoginView:TAB_CIRCLES];
 /*        
         // now is the time to refresh circle view because viewDidLoad is already gone
         kaya_meetAppDelegate *kaya_delegate = [kaya_meetAppDelegate getAppDelegate];
@@ -84,6 +101,13 @@
 - (IBAction)next: (id)sender
 {
 	[password_field becomeFirstResponder];
+}
+
+- (IBAction)signup:(id)sender
+{
+    //NSLog(@"sign up button clicked");
+    [self dismissModalViewControllerAnimated:true];
+    [[kaya_meetAppDelegate getAppDelegate] closeLoginView:TAB_SETUP];
 }
 
 - (void) saveSettings

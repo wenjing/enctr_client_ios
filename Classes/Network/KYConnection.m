@@ -47,15 +47,14 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
 //
 - (void)addAuthHeader:(NSMutableURLRequest*)req
 {
-    if (!needAuth) return;
+  if (!needAuth) return;
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+  NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
   NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
-    
-    NSString* auth = [NSString stringWithFormat:@"%@:%@", username, password];
-    NSString* basicauth = [NSString stringWithFormat:@"Basic %@", [NSString base64encode:auth]];
-  LOG(@"Authentation : %@", basicauth);
-    [req setValue:basicauth forHTTPHeaderField:@"Authorization: "];
+  NSString* auth = [NSString stringWithFormat:@"%@:%@", username, password];
+  NSString* basicauth = [NSString stringWithFormat:@"Basic %@", [NSString base64encode:auth]];
+  //LOG(@"Authentation : %@", basicauth);
+  [req setValue:basicauth forHTTPHeaderField:@"Authorization"];
 }
 
 - (void)addAuthTrailer: (NSMutableString *)body
@@ -93,7 +92,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
                                      timeoutInterval:NETWORK_TIMEOUT];
   [req setHTTPMethod:@"GET"];
   [req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [self addAuthHeader:req];
+  [self addAuthHeader:req];
 
   //NSLog(@"get : %@ %@", [req allHTTPHeaderFields], [req HTTPBody]);
   buf = [[NSMutableData data] retain];

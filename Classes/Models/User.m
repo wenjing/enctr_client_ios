@@ -140,7 +140,8 @@
 
 + (User*)userWithJsonDictionary:(NSDictionary*)dic
 {
-    User *u = [UserStore getUser:[dic objectForKey:@"name"]];
+    //User *u = [UserStore getUser:[dic objectForKey:@"email"]];
+    User *u = [UserStore getUserWithId:[[dic objectForKey:@"id"] integerValue]];
     if (u) {
         [u updateWithJSonDictionary:dic];
         return u;

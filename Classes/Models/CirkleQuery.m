@@ -63,7 +63,7 @@
   CirkleStat *stat = [CirkleStat retrieve:nil];
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(cirklesDidReceive:obj:)];
-  uint32_t user_id = [[NSUserDefaults standardUserDefaults]
+  uint64_t user_id = [[NSUserDefaults standardUserDefaults]
                                         integerForKey:@"KYUserId"] ;
 
   /*if (stat.lastQuery == 0) { // First query, DB must be empty

@@ -271,7 +271,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Pick user image</string>
-								<object class="NSFont" key="IBUIFont" id="821736260">
+								<object class="NSFont" key="IBUIFont" id="1002462704">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">17</double>
 									<int key="NSfFlags">16</int>
@@ -745,21 +745,21 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<reference key="IBUIContentView" ref="546261175"/>
 				<string key="IBUIReuseIdentifier">Phone</string>
 			</object>
-			<object class="IBUITableViewCell" id="454952992">
+			<object class="IBUITableViewCell" id="68970099">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIView" id="758018824">
-						<reference key="NSNextResponder" ref="454952992"/>
+					<object class="IBUIView" id="477254395">
+						<reference key="NSNextResponder" ref="68970099"/>
 						<int key="NSvFlags">256</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUILabel" id="726798564">
-								<reference key="NSNextResponder" ref="758018824"/>
+							<object class="IBUILabel" id="163375920">
+								<reference key="NSNextResponder" ref="477254395"/>
 								<int key="NSvFlags">261</int>
 								<string key="NSFrame">{{129, 11}, {52, 21}}</string>
-								<reference key="NSSuperview" ref="758018824"/>
+								<reference key="NSSuperview" ref="477254395"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -768,7 +768,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Logout</string>
-								<reference key="IBUIFont" ref="821736260"/>
+								<reference key="IBUIFont" ref="1002462704"/>
 								<reference key="IBUITextColor" ref="689028005"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -776,9 +776,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</object>
 						<string key="NSFrameSize">{300, 44}</string>
-						<reference key="NSSuperview" ref="454952992"/>
+						<reference key="NSSuperview" ref="68970099"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="726798564"/>
+						<reference key="NSNextKeyView" ref="163375920"/>
 						<reference key="IBUIBackgroundColor" ref="91276718"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -790,12 +790,12 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="758018824"/>
+				<reference key="NSNextKeyView" ref="477254395"/>
 				<reference key="IBUIBackgroundColor" ref="1048340759"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISeparatorStyle">1</int>
 				<int key="IBUIAccessoryType">1</int>
-				<reference key="IBUIContentView" ref="758018824"/>
+				<reference key="IBUIContentView" ref="477254395"/>
 				<int key="IBUITextAlignment">1</int>
 				<string key="IBUIReuseIdentifier">Logout</string>
 			</object>
@@ -1015,9 +1015,18 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">Logout</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="454952992"/>
+						<reference key="destination" ref="68970099"/>
 					</object>
 					<int key="connectionID">99</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">textFieldDidChange:</string>
+						<reference key="source" ref="390712187"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">13</int>
+					</object>
+					<int key="connectionID">101</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1240,18 +1249,18 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">98</int>
-						<reference key="object" ref="454952992"/>
+						<reference key="object" ref="68970099"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="726798564"/>
+							<reference ref="163375920"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Logout</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100</int>
-						<reference key="object" ref="726798564"/>
-						<reference key="parent" ref="454952992"/>
+						<reference key="object" ref="163375920"/>
+						<reference key="parent" ref="68970099"/>
 					</object>
 				</object>
 			</object>
@@ -1412,7 +1421,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100</int>
+			<int key="maxID">101</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1435,9 +1444,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>Cancel:</string>
 							<string>Save:</string>
 							<string>logout:</string>
+							<string>textFieldDidChange:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1450,6 +1461,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>Cancel:</string>
 							<string>Save:</string>
 							<string>logout:</string>
+							<string>textFieldDidChange:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1463,6 +1475,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAACAgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">logout:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">textFieldDidChange:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

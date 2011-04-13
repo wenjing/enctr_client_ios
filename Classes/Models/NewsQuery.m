@@ -35,7 +35,7 @@ static NSString *GetStmt(uint64_t friend_id, uint64_t cirkle_id)
   queryAction = QUERY_ACTION_LOCAL;
   meetClient = [[KYMeetClient alloc] initWithTarget:self
                                      action:@selector(newsDidReceive:obj:)];
-  uint32_t user_id = [[NSUserDefaults standardUserDefaults]
+  uint64_t user_id = [[NSUserDefaults standardUserDefaults]
                                         integerForKey:@"KYUserId"] ;
   NSNumber *friend_id = [options objectForKey:@"friend_id"];
   NSNumber *cirkle_id = [options objectForKey:@"cirkle_id"];
@@ -310,7 +310,8 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
           [trimmed addObject:[chatter objectForKey:@"chatter"]];
         }
       } else if ([key isEqualToString:@"marked_top_users"] ||
-                 [key isEqualToString:@"marked_users"]) {
+                 [key isEqualToString:@"marked_users"] ||
+                 [key isEqualToString:@"users"]) {
         key = [key isEqualToString:@"marked_top_users"] ? @"top_users" : @"users";
         NSArray *users = [self trimData:item];
         trimmed = [NSMutableArray array];

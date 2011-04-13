@@ -16,5 +16,6 @@
 
 - (IBAction) done:(id)sender ;
 - (IBAction) next:(id)sender ;
+- (IBAction) signup:(id)sender ;
 - (void) saveSettings;
 @end

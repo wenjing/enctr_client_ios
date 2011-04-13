@@ -246,7 +246,7 @@
 //
 - (void)inviteMessage
 {
-	uint32_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
+	uint64_t userId = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ];
 	KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(sendDidCallback:obj:)];
 	[client postInvite:recipient.text
 			  byUserId:userId
