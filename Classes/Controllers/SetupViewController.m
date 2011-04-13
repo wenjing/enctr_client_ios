@@ -110,8 +110,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-      [self initSetupView];
-
+    [self initSetupView];
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
