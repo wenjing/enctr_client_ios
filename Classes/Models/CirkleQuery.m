@@ -98,7 +98,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
-  [self checkNetworkError:sender];
+  [self checkNetworkError:sender obj:obj];
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;

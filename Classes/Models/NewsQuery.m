@@ -129,7 +129,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
-  [self checkNetworkError:sender];
+  [self checkNetworkError:sender obj:obj];
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
@@ -211,11 +211,13 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
     sqlite3_uint64 uid = friend_id_val, cid = cirkle_id_val;
     News *news = [[News alloc] initWithData:trimmed withId:hashed_id withOdd:odd
                                                 withUserId:uid withCirkleId:cid];
-    time_t timestamp_val = [timestamp dateValue];
-    if (stat.latestTime == 0 || stat.latestTime < timestamp_val) {
+    time_t timestamp_val = [type isEqualToString:@"users"] ? 0 : [timestamp dateValue];
+    if (timestamp_val != 0 &&
+        (stat.latestTime == 0 || stat.latestTime < timestamp_val)) {
       stat.latestTime = timestamp_val;
     }
-    if (stat.earliestTime == 0 || stat.earliestTime > timestamp_val) {
+    if (timestamp_val != 0 &&
+        (stat.earliestTime == 0 || stat.earliestTime > timestamp_val)) {
       stat.earliestTime = timestamp_val;
     }
     [news persist]; // save to DB
