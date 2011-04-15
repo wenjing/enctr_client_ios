@@ -140,6 +140,17 @@
 }
 
 
+- (void)invitationDidConfirm:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+    NSLog(@"Confirm invitation results");
+    if ([sender hasError]) {
+        NSLog(@"  has error");
+    } else {
+        //NSLog(@"%@", obj);
+    }
+}
+
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -233,7 +244,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *CircleTableIdentifier = @"CircleTableIdentifier";
-    static NSInteger i=0;
+    //static NSInteger i=0;
     
 	NSUInteger row = [indexPath row];
 	//NSLog(@"calling cellForRowAtIndexPath, row %d", row);
@@ -280,6 +291,24 @@
     
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"click %d",buttonIndex);
+    if ( buttonIndex == 0  )
+    {
+        //confirm
+        KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(invitationDidConfirm:obj:)];
+        NSUInteger row = alertView.tag;
+        CirkleSummary *aCircle = [listCircles objectAtIndex:row];
+        
+        BOOL confirm = true;
+        [client confirmInvitation:confirm forMeetId:aCircle.cId];
+    }
+    else if ( buttonIndex == 1 ){
+        //cancel - does nothing
+    }
+}
+
 #pragma mark -
 #pragma mark Table Delegate Methods
 /*
@@ -300,19 +329,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSUInteger row = [indexPath row];
     CirkleSummary *aCircle = [listCircles objectAtIndex:row];
-    /*
-	NSString *rowValue = aCircle.nameString;
+    
+    if (aCircle.type == CIRCLE_TYPE_INVITE) {
+        NSString *rowValue = aCircle.nameString;
 	
-	NSString *message = [[NSString alloc] initWithFormat:@"You selected %@", rowValue];
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Row Selected!" 
+        NSString *message = [[NSString alloc] initWithFormat:@"Join the Circle: \"%@\"?", rowValue];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You are invited!" 
 													message:message 
-												   delegate:nil 
-										  cancelButtonTitle:@"Yes I did" 
-										  otherButtonTitles:nil];
-	[alert show];
-	[message release];
-	[alert release];
-     */
+												   delegate:self
+										  cancelButtonTitle:@"Yes I will" 
+										  otherButtonTitles:@"Cancel", nil];
+        alert.tag = row;
+        [alert show];
+        [message release];
+        [alert release];
+        
+        return;
+    }
+    
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     

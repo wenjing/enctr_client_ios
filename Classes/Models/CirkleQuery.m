@@ -72,9 +72,12 @@
   if (update) {
     queryAction = QUERY_ACTION_UPDATE;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
-      [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
+    if (stat.lastQuery != 0) {
+      [param setObject:[NSString dateString:stat.lastQuery-10] forKey:@"after_time"];
     }
+    //if (stat.latestTime != 0) { // only get updated recorded after latest timestamp
+    //  [param setObject:[NSString dateString:stat.latestTime+1] forKey:@"after_time"];
+    //}
     [meetClient getCirkles:param withUserId:user_id];
   } else { // Call callback function directly with empty object.
     KYMeetClient *meet_client = meetClient;
@@ -95,11 +98,11 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
-  [self checkNetworkError:sender];
+  [self checkNetworkError:sender obj:obj];
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
-    [self queryDidFinish:nil];
+    [self queryDidFinish];
     return;
   }
 
@@ -116,22 +119,24 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
   id item;
   while ((item = [iter nextObject])) {
     // Save each item to DB
-    NSDictionary *dic = item;
-    sqlite3_uint64 id0 = [[dic objectForKey:@"id"] integerValue];
-    NSString *type = [dic objectForKey:@"type"];
-    NSString *timestamp = [dic objectForKey:@"timestamp"];
-    sqlite3_uint64 hashed_id = GetHashId(id0, [type UTF8String]);
-    sqlite3_uint64 odd = [timestamp dateValue]; // odd is purely based on timestamp.
-    Cirkle *cirkle = [[Cirkle alloc] initWithData:dic withId:hashed_id withOdd:odd];
-    time_t timestamp_val = [timestamp dateValue];
-    if (stat.latestTime == 0 || stat.latestTime < timestamp_val) {
-      stat.latestTime = timestamp_val;
+    id trimmed = [self trimData:item];
+    if (![trimmed objectForKey:@"is_deleted"]) { // skip deleted cirkles
+      sqlite3_uint64 id0 = [[trimmed objectForKey:@"id"] integerValue];
+      NSString *type = [trimmed objectForKey:@"type"];
+      NSString *timestamp = [trimmed objectForKey:@"timestamp"];
+      sqlite3_uint64 hashed_id = GetHashId(id0, [type UTF8String]);
+      sqlite3_uint64 odd = [timestamp dateValue]; // odd is purely based on timestamp.
+      Cirkle *cirkle = [[Cirkle alloc] initWithData:trimmed withId:hashed_id withOdd:odd];
+      time_t timestamp_val = [timestamp dateValue];
+      if (stat.latestTime == 0 || stat.latestTime < timestamp_val) {
+        stat.latestTime = timestamp_val;
+      }
+      if (stat.earliestTime == 0 || stat.earliestTime > timestamp_val) {
+        stat.earliestTime = timestamp_val;
+      }
+      [cirkle persist]; // save to DB
+      [cirkle release];
     }
-    if (stat.earliestTime == 0 || stat.earliestTime > timestamp_val) {
-      stat.earliestTime = timestamp_val;
-    }
-    [cirkle persist]; // save to DB
-    [cirkle release];
   }
 
   // Check if having any update (only for update more)
@@ -153,14 +158,13 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
     iter = [res objectEnumerator];
     while ((item = [iter nextObject])) {
       Cirkle *cirkle = item;
-      id trimmed= [self trimData:cirkle.data ];
-      [results addObject:trimmed];
+      id expanded = [self expandData:cirkle.data];
+      [results addObject:expanded];
     }
   }
   [stat persist]; // update statistics
   [DBConnection commitTransaction];
-
-  [self queryDidFinish:nil];
+  [self queryDidFinish];
 }
 
 - (id)trimData:(id)obj
@@ -182,21 +186,46 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, const char *type)
     while ((key = [iter nextObject])) {
       id item = [obj objectForKey:key];
       id trimmed = nil;
-      if ([key isEqualToString:@"user"]) {
+      if ([key isEqualToString:@"user"] ||
+          [key isEqualToString:@"inviter"]) {
         User *user = [User userWithJsonDictionary:item];
-        //id is_new_user = [item objectForKey:@"is_new_user"];
-        //if (!is_new_user) is_new_user = [NSNull null];
-        //[DBConnection beginTransaction];
         [user updateDB];
-        //[DBConnection commitTransaction];
-        trimmed = user;
-        //trimmed = [NSMutableArray array];
-        //[trimmed addObject:user];
-        //[trimmed addObject:is_new_user];
+        NSDictionary *user_dic = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInt:user.userId], @"<USER>", nil];
+        trimmed = user_dic;
       } else {
         trimmed = [self trimData:item];
       }
       [result setObject:trimmed forKey:key];
+    }
+  }
+  return result;
+}
+
+- (id)expandData:(id)obj
+{
+  id result = obj;
+  if ([obj isKindOfClass:[NSArray class]]) {
+    result = [NSMutableArray arrayWithCapacity:[obj count]];
+    NSEnumerator *iter = [obj objectEnumerator];
+    id item;
+    while ((item = [iter nextObject])) {
+      id expanded = [self expandData:item];
+      [result addObject:expanded];
+    }
+  } else if ([obj isKindOfClass:[NSDictionary class]] &&
+             [obj objectForKey:@"<USER>"]) {
+    uint32_t user_id = [[obj objectForKey:@"<USER>"] integerValue];
+    User *user = [User userWithId:user_id];
+    result = user;
+  } else if ([obj isKindOfClass:[NSDictionary class]]) {
+    result = [NSMutableDictionary dictionary];
+    NSEnumerator *iter = [obj keyEnumerator];
+    id key;
+    while ((key = [iter nextObject])) {
+      id item = [obj objectForKey:key];
+      id expanded = [self expandData:item];
+      [result setObject:expanded forKey:key];
     }
   }
   return result;

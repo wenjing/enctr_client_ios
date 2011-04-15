@@ -55,16 +55,34 @@
         NSLog(@"Incorrect circle summary type string");
     }
     
-    nameString = [[dic objectForKey:@"name"] retain];
-    
-    score = [[dic objectForKey:@"relation_score"] intValue];
-    
     struct tm   timeStruct;
     NSString* stringOftime = [dic objectForKey:@"timestamp"] ;
     if ( stringOftime ) {
 		strptime([stringOftime UTF8String], "%FT%T%z",  &timeStruct) ;
 		timeAt   = timegm(&timeStruct);
 	}
+    
+    nameString = [[dic objectForKey:@"name"] retain];
+    
+    if (type == CIRCLE_TYPE_CIRCLE) {
+        NSInteger is_pending = [[dic objectForKey:@"is_pending"] intValue];
+        if (is_pending == 1) {
+            //invitation:
+            type = CIRCLE_TYPE_INVITE;
+            //user = inviter
+            //contentString = invite_message
+            user = [[dic objectForKey:@"inviter"] retain];
+            contentString = [[dic objectForKey:@"invite_message"] retain];
+            NSString *profileString = [user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            avatarUrl = [[NSURL URLWithString:profileString] retain];
+            
+            imageUrl = [[NSMutableArray alloc] init]; //empty
+            return self;
+        }
+    }
+    
+    score = [[dic objectForKey:@"relation_score"] intValue];
     
     user = [[dic objectForKey:@"user"] retain];
     
@@ -134,7 +152,7 @@
                     User *poster = [act objectForKey:@"user"];
                     
                     if (poster) {
-                        contentString = [[NSString alloc] initWithFormat:@"%@ shared photo: \"%@\".", poster.name, photoString];
+                        contentString = [[NSString alloc] initWithFormat:@"%@ shared a photo: \"%@\".", poster.name, photoString];
                     } else {
                         contentString = [[NSString alloc] initWithFormat:@"Photo shared: \"%@\".", photoString];
                     }

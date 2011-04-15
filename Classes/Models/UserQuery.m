@@ -63,13 +63,13 @@
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
-  [self checkNetworkError:sender];
+  [self checkNetworkError:sender obj:obj];
   if ([self hasError] &&
       !obj || (![obj isKindOfClass:[NSArray class]] &&
                ![obj isKindOfClass:[NSDictionary class]] &&
                ![obj isKindOfClass:[User class]])) {
     queryStatus = QUERY_STATUS_ERROR;
-    [self queryDidFinish:nil];
+    [self queryDidFinish];
     return;
   }
 
@@ -97,7 +97,7 @@
     [results addObject:user];
   }
 
-  [self queryDidFinish:nil];
+  [self queryDidFinish];
 }
 
 - (void)usersDidSave:(KYMeetClient*)sender obj:(NSObject*)obj

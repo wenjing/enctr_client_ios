@@ -143,11 +143,11 @@
         
         //NSLog(@"new circleDetail %@", results);
         
-        // build listDetails
+        // build listDetails and listMembers - it's all or nothing
         NSInteger count = [results count];
         if (count > 0) {
             [listDetails removeAllObjects];
-        
+            [listMembers removeAllObjects];
         
             //NSLog(@"start building %d circleDetails\n", count);
         
@@ -165,13 +165,13 @@
                         NSLog(@"Bad format from member users array");
                     }
                     
-                    NSDictionary *aUserDic;
-                    for (aUserDic in users) {
-                        if (![aUserDic isKindOfClass:[NSDictionary class]]) {
-                            NSLog(@"Bad format from member user dictionary");
-                        }
+                    NSArray *aUserArray;
+                    for (aUserArray in users) {
+                        //if (![aUserDic isKindOfClass:[NSDictionary class]]) {
+                        //    NSLog(@"Bad format from member user dictionary");
+                        //}
                         
-                        NSArray *aUserArray = [aUserDic objectForKey:@"user"];
+                        //NSArray *aUserArray = [aUserDic objectForKey:@"user"];
                         
                         //now the user - retain it
                         [listMembers addObject: [[aUserArray objectAtIndex:0] retain]];
@@ -408,7 +408,7 @@
 	static NSString *CircleDetailTableIdentifier = @"CircleDetailTableIdentifier";
     static NSString *CircleMemberIdentifier = @"CircleMemberIdentifier";
     
-    static NSInteger i=0;
+    //static NSInteger i=0;
     
 	NSUInteger row = [indexPath row];
 	
@@ -577,7 +577,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSUInteger row = [indexPath row];
+    //NSUInteger row = [indexPath row];
+    /*
 	NSString *rowValue = [listDetails objectAtIndex:row];
 	
 	NSString *message = [[NSString alloc] initWithFormat:@"You selected %@", rowValue];
@@ -590,7 +591,7 @@
 	[message release];
 	[alert release];
 	[detailTable deselectRowAtIndexPath:indexPath animated:YES];
-
+     */
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

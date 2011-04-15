@@ -15,34 +15,34 @@
 @interface SetupViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate> {
     
     // current active user info
-	User*                       user ;
+  User*                       user ;
     
-	IBOutlet UITableViewCell*	Name;
-	IBOutlet UITableViewCell*	Email;
-	IBOutlet UITableViewCell*	Password;
-    IBOutlet UITableViewCell*	Logout;
-	IBOutlet UITableViewCell*	Location;
-	IBOutlet UITableViewCell*	Url;
-	IBOutlet UITableViewCell*	Phone;
-	IBOutlet UITableViewCell*   Image;
-	IBOutlet UITableViewCell*	Facebook;
-	IBOutlet UITableViewCell*	Twitter;
+  IBOutlet UITableViewCell*     Name;
+  IBOutlet UITableViewCell*     Email;
+  IBOutlet UITableViewCell*     Password;
+    IBOutlet UITableViewCell*   Logout;
+  IBOutlet UITableViewCell*     Location;
+  IBOutlet UITableViewCell*     Url;
+  IBOutlet UITableViewCell*     Phone;
+  IBOutlet UITableViewCell*   Image;
+  IBOutlet UITableViewCell*     Facebook;
+  IBOutlet UITableViewCell*     Twitter;
     
-	IBOutlet UITextField*		nameField;
-	IBOutlet UITextField*		emailField;
-	IBOutlet UITextField*		passwordField;
-	IBOutlet UITextField*		phoneField;
-	IBOutlet UITextField*		locationField;
-	IBOutlet UITextField*		urlField;
+  IBOutlet UITextField*         nameField;
+  IBOutlet UITextField*         emailField;
+  IBOutlet UITextField*         passwordField;
+  IBOutlet UITextField*         phoneField;
+  IBOutlet UITextField*         locationField;
+  IBOutlet UITextField*         urlField;
     
     // the current image
-	IBOutlet HJManagedImageV*   user_image;
+  IBOutlet HJManagedImageV*   user_image;
     
     // the picked image, to be updated to
     IBOutlet UIImageView*       pickedImageView;
     
-	UIImagePickerController*	imgPicker ;
-	UINavigationController*		navigation;
+  UIImagePickerController*      imgPicker ;
+  UINavigationController*               navigation;
     
     // holder for updated information
     User*                       holder;

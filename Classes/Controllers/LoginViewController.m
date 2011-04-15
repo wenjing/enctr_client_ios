@@ -80,9 +80,9 @@
 
 		User *user = [User userWithJsonDictionary:usr_info]  ;
 		
-		 NSLog(@"name : %@",  [usr_info objectForKey:@"name"]);
-		 NSLog(@"id   : %@",  [usr_info objectForKey:@"id"]);
-		 NSLog(@"email : %@", [usr_info objectForKey:@"email"]);
+		 //NSLog(@"name : %@",  [usr_info objectForKey:@"name"]);
+		 //NSLog(@"id   : %@",  [usr_info objectForKey:@"id"]);
+		 //NSLog(@"email : %@", [usr_info objectForKey:@"email"]);
 		
 		[user updateDB] ;
 		[[NSUserDefaults standardUserDefaults] setInteger:user.userId		forKey:@"KYUserId"];

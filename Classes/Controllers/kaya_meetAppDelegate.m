@@ -7,6 +7,7 @@
 
 #import "kaya_meetAppDelegate.h"
 #import "DBConnection.h"
+#import "Statistics.h"
 #import "AccelerometerFilter.h"
 
 
@@ -42,27 +43,27 @@
     
     // Override point for customization after application launch.
 
-	[self initializeUserDefaults];
-	BOOL forceCreate = [[NSUserDefaults standardUserDefaults] boolForKey:@"clearLocalCache"];
+  [self initializeUserDefaults];
+  BOOL forceCreate = [[NSUserDefaults standardUserDefaults] boolForKey:@"clearLocalCache"];
     [DBConnection createEditableCopyOfDatabaseIfNeeded:forceCreate];
     [DBConnection getSharedDatabase];
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"clearLocalCache"];
     
-	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
-	NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
-	NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+  NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+  NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
+  NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
     
-	uint64_t  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];	
+  uint64_t  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];        
     
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
-		// delete other user's DB data
+    // delete other user's DB data
         [DBConnection deleteDBCache];
     }
-	
-	messageView = nil ;
-	objMan		= nil ;
+
+  messageView = nil ;
+  objMan                = nil ;
     
-    cachedImages = [[NSMutableArray alloc] initWithCapacity:9];
+    cachedImages = [[NSMutableArray alloc] initWithCapacity:10];
     
     [cachedImages addObject:[UIImage imageNamed:@"circle_logo_1.png"]];
     [cachedImages addObject:[UIImage imageNamed:@"circle_logo_2.png"]];
@@ -73,33 +74,34 @@
     [cachedImages addObject:[UIImage imageNamed:@"circle_logo.png"]];
     [cachedImages addObject:[UIImage imageNamed:@"unknown-person.png"]];
     [cachedImages addObject:[UIImage imageNamed:@"timeofupdate_icon.png"]];
-    
+    [cachedImages addObject:[UIImage imageNamed:@"invitation_icon.png"]];
+
     /* move this to after login is done, otherwise the circle view doesn't know who
-	selectedTab = TAB_CIRCLES;
+  selectedTab = TAB_CIRCLES;
     tabBarController.selectedIndex = selectedTab;
      */
-	tabBarController.delegate = self ;
-	[window addSubview:tabBarController.view];
-	
+  tabBarController.delegate = self ;
+  [window addSubview:tabBarController.view];
+
     
     // login if needed.
-	
-	if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
-		[self openLoginView];
-	}
-	else if ( [User userWithId:user_id] == nil ) {
-		[self openLoginView];
-	}
-	else {
+
+  if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
+    [self openLoginView];
+  }
+  else if ( [User userWithId:user_id] == nil ) {
+    [self openLoginView];
+  }
+  else {
         // no login needed, load tab
         selectedTab = TAB_CIRCLES;
         tabBarController.selectedIndex = selectedTab;
                 
-		[self postInit];
-	}
-	
-	// turn on this for on phone logging
-#if 0	
+    [self postInit];
+  }
+
+  // turn on this for on phone logging
+#if 0   
 #if TARGET_IPHONE_SIMULATOR == 0
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -107,8 +109,8 @@
     freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 #endif
 #endif
-	
-	[window makeKeyAndVisible];
+
+  [window makeKeyAndVisible];
     return YES;
 }
 
@@ -118,14 +120,14 @@
                          @"",                             @"username",
                          @"",                             @"password",
                          @"",                             @"name",
-						 [NSNumber numberWithInt:0],      @"KYUserId",
+             [NSNumber numberWithInt:0],      @"KYUserId",
                          [NSNumber numberWithBool:false], @"clearLocalCache",
                          [NSNumber numberWithBool:true],  @"loadAllTabOnLaunch",
                          [NSNumber numberWithInt:5],      @"autoRefresh",
                          [NSNumber numberWithInt:50],     @"launchCount",
                          [NSNumber numberWithInt:13],     @"fontSize",
                          nil];
-	
+
     for (id key in dic) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:key] == nil) {
             [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:key] forKey:key];
@@ -141,11 +143,11 @@
 
 - (void)openLoginView 
 {
-	if( loginView ) 
+  if( loginView ) 
         return ;
     
-	initialized = false;
-	loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];	
+  initialized = false;
+  loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];    
     UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
     [nav presentModalViewController:loginView animated:YES];
 }
@@ -158,10 +160,10 @@
     selectedTab = selectTab;
     tabBarController.selectedIndex = selectedTab;
     
-	if ((selectTab==TAB_CIRCLES) && !initialized )
-	{
-		[self postInit];
-	}
+  if ((selectTab==TAB_CIRCLES) && !initialized )
+  {
+    [self postInit];
+  }
 
 }
 
@@ -173,11 +175,11 @@
 	
 	// load views
         //NSArray *views = tabBarController.viewControllers;
-	//UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
-	//[(MeetViewController*)[nav topViewController] restoreAndLoadMeets:true] ;
+  //UINavigationController* nav = (UINavigationController*)[views objectAtIndex:TAB_MEETS];
+  //[(MeetViewController*)[nav topViewController] restoreAndLoadMeets:true] ;
 
-	// set auto refresh
-	//
+  // set auto refresh
+  //
     int interval = [[NSUserDefaults standardUserDefaults] integerForKey:@"autoRefresh"];
     autoRefreshInterval = 0;
     if (interval > 0) {
@@ -239,10 +241,10 @@
 - (void)setNextTimer:(NSTimeInterval)interval
 {
     autoRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:interval 
-												        target:self
-													  selector:@selector(autoRefresh:)
-													  userInfo:nil
-													   repeats:false];    
+                                target:self
+                            selector:@selector(autoRefresh:)
+                            userInfo:nil
+                             repeats:false];    
 }
 
 - (void)autoRefresh:(NSTimer*)timer
@@ -257,21 +259,21 @@
             [c performSelector:@selector(autoRefresh)];
         }
     }
-	[self getLocation] ;
+  [self getLocation] ;
     [self setNextTimer:autoRefreshInterval];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-	
+
     /*
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
-	if (autoRefreshTimer) {
+  if (autoRefreshTimer) {
         [autoRefreshTimer invalidate];
         autoRefreshTimer = nil;
     }
-	
+
     if (messageView != nil) {
         [self.messageView saveMessage];
     }
@@ -297,8 +299,8 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-	[self getLocation];
-	if (lastRefreshDate == nil) {
+  [self getLocation];
+  if (lastRefreshDate == nil) {
         lastRefreshDate = [[NSDate date] retain];
     }
     else if (autoRefreshInterval) {
@@ -310,7 +312,7 @@
         }
         [self setNextTimer:diff];
     }
-	
+
     if (messageView != nil) {
         [self.messageView checkProgressWindowState];
     }
@@ -322,7 +324,7 @@
      Called when the application is about to terminate.
      See also applicationDidEnterBackground:.
      */
-	if (messageView != nil) {
+  if (messageView != nil) {
         [self.messageView saveMessage];
         [messageView release];
     }
@@ -341,11 +343,14 @@
 
 
 - (void)dealloc {
+    [self clear];
+    
     [tabBarController release];
 	[loginView release];
     [window release];
 	[location release];
 	[objMan release];
+    [cachedImages removeAllObjects];
     [cachedImages release];
     [filter release];
 	AudioServicesDisposeSystemSoundID (soundFileObject);
@@ -364,7 +369,7 @@
         [c didLeaveTab:nav];
     }
     selectedTab = tabBar.selectedIndex;
-	
+
     nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:selectedTab];
     c = [nav.viewControllers objectAtIndex:0];
     if ([c respondsToSelector:@selector(didSelectTab:)]) {
@@ -389,6 +394,7 @@
 
 - (HJObjManager *)objMan 
 {
+
 	if (objMan == nil) {
 		// Image cache 
 		objMan = [[HJObjManager alloc] initWithLoadingBufferSize:40 memCacheSize:40 ] ;
@@ -449,36 +455,36 @@
 //
 - (void) getLocation
 {
-	if ( location == nil ) {
-		location = [[LocationManager alloc] initWithDelegate:self];
-	}
-	[location getCurrentLocation];
+  if ( location == nil ) {
+    location = [[LocationManager alloc] initWithDelegate:self];
+  }
+  [location getCurrentLocation];
 }
 
 - (void)locationManagerDidUpdateLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
-	if (latitude==0.0 || longitude==0.0) {
-		latitude  = alocation.coordinate.latitude;
-		longitude = alocation.coordinate.longitude;
-		lerror = [alocation horizontalAccuracy] ;
-	}
+  if (latitude==0.0 || longitude==0.0) {
+    latitude  = alocation.coordinate.latitude;
+    longitude = alocation.coordinate.longitude;
+    lerror = [alocation horizontalAccuracy] ;
+  }
 }
 
 - (void)locationManagerDidReceiveLocation:(LocationManager*)manager location:(CLLocation*)alocation
 {
     latitude  = alocation.coordinate.latitude;
     longitude = alocation.coordinate.longitude;
-	lerror = [alocation horizontalAccuracy] ;
-	//	reverseGeocoder =
-	//	[[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
-	//    reverseGeocoder.delegate = self;
-	//    [reverseGeocoder start];
+  lerror = [alocation horizontalAccuracy] ;
+  //    reverseGeocoder =
+  //    [[MKReverseGeocoder alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude,longitude)];
+  //    reverseGeocoder.delegate = self;
+  //    [reverseGeocoder start];
 }
 
 - (void)locationManagerDidFail:(LocationManager*)manager
 {
     lerror = 10000 ;
-	//NSLog(@"Can't get current location.");
+  //NSLog(@"Can't get current location.");
 }
 
 /* -- don't use Geocoder now
@@ -486,16 +492,16 @@
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark
 {
     //addressString = [NSString stringWithFormat:@"%@ %@ (%@)",placemark.thoroughfare, placemark.locality, placemark.postalCode];
-	//NSLog(@"place %@",addressString);
-	[reverseGeocoder release];
+  //NSLog(@"place %@",addressString);
+  [reverseGeocoder release];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error
 {
-	// NSLog(@"MKReverseGeocoder has failed. %@",error);
-	//addressString = @"At Location" ;
-	[reverseGeocoder release];
-}				 
+  // NSLog(@"MKReverseGeocoder has failed. %@",error);
+  //addressString = @"At Location" ;
+  [reverseGeocoder release];
+}                                
 
  -- */
 
@@ -511,9 +517,9 @@ static UIAlertView *sAlert = nil ;
     
     sAlert = [[UIAlertView alloc] initWithTitle:title
                                         message:message
-									   delegate:self
-							  cancelButtonTitle:@"Close"
-							  otherButtonTitles:nil];
+                     delegate:self
+                cancelButtonTitle:@"Close"
+                otherButtonTitles:nil];
     [sAlert show];
     [sAlert release];
     sAlert = nil;
@@ -533,15 +539,38 @@ static UIAlertView *sAlert = nil ;
 
 -(UINavigationController*)getAppTabController:(int)selectTab
 {
-	NSArray *views = tabBarController.viewControllers;
-	return (UINavigationController*)[views objectAtIndex:selectTab];
+  NSArray *views = tabBarController.viewControllers;
+  return (UINavigationController*)[views objectAtIndex:selectTab];
 }
 
 -(MeetViewController*)getAppMeetViewController
 {
-	UINavigationController* nav = (UINavigationController*)[self getAppTabController:TAB_MEETS];
-	return (MeetViewController*)[nav.viewControllers objectAtIndex:0]  ;
+  UINavigationController* nav = (UINavigationController*)[self getAppTabController:TAB_MEETS];
+  return (MeetViewController*)[nav.viewControllers objectAtIndex:0]  ;
+}
+
+-(void)reset
+{
+    // reset users information
+    [UserStore clear];
+
+    // reset statistics information
+    [[Statistics sharedStatistics] clear];
+
+    // delete local DB
+    [DBConnection deleteDBCache] ;
+}
+
+-(void)clear
+{
+    // reset uname/passwd/kyuid
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"prevUsername"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
+    [[NSUserDefaults standardUserDefaults] setInteger:0     forKey:@"KYUserId"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self reset];
 }
 
 @end
-

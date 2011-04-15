@@ -50,7 +50,7 @@ typedef enum {
 @property (nonatomic, assign) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, assign) LoginViewController    *loginView;
 @property (nonatomic, assign) MessageViewController  *messageView;
-@property (nonatomic, retain) NSString*	screenName;
+@property (nonatomic, retain) NSString* screenName;
 @property (nonatomic, assign) int selectedTab;
 @property (nonatomic, assign) HJObjManager *objMan;
 @property (nonatomic, retain) NSMutableArray *cachedImages;
@@ -69,5 +69,7 @@ typedef enum {
 + (kaya_meetAppDelegate*)getAppDelegate;
 - (MeetViewController*)getAppMeetViewController;
 - (void)selectSetupView;
+- (void)reset;
+ - (void)clear;
 
 @end

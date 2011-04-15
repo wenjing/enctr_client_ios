@@ -41,6 +41,6 @@ enum {QUERY_STATUS_INIT, QUERY_STATUS_PENDING, QUERY_STATUS_OK,
 @property (nonatomic, retain) NSDictionary *queryOptions;
 @property (nonatomic, assign) BOOL queryUpdate;
 + (id)recordClass;
-- (void)checkNetworkError:(KYMeetClient*)sender;
-- (void)queryDidFinish:(id)obj;
+- (void)checkNetworkError:(KYMeetClient*)sender obj:(NSObject*)obj;
+- (void)queryDidFinish;
 @end

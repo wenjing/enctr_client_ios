@@ -11,7 +11,7 @@
 #import "NewsQuery.h"
 #import "UserQuery.h"
 
-#define kUpdateFrequency	60.0
+#define kUpdateFrequency  60.0
 
 @interface MeetViewController (Private)
 - (void)didLeaveTab:(UINavigationController*)navigationController;
@@ -24,6 +24,14 @@
 - (void)createUser;
 - (void)updateUser;
 - (void)userDidSave:(UserQuery*)sender;
+- (void)userDidLoad:(UserQuery*)sender;
+
+- (void)editMeet;
+- (void)meetDidEdit:(KYMeetClient*)sender obj:(NSObject*)obj;
+- (void)inviteUser;
+- (void)userDidInvite:(KYMeetClient*)sender obj:(NSObject*)obj;
+- (void)confirmInvitation;
+- (void)invitationDidConfirm:(KYMeetClient*)sender obj:(NSObject*)obj;
 @end
 
 @implementation MeetViewController
@@ -34,27 +42,27 @@
 //
 - (void)viewDidLoad
 {
-	tab       = [self navigationController].tabBarItem.tag;
+  tab       = [self navigationController].tabBarItem.tag;
 
-	// accelerometer
-	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0 / kUpdateFrequency];
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	
-	filter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0] ;
-	filter.adaptive = NO ;
-	
-	// BT
-	bt = [[BluetoothConnect alloc] initWithDelegate:self];
-	
-	// sound
-	// Create the URL for the source audio file. The URLForResource:withExtension: method is
+  // accelerometer
+  [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0 / kUpdateFrequency];
+  [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+  
+  filter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0] ;
+  filter.adaptive = NO ;
+  
+  // BT
+  bt = [[BluetoothConnect alloc] initWithDelegate:self];
+  
+  // sound
+  // Create the URL for the source audio file. The URLForResource:withExtension: method is
     //    new in iOS 4.0.
     NSURL *tapSound   = [[NSBundle mainBundle] URLForResource: @"tap"
                                                 withExtension: @"aif"];
-	
+  
     // Store the URL as a CFURLRef instance
     self.soundFileURLRef = (CFURLRef) [tapSound retain];
-	
+  
     // Create a system sound object representing the sound file.
     AudioServicesCreateSystemSoundID(soundFileURLRef, &soundFileObject);
     HUD = nil;
@@ -62,30 +70,30 @@
 
 - (void) viewDidUnload
 {
-	filter = nil ;
-	isLoaded = false;
+  filter = nil ;
+  isLoaded = false;
 }
 
 - (void) dealloc
 {
-	[filter release];
-	AudioServicesDisposeSystemSoundID (soundFileObject);
+  [filter release];
+  AudioServicesDisposeSystemSoundID (soundFileObject);
     CFRelease (soundFileURLRef);
-	[bt release] ;
-	[super dealloc] ;
+  [bt release] ;
+  [super dealloc] ;
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-	if (!isLoaded) {
-		// get all meets from server
-        //[meetDataSource getUserMeets] ;	
-		[self restoreAndLoadMeets:true] ;
+  if (!isLoaded) {
+    // get all meets from server
+        //[meetDataSource getUserMeets] ;  
+    [self restoreAndLoadMeets:true] ;
     }else {
-		[self.tableView setContentOffset:contentOffset animated:false];
-		[self.tableView reloadData];
-	}
+    [self.tableView setContentOffset:contentOffset animated:false];
+    [self.tableView reloadData];
+  }
     // Debug cirkle data API
     //[self restoreAndLoadCirkles];
     // Debug news data API
@@ -94,6 +102,61 @@
     //[self loadUser];
     //[self createUser];
     //[self updateUser];
+    //[self editMeet];
+    //[self inviteUser];
+    //[self confirmInvitation];
+}
+
+-(void)editMeet
+{
+  KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidEdit:obj:)];
+  uint64_t meet_id = 15587;
+  NSString *meet_name = @"New Name III";
+  [client editMeet:meet_name forMeetId:meet_id];
+}
+- (void)meetDidEdit:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+  NSLog(@"Edit meet results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    NSLog(@"%@", obj);
+  }
+}
+
+-(void)inviteUser
+{
+  KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidEdit:obj:)];
+  uint64_t meet_id = 15587;
+  NSString *invitee = @"test.saver2@kaya-labs.com";
+  NSString *message = @"You are invited too";
+  [client postInvite:invitee byUserId:0 byMeetId:meet_id custMessage:message];
+}
+- (void)userDidInvite:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+  NSLog(@"Confirm invitation results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    NSLog(@"%@", obj);
+  }
+}
+
+-(void)confirmInvitation
+{
+  KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(meetDidEdit:obj:)];
+  uint64_t meet_id = 15587;
+  BOOL confirm = true;
+  [client confirmInvitation:confirm forMeetId:meet_id];
+}
+- (void)invitationDidConfirm:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+  NSLog(@"Confirm invitation results");
+  if ([sender hasError]) {
+    NSLog(@"  has error");
+  } else {
+    NSLog(@"%@", obj);
+  }
 }
 
 -(void)loadUser
@@ -220,30 +283,30 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[super viewDidAppear:animated];
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-//	isLoaded = true;
+  [super viewDidAppear:animated];
+  [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+//  isLoaded = true;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     contentOffset = self.tableView.contentOffset;
-	[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+  [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
 
-	if(bt.mode != BT_FREE) [bt stopPeer];
-	[meetDataSource cancelConnect];
-	//self.navigationItem.leftBarButtonItem.enabled = true;
-	self.navigationItem.rightBarButtonItem.enabled = true;
+  if(bt.mode != BT_FREE) [bt stopPeer];
+  [meetDataSource cancelConnect];
+  //self.navigationItem.leftBarButtonItem.enabled = true;
+  self.navigationItem.rightBarButtonItem.enabled = true;
 }
 
 - (void)viewDidDisappear:(BOOL)animated 
-{	
+{  
 }
 
 - (void)didReceiveMemoryWarning 
 {
-	[self resetMeets];
-	[super didReceiveMemoryWarning];
+  [self resetMeets];
+  [super didReceiveMemoryWarning];
 }
 
 // accelerometer
@@ -251,28 +314,28 @@
 // UIAccelerometerDelegate method, called when the device accelerates.
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-	static int count = 0 ;
-	// Update the accelerometer graph view	
-	[filter addAcceleration:acceleration];
-	float total = filter.x+filter.y+filter.z ;
-	if (total < 2.0 ) return ;
-	count ++ ;
-	if (count > 2) {
-		//NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
-		count = 0 ;
-		[[UIAccelerometer sharedAccelerometer] setDelegate:nil];
-		[self postMeet:self];
-	}
+  static int count = 0 ;
+  // Update the accelerometer graph view  
+  [filter addAcceleration:acceleration];
+  float total = filter.x+filter.y+filter.z ;
+  if (total < 2.0 ) return ;
+  count ++ ;
+  if (count > 2) {
+    //NSLog(@"%f, %f, %f" ,filter.x,filter.y,filter.z);
+    count = 0 ;
+    [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+    [self postMeet:self];
+  }
 }
 // cleanup current meets
 // due to different user login
 
 - (void) resetMeets
 {
-	[meetDataSource removeAllMeets];
-	[self.tableView reloadData];
-	isLoaded = false ;
-//	contentOffset = 0;
+  [meetDataSource removeAllMeets];
+  [self.tableView reloadData];
+  isLoaded = false ;
+//  contentOffset = 0;
 }
 
 - (void) stopHUD
@@ -296,36 +359,36 @@
 //
 - (void) restoreAndLoadMeets:(BOOL)load
 {
-	tab       = [self navigationController].tabBarItem.tag;
+  tab       = [self navigationController].tabBarItem.tag;
         [self startHUD];
-	HUD.labelText = @"load meets..";
-	if (meetDataSource) [meetDataSource release];
-	meetDataSource = [[MeetViewDataSource alloc] initWithController:self] ;
-	self.tableView.delegate   = meetDataSource;
-	self.tableView.dataSource = meetDataSource;
-	if ( load ) {
-		[meetDataSource getUserMeets];
-		isLoaded = true; 
-	}
-	typeSelector.selectedSegmentIndex = 0 ;
+  HUD.labelText = @"load meets..";
+  if (meetDataSource) [meetDataSource release];
+  meetDataSource = [[MeetViewDataSource alloc] initWithController:self] ;
+  self.tableView.delegate   = meetDataSource;
+  self.tableView.dataSource = meetDataSource;
+  if ( load ) {
+    [meetDataSource getUserMeets];
+    isLoaded = true; 
+  }
+  typeSelector.selectedSegmentIndex = 0 ;
 }
 
 - (IBAction) refreshMeet:(id) sender 
 {
-	self.navigationItem.leftBarButtonItem.enabled = false;
-	[meetDataSource getUserMeets];
+  self.navigationItem.leftBarButtonItem.enabled = false;
+  [meetDataSource getUserMeets];
 }
 
 - (IBAction) postMeet:   (id)sender
 {
-	self.navigationItem.rightBarButtonItem.enabled = false;
-	AudioServicesPlaySystemSound (soundFileObject);
-	// BT device connection
-	[bt   reset ] ;
+  self.navigationItem.rightBarButtonItem.enabled = false;
+  AudioServicesPlaySystemSound (soundFileObject);
+  // BT device connection
+  [bt   reset ] ;
         [self startHUD];
-	HUD.labelText = @"finding friend..";
-	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
-	[bt startPeer];
+  HUD.labelText = @"finding friend..";
+  HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [bt numberOfPeers]] ;
+  [bt startPeer];
 }
 
 
@@ -333,25 +396,25 @@
 
 - (void) cancelSolo
 {
-	self.navigationItem.rightBarButtonItem.enabled = true;
-	return;
+  self.navigationItem.rightBarButtonItem.enabled = true;
+  return;
 }
 
 - (void) acceptSolo
 {
-	NSMutableDictionary *param = [NSMutableDictionary dictionary];
-	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
-	[param setObject:[bt getDisplayName] forKey:@"devs"];
-	[meetDataSource addMeet:param];
+  NSMutableDictionary *param = [NSMutableDictionary dictionary];
+  [param setObject:[bt getDisplayName] forKey:@"user_dev"];
+  [param setObject:[bt getDisplayName] forKey:@"devs"];
+  [meetDataSource addMeet:param];
 }
 
 - (void) acceptHost {
-	NSMutableDictionary *param = [NSMutableDictionary dictionary];
-	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
-	[param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
-	[param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
-	[param setObject:@"2" forKey:@"host_mode"];
-	[meetDataSource addMeet:param];
+  NSMutableDictionary *param = [NSMutableDictionary dictionary];
+  [param setObject:[bt getDisplayName] forKey:@"user_dev"];
+  [param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
+  [param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
+  [param setObject:@"2" forKey:@"host_mode"];
+  [meetDataSource addMeet:param];
 }
 
 // alterview button 
@@ -361,78 +424,78 @@ static SEL  clickedAccept  ;
 static SEL  clickedCancel  ;
 
 - (void) cancelHost {
-	NSString *meet = [bt findMeet];
-	sAlert = nil ;
-	if ( meet != nil )
-	{ // add to a meet
-		[bt getDisplayNames:meet];
-		[self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]  
-					message:[NSString stringWithFormat:@"please confirm"] 
-					 accept:@selector(acceptJoin)
-					 cancel:@selector(collisionJoin)
-						 ] ;
-		return ;
-	}
-	NSString *names = [bt getPeerNameList] ;
-	if ( names != nil && names != @"") {
-		[self dialog:[NSString stringWithFormat:@"meet with %@", names]  
-					message:[NSString stringWithFormat:@"please confirm"] 
-					 accept:@selector(acceptPeer)
-					 cancel:@selector(collisionPeer)
-						 ] ;
-	}
+  NSString *meet = [bt findMeet];
+  sAlert = nil ;
+  if ( meet != nil )
+  { // add to a meet
+    [bt getDisplayNames:meet];
+    [self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]  
+          message:[NSString stringWithFormat:@"please confirm"] 
+           accept:@selector(acceptJoin)
+           cancel:@selector(collisionJoin)
+             ] ;
+    return ;
+  }
+  NSString *names = [bt getPeerNameList] ;
+  if ( names != nil && names != @"") {
+    [self dialog:[NSString stringWithFormat:@"meet with %@", names]  
+          message:[NSString stringWithFormat:@"please confirm"] 
+           accept:@selector(acceptPeer)
+           cancel:@selector(collisionPeer)
+             ] ;
+  }
 }
 
-	 
+   
 - (void) postJoin:(BOOL)collision
 {
-	NSMutableDictionary *param = [NSMutableDictionary dictionary];
-	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
-	[param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
-	[param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
-	
-	[param setObject:@"4" forKey:@"host_mode"];
-	if( collision == true ) {
-		[param setObject:@"1" forKey:@"collision"];
-	} else {
-		[param setObject:@"0" forKey:@"collision"];
-	}
-	
-	[meetDataSource addMeet:param];
+  NSMutableDictionary *param = [NSMutableDictionary dictionary];
+  [param setObject:[bt getDisplayName] forKey:@"user_dev"];
+  [param setObject:[NSString stringWithFormat:@"%@:%@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:1]] forKey:@"devs"];
+  [param setObject:[NSString stringWithFormat:@"%@",[bt.devNames componentsJoinedByString:@":"]] forKey:@"host_id"];
+  
+  [param setObject:@"4" forKey:@"host_mode"];
+  if( collision == true ) {
+    [param setObject:@"1" forKey:@"collision"];
+  } else {
+    [param setObject:@"0" forKey:@"collision"];
+  }
+  
+  [meetDataSource addMeet:param];
 }
 
 - (void) acceptJoin
 {
-	[self postJoin:false];
+  [self postJoin:false];
 }
 
 - (void) collisionJoin
 {
-	[self postJoin:true];
+  [self postJoin:true];
 }
 
 - (void) postPeer:(BOOL)collision
 {
-	NSMutableDictionary *param = [NSMutableDictionary dictionary];
-	NSString* query = [bt.peerList componentsJoinedByString:@","];
-	[param setObject:query forKey:@"devs"];
-	[param setObject:[bt getDisplayName] forKey:@"user_dev"];
-	if( collision == true ) {
-		[param setObject:@"1" forKey:@"collision"];
-	} else {
-		[param setObject:@"0" forKey:@"collision"];
-	}
-	[meetDataSource addMeet:param];
+  NSMutableDictionary *param = [NSMutableDictionary dictionary];
+  NSString* query = [bt.peerList componentsJoinedByString:@","];
+  [param setObject:query forKey:@"devs"];
+  [param setObject:[bt getDisplayName] forKey:@"user_dev"];
+  if( collision == true ) {
+    [param setObject:@"1" forKey:@"collision"];
+  } else {
+    [param setObject:@"0" forKey:@"collision"];
+  }
+  [meetDataSource addMeet:param];
 }
 
 - (void) collisionPeer
 {
-	[self postPeer:true];
+  [self postPeer:true];
 }
 
 - (void) acceptPeer 
 {
-	[self postPeer:false];
+  [self postPeer:false];
 }
 
 // hostmode, addmode, peermode
@@ -440,54 +503,54 @@ static SEL  clickedCancel  ;
 - (void) BluetoothDidFinished:(BluetoothConnect *)Bluetooth {
 
         [self stopHUD];
-	self.navigationItem.rightBarButtonItem.enabled = true;
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
-	
-	if( [bt numberOfPeers] == 0 && bt.mode != BT_ADD ) { // solo
-		[self dialog:@"Solo Meet"  
-					message:[NSString stringWithFormat:@"please confirm"] 
-					 accept:@selector(acceptSolo) 
-					 cancel:@selector(cancelSolo)] ;
-		return ;
-	}
-	
-	NSString *host = [Bluetooth findHost];
-	
-	if ( host != nil )
-	{ // host
-		[bt getDisplayNames:host];
-		[self dialog:[NSString stringWithFormat:@"Join %@'s %@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:2]]  
-					message:[NSString stringWithFormat:@"please confirm"] 
-					 accept:@selector(acceptHost)
-					 cancel:@selector(cancelHost)
-						] ; 
-		return ;
-	}
-	
-	NSString *meet = [Bluetooth findMeet];
-	if ( meet != nil )
-	{ // add to a meet
-		[bt getDisplayNames:meet];
-		[self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]
-					message:[NSString stringWithFormat:@"please confirm"] 
-					 accept:@selector(acceptJoin)
-					 cancel:@selector(collisionJoin)
-						] ;
-		return ;
-	}
-	NSString *names = [bt getPeerNameList] ;
-	if ( names != nil && names != @"") {
-		[self dialog:[NSString stringWithFormat:@"meet with %@", names]  
-				message:[NSString stringWithFormat:@"please confirm"] 
-				 accept:@selector(acceptPeer)
-				 cancel:@selector(collisionPeer )
-					 ] ;
-	}
-	
+  self.navigationItem.rightBarButtonItem.enabled = true;
+  [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+  
+  if( [bt numberOfPeers] == 0 && bt.mode != BT_ADD ) { // solo
+    [self dialog:@"Solo Meet"  
+          message:[NSString stringWithFormat:@"please confirm"] 
+           accept:@selector(acceptSolo) 
+           cancel:@selector(cancelSolo)] ;
+    return ;
+  }
+  
+  NSString *host = [Bluetooth findHost];
+  
+  if ( host != nil )
+  { // host
+    [bt getDisplayNames:host];
+    [self dialog:[NSString stringWithFormat:@"Join %@'s %@",[bt.devNames objectAtIndex:0],[bt.devNames objectAtIndex:2]]  
+          message:[NSString stringWithFormat:@"please confirm"] 
+           accept:@selector(acceptHost)
+           cancel:@selector(cancelHost)
+            ] ; 
+    return ;
+  }
+  
+  NSString *meet = [Bluetooth findMeet];
+  if ( meet != nil )
+  { // add to a meet
+    [bt getDisplayNames:meet];
+    [self dialog:[NSString stringWithFormat:@"Join %@'s meet",[bt.devNames objectAtIndex:0]]
+          message:[NSString stringWithFormat:@"please confirm"] 
+           accept:@selector(acceptJoin)
+           cancel:@selector(collisionJoin)
+            ] ;
+    return ;
+  }
+  NSString *names = [bt getPeerNameList] ;
+  if ( names != nil && names != @"") {
+    [self dialog:[NSString stringWithFormat:@"meet with %@", names]  
+        message:[NSString stringWithFormat:@"please confirm"] 
+         accept:@selector(acceptPeer)
+         cancel:@selector(collisionPeer )
+           ] ;
+  }
+  
 }
 
 - (void) BluetoothDidUpdate:(BluetoothConnect *)Bluetooth peer:(NSString *)peerID{
-	HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [Bluetooth numberOfPeers]] ;
+  HUD.detailsLabelText = [NSString stringWithFormat:@".. %d", [Bluetooth numberOfPeers]] ;
 }
 
 - (void) autoRefresh
@@ -508,7 +571,7 @@ static SEL  clickedCancel  ;
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
     }
-	
+  
 }
 
 //
@@ -530,20 +593,20 @@ static SEL  clickedCancel  ;
 // MeetViewControllerDelegate 
 - (void) meetsDidUpdate:(MeetViewDataSource*)sender count:(int)count insertAt:(int)position
 {
-	//self.navigationItem.leftBarButtonItem.enabled = true;
-	self.navigationItem.rightBarButtonItem.enabled = true;
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+  //self.navigationItem.leftBarButtonItem.enabled = true;
+  self.navigationItem.rightBarButtonItem.enabled = true;
+  [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [self stopHUD];
     if (self.navigationController.tabBarController.selectedIndex == tab &&
         self.navigationController.topViewController == self) {
-		
+    
         [self.tableView beginUpdates];
         if (position) {
             NSMutableArray *deletion = [[[NSMutableArray alloc] init] autorelease];
             [deletion addObject:[NSIndexPath indexPathForRow:position inSection:0]];
             [self.tableView deleteRowsAtIndexPaths:deletion withRowAnimation:UITableViewRowAnimationFade];
         }
-		int numInsert = count;
+    int numInsert = count;
         if (count != 0) {
             NSMutableArray *insertion = [[[NSMutableArray alloc] init] autorelease];
             // Avoid to create too many table cell.
@@ -555,14 +618,14 @@ static SEL  clickedCancel  ;
         }
         [self.tableView endUpdates];
     }
-	[self.tableView reloadData];
+  [self.tableView reloadData];
 }
 
 - (void) meetsDidFailToUpdate:(MeetViewDataSource *)sender position:(int)position
 {
-	//self.navigationItem.leftBarButtonItem.enabled = true;
-	self.navigationItem.rightBarButtonItem.enabled = true;
-	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
+  //self.navigationItem.leftBarButtonItem.enabled = true;
+  self.navigationItem.rightBarButtonItem.enabled = true;
+  [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [self stopHUD];
 }
 
@@ -571,7 +634,7 @@ static SEL  clickedCancel  ;
 - (void)messageViewAnimationDidFinish
 {
     if (self.navigationController.topViewController != self) return;
-	
+  
     if (tab == TAB_MEETS) {
         //
         // Do animation if the controller displays
@@ -581,30 +644,30 @@ static SEL  clickedCancel  ;
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
     }
-	
+  
 }
 
 - (NSArray*) getMeets 
 {
-	return meetDataSource.meets ;
+  return meetDataSource.meets ;
 }
 
 - (MeetViewDataSource *)meetDataSource 
 {
-	return meetDataSource ;
+  return meetDataSource ;
 }
 
 // segmentedControl
 - (void) typeSelected:(id)sender
 {
-	if (self.navigationController.topViewController != self)    return;
-	if (tab == TAB_MEETS) {
-		UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-	
-		meetDataSource.showType=[segmentedControl selectedSegmentIndex];
+  if (self.navigationController.topViewController != self)    return;
+  if (tab == TAB_MEETS) {
+    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
+  
+    meetDataSource.showType=[segmentedControl selectedSegmentIndex];
 
-		[self.tableView reloadData];
-	}
+    [self.tableView reloadData];
+  }
 }
 
 
@@ -612,30 +675,30 @@ static SEL  clickedCancel  ;
 
 - (void)dialog:(NSString*)title message:(NSString*)message accept:(SEL)aAction cancel:(SEL)cAction
 {
-	if (sAlert) return;
-	sAlert = [[UIAlertView alloc] initWithTitle:title
-										message:message
-									   delegate:self
-							  cancelButtonTitle:@"Accept"
-							  otherButtonTitles:@"Cancel", nil];
-	clickedAccept  = aAction ;
-	clickedCancel  = cAction ;
-	[sAlert show];
-	[sAlert release];
+  if (sAlert) return;
+  sAlert = [[UIAlertView alloc] initWithTitle:title
+                                message:message
+                                delegate:self
+                                cancelButtonTitle:@"Accept"
+                                otherButtonTitles:@"Cancel", nil];
+  clickedAccept  = aAction ;
+  clickedCancel  = cAction ;
+  [sAlert show];
+  [sAlert release];
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"click %d",buttonIndex);
-	if ( buttonIndex == 0 && [self respondsToSelector:clickedAccept] )
-	{
-		[self performSelector:clickedAccept] ;
-	}
-	else if ( buttonIndex == 1 && [self respondsToSelector:clickedCancel] ){
-		[self performSelector:clickedCancel] ;
-	}
-	sAlert = nil ; 
+  NSLog(@"click %d",buttonIndex);
+  if ( buttonIndex == 0 && [self respondsToSelector:clickedAccept] )
+  {
+    [self performSelector:clickedAccept] ;
+  }
+  else if ( buttonIndex == 1 && [self respondsToSelector:clickedCancel] ){
+    [self performSelector:clickedCancel] ;
+  }
+  sAlert = nil ; 
 }
 
 @end

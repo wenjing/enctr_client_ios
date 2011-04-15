@@ -18,6 +18,16 @@ static NSMutableDictionary* usersById = nil;
     }
 }
 
++(void)clear
+{
+  if (users) {
+    [users release];
+    [usersById release];
+    users = nil;
+    usersById = nil;
+  }
+}
+
 + (void)setUser:(User*)user
 {
     [UserStore initDictionary];

@@ -110,7 +110,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -379,6 +378,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     //this portion only for update
     if (!signupMode) {
+        // reset users information
+        [UserStore clear];
+
         // reset statistics information
         [[Statistics sharedStatistics] clear];
         

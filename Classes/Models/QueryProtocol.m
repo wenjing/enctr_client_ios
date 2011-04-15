@@ -82,10 +82,11 @@
   return [RecordBase class];
 }
 
-- (void)checkNetworkError:(KYMeetClient*)sender
+- (void)checkNetworkError:(KYMeetClient*)sender obj:(NSObject*)obj
 {
   if (sender.hasError) {
     queryStatus = QUERY_STATUS_ERROR;
+    self.results = (NSMutableArray*)obj; // these are string arrays with error messages
   }
   if ([self hasError] && sender.statusCode == 401) { // authentication fail
     kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
@@ -93,10 +94,10 @@
   }
 }
 
-- (void)queryDidFinish:(id)obj
+- (void)queryDidFinish
 {
   if (delegate && action) {
-    [delegate performSelector:action withObject:self withObject:obj];
+    [delegate performSelector:action withObject:self];
   }
   if (releaseAtCallBack) [self autorelease];
 }

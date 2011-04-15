@@ -142,6 +142,7 @@
 		3DC1F7C213528FCB00CC81AF /* green-button-sm.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F7C113528FCA00CC81AF /* green-button-sm.png */; };
 		3DDB526D135552BE00F56B4F /* CirkleMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB526C135552BE00F56B4F /* CirkleMember.m */; };
 		3DDB52701356725F00F56B4F /* CirkleMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB526F1356725100F56B4F /* CirkleMemberCell.m */; };
+		3DDB5275135820E100F56B4F /* invitation_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDB5274135820E100F56B4F /* invitation_icon.png */; };
 		3DF4B8F013397D1100748045 /* EncounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EE13397D1100748045 /* EncounterViewController.m */; };
 		3DF4B8F113397D1100748045 /* EncounterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EF13397D1100748045 /* EncounterViewController.xib */; };
 		3DF4B9191339827300748045 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B9181339827300748045 /* SessionManager.m */; };
@@ -370,6 +371,7 @@
 		3DDB526C135552BE00F56B4F /* CirkleMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleMember.m; sourceTree = "<group>"; };
 		3DDB526E1356724C00F56B4F /* CirkleMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleMemberCell.h; sourceTree = "<group>"; };
 		3DDB526F1356725100F56B4F /* CirkleMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleMemberCell.m; sourceTree = "<group>"; };
+		3DDB5274135820E100F56B4F /* invitation_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invitation_icon.png; sourceTree = "<group>"; };
 		3DF4B8ED13397D1100748045 /* EncounterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterViewController.h; sourceTree = "<group>"; };
 		3DF4B8EE13397D1100748045 /* EncounterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterViewController.m; sourceTree = "<group>"; };
 		3DF4B8EF13397D1100748045 /* EncounterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EncounterViewController.xib; path = Classes/EncounterViewController.xib; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3DDB5274135820E100F56B4F /* invitation_icon.png */,
 				3DC1F7C113528FCA00CC81AF /* green-button-sm.png */,
 				3DC1F7BF135239D500CC81AF /* green-button.png */,
 				3DC1F72C133FC7B900CC81AF /* flashback_icon.png */,
@@ -915,6 +918,7 @@
 				3DC1F78C1347F42600CC81AF /* tab-handshake@2x.png in Resources */,
 				3DC1F7C0135239D500CC81AF /* green-button.png in Resources */,
 				3DC1F7C213528FCB00CC81AF /* green-button-sm.png in Resources */,
+				3DDB5275135820E100F56B4F /* invitation_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1018,6 +1022,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = NO;
@@ -1028,6 +1033,7 @@
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 			};
@@ -1038,6 +1044,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
 				COPY_PHASE_STRIP = YES;
@@ -1046,6 +1053,7 @@
 				INFOPLIST_FILE = "Cirkle-Info.plist";
 				PRODUCT_NAME = Cirkle;
 				PROVISIONING_PROFILE = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
+				"PROVISIONING_PROFILE[sdk=*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "73FCE665-CBF0-4E8D-A312-99875B9C0276";
 				VALIDATE_PRODUCT = YES;
@@ -1056,8 +1064,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Wenjing Chu (9VWTL933MT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: macro zhao (KBVYVHV53T)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: macro zhao (KBVYVHV53T)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

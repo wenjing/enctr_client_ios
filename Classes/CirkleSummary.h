@@ -13,6 +13,7 @@
 #define CIRCLE_TYPE_PRIVATE     1
 #define CIRCLE_TYPE_CIRCLE      2
 #define CIRCLE_TYPE_SOLO        3
+#define CIRCLE_TYPE_INVITE      4
 
 @interface CirkleSummary : NSObject {
     sqlite_uint64    cId;

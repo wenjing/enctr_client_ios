@@ -129,11 +129,11 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   if (![self isPending]) return; // Ignore cancelled callback
   meetClient = nil; // Do not release here, it will be autorelease inside client
   queryStatus = QUERY_STATUS_OK;
-  [self checkNetworkError:sender];
+  [self checkNetworkError:sender obj:obj];
   if ([self hasError] &&
       !obj || ![obj isKindOfClass:[NSArray class]]) {
     queryStatus = QUERY_STATUS_ERROR;
-    [self queryDidFinish:nil];
+    [self queryDidFinish];
     return;
   }
 
@@ -197,25 +197,27 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
   id item;
   while ((item = [iter nextObject])) {
     // Save each item to DB
-    NSDictionary *dic = item;
-    sqlite3_uint64 id0 = [[dic objectForKey:@"id"] integerValue];
-    NSString *type = [dic objectForKey:@"type"];
+    id trimmed = [self trimData:item];
+    sqlite3_uint64 id0 = [[trimmed objectForKey:@"id"] integerValue];
+    NSString *type = [trimmed objectForKey:@"type"];
     if (filter_id_val != 0 &&
         !(filter_id_val == id0 && [filter_type isEqualToString:type])) {
       continue; // skip this one
     }
-    NSString * timestamp = [dic objectForKey:@"timestamp"];
+    NSString * timestamp = [trimmed objectForKey:@"timestamp"];
     sqlite3_uint64 hashed_id = GetHashId(id0, friend_id_val, cirkle_id_val,
                                          [type UTF8String], [timestamp UTF8String]);
     sqlite3_uint64 odd = [timestamp dateValue]; // odd is purely based on timestamp.
     sqlite3_uint64 uid = friend_id_val, cid = cirkle_id_val;
-    News *news = [[News alloc] initWithData:dic withId:hashed_id withOdd:odd
+    News *news = [[News alloc] initWithData:trimmed withId:hashed_id withOdd:odd
                                                 withUserId:uid withCirkleId:cid];
-    time_t timestamp_val = [timestamp dateValue];
-    if (stat.latestTime == 0 || stat.latestTime < timestamp_val) {
+    time_t timestamp_val = [type isEqualToString:@"users"] ? 0 : [timestamp dateValue];
+    if (timestamp_val != 0 &&
+        (stat.latestTime == 0 || stat.latestTime < timestamp_val)) {
       stat.latestTime = timestamp_val;
     }
-    if (stat.earliestTime == 0 || stat.earliestTime > timestamp_val) {
+    if (timestamp_val != 0 &&
+        (stat.earliestTime == 0 || stat.earliestTime > timestamp_val)) {
       stat.earliestTime = timestamp_val;
     }
     [news persist]; // save to DB
@@ -245,8 +247,8 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
         break;
       }
       News *news = item;
-      id trimmed= [self trimData:news.data];
-      [results addObject:trimmed];
+      id expanded= [self expandData:news.data];
+      [results addObject:expanded];
     }
   }
   // Check if has retrieved all records from remote server or not
@@ -262,8 +264,7 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
     [stat persist];
   }
   [DBConnection commitTransaction];
-
-  [self queryDidFinish:nil];
+  [self queryDidFinish];
 }
 
 - (id)trimData:(id)obj
@@ -290,13 +291,13 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
            [key isEqualToString:@"marked_user"])) {
         key = @"user";
         User *user = [User userWithJsonDictionary:item];
+        [user updateDB] ;
+        NSDictionary *user_dic = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [NSNumber numberWithInt:user.userId], @"<USER>", nil];
         id is_new_user = [item objectForKey:@"is_new_user"];
         if (!is_new_user) is_new_user = @"0";
-        //[DBConnection beginTransaction];
-        [user updateDB] ;
-        //[DBConnection commitTransaction];
         trimmed = [NSMutableArray array];
-        [trimmed addObject:user];
+        [trimmed addObject:user_dic];
         [trimmed addObject:is_new_user];
       } else if ([key isEqualToString:@"marked_name"]) {
         key = @"name";
@@ -311,7 +312,8 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
           [trimmed addObject:[chatter objectForKey:@"chatter"]];
         }
       } else if ([key isEqualToString:@"marked_top_users"] ||
-                 [key isEqualToString:@"marked_users"]) {
+                 [key isEqualToString:@"marked_users"] ||
+                 [key isEqualToString:@"users"]) {
         key = [key isEqualToString:@"marked_top_users"] ? @"top_users" : @"users";
         NSArray *users = [self trimData:item];
         trimmed = [NSMutableArray array];
@@ -323,6 +325,35 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
         trimmed = [self trimData:item];
       }
       [result setObject:trimmed forKey:key];
+    }
+  }
+  return result;
+}
+
+- (id)expandData:(id)obj
+{
+  id result = obj;
+  if ([obj isKindOfClass:[NSArray class]]) {
+    result = [NSMutableArray array];
+    NSEnumerator *iter = [obj objectEnumerator];
+    id item;
+    while ((item = [iter nextObject])) {
+      id expanded = [self expandData:item];
+      [result addObject:expanded];
+    }
+  } else if ([obj isKindOfClass:[NSDictionary class]] &&
+             [obj objectForKey:@"<USER>"]) {
+    uint32_t user_id = [[obj objectForKey:@"<USER>"] integerValue];
+    User *user = [User userWithId:user_id];
+    result = user;
+  } else if ([obj isKindOfClass:[NSDictionary class]]) {
+    result = [NSMutableDictionary dictionary];
+    NSEnumerator *iter = [obj keyEnumerator];
+    id key;
+    while ((key = [iter nextObject])) {
+      id item = [obj objectForKey:key];
+      id expanded = [self expandData:item];
+      [result setObject:expanded forKey:key];
     }
   }
   return result;

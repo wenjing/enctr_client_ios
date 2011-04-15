@@ -228,7 +228,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super post:url data:data] ;
 }
 
-- (void)updateMeet:(NSString*)name toMeetId:(uint64_t)meetId
+- (void)editMeet:(NSString*)name forMeetId:(uint64_t)meetId
 {
   needAuth = true;
   NSString* url = [NSString stringWithFormat:@"%@/meets/%ld",KAYAMEET_SITE_NAME,meetId];
@@ -237,7 +237,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super put:url body:body];
 }
 
-- (void)confirmInvitation:(BOOL)confirm toMeetId:(uint64_t)meetId
+- (void)confirmInvitation:(BOOL)confirm forMeetId:(uint64_t)meetId
 {
   needAuth = true;
   request = KAYAMEET_REQUEST_CONFIRM_INVITATION;

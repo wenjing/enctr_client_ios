@@ -209,6 +209,9 @@
         // check circle.score
         UIImage *logo;
         
+        if (circle.type == CIRCLE_TYPE_INVITE) {
+            logo = [delg.cachedImages objectAtIndex:9];
+        } else
         if (circle.score==1) {
             logo = [delg.cachedImages objectAtIndex:0];
         } else if (circle.score==2) {
@@ -246,11 +249,13 @@
         
 		[circle.contentString drawInRect:drawRect withFont:mainFont];
 		
-		// Draw flashback icon
-		icon = [delg.cachedImages objectAtIndex:4];
-		point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + GENERIC_MARGIN + GENERIC_MARGIN);
-		[icon drawAtPoint:point];
-		
+		// Draw flashback icon if there are photos
+        if ([circle.imageUrl count] >0) {
+            icon = [delg.cachedImages objectAtIndex:4];
+            point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + GENERIC_MARGIN + GENERIC_MARGIN);
+            [icon drawAtPoint:point];
+		}
+        
 		//that's it
 	}
 }

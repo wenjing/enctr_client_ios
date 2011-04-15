@@ -88,13 +88,15 @@
 
 - (NSDictionary*)toJSonDictionary
 {
-  NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-    email,  @"email",
-    name,   @"name",
-    nil
-  ];
+  NSMutableDictionary *dic = [NSMutableDictionary dictionary];
   if (userId != 0) {
     [dic setObject:[NSString stringWithFormat:@"%qu",userId] forKey:@"id"];
+  }
+  if (name) {
+    [dic setObject:[NSString stringWithString:name] forKey:@"name"];
+  }
+  if (email) {
+    [dic setObject:[NSString stringWithString:email] forKey:@"email"];
   }
   if (password) {
     [dic setObject:[NSString stringWithString:password] forKey:@"password"];
@@ -138,7 +140,8 @@
 
 + (User*)userWithJsonDictionary:(NSDictionary*)dic
 {
-    User *u = [UserStore getUser:[dic objectForKey:@"name"]];
+    //User *u = [UserStore getUser:[dic objectForKey:@"email"]];
+    User *u = [UserStore getUserWithId:[[dic objectForKey:@"id"] integerValue]];
     if (u) {
         [u updateWithJSonDictionary:dic];
         return u;
