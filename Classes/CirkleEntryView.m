@@ -251,8 +251,8 @@
 		
 		// Draw flashback icon if there are photos
         if ([circle.imageUrl count] >0) {
-            icon = [delg.cachedImages objectAtIndex:4];
-            point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + GENERIC_MARGIN + GENERIC_MARGIN);
+            icon = [delg.cachedImages objectAtIndex:3];
+            point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + circle.size.height + GENERIC_MARGIN + GENERIC_MARGIN);
             [icon drawAtPoint:point];
 		}
         

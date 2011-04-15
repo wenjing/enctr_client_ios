@@ -91,6 +91,11 @@
     
     avatarUrl = [[NSURL URLWithString:profileString] retain];
     
+    //Display Me if it's myself
+    if (type==CIRCLE_TYPE_SOLO) {
+        //overwrite nameString
+        nameString = [[NSString alloc] initWithFormat:@"Me, Myself and I"];
+    }
     imageUrl = [[NSMutableArray alloc] init];
     
     NSArray *acts = (NSArray *)[dic objectForKey:@"activities"];

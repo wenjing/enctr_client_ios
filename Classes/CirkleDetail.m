@@ -63,7 +63,7 @@
     if (dateFormatter == nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         
-        NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM" options:0
+        NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMMyyyy" options:0
                                                                   locale:[NSLocale currentLocale]];
         [dateFormatter setDateFormat:formatString];
         
