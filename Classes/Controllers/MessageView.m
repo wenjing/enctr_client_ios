@@ -114,6 +114,19 @@
     recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
 }
 
+- (void) editInviteWithId:(sqlite_int64)id
+{
+    InReplyToMeetId   = id;
+    InReplyToUserId   = 0;
+    InReplyToChatId   = 0;
+    isReplyFlag = false;
+    isInviteFlag = true;
+    isUserFlag = false;
+    to.text = @"To :";
+    recipient.enabled = true;
+    recipient.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+}
+
 - (void)createTransform:(BOOL)isDelete
 {
     if (isDelete) {

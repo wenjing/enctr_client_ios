@@ -13,19 +13,20 @@
 @implementation CirkleSummary
 @synthesize cId;
 @synthesize nameString;
-//@synthesize avatarUrl;
+@synthesize avatarUrl;
 @synthesize timeAt;
 @synthesize score;
 @synthesize type;
 @synthesize user;
 @synthesize imageUrl;
 @synthesize contentString;
+@synthesize size;
 
 // Why isn't this in template?
 - (void)dealloc
 {
     [nameString release];
-    //[avatarUrl release]; not used
+    [avatarUrl release];
     [user release];
     [imageUrl removeAllObjects];
     [imageUrl release];
@@ -37,6 +38,8 @@
     //get current time
     time_t now;
     time(&now);	
+    
+    size = CGSizeZero;
     
     cId = [[dic objectForKey:@"id"] longLongValue];
     
@@ -66,6 +69,9 @@
     user = [[dic objectForKey:@"user"] retain];
     
     //NSLog(@"Parse circle: user profile image url %@", user.profileImageUrl);
+    NSString *profileString = [user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    avatarUrl = [[NSURL URLWithString:profileString] retain];
     
     imageUrl = [[NSMutableArray alloc] init];
     
@@ -91,7 +97,7 @@
                 
                 mapurl = [mapurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 
-                [imageUrl addObject:[NSString stringWithString:mapurl]];
+                [imageUrl addObject:[NSURL URLWithString:mapurl]];
                 
                 //pick the first act
                 if (contentString==nil) {
@@ -120,7 +126,8 @@
                 
             } else if ([actType isEqualToString:@"photo"]) {
                 //read image url
-                [imageUrl addObject: [[act objectForKey:@"url"] retain]]; //retain
+                NSString *urlstring = [[act objectForKey:@"url"] retain];
+                [imageUrl addObject: [NSURL URLWithString:urlstring]];
                 //pick the first act
                 if (contentString==nil) {
                     NSString *photoString = [act objectForKey:@"content"];

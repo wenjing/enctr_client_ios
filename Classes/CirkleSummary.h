@@ -17,24 +17,26 @@
 @interface CirkleSummary : NSObject {
     sqlite_uint64    cId;
     NSString        *nameString;
-//    NSString        *avatarUrl;
+    NSURL           *avatarUrl;
     time_t          timeAt;
     NSInteger       score;
     NSInteger       type;
     User            *user;
     NSMutableArray  *imageUrl;
     NSString        *contentString;
+    CGSize          size; //cache size
 }
 
 @property (nonatomic) sqlite_uint64    cId;
 @property (nonatomic, retain) NSString        *nameString;
-//@property (nonatomic, retain) NSString        *avatarUrl;
+@property (nonatomic, retain) NSURL           *avatarUrl;
 @property (nonatomic) time_t          timeAt;
 @property (nonatomic) NSInteger       score;
 @property (nonatomic) NSInteger       type;
 @property (nonatomic, retain) User            *user;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
 @property (nonatomic, retain) NSString        *contentString;
+@property (nonatomic) CGSize size;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic;
 - (BOOL)isACircle;

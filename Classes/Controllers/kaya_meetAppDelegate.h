@@ -33,6 +33,7 @@ typedef enum {
 	BOOL				 initialized;
 	LocationManager*		location  ;
 	HJObjManager*		 objMan;
+    NSMutableArray*      cachedImages;
 //	MKReverseGeocoder*		reverseGeocoder;
 	float				 longitude, latitude, lerror  ;
     NSTimeInterval       autoRefreshInterval;
@@ -52,6 +53,7 @@ typedef enum {
 @property (nonatomic, retain) NSString*	screenName;
 @property (nonatomic, assign) int selectedTab;
 @property (nonatomic, assign) HJObjManager *objMan;
+@property (nonatomic, retain) NSMutableArray *cachedImages;
 @property (nonatomic, readonly) float longitude, latitude, lerror;
 @property (readwrite) CFURLRef		  soundFileURLRef;
 @property (readonly)  SystemSoundID   soundFileObject;

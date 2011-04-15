@@ -140,6 +140,8 @@
 		3DC1F78C1347F42600CC81AF /* tab-handshake@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F78B1347F42400CC81AF /* tab-handshake@2x.png */; };
 		3DC1F7C0135239D500CC81AF /* green-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F7BF135239D500CC81AF /* green-button.png */; };
 		3DC1F7C213528FCB00CC81AF /* green-button-sm.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F7C113528FCA00CC81AF /* green-button-sm.png */; };
+		3DDB526D135552BE00F56B4F /* CirkleMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB526C135552BE00F56B4F /* CirkleMember.m */; };
+		3DDB52701356725F00F56B4F /* CirkleMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB526F1356725100F56B4F /* CirkleMemberCell.m */; };
 		3DF4B8F013397D1100748045 /* EncounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EE13397D1100748045 /* EncounterViewController.m */; };
 		3DF4B8F113397D1100748045 /* EncounterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EF13397D1100748045 /* EncounterViewController.xib */; };
 		3DF4B9191339827300748045 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B9181339827300748045 /* SessionManager.m */; };
@@ -364,6 +366,10 @@
 		3DC1F78B1347F42400CC81AF /* tab-handshake@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-handshake@2x.png"; sourceTree = "<group>"; };
 		3DC1F7BF135239D500CC81AF /* green-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-button.png"; sourceTree = "<group>"; };
 		3DC1F7C113528FCA00CC81AF /* green-button-sm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-button-sm.png"; sourceTree = "<group>"; };
+		3DDB526B135552BE00F56B4F /* CirkleMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleMember.h; sourceTree = "<group>"; };
+		3DDB526C135552BE00F56B4F /* CirkleMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleMember.m; sourceTree = "<group>"; };
+		3DDB526E1356724C00F56B4F /* CirkleMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleMemberCell.h; sourceTree = "<group>"; };
+		3DDB526F1356725100F56B4F /* CirkleMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleMemberCell.m; sourceTree = "<group>"; };
 		3DF4B8ED13397D1100748045 /* EncounterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterViewController.h; sourceTree = "<group>"; };
 		3DF4B8EE13397D1100748045 /* EncounterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterViewController.m; sourceTree = "<group>"; };
 		3DF4B8EF13397D1100748045 /* EncounterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EncounterViewController.xib; path = Classes/EncounterViewController.xib; sourceTree = "<group>"; };
@@ -423,6 +429,8 @@
 				1E3DB38D133AC58600B5C8B1 /* CirkleQuery.m */,
 				1E3DB381133AC4EA00B5C8B1 /* Cirkle.h */,
 				1E3DB382133AC4EA00B5C8B1 /* Cirkle.m */,
+				3DDB526B135552BE00F56B4F /* CirkleMember.h */,
+				3DDB526C135552BE00F56B4F /* CirkleMember.m */,
 				3DC1F7601343AACE00CC81AF /* CirkleDetail.h */,
 				3DC1F7611343AACE00CC81AF /* CirkleDetail.m */,
 				3DC1F7381340FE7900CC81AF /* CirkleSummary.h */,
@@ -786,6 +794,8 @@
 				3A04A94412D00522000B99FB /* PlaceViewController.m */,
 				3DC1F7631343C48800CC81AF /* CirkleDetailView.h */,
 				3DC1F7641343C48C00CC81AF /* CirkleDetailView.m */,
+				3DDB526E1356724C00F56B4F /* CirkleMemberCell.h */,
+				3DDB526F1356725100F56B4F /* CirkleMemberCell.m */,
 				3DC1F7661343D81E00CC81AF /* CirkleDetailCell.h */,
 				3DC1F7671343D82100CC81AF /* CirkleDetailCell.m */,
 				3DC1F7691343DAB700CC81AF /* CirkleDetailViewController.h */,
@@ -995,6 +1005,8 @@
 				3DC1F76C1343DAC700CC81AF /* CirkleDetailViewController.m in Sources */,
 				1EE88C191345795E009CA84F /* Statistics.m in Sources */,
 				1E1FA989134DA09A004A20A5 /* UserQuery.m in Sources */,
+				3DDB526D135552BE00F56B4F /* CirkleMember.m in Sources */,
+				3DDB52701356725F00F56B4F /* CirkleMemberCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

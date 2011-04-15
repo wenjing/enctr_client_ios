@@ -161,6 +161,18 @@
 	[self edit];
 }
 
+- (void)inviteToWithId:(sqlite_uint64)cid andCircleName:(NSString*)circle andName:(NSString *)name
+{
+	isInviteMessage = true;
+	text.text = [NSString stringWithFormat:@"You are being invited to join the Circle \"%@\" by %@\n", circle, name];
+    textRange.location = [text.text length];
+    textRange.length = 0;
+	recipient.text = @"";
+	[messageView editInviteWithId:cid];
+	
+	[self edit];
+}
+
 - (void)saveMessage
 {
 	[messageView saveMessage];

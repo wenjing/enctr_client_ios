@@ -34,6 +34,7 @@
 - (void)editMessage:(KYMeet*)mt ;
 - (void)editMessageWithId:(sqlite_uint64)id;
 - (void)editInvite:(KYMeet *)mt ;
+- (void)editInviteWithId:(sqlite_int64)id;
 - (void)setCharCount;
 - (void)saveMessage ;
 - (void)clearTrash;

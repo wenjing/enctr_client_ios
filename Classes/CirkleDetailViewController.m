@@ -8,15 +8,19 @@
 
 #import "CirkleDetailViewController.h"
 #import "CirkleDetailCell.h"
+#import "CirkleMemberCell.h"
 #import "kaya_meetAppDelegate.h"
 #import "MessageViewController.h"
 
 @implementation CirkleDetailViewController
 @synthesize listDetails;
+@synthesize listMembers;
 @synthesize summary;
 @synthesize query;
 @synthesize upperController;
-
+@synthesize segmentedControl;
+@synthesize detailTable;
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -25,11 +29,13 @@
     }
     return self;
 }
-
+*/
 - (void)dealloc
 {
     [listDetails removeAllObjects];
     [listDetails release];
+    [listMembers removeAllObjects];
+    [listMembers release];
     [summary release];
     //first cancel, then release
     if (query) {
@@ -45,6 +51,44 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+-(IBAction) segmentedControlIndexChanged{
+    NSLog(@"segmentedControlIndexCHanged to %d", self.segmentedControl.selectedSegmentIndex);
+    
+	switch (self.segmentedControl.selectedSegmentIndex) {
+		case 0:
+			// live news
+            [detailTable reloadData];
+            
+            // add compose button as the nav bar's custom right view
+            UIBarButtonItem *addButton = [[UIBarButtonItem alloc] 
+                                          initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                target:self 
+                                          action:@selector(composeAction:)];
+            
+            self.navigationItem.rightBarButtonItem = addButton;
+            [addButton release];
+            
+			break;
+		case 1:
+			// members
+            [detailTable reloadData];
+            
+            // add member button as the nav bar's custom right view
+            UIBarButtonItem *addmButton = [[UIBarButtonItem alloc] 
+                                          initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                          target:self 
+                                          action:@selector(addMemberAction:)];
+            
+            self.navigationItem.rightBarButtonItem = addmButton;
+            [addmButton release];
+            
+			break;
+            
+		default:
+			break;
+	}
 }
 
 #pragma mark -
@@ -93,7 +137,7 @@
         NSLog(@"  has error");
     } else {
         if ([sender hasMore]) {
-            NSLog(@"  has more");
+            //NSLog(@"  has more");
         }
         NSArray *results = [sender getResults];
         
@@ -105,19 +149,43 @@
             [listDetails removeAllObjects];
         
         
-            NSLog(@"start building %d circleDetails\n", count);
+            //NSLog(@"start building %d circleDetails\n", count);
         
             for (int i=0; i<count; i++) {
             
                 NSDictionary *dic = [results objectAtIndex:i];
             
+                NSString *eventType = [dic objectForKey:@"type"];
+                if ([eventType isEqualToString:@"users"]) {
+                    //NSLog(@"Parsing membership list");
+                    
+                    //read membership
+                    NSArray *users = (NSArray *)[dic objectForKey:@"users"];
+                    if (![users isKindOfClass:[NSArray class]]) {
+                        NSLog(@"Bad format from member users array");
+                    }
+                    
+                    NSDictionary *aUserDic;
+                    for (aUserDic in users) {
+                        if (![aUserDic isKindOfClass:[NSDictionary class]]) {
+                            NSLog(@"Bad format from member user dictionary");
+                        }
+                        
+                        NSArray *aUserArray = [aUserDic objectForKey:@"user"];
+                        
+                        //now the user - retain it
+                        [listMembers addObject: [[aUserArray objectAtIndex:0] retain]];
+                    }
+                    
+                } else {
+
                 CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
             
                 [listDetails addObject:circleDetail];
-                
+                }
             }
         
-            [self.tableView reloadData];
+            [detailTable reloadData];
         }
     }
     
@@ -128,10 +196,10 @@
         [self restoreAndLoadNews:true];
     }
 }
-
+/*
 // unused any more
 - (void)newsDidUpdate:(NewsQuery*)sender {
-    NSLog(@"Load news results: withUpdate %d", [sender queryUpdate]);
+    //NSLog(@"Load news results: withUpdate %d", [sender queryUpdate]);
     
     if ([sender hasError]) {
         NSLog(@"  has error");
@@ -153,23 +221,44 @@
             
                 NSDictionary *dic = [results objectAtIndex:i];
             
-                CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
+                NSString *eventType = [dic objectForKey:@"type"];
+                if ([eventType isEqualToString:@"users"]) {
+                    NSLog(@"Parsing membership list");
+                    
+                    //read membership
+                    NSArray *users = (NSArray *)[dic objectForKey:@"users"];
+                    if (![users isKindOfClass:[NSArray class]]) {
+                        NSLog(@"Bad format from member users array");
+                    }
+    
+                    NSArray *aUserArray;
+                    for (aUserArray in users) {
+                        if (![aUserArray isKindOfClass:[NSArray class]]) {
+                            NSLog(@"Bad format from member user array");
+                        }
+                        
+                        //now the user - retain it
+                        [listMembers addObject: [[aUserArray objectAtIndex:0] retain]];
+                    }
+
+                } else {
+                    
+                    //encounter or topic
+                    CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
             
-                [listDetails addObject:circleDetail];
-            
-                //NSLog(@"adding %d-th circleDetail to list\n", i);
-                //if (i>100)
-                //    break;
+                    [listDetails addObject:circleDetail];
+                }
+
             }
         
-            [self.tableView reloadData];
+            [detailTable reloadData];
         }
     }
     
     [sender clear];
     
 }
-
+*/
 - (IBAction)composeAction:(id)sender
 {
 	// the custom icon button was clicked, handle it here
@@ -188,6 +277,24 @@
     }
 }
 
+- (IBAction) addMemberAction:(id)sender
+{
+    // the custom icon button was clicked, handle it here
+    kaya_meetAppDelegate *appDelegate = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+	MessageViewController *mV = appDelegate.messageView ;
+	
+    //set delegate
+    mV.delegate = self;
+    
+    [mV showCamera:NO];
+    
+    if ([summary isACircle]) {
+        [mV inviteToWithId:summary.cId andCircleName:summary.nameString andName:summary.user.name];
+    } else {
+        //not supported yet
+    }
+}
+
 // delegate to messageViewController
 - (void) messageViewControllerDidFinish {
     //NSLog(@"messageViewControllerDidFinish called");
@@ -195,7 +302,7 @@
     [self restoreAndLoadNews:true];
     
     // also update circle summary view
-    NSLog(@"Refreshing circle summary");
+    //NSLog(@"Refreshing circle summary");
     
     [upperController restoreAndLoadCirkles:true];
 }
@@ -208,6 +315,7 @@
     
     // reload circles every time view is reloaded
     listDetails = [[NSMutableArray alloc] init];
+    listMembers = [[NSMutableArray alloc] init];
     self.title = [[NSString alloc] initWithFormat:@"%@",summary.nameString];
     
     // alloc query object
@@ -221,6 +329,9 @@
                                                                   target:self action:@selector(composeAction:)];
 	self.navigationItem.rightBarButtonItem = addButton;
 	[addButton release];
+    
+    // initialize segmentedControl to default segment
+    segmentedControl.selectedSegmentIndex = 0 ;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -241,6 +352,8 @@
     // e.g. self.myOutlet = nil;
     [listDetails removeAllObjects];
     self.listDetails = nil;
+    [listMembers removeAllObjects];
+    self.listMembers = nil;
     [summary release];
     if (query) {
         [query clear];
@@ -282,38 +395,79 @@
 {
 
     // Return the number of rows in the section.
-    return [self.listDetails count];
+    if (segmentedControl.selectedSegmentIndex == 0) {
+        return [self.listDetails count];
+    } else {
+        return [self.listMembers count];
+    }
+        
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *CircleDetailTableIdentifier = @"CircleDetailTableIdentifier";
+    static NSString *CircleMemberIdentifier = @"CircleMemberIdentifier";
+    
     static NSInteger i=0;
     
 	NSUInteger row = [indexPath row];
 	
-	CirkleDetailCell	*cell = (CirkleDetailCell *)[tableView dequeueReusableCellWithIdentifier:CircleDetailTableIdentifier];
-	if (cell == nil) {
-		cell = [[[CirkleDetailCell alloc] 
+    if (segmentedControl.selectedSegmentIndex == 0) {
+
+        CirkleDetailCell	*cell = (CirkleDetailCell *)[detailTable dequeueReusableCellWithIdentifier:CircleDetailTableIdentifier];
+        if (cell == nil) {
+            cell = [[[CirkleDetailCell alloc] 
 				 initWithStyle:UITableViewCellStyleDefault 
 				 reuseIdentifier:CircleDetailTableIdentifier] autorelease];
-        NSLog(@"A new circle detail view cell %d allocated, row %d", ++i, row);
-    }
+            //NSLog(@"A new circle detail view cell %d allocated, row %d", ++i, row);
+        }
     
-    [cell setCircleDetail:[listDetails objectAtIndex:row]];
+        [cell setCircleDetail:[listDetails objectAtIndex:row]];
     
-    //refactor later
-    NSInteger sizeOfFrame = [cell getSize];
+        //refactor later
+        NSInteger sizeOfFrame = [cell getSize];
     
-    cell.frame = CGRectMake(0.0, 0.0, 320.0, sizeOfFrame);
-    
-	return cell;
+        cell.frame = CGRectMake(0.0, 0.0, 320.0, sizeOfFrame);
+        
+        return cell;
+    } else {
+        //make member view cell
+        CirkleMemberCell *cell = (CirkleMemberCell*)[detailTable dequeueReusableCellWithIdentifier:CircleMemberIdentifier];
+        if (cell == nil) {
+            cell = [[[CirkleMemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CircleMemberIdentifier] autorelease];
 
+            //NSLog(@"A new member view cell %d allocated, row %d", ++i, row);
+        } else {
+            //reuse
+            [cell.userImageView clear];
+        }
+        
+        User *user = [listMembers objectAtIndex:row];
+        
+        cell.primaryLabel.text = user.name;
+        
+        kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+        //[cell.userImageView clear];
+        
+        //NSLog(@"circle member user url: %@", user.profileImageUrl);
+        
+        [cell.userImageView showLoadingWheel];
+        
+        cell.userImageView.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:cell.userImageView waitUntilDone:YES];
+        
+        return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	NSUInteger row = [indexPath row];
+    
+    if (segmentedControl.selectedSegmentIndex == 1) {
+        return 57;
+    }
     
     CirkleDetail *circleDetail = [listDetails objectAtIndex:row];
     
@@ -435,7 +589,7 @@
 	[alert show];
 	[message release];
 	[alert release];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[detailTable deselectRowAtIndexPath:indexPath animated:YES];
 
     // Navigation logic may go here. Create and push another view controller.
     /*

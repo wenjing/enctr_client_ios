@@ -236,13 +236,14 @@
     static NSInteger i=0;
     
 	NSUInteger row = [indexPath row];
-	
+	//NSLog(@"calling cellForRowAtIndexPath, row %d", row);
+    
 	CirkleEntryCell	*cell = (CirkleEntryCell *)[tableView dequeueReusableCellWithIdentifier:CircleTableIdentifier];
 	if (cell == nil) {
 		cell = [[[CirkleEntryCell alloc] 
 				 initWithStyle:UITableViewCellStyleDefault 
 				 reuseIdentifier:CircleTableIdentifier] autorelease];
-        NSLog(@"A new circle view cell %d allocated, row %d", ++i, row);
+        //NSLog(@"A new circle view cell %d allocated, row %d", ++i, row);
     }
     
     [cell setCircle:[listCircles objectAtIndex:row]];
@@ -258,20 +259,24 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	NSUInteger row = [indexPath row];
+    //NSLog(@"calling heightForRowAtIndexPath row %d",row);
     
     CirkleSummary *circle = [listCircles objectAtIndex:row];
     
-	CGRect drawRect = CGRectMake(GENERIC_MARGIN*2+PIC_WIDTH, 0.0, CONTENT_WIDTH, 9999.0);
+    if (circle.size.height == 0) {
+        CGRect drawRect = CGRectMake(GENERIC_MARGIN*2+PIC_WIDTH, 0.0, CONTENT_WIDTH, 9999.0);
 	
-	CGSize size = [circle.contentString sizeWithFont:[UIFont systemFontOfSize:12] 
+        circle.size = [circle.contentString sizeWithFont:[UIFont systemFontOfSize:MAIN_FONT_SIZE] 
                                    constrainedToSize:drawRect.size];
 	
-	//NSLog(@"Row %d content Text Size = %@", row, NSStringFromCGSize(size));
+        //NSLog(@"Row %d content Text Size = %@", row, NSStringFromCGSize(circle.size));
+    }
+    
 	if ([circle.imageUrl count] > 0) {//if we have photo - 
-		return (GENERIC_MARGIN*2+PIC_WIDTH+size.height+GENERIC_MARGIN*2+LG_PIC_SIZE);
+		return (GENERIC_MARGIN*2+PIC_WIDTH+circle.size.height+GENERIC_MARGIN*2+LG_PIC_SIZE);
 	}
     
-	return (GENERIC_MARGIN*2+PIC_WIDTH+size.height+GENERIC_MARGIN);
+	return (GENERIC_MARGIN*2+PIC_WIDTH+circle.size.height+GENERIC_MARGIN);
     
 }
 

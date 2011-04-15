@@ -11,21 +11,29 @@
 #import "CirkleSummary.h"
 #import "CirkleViewController.h"
 
-@interface CirkleDetailViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface CirkleDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     CirkleSummary *summary;
+    CirkleViewController *upperController;
     NSMutableArray *listDetails;
     NewsQuery *query;
-    CirkleViewController *upperController;
+    IBOutlet UITableView *detailTable;    
+    NSMutableArray *listMembers;
+    IBOutlet UISegmentedControl *segmentedControl;
 }
 @property (nonatomic, retain) NSMutableArray *listDetails;
+@property (nonatomic, retain) NSMutableArray *listMembers;
 @property (nonatomic, retain) CirkleSummary *summary;
 @property (nonatomic, retain) NewsQuery *query;
 @property (nonatomic, retain) CirkleViewController *upperController;
+@property (nonatomic, assign) UISegmentedControl *segmentedControl;
+@property (nonatomic, assign) UITableView *detailTable;
 
 - (void)restoreAndLoadNews:(BOOL)withUpdate;
 - (void)newsDidLoad:(NewsQuery*)sender;
-- (void)newsDidUpdate:(NewsQuery*)sender;
 
 - (IBAction)composeAction:(id)sender;
+- (IBAction) addMemberAction:(id)sender;
+
+- (IBAction) segmentedControlIndexChanged;
 
 @end

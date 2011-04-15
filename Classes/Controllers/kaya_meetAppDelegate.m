@@ -31,7 +31,7 @@
 @synthesize messageView;
 @synthesize selectedTab;
 @synthesize objMan;
-
+@synthesize cachedImages;
 @synthesize longitude, latitude, lerror;
 @synthesize soundFileURLRef, soundFileObject;
 #pragma mark -
@@ -61,6 +61,18 @@
 	
 	messageView = nil ;
 	objMan		= nil ;
+    
+    cachedImages = [[NSMutableArray alloc] initWithCapacity:9];
+    
+    [cachedImages addObject:[UIImage imageNamed:@"circle_logo_1.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"circle_logo_2.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"circle_logo_3.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"flashback_icon.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"chatter_icon.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"group_people_icon.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"circle_logo.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"unknown-person.png"]];
+    [cachedImages addObject:[UIImage imageNamed:@"timeofupdate_icon.png"]];
     
     /* move this to after login is done, otherwise the circle view doesn't know who
 	selectedTab = TAB_CIRCLES;
@@ -334,7 +346,7 @@
     [window release];
 	[location release];
 	[objMan release];
-    
+    [cachedImages release];
     [filter release];
 	AudioServicesDisposeSystemSoundID (soundFileObject);
     CFRelease (soundFileURLRef);
@@ -379,7 +391,7 @@
 {
 	if (objMan == nil) {
 		// Image cache 
-		objMan = [[HJObjManager alloc] init] ;
+		objMan = [[HJObjManager alloc] initWithLoadingBufferSize:40 memCacheSize:40 ] ;
 		NSString* cacheDirectory = [NSHomeDirectory() stringByAppendingString:@"/Library/Caches/imgcache/Cirkle/"] ;
 		HJMOFileCache* fileCache = [[[HJMOFileCache alloc] initWithRootPath:cacheDirectory] autorelease];
 		objMan.fileCache = fileCache;

@@ -49,6 +49,7 @@
 - (void)postTo:(KYMeet*)mt;
 - (void)postToWithId:(sqlite_uint64)cid;
 - (void)inviteTo:(KYMeet*)mt;
+- (void)inviteToWithId:(sqlite_uint64)cid andCircleName:(NSString*)circle andName:(NSString *)name;
 - (void)saveMessage;
 - (void)checkProgressWindowState;
 - (void)imagePickerControllerDidDisappear;

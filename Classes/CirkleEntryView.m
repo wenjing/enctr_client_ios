@@ -26,33 +26,22 @@
     
     circle = aCircle;
     
-    // variable text
-    UIFont *mainFont = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
-    
-    CGRect drawRect = CGRectMake(2*GENERIC_MARGIN+PIC_WIDTH, 0, CONTENT_WIDTH, 9999.0);
-    NSString *varString = circle.contentString;
-    
-    size = [varString sizeWithFont:mainFont 
-                     constrainedToSize:drawRect.size];
-    
-    //NSLog(@"cell variable Text Size = %@", NSStringFromCGSize(size));
-    
     //set the user image url
     kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
     User *user = circle.user;
     
     if (user!=nil) {
         [userImage clear];
-        userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        //userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
-        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+        userImage.url = circle.avatarUrl;
+        //[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+        [delg.objMan manage:userImage];
         //NSLog(@"user %d name %@ url %@ full url=%@", user.userId, user.name, user.profileImageUrl, userImage.url);
     }
     
     NSEnumerator *enumerator = [circle.imageUrl objectEnumerator];
     NSEnumerator *image_enum = [images objectEnumerator];
     
-    NSString *imgurl;
+    NSURL *imgurl;
     CGRect contentRect = self.bounds;
     CGFloat boundsX = contentRect.origin.x;
     int i = 0;
@@ -68,18 +57,14 @@
     
     while ((imgurl = [enumerator nextObject])) {
         
-        drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(LG_PIC_SIZE+GENERIC_MARGIN), 
-                              CONTENT_TOP_Y + size.height + 5, LG_PIC_SIZE, LG_PIC_SIZE);
+        CGRect drawRect = CGRectMake(boundsX+CONTENT_TOP_X+i*(LG_PIC_SIZE+GENERIC_MARGIN), 
+                              CONTENT_TOP_Y + circle.size.height + 5, LG_PIC_SIZE, LG_PIC_SIZE);
         img = [image_enum nextObject];
         img.frame = drawRect;
                 
-        //[img clear];
-        img.url = [NSURL URLWithString:imgurl];
-        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:img waitUntilDone:YES];
-        //[delg.objMan manage:img];
-        [self addSubview:img];
-
-        //NSLog(@"%@", img.url);
+        img.url = imgurl;
+        //[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:img waitUntilDone:YES];
+        [delg.objMan manage:img];
         
         i++;
         if(i>=4)
@@ -156,11 +141,17 @@
         
         [self addSubview:userImage];
         
+        //step1: do addSubView here
+        HJManagedImageV *imageView;
+        
         images = [[NSMutableArray alloc] init];
-        [images addObject:[[HJManagedImageV alloc] init]];
-        [images addObject:[[HJManagedImageV alloc] init]];
-        [images addObject:[[HJManagedImageV alloc] init]];
-        [images addObject:[[HJManagedImageV alloc] init]];
+        
+        for (int i=0; i<4; i++) {
+            
+            imageView = [[HJManagedImageV alloc] init];
+            [self addSubview:imageView];
+            [images addObject:imageView];
+        }
         
     }
     return self;
@@ -180,22 +171,22 @@
 	UIFont *nameFont = [UIFont boldSystemFontOfSize:12];
 	
 	// Color and font for the main text items
-	UIColor *mainTextColor = nil;
+	UIColor *mainTextColor = [UIColor blackColor];
 	UIFont *mainFont = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
 	
 	// Color and font for the secondary text items
-	UIColor *secondaryTextColor = nil;
+	UIColor *secondaryTextColor = [UIColor darkGrayColor];
 	UIFont *secondaryFont = [UIFont systemFontOfSize:SECONDARY_FONT_SIZE];
 	
-	mainTextColor = [UIColor blackColor];
-	secondaryTextColor = [UIColor darkGrayColor];
 	self.backgroundColor = [UIColor whiteColor];
-	
+    
 	CGRect contentRect = self.bounds;
 	
 	[[UIColor whiteColor] set];
 	UIRectFill(contentRect);
 	
+    kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+    
 	//we will never edit
 	if (1) {
 		CGFloat boundsX = contentRect.origin.x;
@@ -204,12 +195,6 @@
 		// Set the color for the main text items.
 		[mainTextColor set];
         
-		// Draw the picture
-        /* no need any more
-		point = CGPointMake(boundsX+GENERIC_MARGIN, GENERIC_MARGIN);
-		
-		[pic drawAtPoint:point];
-		*/
 		// Draw name
 		point = CGPointMake(boundsX + NAME_TOP_X, GENERIC_MARGIN);
 		[circle.nameString drawAtPoint:point 
@@ -225,11 +210,11 @@
         UIImage *logo;
         
         if (circle.score==1) {
-            logo = [UIImage imageNamed:@"circle_logo_1.png"];
+            logo = [delg.cachedImages objectAtIndex:0];
         } else if (circle.score==2) {
-            logo = [UIImage imageNamed:@"circle_logo_2.png"];
+            logo = [delg.cachedImages objectAtIndex:1];
         } else {
-            logo = [UIImage imageNamed:@"circle_logo_3.png"];
+            logo = [delg.cachedImages objectAtIndex:2];
         }
 
 		point = CGPointMake(boundsX + LOGO_TOP_X, LOGO_TOP_Y);
@@ -250,19 +235,19 @@
 		
 		// Content
 		// first icon
-		UIImage *icon = [UIImage imageNamed:@"group_people_icon.png"];
+		UIImage *icon;// = [UIImage imageNamed:@"group_people_icon.png"];
 		//point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y+5);
 		//[icon drawAtPoint:point];
         
 		// Draw text content
 		CGRect drawRect = CGRectMake(boundsX+CONTENT_TOP_X, CONTENT_TOP_Y, CONTENT_WIDTH, 9999.0);
 		        
-		drawRect.size = size;
+		drawRect.size = circle.size;
         
 		[circle.contentString drawInRect:drawRect withFont:mainFont];
 		
 		// Draw flashback icon
-		icon = [UIImage imageNamed:@"flashback_icon.png"];
+		icon = [delg.cachedImages objectAtIndex:4];
 		point = CGPointMake(boundsX+19.5, CONTENT_TOP_Y + size.height + GENERIC_MARGIN + GENERIC_MARGIN);
 		[icon drawAtPoint:point];
 		
