@@ -12,6 +12,7 @@
 	IBOutlet UIView*		view ;
     IBOutlet UITextField*	username_field;
 	IBOutlet UITextField*   password_field;
+    IBOutlet UIImageView*   bg_image;
 }
 
 - (IBAction) done:(id)sender ;
