@@ -42,7 +42,7 @@
     IBOutlet UIImageView*       pickedImageView;
     
   UIImagePickerController*      imgPicker ;
-  UINavigationController*               navigation;
+  UINavigationController*       navigation;
     
     // holder for updated information
     User*                       holder;
@@ -55,6 +55,7 @@
 
 - (IBAction) Save   : (id)sender ;
 - (IBAction) logout : (id)sender ;
+- (IBAction) Cancel : (id)sender ;
 - (void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)textFieldDidChange:(UITextField *)textField;
 - (void)initSetupView;

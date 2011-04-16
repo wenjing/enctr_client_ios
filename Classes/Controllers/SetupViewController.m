@@ -88,7 +88,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     [super viewDidLoad];
     
-    NSLog(@"setupView did load");
+    //NSLog(@"setupView did load");
     
     navigation = self.navigationController ;
     self.navigationItem.title = @"Settings";
@@ -530,6 +530,10 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     }
     
     passwordFieldChanged = NO;
+}
+
+- (IBAction) Cancel:(id)sender {
+    [self initSetupView];
 }
 
 - (IBAction) Save : (id) sender {
