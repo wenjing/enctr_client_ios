@@ -187,6 +187,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(Statistics);
   self = [super initWithId:1 withOdd:0];
   if (self != nil) {
     [self clear];
+    [DBConnection beginTransaction];
+    [self synchronize];
+    [DBConnection commitTransaction];
   }
   return self;
 }
@@ -199,9 +202,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(Statistics);
 {
   self.data = nil;
   self.data = [NSMutableDictionary dictionary];
-  [DBConnection beginTransaction];
-  [self synchronize];
-  [DBConnection commitTransaction];
 }
 
 - (void)synchronize
