@@ -126,7 +126,7 @@
     
     //set the user image url
     kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-    User *user = circleDetail.user;
+    User *user = circleDetail.user; 
     
     // set user image 
     // always clear it

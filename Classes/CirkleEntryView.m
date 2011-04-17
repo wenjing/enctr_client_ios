@@ -28,9 +28,9 @@
     
     //set the user image url
     kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-    User *user = circle.user;
+    //User *user = circle.user; //not used anymore
     
-    if (user!=nil) {
+    if (circle.avatarUrl!=nil) {
         [userImage clear];
         userImage.url = circle.avatarUrl;
         //[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];

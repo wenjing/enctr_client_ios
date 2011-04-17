@@ -240,8 +240,10 @@
     
     [mV showCamera:NO];
     
+    User *myself = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+    
     if ([summary isACircle]) {
-        [mV inviteToWithId:summary.cId andCircleName:summary.nameString andName:summary.user.name];
+        [mV inviteToWithId:summary.cId andCircleName:summary.nameString andName:myself.name];
     } else {
         //not supported yet
     }

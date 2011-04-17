@@ -17,7 +17,7 @@
 @synthesize timeAt;
 @synthesize score;
 @synthesize type;
-@synthesize user;
+@synthesize inviter;
 @synthesize imageUrl;
 @synthesize contentString;
 @synthesize size;
@@ -27,7 +27,7 @@
 {
     [nameString release];
     [avatarUrl release];
-    [user release];
+    [inviter release];
     [imageUrl removeAllObjects];
     [imageUrl release];
     [contentString release];
@@ -69,11 +69,10 @@
         if (is_pending == 1) {
             //invitation:
             type = CIRCLE_TYPE_INVITE;
-            //user = inviter
             //contentString = invite_message
-            user = [[dic objectForKey:@"inviter"] retain];
+            inviter = [[dic objectForKey:@"inviter"] retain];
             contentString = [[dic objectForKey:@"invite_message"] retain];
-            NSString *profileString = [user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *profileString = [inviter.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
             avatarUrl = [[NSURL URLWithString:profileString] retain];
             

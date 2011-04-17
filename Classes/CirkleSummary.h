@@ -22,7 +22,7 @@
     time_t          timeAt;
     NSInteger       score;
     NSInteger       type;
-    User            *user;
+    User            *inviter;
     NSMutableArray  *imageUrl;
     NSString        *contentString;
     CGSize          size; //cache size
@@ -34,7 +34,7 @@
 @property (nonatomic) time_t          timeAt;
 @property (nonatomic) NSInteger       score;
 @property (nonatomic) NSInteger       type;
-@property (nonatomic, retain) User            *user;
+@property (nonatomic, retain) User            *inviter;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
 @property (nonatomic, retain) NSString        *contentString;
 @property (nonatomic) CGSize size;
