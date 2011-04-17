@@ -232,7 +232,12 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
 {
   needAuth = true;
   NSString* url = [NSString stringWithFormat:@"%@/meets/%ld",KAYAMEET_SITE_NAME,meetId];
-  NSString *body = [NSString stringWithFormat:@"&name=%@",name] ;
+    NSString *postString = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)name,
+                                                                              NULL, CFSTR("￼=,!$&'()*+;@?\n\"<>#\t :/"), kCFStringEncodingUTF8);
+  NSString *body = [NSString stringWithFormat:@"&name=%@",postString] ;
+    
+    NSLog(@"string %@ escape %@", name, postString);
+    
   request = KAYAMEET_REQUEST_UPDATE_MEET;
   [super put:url body:body];
 }

@@ -36,7 +36,9 @@
 @property (nonatomic, retain) CirkleViewController *upperController;
 @property (nonatomic, assign) UISegmentedControl *segmentedControl;
 @property (nonatomic, assign) UITableView *detailTable;
- 
+@property (nonatomic, retain) UITableViewCell *nameCell;
+@property (nonatomic, retain) UITableViewCell *imageCell;
+
 - (void)restoreAndLoadNews:(BOOL)withUpdate;
 - (void)newsDidLoad:(NewsQuery*)sender;
 

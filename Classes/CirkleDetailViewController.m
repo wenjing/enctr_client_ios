@@ -21,6 +21,9 @@
 @synthesize upperController;
 @synthesize segmentedControl;
 @synthesize detailTable;
+@synthesize nameCell;
+@synthesize imageCell;
+
 /*
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -55,7 +58,7 @@
 }
 
 -(IBAction) segmentedControlIndexChanged{
-    NSLog(@"segmentedControlIndexCHanged to %d", self.segmentedControl.selectedSegmentIndex);
+    //NSLog(@"segmentedControlIndexChanged to %d", self.segmentedControl.selectedSegmentIndex);
     
 	switch (self.segmentedControl.selectedSegmentIndex) {
 		case 0:
@@ -369,7 +372,11 @@
 }
 
 #pragma mark - Table view data source
-
+/*
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+*/
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
@@ -621,7 +628,7 @@
 {
     NSLog(@"Hitting done");
     [textField resignFirstResponder];
-    
+    self.navigationItem.rightBarButtonItem.enabled = true;
     return YES;
 }
 
