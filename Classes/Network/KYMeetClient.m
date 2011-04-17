@@ -163,7 +163,7 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com";
   NSString *postString = [KYConnection generateBodyString:nil params:params];
   
     //retain the params for requester's use
-    postParams = params;
+    self.postParams = params;
     
   //NSLog(@"%@ -d %@",url,postString);
   [self post:url body:postString];
