@@ -251,8 +251,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
                                 destructiveButtonTitle:nil
                                     otherButtonTitles:nil];
             as.tag = 1;
-            [as addButtonWithTitle:@"Take Picture "];
-            [as addButtonWithTitle:@"Choose Photo "];
+            [as addButtonWithTitle:@"Take A Picture "];
+            [as addButtonWithTitle:@"Choose A Photo "];
             [as showInView:navigation.parentViewController.view];
             [as release];
             break;

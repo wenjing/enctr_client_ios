@@ -117,6 +117,31 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
   [self postOrPut:aURL data:data cmd:@"PUT"];
 }
 
+- (NSString *) urlEscape:(NSString *)urlString 
+{
+    NSMutableString *workingString = [NSMutableString stringWithString:urlString];
+    
+    [workingString replaceOccurrencesOfString:@"$" withString:@"%24" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"&" withString:@"%26" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"+" withString:@"%2B" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"," withString:@"%2C" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"/" withString:@"%2F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@":" withString:@"%3A" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@";" withString:@"%3B" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"=" withString:@"%3D" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"?" withString:@"%3F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"@" withString:@"%40" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@" " withString:@"%20" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"\t" withString:@"%09" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"#" withString:@"%23" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"<" withString:@"%3C" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@">" withString:@"%3E" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"\"" withString:@"%22" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+    [workingString replaceOccurrencesOfString:@"\n" withString:@"%0A" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [workingString length])];
+
+    return workingString;
+}
+
 // POST encounter with this
 
 -(void)postOrPut:(NSString*)aURL body:(NSString*)body cmd:(NSString*)cmd
@@ -128,7 +153,11 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
     
   NSString *URL = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)aURL,
                                                 (CFStringRef)@"%", NULL, kCFStringEncodingUTF8);
+
   [URL autorelease];
+    
+    //NSString *newURL = [self urlEscape:URL];
+    
   NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                      cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                  timeoutInterval:NETWORK_TIMEOUT];

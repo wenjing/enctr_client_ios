@@ -114,6 +114,7 @@
   NSString *meet_name = @"New Name III";
   [client editMeet:meet_name forMeetId:meet_id];
 }
+
 - (void)meetDidEdit:(KYMeetClient*)sender obj:(NSObject*)obj
 {
   NSLog(@"Edit meet results");

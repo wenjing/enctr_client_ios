@@ -248,6 +248,23 @@
 {
     //send to server
     NSLog(@"saveCircleInfoAction clicked");
+    
+    self.navigationItem.rightBarButtonItem.enabled = false;
+    
+    KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(saveCircleDidFinish:obj:)];
+    
+    [client editMeet:circleName.text forMeetId:summary.cId];
+    
+}
+
+- (void)saveCircleDidFinish:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+    NSLog(@"saveCircleDidFinish result");
+    if ([sender hasError]) {
+        NSLog(@" has error");
+    } else {
+        //NSLog(@"%@", obj);
+    }
 }
 
 // delegate to messageViewController
@@ -565,8 +582,8 @@
                        destructiveButtonTitle:nil
                             otherButtonTitles:nil];
     
-            [as addButtonWithTitle:@"Take Picture "];
-            [as addButtonWithTitle:@"Choose Photo "];
+            [as addButtonWithTitle:@"Take A Picture "];
+            [as addButtonWithTitle:@"Choose A Photo "];
             [as showInView:self.navigationController.parentViewController.view];
             [as release];
         }
