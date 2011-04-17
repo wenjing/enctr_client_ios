@@ -256,7 +256,7 @@
     
     KYMeetClient *client = [[KYMeetClient alloc] initWithTarget:self action:@selector(saveCircleDidFinish:obj:)];
     
-    [client editMeet:circleName.text forMeetId:summary.cId];
+    [client editMeet:circleName.text forMeetId:summary.cId photoData:holdImage];
     
 }
 

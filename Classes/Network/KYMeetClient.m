@@ -22,7 +22,7 @@
 @synthesize errorCode;
 @synthesize toBeRetried;
 
-NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
+NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com";
 
 //NSString *KAYAMEET_SITE_NAME = @"http:/0.0.0.0:3000" ;
 
@@ -228,18 +228,41 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com" ;
   [super post:url data:data] ;
 }
 
-- (void)editMeet:(NSString*)name forMeetId:(uint64_t)meetId
+- (void)editMeet:(NSString*)name forMeetId:(uint64_t)meetId photoData:(UIImage*)photo
 {
   needAuth = true;
   NSString* url = [NSString stringWithFormat:@"%@/meets/%ld",KAYAMEET_SITE_NAME,meetId];
+    
+/* keep this code snippet for escaping in body content
     NSString *postString = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)name,
                                                                               NULL, CFSTR("￼=,!$&'()*+;@?\n\"<>#\t :/"), kCFStringEncodingUTF8);
   NSString *body = [NSString stringWithFormat:@"&name=%@",postString] ;
     
     NSLog(@"string %@ escape %@", name, postString);
     
+*/
   request = KAYAMEET_REQUEST_UPDATE_MEET;
-  [super put:url body:body];
+  NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+  if (name) {
+    [dic setObject:name forKey:@"name"];
+  }
+
+  NSMutableData *data = [NSMutableData data];
+  NSString *param = [self nameValString:dic];
+  NSString *footer = [NSString stringWithFormat:@"\r\n--%@--\r \n", KAYAMEET_FORM_BOUNDARY];
+  [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
+
+  if ( photo != nil ) {
+    param = [NSString stringWithFormat:@"--%@", KAYAMEET_FORM_BOUNDARY];
+    NSData *jpeg = UIImageJPEGRepresentation(photo, 0.8);
+    param = [param stringByAppendingString:@"\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"a.jpeg\"\r \n\r\n"];
+    param = [param stringByAppendingString:@"Content-Type: image/jpeg\r\n\r\n"];
+    [data appendData:[param dataUsingEncoding:NSUTF8StringEncoding]];
+    [data appendData:[NSData dataWithData:jpeg]];
+  }
+  [data appendData:[footer dataUsingEncoding:NSUTF8StringEncoding]];
+
+  [super put:url data:data] ;
 }
 
 - (void)confirmInvitation:(BOOL)confirm forMeetId:(uint64_t)meetId

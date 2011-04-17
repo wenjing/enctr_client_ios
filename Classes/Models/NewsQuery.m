@@ -302,6 +302,9 @@ static sqlite3_uint64 GetHashId(sqlite3_uint64 id0, uint64_t friend_id, uint64_t
       } else if ([key isEqualToString:@"marked_name"]) {
         key = @"name";
         trimmed = [self trimData:item];
+      } else if ([key isEqualToString:@"marked_image"]) {
+        key = @"image";
+        trimmed = [self trimData:item];
       } else if ([key isEqualToString:@"marked_top_chatters"] ||
                  [key isEqualToString:@"marked_chatters"]) {
         key = [key isEqualToString:@"marked_top_chatters"] ? @"top_chatters" : @"chatters";

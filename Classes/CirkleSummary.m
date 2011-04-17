@@ -84,10 +84,11 @@
     
     score = [[dic objectForKey:@"relation_score"] intValue];
     
-    user = [[dic objectForKey:@"user"] retain];
+    //user = [[dic objectForKey:@"user"] retain]; //we don't use this anymore
+    NSString *urlString = [[dic objectForKey:@"image"] retain];
     
-    //NSLog(@"Parse circle: user profile image url %@", user.profileImageUrl);
-    NSString *profileString = [user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"Parse circle: user profile image url %@", urlString);
+    NSString *profileString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     avatarUrl = [[NSURL URLWithString:profileString] retain];
     
@@ -155,7 +156,9 @@
                 if (contentString==nil) {
                     NSString *photoString = [act objectForKey:@"content"];
                     User *poster = [act objectForKey:@"user"];
-                    
+                    if (photoString==nil || photoString==@"") {
+                        photoString = [NSString stringWithString:@"Untitled"];
+                    }
                     if (poster) {
                         contentString = [[NSString alloc] initWithFormat:@"%@ shared a photo: \"%@\".", poster.name, photoString];
                     } else {

@@ -71,7 +71,7 @@ typedef enum {
 - (void)postMessage:(NSString*)message toUrl:(NSString*)url photoData:(UIImage*)photo;
 - (void)postInvite:(NSString*)emails byUserId:(uint32_t)userId byMeetId:(uint64_t)meetId custMessage:(NSString*)message;
 
-- (void)editMeet:(NSString*)name forMeetId:(uint64_t)meetId;
+- (void)editMeet:(NSString*)name forMeetId:(uint64_t)meetId photoData:(UIImage*)photo;
 - (void)confirmInvitation:(BOOL)confirm forMeetId:(uint64_t)meetId;
 
 - (void)verify;
