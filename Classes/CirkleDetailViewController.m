@@ -11,6 +11,7 @@
 #import "CirkleMemberCell.h"
 #import "kaya_meetAppDelegate.h"
 #import "MessageViewController.h"
+#import "UIImage+Resize.h"
 
 @implementation CirkleDetailViewController
 @synthesize listDetails;
@@ -85,6 +86,22 @@
             [addmButton release];
             
 			break;
+            
+        case 2:
+            //edit the group: name and image
+            [detailTable reloadData];
+            
+            // add save button
+            UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] 
+                                           initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                           target:self 
+                                           action:@selector(saveCircleInfoAction:)];
+            
+            self.navigationItem.rightBarButtonItem = saveButton;
+            self.navigationItem.rightBarButtonItem.enabled = false;
+            [saveButton release];
+            
+            break;
             
 		default:
 			break;
@@ -167,12 +184,6 @@
                     
                     NSArray *aUserArray;
                     for (aUserArray in users) {
-                        //if (![aUserDic isKindOfClass:[NSDictionary class]]) {
-                        //    NSLog(@"Bad format from member user dictionary");
-                        //}
-                        
-                        //NSArray *aUserArray = [aUserDic objectForKey:@"user"];
-                        
                         //now the user - retain it
                         [listMembers addObject: [[aUserArray objectAtIndex:0] retain]];
                     }
@@ -196,69 +207,7 @@
         [self restoreAndLoadNews:true];
     }
 }
-/*
-// unused any more
-- (void)newsDidUpdate:(NewsQuery*)sender {
-    //NSLog(@"Load news results: withUpdate %d", [sender queryUpdate]);
-    
-    if ([sender hasError]) {
-        NSLog(@"  has error");
-    } else {
-        if ([sender hasMore]) {
-            NSLog(@"  has more");
-        }
-        NSArray *results = [sender getResults];
-        //NSLog(@"%@", results);
-        
-        // adding new items to listDetails
-        NSInteger count = [results count];
-        // it's all or nothing - do nothing if it's empty
-        if (count != 0) {
-            NSLog(@"start rebuilding %d circleDetails\n", count);
-            [listDetails removeAllObjects];
-            
-            for (int i=0; i<count; i++) {
-            
-                NSDictionary *dic = [results objectAtIndex:i];
-            
-                NSString *eventType = [dic objectForKey:@"type"];
-                if ([eventType isEqualToString:@"users"]) {
-                    NSLog(@"Parsing membership list");
-                    
-                    //read membership
-                    NSArray *users = (NSArray *)[dic objectForKey:@"users"];
-                    if (![users isKindOfClass:[NSArray class]]) {
-                        NSLog(@"Bad format from member users array");
-                    }
-    
-                    NSArray *aUserArray;
-                    for (aUserArray in users) {
-                        if (![aUserArray isKindOfClass:[NSArray class]]) {
-                            NSLog(@"Bad format from member user array");
-                        }
-                        
-                        //now the user - retain it
-                        [listMembers addObject: [[aUserArray objectAtIndex:0] retain]];
-                    }
 
-                } else {
-                    
-                    //encounter or topic
-                    CirkleDetail *circleDetail = [[CirkleDetail alloc] initWithJsonDictionary:dic];
-            
-                    [listDetails addObject:circleDetail];
-                }
-
-            }
-        
-            [detailTable reloadData];
-        }
-    }
-    
-    [sender clear];
-    
-}
-*/
 - (IBAction)composeAction:(id)sender
 {
 	// the custom icon button was clicked, handle it here
@@ -293,6 +242,12 @@
     } else {
         //not supported yet
     }
+}
+
+- (IBAction) saveCircleInfoAction:(id)sender
+{
+    //send to server
+    NSLog(@"saveCircleInfoAction clicked");
 }
 
 // delegate to messageViewController
@@ -332,6 +287,13 @@
     
     // initialize segmentedControl to default segment
     segmentedControl.selectedSegmentIndex = 0 ;
+    
+    // init edit view cells
+    circleImage.url = summary.avatarUrl;
+    kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
+    [delg.objMan manage:circleImage];
+    
+    circleName.text = summary.nameString;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -397,10 +359,11 @@
     // Return the number of rows in the section.
     if (segmentedControl.selectedSegmentIndex == 0) {
         return [self.listDetails count];
-    } else {
+    } else if (segmentedControl.selectedSegmentIndex == 1) {
         return [self.listMembers count];
+    } else {
+        return 2;
     }
-        
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -430,7 +393,7 @@
         cell.frame = CGRectMake(0.0, 0.0, 320.0, sizeOfFrame);
         
         return cell;
-    } else {
+    } else if (segmentedControl.selectedSegmentIndex == 1) {
         //make member view cell
         CirkleMemberCell *cell = (CirkleMemberCell*)[detailTable dequeueReusableCellWithIdentifier:CircleMemberIdentifier];
         if (cell == nil) {
@@ -458,6 +421,16 @@
         [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:cell.userImageView waitUntilDone:YES];
         
         return cell;
+    } else {
+        //edit name and image
+        if (row == 0) {
+            
+            return nameCell;
+        }
+        else {
+            
+            return imageCell;
+        }
     }
 }
 
@@ -467,6 +440,11 @@
     
     if (segmentedControl.selectedSegmentIndex == 1) {
         return 57;
+    } else if (segmentedControl.selectedSegmentIndex == 2) {
+        if (row ==0)
+            return 57;
+        else 
+            return 57;
     }
     
     CirkleDetail *circleDetail = [listDetails objectAtIndex:row];
@@ -577,6 +555,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (segmentedControl.selectedSegmentIndex == 2) {
+        
+        NSUInteger row = [indexPath row];
+        if(row == 1) {
+            UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil
+                                     delegate:self
+                            cancelButtonTitle:@"Cancel"
+                       destructiveButtonTitle:nil
+                            otherButtonTitles:nil];
+    
+            [as addButtonWithTitle:@"Take Picture "];
+            [as addButtonWithTitle:@"Choose Photo "];
+            [as showInView:self.navigationController.parentViewController.view];
+            [as release];
+        }
+    }
+    
     //NSUInteger row = [indexPath row];
     /*
 	NSString *rowValue = [listDetails objectAtIndex:row];
@@ -600,6 +595,60 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+}
+
+#pragma -
+#pragma TextField Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSLog(@"Hitting done");
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+#pragma -
+#pragma ActionSheet and ImagePicker Methods
+- (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex: (NSInteger)buttonIndex
+{
+    // photo pick
+
+    if (buttonIndex == 0 ) 
+        return ;
+        
+    if ( imgPicker==nil ) {
+        imgPicker = [[UIImagePickerController alloc] init];
+        imgPicker.allowsEditing = YES;
+        imgPicker.delegate = self;
+    }
+    if(buttonIndex == 1) {
+        imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        imgPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    }
+    [self presentModalViewController:imgPicker animated:YES];
+
+    self.navigationItem.rightBarButtonItem.enabled = true;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    [picker dismissModalViewControllerAnimated:YES];
+    
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    
+    if (image!=nil) {
+        holdImage = [[image resizedImage:CGSizeMake(245,245) interpolationQuality:kCGInterpolationHigh] retain];
+        
+        circlePickedImage.image = [holdImage thumbnailImage:47 
+                                                  transparentBorder:0 
+                                                       cornerRadius:0 
+                                               interpolationQuality:kCGInterpolationHigh];
+        
+        self.navigationItem.rightBarButtonItem.enabled = true;
+    }
+    // else no change
 }
 
 @end
