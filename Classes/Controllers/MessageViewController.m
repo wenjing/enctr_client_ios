@@ -449,6 +449,9 @@
     if (sender.hasError) {
         [sender alert];
         
+        //at least wipe out text
+        text.text = @"";
+        //to-do: should i just pass this through?
         return;
     }
 

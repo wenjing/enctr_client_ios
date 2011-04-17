@@ -113,6 +113,11 @@
 	[password_field becomeFirstResponder];
 }
 
+-(void) touchesBegan: (NSSet *) touches withEvent: (UIEvent *) event {
+    [password_field resignFirstResponder];
+    [username_field resignFirstResponder];
+}
+
 - (IBAction)signup:(id)sender
 {
     //NSLog(@"sign up button clicked");

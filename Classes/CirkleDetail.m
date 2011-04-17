@@ -114,7 +114,8 @@
     NSArray *chatters = (NSArray *)[dic objectForKey:@"chatters"];
     
     if (([chatters isKindOfClass:[NSArray class]]) && ([chatters count] > 0)) {
-        for (int i = 0; i<[chatters count]; i++) {
+        //reverse the order
+        for (int i = [chatters count] - 1; i>=0; i--) {
             //get content and user
             NSDictionary *aChatter = [chatters objectAtIndex:i];
             if (![aChatter isKindOfClass:[NSDictionary class]]) {
@@ -136,7 +137,7 @@
                 if (contentString==nil) {
                     contentString = [[NSMutableString alloc] initWithCapacity:20];
                 }
-                [contentString appendFormat:@"%@: %@\n", userObject.name, aContent];
+                [contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
             }
             //if anything goes wrong, do nothing in this for loop
         }
@@ -184,14 +185,15 @@
             contentString = [[NSMutableString alloc] initWithCapacity:20];
         }
         
-        [contentString appendFormat:@"%@: %@\n", user.name, tContent];
+        [contentString appendFormat:@"%@:\n    %@\n", user.name, tContent];
     }
     
     //get chatter string
     NSArray *chatters = (NSArray *)[dic objectForKey:@"chatters"];
     
     if (([chatters isKindOfClass:[NSArray class]]) && ([chatters count] > 0)) {
-        for (int i = 0; i<[chatters count]; i++) {
+        //reverse order
+        for (int i = [chatters count]-1; i>=0; i--) {
             //get content and user
             NSDictionary *aChatter = [chatters objectAtIndex:i];
             if (![aChatter isKindOfClass:[NSDictionary class]]) {
@@ -213,7 +215,7 @@
                 if (contentString==nil) {
                     contentString = [[NSMutableString alloc] initWithCapacity:20];
                 }
-                [contentString appendFormat:@"%@: %@\n", userObject.name, aContent];
+                [contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
             }
             //if anything goes wrong, do nothing in this for loop
         }
