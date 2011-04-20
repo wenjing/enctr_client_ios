@@ -14,6 +14,8 @@
 #import "CirkleDetailViewController.h"
 #import "kaya_meetAppDelegate.h"
 #import "EncounterViewController.h"
+#import "CirklePrompt.h"
+#import "StringUtil.h"
 
 @implementation CirkleViewController
 @synthesize listCircles;
@@ -150,6 +152,74 @@
     }
 }
 
+- (IBAction) addCircleAction:(id)sender
+{
+    //prompt for circle name
+    CirklePrompt *prompt = [[CirklePrompt alloc] initWithTitle:@"Enter Circle Name" message:@"                       " delegate:self cancelButtonTitle:@"Cancel" okButtonTitle:@"Done"];
+    [prompt show];
+    [prompt release];
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex])
+    {
+        NSString *circleName = [(CirklePrompt *)alertView enteredText];
+        NSLog(@"creating new circle: %@", circleName);
+        // validate
+        NSRange range = [circleName rangeOfString:@":"];
+        if (range.location != NSNotFound) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Name can't contain semicolon \":\"" 
+                                                            message:@"Please try again"
+                                                           delegate:nil 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+            return;
+        }
+        // send mpost to server
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+        NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
+        
+        NSString *identity = [NSString stringWithFormat:@"%@:%d:%@:%d:%lld",user.name,user.userId,circleName,0,(uint64_t)(dtime)];
+        
+        [param setObject:identity forKey:@"user_dev"];
+        
+        // these are unused - keep them for now until server is ready to skip them
+        [param setObject:@"3" forKey:@"host_mode"];
+        
+        [param setObject:@"0" forKey:@"collision"];
+        
+        [param setObject:@"" forKey:@"devs"];
+        
+        // meet date
+        time_t now;
+        time(&now);
+        [param setObject:[NSString dateString:now] forKey:@"time"];
+        
+        // location 
+        kaya_meetAppDelegate *del = (kaya_meetAppDelegate*)[UIApplication sharedApplication].delegate;
+        
+        [param setObject:[NSString stringWithFormat:@"%lf",del.latitude]  forKey:@"lat" ];
+        [param setObject:[NSString stringWithFormat:@"%lf",del.longitude] forKey:@"lng"];
+        [param setObject:[NSString stringWithFormat:@"%f", del.lerror]    forKey:@"lerror"];
+        
+        KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(newCircleDidPost:obj:)];
+        [postClient postMeet:param];
+        
+    } else {
+        // dismiss - and do nothing
+    }
+}
+
+- (void)newCircleDidPost:(KYMeetClient*)sender obj:(NSObject*)obj
+{
+    if (sender.hasError) {
+        [sender alert];
+    }
+}
 
 #pragma mark - View lifecycle
 
@@ -185,8 +255,14 @@
     
     [self restoreAndLoadCirkles:false];
     
-    // stay selection
-    //self.clearsSelectionOnViewWillAppear = NO;
+    // add button as the nav bar's custom right view
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] 
+                                   initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                   target:self 
+                                   action:@selector(addCircleAction:)];
+    
+    self.navigationItem.rightBarButtonItem = addButton;
+    [addButton release];
     
 }
 

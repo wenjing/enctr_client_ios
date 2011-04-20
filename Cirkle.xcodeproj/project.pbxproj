@@ -116,6 +116,7 @@
 		3D0E95EF130CE7F700CB021F /* cirkle-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */; };
 		3D0E95F0130CE7F700CB021F /* cirkle-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */; };
 		3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */; };
+		3D5A962B135F9CF100897364 /* CirklePrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A962A135F9CF100897364 /* CirklePrompt.m */; };
 		3DC1F714133FACE800CC81AF /* CirkleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F712133FACE600CC81AF /* CirkleViewController.m */; };
 		3DC1F715133FACE800CC81AF /* CirkleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F713133FACE700CC81AF /* CirkleViewController.xib */; };
 		3DC1F71E133FAF6D00CC81AF /* CirkleEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F71D133FAF6C00CC81AF /* CirkleEntryCell.m */; };
@@ -337,6 +338,8 @@
 		3D0E95EC130CE7F700CB021F /* cirkle-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-29x29.png"; path = "images/cirkle-29x29.png"; sourceTree = "<group>"; };
 		3D0E95ED130CE7F700CB021F /* cirkle-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-57x57.png"; path = "images/cirkle-57x57.png"; sourceTree = "<group>"; };
 		3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cirkle-72x72.png"; path = "images/cirkle-72x72.png"; sourceTree = "<group>"; };
+		3D5A9629135F9CF100897364 /* CirklePrompt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirklePrompt.h; sourceTree = "<group>"; };
+		3D5A962A135F9CF100897364 /* CirklePrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirklePrompt.m; sourceTree = "<group>"; };
 		3DC1F711133FACE500CC81AF /* CirkleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleViewController.h; sourceTree = "<group>"; };
 		3DC1F712133FACE600CC81AF /* CirkleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleViewController.m; sourceTree = "<group>"; };
 		3DC1F713133FACE700CC81AF /* CirkleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CirkleViewController.xib; path = Classes/CirkleViewController.xib; sourceTree = "<group>"; };
@@ -801,6 +804,8 @@
 				3A04AA5C12D02520000B99FB /* placeDisplayMap.m */,
 				3A04A94312D00522000B99FB /* PlaceViewController.h */,
 				3A04A94412D00522000B99FB /* PlaceViewController.m */,
+				3D5A9629135F9CF100897364 /* CirklePrompt.h */,
+				3D5A962A135F9CF100897364 /* CirklePrompt.m */,
 				3DC1F7631343C48800CC81AF /* CirkleDetailView.h */,
 				3DC1F7641343C48C00CC81AF /* CirkleDetailView.m */,
 				3DDB526E1356724C00F56B4F /* CirkleMemberCell.h */,
@@ -1021,6 +1026,7 @@
 				3DDB526D135552BE00F56B4F /* CirkleMember.m in Sources */,
 				3DDB52701356725F00F56B4F /* CirkleMemberCell.m in Sources */,
 				3DDB5287135C9D1900F56B4F /* CirklePickerSheet.m in Sources */,
+				3D5A962B135F9CF100897364 /* CirklePrompt.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
