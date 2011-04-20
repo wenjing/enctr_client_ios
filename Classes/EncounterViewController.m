@@ -133,7 +133,6 @@
         if (sessionManager!=nil)
             [sessionManager stopSession];
         [spinner stopAnimating];
-        //confirmButton.enabled = YES;
     }
 }
 
@@ -243,7 +242,6 @@
     
 	[sessionManager startSession];
 	
-	//confirmButton.enabled = YES;
 	[spinner startAnimating];
 }
 
@@ -461,8 +459,15 @@
         // add the new client to list
         [postRequests addObject:postClient];
         
+        // update time
+        time_t now;
+        time(&now);
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:client.postParams];
+        
+        [dict setObject:[NSString dateString:now] forKey:@"time"];
+
         // post meet to server
-        [postClient postMeet:postClient.postParams];
+        [postClient postMeet:dict];
         
         count++;
     }
@@ -479,13 +484,13 @@
 	return [self.foundPeers count];
 }
 
-/* allow selecting all rows */
+/* allow selecting only the 0th row */
  - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	 /*NSUInteger row = [indexPath row];
+	 NSUInteger row = [indexPath row];
 	 if (row == 0) {
-		 return nil;
-	 }*/
-	 return indexPath;
+		 return indexPath;
+	 }
+	 return nil;
  }
 
 
@@ -517,12 +522,26 @@
 			  peerPic:image
 				  row:row];
 	
-    if (row==0)
+    if (row==0) {
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell setEditingAccessoryType:UITableViewCellEditingStyleNone];
+    }
+    else {
+        [cell setEditingAccessoryType:UITableViewCellEditingStyleDelete];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
     
 	return cell;
 }
 
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Deleting row %d", [indexPath row]);
+    
+    [foundPeers removeObjectAtIndex:[indexPath row]];
+    //to-do: i may need to remember this deleted list for later use
+    [peerTableView reloadData];
+}
 #pragma mark -
 #pragma mark Table Delegate Methods
 
@@ -583,7 +602,9 @@
 	//copy the array if we wish to use at all
 	NSLog(@"sessionManagerDidFinish: total number of peers found %d\n", [peersArray count]);
     if ([peersArray count] > 0) {
-        confirmButton.enabled = YES;
+        //also after deletion
+        if ([foundPeers count] > 1)
+            confirmButton.enabled = YES;
     }
 }
 
