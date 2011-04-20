@@ -122,6 +122,7 @@
         [sessionManager startSession];
         [spinner startAnimating];
         
+        
     } else {
         // stop the session Manager
         NSLog(@"Stop is pressed");
@@ -131,6 +132,7 @@
         if (sessionManager!=nil)
             [sessionManager stopSession];
         [spinner stopAnimating];
+        confirmButton.enabled = YES;
     }
 }
 
@@ -243,8 +245,8 @@
 
 -(IBAction) confirmButtonPressed {
 	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter confirmed" 
-													message:@"in your circles"
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter" 
+													message:@"confirmed"
 												   delegate:nil 
 										  cancelButtonTitle:@"OK" 
 										  otherButtonTitles:nil];
@@ -257,7 +259,11 @@
 		self.sessionManager = nil;
 	}
 	[spinner stopAnimating];
+    [startStopButton setTitle:@"Completed" forState:UIControlStateNormal];
+    startStopButton.enabled = NO;
 	
+    [titleLabel setText:@"New encounter completed."];
+    
 	NSMutableDictionary *param = [NSMutableDictionary dictionary];
 	NSString* query = [foundPeers componentsJoinedByString:@","];
 	
@@ -585,8 +591,8 @@
         return;
     }
     
-    confirmButton.enabled = YES;
-    refreshButton.enabled = YES;
+    //confirmButton.enabled = YES;
+    //refreshButton.enabled = YES;
     
     CirkleSummary *circle = (CirkleSummary*)obj;
     NSLog(@"You selected circle: %@", circle.nameString);
