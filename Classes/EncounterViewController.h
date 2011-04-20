@@ -21,10 +21,7 @@
 	SessionManager	*sessionManager;
 	NSMutableArray	*foundPeers;
 	
-	NSString        *nameString;
-    NSUInteger      userId;
-    NSString        *tag;
-    NSUInteger      timeStamp;
+    NSUInteger      hostMode;
     
 	UIBarButtonItem *refreshButton;
 	UIBarButtonItem *confirmButton;

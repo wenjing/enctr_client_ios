@@ -28,15 +28,12 @@
     if (self) {
         // Initialization code
         [self setAlpha:0.9];
-        [self setBackgroundColor:[self sysBlueColor:0.6f]];
+        [self setBackgroundColor:[self sysBlueColor:0.7f]];
         
         // Add button
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [button setFrame:CGRectMake(60.0f, 318.0f, 200.0f, 32.0f)];
-        
-        //[button setBackgroundImage:[UIImage imageNamed:@"whiteButton.png"]
-        //                  forState:UIControlStateNormal];
         
         [button setBackgroundImage:[[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12.0 topCapHeight:0.0] forState:UIControlStateNormal];
         
@@ -51,8 +48,9 @@
         
         // Add title
         title = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 8.0f, 320.0f, 32.0f)];
-        title.text = @"Select a Circle to Host, or yourself for Open Encounter";
+        title.text = @"Select a Circle to Host";
         title.textAlignment = UITextAlignmentCenter;
+        //title.lineBreakMode = UILineBreakModeWordWrap;
         title.textColor = [UIColor whiteColor];
         title.backgroundColor = [UIColor clearColor];
         title.font = [UIFont boldSystemFontOfSize:14.0f];
@@ -62,7 +60,7 @@
         // Add border for the table
         CGRect bounds = CGRectMake(10.0f, 40.0f, 300.0f, 310.0f - 48.0f);
         UIView *borderView = [[UIView alloc] initWithFrame:bounds];
-        [borderView setBackgroundColor:[self sysBlueColor:0.4f]];
+        [borderView setBackgroundColor:[self sysBlueColor:0.5f]];
         borderView.layer.cornerRadius = 5;
         
         [self addSubview:borderView];

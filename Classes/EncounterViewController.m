@@ -52,10 +52,11 @@
     [super viewDidLoad];
     // Other initialization moved to tab selected	
     postRequests = [[NSMutableArray alloc] init];
+    hostMode = 0;
     
     // Initialization code
     [self.view setAlpha:0.9];
-    [self.view setBackgroundColor:[self sysBlueColor:0.6f]];
+    [self.view setBackgroundColor:[self sysBlueColor:0.7f]];
     
     // Add title
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 320.0f, 32.0f)];
@@ -85,19 +86,19 @@
     startStopButton = button;
     
     [spinner stopAnimating];
+    confirmButton.enabled = NO;
+    refreshButton.enabled = NO;
     
     // Add border for the table
     CGRect bounds = CGRectMake(10.0f, 40.0f, 300.0f, 310.0f - 48.0f);
     UIView *borderView = [[UIView alloc] initWithFrame:bounds];
-    [borderView setBackgroundColor:[self sysBlueColor:0.4f]];
+    [borderView setBackgroundColor:[self sysBlueColor:0.5f]];
     borderView.layer.cornerRadius = 5;
     
     [self.view addSubview:borderView];
     [borderView release];
     
-    //[self.peerTableView setFrame:CGRectInset(bounds, 4.0f, 4.0f)];
-    
-    self.peerTableView = [[UITableView alloc] initWithFrame:CGRectInset(bounds, 4.0f, 4.0f)
+    self.peerTableView = [[UITableView alloc] initWithFrame:CGRectInset(bounds, 5.0f, 5.0f)
                 style:UITableViewStylePlain];
     self.peerTableView.backgroundColor = [UIColor whiteColor];
     self.peerTableView.delegate = self;
@@ -132,7 +133,7 @@
         if (sessionManager!=nil)
             [sessionManager stopSession];
         [spinner stopAnimating];
-        confirmButton.enabled = YES;
+        //confirmButton.enabled = YES;
     }
 }
 
@@ -219,7 +220,10 @@
     //to-do: have user customizable tag line
     NSString *identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
     
-	[foundPeers addObject:identity];
+    NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
+    NSString *fullstring = [NSString stringWithFormat:@"%@:%lld", identity, (uint64_t)(dtime)];
+    
+	[foundPeers addObject:fullstring];
 	
 	NSArray* indexPathsInsert = [NSArray arrayWithObjects:
 								 [NSIndexPath indexPathForRow:0 inSection:0], nil];
@@ -239,7 +243,7 @@
     
 	[sessionManager startSession];
 	
-	confirmButton.enabled = YES;
+	//confirmButton.enabled = YES;
 	[spinner startAnimating];
 }
 
@@ -259,7 +263,7 @@
 		self.sessionManager = nil;
 	}
 	[spinner stopAnimating];
-    [startStopButton setTitle:@"Completed" forState:UIControlStateNormal];
+    [startStopButton setTitle:@"Session over" forState:UIControlStateNormal];
     startStopButton.enabled = NO;
 	
     [titleLabel setText:@"New encounter completed."];
@@ -273,6 +277,14 @@
 	
 	[param setObject:@"0" forKey:@"collision"];
 	
+    // host_mode
+    if (hostMode) {
+        [param setObject:@"1" forKey:@"host_mode"];
+    } else {
+        [param setObject:@"0" forKey:@"host_mode"];
+    }
+    
+    // 
 	[self postToServer:param];
 	
 	confirmButton.enabled = NO;
@@ -298,22 +310,26 @@
 	NSLog(@"encounter tab selected");
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
 	//default to personal identity
-    NSString *identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
+    NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
     
-	foundPeers = [[NSMutableArray alloc] initWithObjects:identity, nil];
+    NSString *identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
+    NSString *fullstring = [NSString stringWithFormat:@"%@:%lld", identity, (uint64_t)(dtime)];
+    
+	foundPeers = [[NSMutableArray alloc] initWithObjects:fullstring, nil];
 	
 	sessionManager = [[SessionManager alloc] initWithDelegate:self];
 	
-	//to-do: change mode as our identity changes
 	sessionManager.sessionMode = GKSessionModePeer;
     sessionManager.displayName = identity;
     
+    titleLabel.text = @"Open Encounter";
+    [startStopButton setTitle:@"Start" forState:UIControlStateNormal];
+    startStopButton.enabled = YES;
+    [spinner stopAnimating];
+    
 	//Client may be working, don't set it to nil here
 	
-	//[sessionManager startSession];
-	//confirmButton.enabled = YES;
 	[self.peerTableView reloadData];
-	//[spinner startAnimating];
 	
 }
 
@@ -344,7 +360,8 @@
     [postClient retain];
     [postRequests addObject:postClient];
     
-	NSLog(@"postToServer sending mpost to server");
+	NSLog(@"postToServer sending mpost to server %@", postMessage);
+    
 	// post meet to server
     [postClient postMeet:postMessage];
 	
@@ -565,13 +582,21 @@
 - (void)sessionManagerDidFinish:(NSMutableArray *)peersArray {
 	//copy the array if we wish to use at all
 	NSLog(@"sessionManagerDidFinish: total number of peers found %d\n", [peersArray count]);
+    if ([peersArray count] > 0) {
+        confirmButton.enabled = YES;
+    }
 }
 
 - (void)sessionManagerDidUpdate:(NSString *)peerName {
 	NSLog(@"sessionManagerDidUpdate: new peer %@\n", peerName);
 	//add new peer only if it does not already know
 	if (![foundPeers containsObject:peerName]) {
-		[foundPeers addObject:peerName];
+        NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
+        NSString *fullstring = [NSString stringWithFormat:@"%@:%lld", peerName, (uint64_t)(dtime)];
+        
+		[foundPeers addObject:fullstring];
+        
+        NSLog(@"full peer dev id: %@", fullstring);
 		//add new peer
 		NSInteger row = [self.foundPeers count] - 1;
 		NSArray* indexPathsInsert = [NSArray arrayWithObjects:
@@ -618,15 +643,21 @@
     
     if(circle.type != CIRCLE_TYPE_SOLO) {
         identity = [NSString stringWithFormat:@"%@:%d:%@:%d",user.name,user.userId,circle.nameString,circle.cId];
-        //[foundPeers addObject:[NSString stringWithFormat:@"%@:%d:%@:%d",user.name,user.userId,circle.nameString,circle.cId]];
+        hostMode = 1;
 	} else {
         identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
         //to-do: add customizable tag line
-        //[foundPeers addObject:[NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId]];
     }
     NSLog(@"display name %@",identity);
     
-    [foundPeers addObject:identity];
+    // append this ID with a tstamp
+    NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
+    //NSLog(@"double time = %f",dtime);
+    //NSLog(@"integer time = %lld", (uint64_t)((dtime)));
+    NSString *fullstring = [NSString stringWithFormat:@"%@:%lld", identity, (uint64_t)((dtime))];
+    NSLog(@"full dev string: %@", fullstring);
+    
+    [foundPeers addObject:fullstring];
     
 	NSArray* indexPathsInsert = [NSArray arrayWithObjects:
 								 [NSIndexPath indexPathForRow:0 inSection:0], nil];

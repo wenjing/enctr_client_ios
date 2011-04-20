@@ -637,6 +637,21 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSLog(@"Hitting done");
+    
+    //check semicolon
+    NSRange range = [textField.text rangeOfString:@":"];
+    if (range.location != NSNotFound) {
+        //pop an alert and refuse the return key
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Circle name can't contain semicolon \":\"" 
+                                                        message:@"Please correct" 
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"OK" 
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        return NO;
+    }
+    
     [textField resignFirstResponder];
     self.navigationItem.rightBarButtonItem.enabled = true;
     return YES;

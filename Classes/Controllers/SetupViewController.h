@@ -59,5 +59,6 @@
 - (void)actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)textFieldDidChange:(UITextField *)textField;
 - (void)initSetupView;
+- (BOOL) validateEmail: (NSString *) candidate;
 
 @end

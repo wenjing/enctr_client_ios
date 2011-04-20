@@ -287,18 +287,51 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 {
     //NSLog(@"textFieldShouldReturn");
     if(signupMode) {
-        //check all required fields are properly filled
-        if (([nameField.text length] <3) ||
-            ([emailField.text length] <3) || 
-            ([passwordField.text length] <3) )
+        //check required fields are properly filled - one at a time
+        UIAlertView *alert=nil;
+        //name
+        NSRange range = [nameField.text rangeOfString:@":"];
+        if ([nameField.text length] < 5) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have at least 5 characters" 
+                                                   message:@"Tip: real names work better"
+                                                  delegate:nil 
+                                         cancelButtonTitle:@"OK" 
+                                         otherButtonTitles:nil];
+        } else if (range.location != NSNotFound) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain semicolon \":\"" 
+                                                       message:@"Tip: real names work better"
+                                                      delegate:nil 
+                                             cancelButtonTitle:@"OK" 
+                                             otherButtonTitles:nil];
+        }
+
+        //email
+        else if ([emailField.text length] < 3 || 
+            ![self validateEmail:emailField.text]) {
+            
+            alert = [[UIAlertView alloc] initWithTitle:@"Email is not in correct format, or missing" 
+                                               message:@"Check your email field again"
+                                              delegate:nil 
+                                     cancelButtonTitle:@"OK" 
+                                     otherButtonTitles:nil];
+        }
+        
+        //password
+        else if ([passwordField.text length] < 6 ||
+            [passwordField.text length] > 40) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Password needs to have at least 6 characters and no more than 40" 
+                                               message:@"Check your password field again"
+                                              delegate:nil 
+                                     cancelButtonTitle:@"OK" 
+                                     otherButtonTitles:nil];
+        }
+                
+        if (alert !=nil )
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Some required field not properly filled" 
-                                                            message:@"Will provide better feedback later"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles:nil];
             [alert show];
             [alert release];
+            
+            return NO;
         } else {
             //ok
             self.navigationItem.rightBarButtonItem.enabled = true;
@@ -312,8 +345,58 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     if ((![user.name isEqualToString:nameField.text]) ||
         (![user.email isEqualToString:emailField.text]) ||
         (![password isEqualToString:passwordField.text])) {
-        self.navigationItem.rightBarButtonItem.enabled = true;
-        self.navigationItem.leftBarButtonItem.enabled = true;
+        //validate again one at a time
+        UIAlertView *alert=nil;
+        if (![user.name isEqualToString:nameField.text]) {
+            if ([nameField.text length] < 5) {
+                alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have at least 5 characters" 
+                                                   message:@"Tip: real names work better"
+                                                  delegate:nil 
+                                         cancelButtonTitle:@"OK" 
+                                         otherButtonTitles:nil];
+            } else {
+                NSRange range = [textField.text rangeOfString:@":"];
+                if (range.location != NSNotFound) {
+                    alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain any semicolon \":\"" 
+                                                       message:@"Tip: real names work better"
+                                                      delegate:nil 
+                                             cancelButtonTitle:@"OK" 
+                                             otherButtonTitles:nil];
+                }
+            }
+        }
+        
+        else if (![user.email isEqualToString:emailField.text]) {
+            if ([emailField.text length] < 3 || 
+                ![self validateEmail:emailField.text]) {
+                
+                alert = [[UIAlertView alloc] initWithTitle:@"Email is not in correct format, or missing" 
+                                                   message:@"Check your email field again"
+                                                  delegate:nil 
+                                         cancelButtonTitle:@"OK" 
+                                         otherButtonTitles:nil];
+            }
+        }
+        
+        else if (![password isEqualToString:passwordField.text]) {
+            if ([passwordField.text length] < 6 ||
+                [passwordField.text length] > 40) {
+                alert = [[UIAlertView alloc] initWithTitle:@"Passwords should have at least 6 characters and no more than 40" 
+                                                   message:@"Check your password field again"
+                                                  delegate:nil 
+                                         cancelButtonTitle:@"OK" 
+                                         otherButtonTitles:nil];
+            }
+        }
+        
+        if (alert !=nil) {
+            [alert show];
+            [alert release];
+            return NO;
+        } else {
+            self.navigationItem.rightBarButtonItem.enabled = true;
+            self.navigationItem.leftBarButtonItem.enabled = true;
+        }
     } else {
         if (holder.profileImage==nil) {
             //no change even if user clicked or used keyboard
@@ -342,9 +425,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         passwordFieldChanged = YES;
     }
 }
-// to-do: user name check?
 
-// to-do: basic validation may be nice
+// basic email validation
 - (BOOL) validateEmail: (NSString *) candidate {
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"; 
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex]; 
