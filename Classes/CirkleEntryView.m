@@ -33,8 +33,8 @@
     if (circle.avatarUrl!=nil) {
         [userImage clear];
         userImage.url = circle.avatarUrl;
-        //[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
-        [delg.objMan manage:userImage];
+        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
+        //[delg.objMan manage:userImage];
         //NSLog(@"user %d name %@ url %@ full url=%@", user.userId, user.name, user.profileImageUrl, userImage.url);
     }
     
@@ -63,8 +63,8 @@
         img.frame = drawRect;
                 
         img.url = imgurl;
-        //[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:img waitUntilDone:YES];
-        [delg.objMan manage:img];
+        [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:img waitUntilDone:YES];
+        //[delg.objMan manage:img];
         
         i++;
         if(i>=4)

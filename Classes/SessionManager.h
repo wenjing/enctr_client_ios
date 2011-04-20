@@ -10,6 +10,8 @@
 
 @interface SessionManager : NSObject <GKSessionDelegate> {
 	GKSession				*session ;
+    GKSessionMode           sessionMode;
+    NSString                *displayName;
 	NSMutableArray			*peerList;
 	NSMutableArray			*excludeList;
 	id						 delegate;
@@ -17,9 +19,11 @@
 @property (nonatomic, retain) GKSession *session;
 @property (nonatomic, retain) NSMutableArray *peerList;
 @property (nonatomic, retain) NSMutableArray *excludeList;
+@property (nonatomic, retain) NSString *displayName;
+@property (nonatomic, assign) GKSessionMode sessionMode;
 
 - (id) initWithDelegate:(id)aDelegate;
-- (void) startSession:(GKSessionMode) sessionMode;
+- (void) startSession;
 - (void) stopSession;
 
 @end

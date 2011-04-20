@@ -143,6 +143,8 @@
 		3DDB527D1358BBB800F56B4F /* circle_logo_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDB527C1358BBB800F56B4F /* circle_logo_1.png */; };
 		3DDB527F1358BDA100F56B4F /* circle_logo_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDB527E1358BDA100F56B4F /* circle_logo_2.png */; };
 		3DDB52811358BDAB00F56B4F /* circle_logo_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDB52801358BDAB00F56B4F /* circle_logo_3.png */; };
+		3DDB5287135C9D1900F56B4F /* CirklePickerSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DDB5286135C9D0C00F56B4F /* CirklePickerSheet.m */; };
+		3DDB5289135CB03700F56B4F /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DDB5288135CB03700F56B4F /* whiteButton.png */; };
 		3DF4B8F013397D1100748045 /* EncounterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EE13397D1100748045 /* EncounterViewController.m */; };
 		3DF4B8F113397D1100748045 /* EncounterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF4B8EF13397D1100748045 /* EncounterViewController.xib */; };
 		3DF4B9191339827300748045 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4B9181339827300748045 /* SessionManager.m */; };
@@ -372,6 +374,9 @@
 		3DDB527C1358BBB800F56B4F /* circle_logo_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_logo_1.png; sourceTree = "<group>"; };
 		3DDB527E1358BDA100F56B4F /* circle_logo_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_logo_2.png; sourceTree = "<group>"; };
 		3DDB52801358BDAB00F56B4F /* circle_logo_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle_logo_3.png; sourceTree = "<group>"; };
+		3DDB5285135C9D0500F56B4F /* CirklePickerSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirklePickerSheet.h; sourceTree = "<group>"; };
+		3DDB5286135C9D0C00F56B4F /* CirklePickerSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirklePickerSheet.m; sourceTree = "<group>"; };
+		3DDB5288135CB03700F56B4F /* whiteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteButton.png; sourceTree = "<group>"; };
 		3DF4B8ED13397D1100748045 /* EncounterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncounterViewController.h; sourceTree = "<group>"; };
 		3DF4B8EE13397D1100748045 /* EncounterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncounterViewController.m; sourceTree = "<group>"; };
 		3DF4B8EF13397D1100748045 /* EncounterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EncounterViewController.xib; path = Classes/EncounterViewController.xib; sourceTree = "<group>"; };
@@ -644,6 +649,7 @@
 		3A6F1CCC127654210044D6E6 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3DDB5288135CB03700F56B4F /* whiteButton.png */,
 				3DDB5274135820E100F56B4F /* invitation_icon.png */,
 				3DC1F7C113528FCA00CC81AF /* green-button-sm.png */,
 				3DC1F7BF135239D500CC81AF /* green-button.png */,
@@ -809,6 +815,8 @@
 				3DC1F71D133FAF6C00CC81AF /* CirkleEntryCell.m */,
 				3DC1F711133FACE500CC81AF /* CirkleViewController.h */,
 				3DC1F712133FACE600CC81AF /* CirkleViewController.m */,
+				3DDB5285135C9D0500F56B4F /* CirklePickerSheet.h */,
+				3DDB5286135C9D0C00F56B4F /* CirklePickerSheet.m */,
 				3DF4BA01133A65E600748045 /* EncounterView.h */,
 				3DF4BA02133A65E600748045 /* EncounterView.m */,
 				3DF4B9FC133A656F00748045 /* EncounterCell.h */,
@@ -919,6 +927,7 @@
 				3DDB527D1358BBB800F56B4F /* circle_logo_1.png in Resources */,
 				3DDB527F1358BDA100F56B4F /* circle_logo_2.png in Resources */,
 				3DDB52811358BDAB00F56B4F /* circle_logo_3.png in Resources */,
+				3DDB5289135CB03700F56B4F /* whiteButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1011,6 +1020,7 @@
 				1E1FA989134DA09A004A20A5 /* UserQuery.m in Sources */,
 				3DDB526D135552BE00F56B4F /* CirkleMember.m in Sources */,
 				3DDB52701356725F00F56B4F /* CirkleMemberCell.m in Sources */,
+				3DDB5287135C9D1900F56B4F /* CirklePickerSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

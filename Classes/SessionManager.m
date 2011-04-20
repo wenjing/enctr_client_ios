@@ -18,6 +18,8 @@
 @synthesize session;
 @synthesize peerList;
 @synthesize excludeList;
+@synthesize displayName;
+@synthesize sessionMode;
 
 - (id) initWithDelegate:(id)aDelegate {
 	[super init];
@@ -34,14 +36,11 @@
 	return self;
 }
 
-- (void) startSession:(GKSessionMode) sessionMode {
-	//to be replaced later with identity from the controller
-	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
-    
+- (void) startSession {
 	
 	session = [[GKSession alloc] initWithSessionID:@"oncircles"
-									   displayName:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]
-									   sessionMode:sessionMode];
+									   displayName:self.displayName
+									   sessionMode:self.sessionMode];
 	
 	session.delegate = self;
 	
@@ -74,6 +73,7 @@
 	// keep exclude list
 	// release session
 	self.session = nil;
+    
 }
 
 - (void)dealloc

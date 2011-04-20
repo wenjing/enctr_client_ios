@@ -397,7 +397,7 @@
 
 	if (objMan == nil) {
 		// Image cache 
-		objMan = [[HJObjManager alloc] initWithLoadingBufferSize:40 memCacheSize:40 ] ;
+		objMan = [[HJObjManager alloc] initWithLoadingBufferSize:50 memCacheSize:50 ] ;
 		NSString* cacheDirectory = [NSHomeDirectory() stringByAppendingString:@"/Library/Caches/imgcache/Cirkle/"] ;
 		HJMOFileCache* fileCache = [[[HJMOFileCache alloc] initWithRootPath:cacheDirectory] autorelease];
 		objMan.fileCache = fileCache;
@@ -406,6 +406,7 @@
 		fileCache.fileAgeLimit = 60*60*24*7; //1 week
 		[fileCache trimCacheUsingBackgroundThread];
 	}
+    
 	return objMan;
 }
 

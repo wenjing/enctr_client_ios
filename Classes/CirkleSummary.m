@@ -9,7 +9,6 @@
 #import "CirkleSummary.h"
 #import "TimeUtils.h"
 #import "StringUtil.h"
-
 @implementation CirkleSummary
 @synthesize cId;
 @synthesize nameString;
@@ -86,7 +85,7 @@
     //user = [[dic objectForKey:@"user"] retain]; //we don't use this anymore
     NSString *urlString = [[dic objectForKey:@"image"] retain];
     
-    NSLog(@"Parse circle: user profile image url %@", urlString);
+    //NSLog(@"Parse circle: user profile image url %@", urlString);
     NSString *profileString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     avatarUrl = [[NSURL URLWithString:profileString] retain];
@@ -155,13 +154,13 @@
                 if (contentString==nil) {
                     NSString *photoString = [act objectForKey:@"content"];
                     User *poster = [act objectForKey:@"user"];
-                    if (photoString==nil || photoString==@"") {
+                    if (photoString==nil || [photoString isEqualToString:@""]) {
                         photoString = [NSString stringWithString:@"Untitled"];
                     }
                     if (poster) {
-                        contentString = [[NSString alloc] initWithFormat:@"%@ shared a photo: \"%@\".", poster.name, photoString];
+                        contentString = [[NSString alloc] initWithFormat:@"%@ shared a photo: \"%@\"", poster.name, photoString];
                     } else {
-                        contentString = [[NSString alloc] initWithFormat:@"Photo shared: \"%@\".", photoString];
+                        contentString = [[NSString alloc] initWithFormat:@"Photo shared: \"%@\"", photoString];
                     }
                 }
 

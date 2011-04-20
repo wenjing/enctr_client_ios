@@ -269,6 +269,13 @@
         NSLog(@" has error");
     } else {
         //NSLog(@"%@", obj);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Circle customization saved!" 
+                                                        message:@"Refresh Circle View to Update" 
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"OK" 
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
     }
 }
 
@@ -313,7 +320,8 @@
     // init edit view cells
     circleImage.url = summary.avatarUrl;
     kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
-    [delg.objMan manage:circleImage];
+    [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:circleImage waitUntilDone:YES];
+    //[delg.objMan manage:circleImage];
     
     circleName.text = summary.nameString;
     

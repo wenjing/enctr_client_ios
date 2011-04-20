@@ -12,6 +12,8 @@
 #import "User.h"
 #import "StringUtil.h"
 #import "kaya_meetAppDelegate.h"
+#import "CirkleViewController.h"
+#import "CirkleSummary.h"
 
 @implementation EncounterViewController
 @synthesize sessionManager;
@@ -21,6 +23,9 @@
 @synthesize peerTableView;
 @synthesize spinner;
 @synthesize postRequests;
+@synthesize picker;
+@synthesize startStopButton;
+@synthesize titleLabel;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 
@@ -32,15 +37,102 @@
     return self;
 }
 
-
+// Create a color of blue that mimics the official gray highlighting
+- (UIColor *) sysBlueColor:(float) percent {
+    float red = percent * 255.0f;
+    float green = (red + 20.0f) / 255.0f;
+    float blue = (red + 45.0f) / 255.0f;
+    if (green > 1.0) green = 1.0f;
+    if (blue > 1.0f) blue = 1.0f;
+    return [UIColor colorWithRed:percent green:green blue:blue alpha:1.0f];
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Other initialization moved to tab selected	
     postRequests = [[NSMutableArray alloc] init];
+    
+    // Initialization code
+    [self.view setAlpha:0.9];
+    [self.view setBackgroundColor:[self sysBlueColor:0.6f]];
+    
+    // Add title
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 320.0f, 32.0f)];
+    titleLabel.text = @"Open Encounter";
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+    
+    [self.view addSubview:titleLabel];
+    
+    // Add button
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [button setFrame:CGRectMake(60.0f, 318.0f, 200.0f, 32.0f)];
+    
+    [button setBackgroundImage:[[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12.0 topCapHeight:0.0] forState:UIControlStateNormal];
+    
+    //[button setTitle:@"Start" forState: UIControlStateHighlighted];
+    [button setTitle:@"Start" forState: UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+    
+    [button addTarget:self action:@selector(buttonStartStopPressed:)
+     forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:button];
+    startStopButton = button;
+    
+    [spinner stopAnimating];
+    
+    // Add border for the table
+    CGRect bounds = CGRectMake(10.0f, 40.0f, 300.0f, 310.0f - 48.0f);
+    UIView *borderView = [[UIView alloc] initWithFrame:bounds];
+    [borderView setBackgroundColor:[self sysBlueColor:0.4f]];
+    borderView.layer.cornerRadius = 5;
+    
+    [self.view addSubview:borderView];
+    [borderView release];
+    
+    //[self.peerTableView setFrame:CGRectInset(bounds, 4.0f, 4.0f)];
+    
+    self.peerTableView = [[UITableView alloc] initWithFrame:CGRectInset(bounds, 4.0f, 4.0f)
+                style:UITableViewStylePlain];
+    self.peerTableView.backgroundColor = [UIColor whiteColor];
+    self.peerTableView.delegate = self;
+    self.peerTableView.dataSource = self;
+
+    self.peerTableView.layer.cornerRadius = 5;
+    
+    [self.peerTableView reloadData];
+    [self.view addSubview:self.peerTableView];
+    [self.view bringSubviewToFront:self.peerTableView];
 }
 
+- (void) buttonStartStopPressed:(id)sender
+{
+    if (![spinner isAnimating]) {
+        // start the session Manager
+        NSLog(@"Start is pressed");
+        
+        UIButton *button = (UIButton *)sender;
+        [button setTitle:@"Stop" forState:UIControlStateNormal];
+        
+        [sessionManager startSession];
+        [spinner startAnimating];
+        
+    } else {
+        // stop the session Manager
+        NSLog(@"Stop is pressed");
+        
+        UIButton *button = (UIButton *)sender;
+        [button setTitle:@"Start" forState:UIControlStateNormal];
+        if (sessionManager!=nil)
+            [sessionManager stopSession];
+        [spinner stopAnimating];
+    }
+}
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -70,6 +162,10 @@
 	[refreshButton release];
 	[confirmButton release];
 	[spinner release];
+    [picker release];
+    [startStopButton release];
+    [titleLabel release];
+    [peerTableView release];
 }
 
 
@@ -82,24 +178,21 @@
 	[refreshButton release];
 	[confirmButton release];
 	[spinner release];
+    [startStopButton release];
+    [titleLabel release];
+    [peerTableView release];
     
     //dealloc calls cancel
     [postRequests removeAllObjects];
     [postRequests release];
     
+    [picker release];
+    
     [super dealloc];
 }
 
 -(IBAction) refreshButtonPressed {
-	/*
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Refresh button selected!" 
-													message:@"Correct?"
-												   delegate:nil 
-										  cancelButtonTitle:@"Yes I did" 
-										  otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	*/
+
 	//stop session
 	if (sessionManager) {
 		[sessionManager stopSession];
@@ -121,7 +214,10 @@
 	
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
 	
-	[foundPeers addObject:[NSString stringWithFormat:@"%@:%d",user.name,user.userId]];
+    //to-do: have user customizable tag line
+    NSString *identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
+    
+	[foundPeers addObject:identity];
 	
 	NSArray* indexPathsInsert = [NSArray arrayWithObjects:
 								 [NSIndexPath indexPathForRow:0 inSection:0], nil];
@@ -130,15 +226,16 @@
 							  withRowAnimation:UITableViewRowAnimationRight];
 	[self.peerTableView endUpdates];
 	
-	//[self.peerTableView reloadData];
 	
 	//start a new session
 	sessionManager = [[SessionManager alloc] initWithDelegate:self];
 	
 	//to-do: change mode as our identity changes
-	currentMode = GKSessionModePeer;
+	sessionManager.sessionMode = GKSessionModePeer;
 	
-	[sessionManager startSession:GKSessionModePeer];
+    sessionManager.displayName = identity;
+    
+	[sessionManager startSession];
 	
 	confirmButton.enabled = YES;
 	[spinner startAnimating];
@@ -146,7 +243,7 @@
 
 -(IBAction) confirmButtonPressed {
 	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter" 
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New encounter confirmed" 
 													message:@"in your circles"
 												   delegate:nil 
 										  cancelButtonTitle:@"OK" 
@@ -194,19 +291,23 @@
 {
 	NSLog(@"encounter tab selected");
 	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
-	
-	foundPeers = [[NSMutableArray alloc] initWithObjects:[NSString stringWithFormat:@"%@:%d",user.name,user.userId], nil];
+	//default to personal identity
+    NSString *identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
+    
+	foundPeers = [[NSMutableArray alloc] initWithObjects:identity, nil];
 	
 	sessionManager = [[SessionManager alloc] initWithDelegate:self];
 	
 	//to-do: change mode as our identity changes
-	currentMode = GKSessionModePeer;
+	sessionManager.sessionMode = GKSessionModePeer;
+    sessionManager.displayName = identity;
+    
 	//Client may be working, don't set it to nil here
 	
-	[sessionManager startSession:GKSessionModePeer];
-	confirmButton.enabled = YES;
+	//[sessionManager startSession];
+	//confirmButton.enabled = YES;
 	[self.peerTableView reloadData];
-	[spinner startAnimating];
+	//[spinner startAnimating];
 	
 }
 
@@ -345,35 +446,6 @@
     
     [retryList removeAllObjects];
 
-    /*
-    while ((client = [enumerator nextObject])) {
-        if (client.toBeRetried) {
-            //Add this to retryList
-            [retryList addObject:<#(id)#>
-            NSLog(@"retryPostToServer found an encounter post to retry");
-            
-            //to avoid depdency on client behavior, create a new client
-            KYMeetClient *postClient = [[KYMeetClient alloc] initWithTarget:self action:@selector(encounterDidPost:obj:)];
-            
-            // retain the postMessage dictionary
-            postClient.postParams = client.postParams;
-            
-            // retain the Client
-            [postClient retain];
-            [postRequests addObject:postClient];
-            
-            // post meet to server
-            [postClient postMeet:postClient.postParams];
-            
-            //
-            //release the old client
-            [client release];
-            
-            count++;
-        }
-    }
-    */
-    
     NSLog(@"retryPostToServer done with %d posts retried", count);
 }
 
@@ -384,12 +456,12 @@
 	return [self.foundPeers count];
 }
 
-/* not allow selecting the first row */
+/* allow selecting all rows */
  - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	 NSUInteger row = [indexPath row];
+	 /*NSUInteger row = [indexPath row];
 	 if (row == 0) {
 		 return nil;
-	 }
+	 }*/
 	 return indexPath;
  }
 
@@ -411,39 +483,20 @@
 	UIImage *image = [UIImage imageNamed:@"unknown-person.png"];
 
 	NSArray *chunks = [[foundPeers objectAtIndex:row] componentsSeparatedByString: @":"];
-	NSInteger userId = [[chunks objectAtIndex:1] intValue];
-/*	
-	User *user = [User userWithId:userId];
-	if (user) {
-		//to-do: Use HJCache to get image via user.profileImageUrl
-		switch (userId % 5) {
-			case 0:
-				image = [UIImage imageNamed:@"person3.png"];
-				break;
-			case 1:
-				image = [UIImage imageNamed:@"person2.png"];
-				break;
-			case 2:
-				image = [UIImage imageNamed:@"person1.png"];
-				break;
-			case 3:
-				image = [UIImage imageNamed:@"person4.png"];
-				break;
-			case 4:
-				image = [UIImage imageNamed:@"person5.png"];
-				break;
-			default:
-				break;
-		}
-	}
- */
-	
+	uint64_t user_Id = [[chunks objectAtIndex:1] intValue]; //second parameter is user ID
+	NSString *tagline = nil;
+    if ([chunks count] > 2)
+        tagline = [chunks objectAtIndex:2]; //third is tag line
+    
 	[cell setPeerName:[chunks objectAtIndex:0]
-               peerId:userId
-			 greeting:@"Hi, glad to meet you!"
+               peerId:user_Id
+			 greeting:(tagline==nil)?@"Hello!":tagline
 			  peerPic:image
 				  row:row];
 	
+    if (row==0)
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
 	return cell;
 }
 
@@ -454,6 +507,36 @@
 	NSUInteger row = [indexPath row];
 	NSString *rowValue = [foundPeers objectAtIndex:row];
 	
+    if (row == 0) {
+        //deselect
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        //circle picker
+        if (picker == nil) {
+            
+            picker = [[CirklePickerSheet alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height) 
+                      owner:self 
+                      action:@selector(cirklePickerDidFinish:obj:)];
+            
+            [self.view addSubview:picker];
+        }
+        
+        //set the circle list
+        UINavigationController* nav = [[kaya_meetAppDelegate getAppDelegate].tabBarController.viewControllers objectAtIndex:TAB_CIRCLES];
+        CirkleViewController *cvc = [nav.viewControllers objectAtIndex:0];
+        
+        picker.selections = cvc.listCircles;
+        [picker.tableView reloadData];
+        
+        //disable the navbar items
+        confirmButton.enabled = NO;
+        refreshButton.enabled = NO;
+        
+        [picker presentView];
+        
+        return;
+    }
+    
 	NSString *message = [[NSString alloc] initWithFormat:@"You selected %@", rowValue];
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Row Selected!" 
 													message:message 
@@ -493,5 +576,84 @@
 	}
 }
 
+- (void)cirklePickerDidFinish:(id)sender obj:(NSObject *)obj {
+    NSLog(@"cirklePickerDidFinish");
+    
+    if(obj==nil) {
+        NSLog(@"nothing is picked. do nothing");
+        
+        return;
+    }
+    
+    confirmButton.enabled = YES;
+    refreshButton.enabled = YES;
+    
+    CirkleSummary *circle = (CirkleSummary*)obj;
+    NSLog(@"You selected circle: %@", circle.nameString);
+    
+    //refresh and replace 0th cell
+    
+    //update view
+	NSMutableArray* indexPathsDelete = [NSMutableArray array];
+	NSInteger rows = [self.foundPeers count];
+	
+	[self.peerTableView beginUpdates];
+	
+	for (int i=0; i<rows; i++) {
+		[indexPathsDelete addObject: [NSIndexPath indexPathForRow:i inSection:0]];
+	}	
+	[foundPeers removeAllObjects];
+	[self.peerTableView deleteRowsAtIndexPaths:indexPathsDelete  
+							  withRowAnimation:UITableViewRowAnimationLeft];
+	
+	User *user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
+	
+    NSString *identity;
+    
+    if(circle.type != CIRCLE_TYPE_SOLO) {
+        identity = [NSString stringWithFormat:@"%@:%d:%@:%d",user.name,user.userId,circle.nameString,circle.cId];
+        //[foundPeers addObject:[NSString stringWithFormat:@"%@:%d:%@:%d",user.name,user.userId,circle.nameString,circle.cId]];
+	} else {
+        identity = [NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId];
+        //to-do: add customizable tag line
+        //[foundPeers addObject:[NSString stringWithFormat:@"%@:%d:Hello!",user.name,user.userId]];
+    }
+    NSLog(@"display name %@",identity);
+    
+    [foundPeers addObject:identity];
+    
+	NSArray* indexPathsInsert = [NSArray arrayWithObjects:
+								 [NSIndexPath indexPathForRow:0 inSection:0], nil];
+	
+	[self.peerTableView insertRowsAtIndexPaths:indexPathsInsert 
+							  withRowAnimation:UITableViewRowAnimationRight];
+	[self.peerTableView endUpdates];
+
+    // let's stop current session if there is one
+    
+	if (sessionManager) {
+		[sessionManager stopSession];
+		self.sessionManager = nil;
+        [spinner stopAnimating];
+        [startStopButton setTitle:@"Start" forState:UIControlStateNormal];
+	}
+    
+    // start a new session based on the new identity
+    
+	sessionManager = [[SessionManager alloc] initWithDelegate:self];
+	
+	if (circle.type != CIRCLE_TYPE_SOLO) {
+        sessionManager.sessionMode = GKSessionModeServer;
+    } else { //peer mode
+        sessionManager.sessionMode = GKSessionModePeer;
+	}
+    
+    sessionManager.displayName = identity;
+    
+    // title label
+    NSString *string = [NSString stringWithFormat:@"Adding to Circle: %@", circle.nameString];
+    [titleLabel setText:string];
+
+}
 
 @end
