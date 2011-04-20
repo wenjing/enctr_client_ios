@@ -291,8 +291,8 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         UIAlertView *alert=nil;
         //name
         NSRange range = [nameField.text rangeOfString:@":"];
-        if ([nameField.text length] < 5) {
-            alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have at least 5 characters" 
+        if ([nameField.text length] < 5 || [nameField.text length] >50) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have between 5 to 50 characters" 
                                                    message:@"Tip: real names work better"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
@@ -349,7 +349,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         UIAlertView *alert=nil;
         if (![user.name isEqualToString:nameField.text]) {
             if ([nameField.text length] < 5) {
-                alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have at least 5 characters" 
+                alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have between 5 to 50 characters" 
                                                    message:@"Tip: real names work better"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
