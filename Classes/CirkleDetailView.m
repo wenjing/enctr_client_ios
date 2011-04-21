@@ -469,6 +469,7 @@
     //NSLog(@"circleDetailView got callback");
     //update data
     
+    //to-do: make this work regardless of where we are
     UITableView *tv = (UITableView *) self.superview.superview.superview;
     CirkleDetailViewController *vc = (CirkleDetailViewController *) tv.dataSource;
     //NSLog(@"refreshing circleDetail");

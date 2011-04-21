@@ -45,4 +45,15 @@
     [textField release];
     [super dealloc];
 }
+/* undocumented method
+ [alert addTextFieldWithValue:@"" label:nil];
+ 
+ And the delegate is
+ 
+ - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+ if(buttonIndex==0) // cancel button
+ return;
+ NSString* text = [alertView textField].text;
+ } 
+ */
 @end

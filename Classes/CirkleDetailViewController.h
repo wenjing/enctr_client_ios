@@ -11,6 +11,7 @@
 #import "CirkleSummary.h"
 #import "CirkleViewController.h"
 #import "HJManagedImageV.h"
+#import "CirklePlaceView.h"
 
 @interface CirkleDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate> {
     
@@ -28,6 +29,7 @@
     IBOutlet UIImageView *circlePickedImage;
     UIImage *holdImage;
     UIImagePickerController *imgPicker;
+    IBOutlet CirklePlaceView *placesView;
 }
 @property (nonatomic, retain) NSMutableArray *listDetails;
 @property (nonatomic, retain) NSMutableArray *listMembers;
@@ -38,6 +40,7 @@
 @property (nonatomic, assign) UITableView *detailTable;
 @property (nonatomic, retain) UITableViewCell *nameCell;
 @property (nonatomic, retain) UITableViewCell *imageCell;
+@property (nonatomic, retain) CirklePlaceView *placesView;
 
 - (void)restoreAndLoadNews:(BOOL)withUpdate;
 - (void)newsDidLoad:(NewsQuery*)sender;

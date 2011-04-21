@@ -20,6 +20,8 @@
 @synthesize user;
 @synthesize imageUrl;
 @synthesize contentString;
+@synthesize latitude;
+@synthesize longitude;
 
 // Why isn't this in template?
 - (void)dealloc
@@ -79,8 +81,8 @@
     imageUrl = [[NSMutableArray alloc] init];
     
     //get map image url
-    float longitude        = [[dic objectForKey:@"lng"]    floatValue] ;
-    float latitude         = [[dic objectForKey:@"lat"]    floatValue] ;
+    longitude        = [[dic objectForKey:@"lng"]    floatValue] ;
+    latitude         = [[dic objectForKey:@"lat"]    floatValue] ;
     //to-do: cleanup
     NSString *headmapurl = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=100x100&maptype=roadmap&format=png32&markers=color:green|size:small";
     
@@ -169,7 +171,10 @@
     }
     
     //NSLog(@"name %@",nameString);
-        
+    // these return nil if non there
+    longitude        = [[dic objectForKey:@"lng"]    floatValue] ;
+    latitude         = [[dic objectForKey:@"lat"]    floatValue] ;
+
     //init imageUrl
     imageUrl = [[NSMutableArray alloc] init];
     

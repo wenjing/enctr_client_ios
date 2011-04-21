@@ -24,7 +24,8 @@
     User            *user;
     NSMutableArray  *imageUrl;
     NSMutableString *contentString;
-
+    float           latitude;
+    float           longitude;
 }
 @property (nonatomic) sqlite_uint64    cId;
 @property (nonatomic, retain) NSString        *nameString;
@@ -36,6 +37,8 @@
 @property (nonatomic, retain) User            *user;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
 @property (nonatomic, retain) NSMutableString *contentString;
+@property (nonatomic, assign) float latitude;
+@property (nonatomic, assign) float longitude;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic;
 

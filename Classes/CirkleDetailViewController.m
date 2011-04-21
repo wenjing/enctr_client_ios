@@ -13,6 +13,11 @@
 #import "MessageViewController.h"
 #import "UIImage+Resize.h"
 
+#define CDV_SEGMENT_LIVE        0
+#define CDV_SEGMENT_MEMBERS     1
+#define CDV_SEGMENT_PLACES      2
+#define CDV_SEGMENT_MORE        3
+
 @implementation CirkleDetailViewController
 @synthesize listDetails;
 @synthesize listMembers;
@@ -23,6 +28,7 @@
 @synthesize detailTable;
 @synthesize nameCell;
 @synthesize imageCell;
+@synthesize placesView;
 
 /*
 - (id)initWithStyle:(UITableViewStyle)style
@@ -60,8 +66,13 @@
 -(IBAction) segmentedControlIndexChanged{
     //NSLog(@"segmentedControlIndexChanged to %d", self.segmentedControl.selectedSegmentIndex);
     
+    self.navigationItem.rightBarButtonItem = nil;
+    
 	switch (self.segmentedControl.selectedSegmentIndex) {
-		case 0:
+		case CDV_SEGMENT_LIVE:
+            if (placesView!=nil)
+                [self.view bringSubviewToFront:detailTable];
+            
 			// live news
             [detailTable reloadData];
             
@@ -75,7 +86,10 @@
             [addButton release];
             
 			break;
-		case 1:
+            
+		case CDV_SEGMENT_MEMBERS:
+            if (placesView!=nil)
+                [self.view bringSubviewToFront:detailTable];
 			// members
             [detailTable reloadData];
             
@@ -90,7 +104,22 @@
             
 			break;
             
-        case 2:
+        case CDV_SEGMENT_PLACES:
+            
+            // places view
+            if (placesView == nil) {
+                placesView = [[CirklePlaceView alloc] initWithFrame:detailTable.frame listOfPlaces:listDetails];
+                
+                [self.view addSubview:placesView];
+            }
+            [self.view bringSubviewToFront:placesView];
+            [placesView viewWillAppear:NO];
+            
+            break;
+            
+        case CDV_SEGMENT_MORE:
+            if (placesView!=nil)
+                [self.view bringSubviewToFront:detailTable];
             //edit the group: name and image
             [detailTable reloadData];
             
@@ -315,7 +344,7 @@
 	[addButton release];
     
     // initialize segmentedControl to default segment
-    segmentedControl.selectedSegmentIndex = 0 ;
+    segmentedControl.selectedSegmentIndex = CDV_SEGMENT_LIVE ;
     
     // init edit view cells
     circleImage.url = summary.avatarUrl;
@@ -373,6 +402,8 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [placesView viewDidDisappear:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -391,9 +422,9 @@
 {
 
     // Return the number of rows in the section.
-    if (segmentedControl.selectedSegmentIndex == 0) {
+    if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_LIVE) {
         return [self.listDetails count];
-    } else if (segmentedControl.selectedSegmentIndex == 1) {
+    } else if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_MEMBERS) {
         return [self.listMembers count];
     } else {
         return 2;
@@ -409,7 +440,7 @@
     
 	NSUInteger row = [indexPath row];
 	
-    if (segmentedControl.selectedSegmentIndex == 0) {
+    if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_LIVE) {
 
         CirkleDetailCell	*cell = (CirkleDetailCell *)[detailTable dequeueReusableCellWithIdentifier:CircleDetailTableIdentifier];
         if (cell == nil) {
@@ -427,7 +458,7 @@
         cell.frame = CGRectMake(0.0, 0.0, 320.0, sizeOfFrame);
         
         return cell;
-    } else if (segmentedControl.selectedSegmentIndex == 1) {
+    } else if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_MEMBERS) {
         //make member view cell
         CirkleMemberCell *cell = (CirkleMemberCell*)[detailTable dequeueReusableCellWithIdentifier:CircleMemberIdentifier];
         if (cell == nil) {
@@ -472,9 +503,9 @@
 	
 	NSUInteger row = [indexPath row];
     
-    if (segmentedControl.selectedSegmentIndex == 1) {
+    if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_MEMBERS) {
         return 57;
-    } else if (segmentedControl.selectedSegmentIndex == 2) {
+    } else if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_MORE) {
         if (row ==0)
             return 57;
         else 
@@ -589,7 +620,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (segmentedControl.selectedSegmentIndex == 2) {
+    if (segmentedControl.selectedSegmentIndex == CDV_SEGMENT_MORE) {
         
         NSUInteger row = [indexPath row];
         if(row == 1) {

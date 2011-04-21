@@ -218,7 +218,10 @@
 {
     if (sender.hasError) {
         [sender alert];
+    } else {
+        [self restoreAndLoadCirkles:TRUE];
     }
+        
 }
 
 #pragma mark - View lifecycle
