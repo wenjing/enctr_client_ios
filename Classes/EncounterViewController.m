@@ -55,14 +55,14 @@
     hostMode = 0;
     
     // Initialization code
-    [self.view setAlpha:0.9];
-    [self.view setBackgroundColor:[self sysBlueColor:0.7f]];
+    [self.view setAlpha:1.0];
+    [self.view setBackgroundColor:[self sysBlueColor:0.85f]];
     
     // Add title
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, 320.0f, 32.0f)];
     titleLabel.text = @"Open Encounter";
     titleLabel.textAlignment = UITextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textColor = [UIColor blackColor];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     
@@ -93,7 +93,7 @@
     CGRect bounds = CGRectMake(10.0f, 40.0f, 300.0f, 310.0f - 48.0f);
     UIView *borderView = [[UIView alloc] initWithFrame:bounds];
     [borderView setBackgroundColor:[self sysBlueColor:0.5f]];
-    borderView.layer.cornerRadius = 5;
+    borderView.layer.cornerRadius = 8;
     
     [self.view addSubview:borderView];
     [borderView release];
@@ -104,7 +104,7 @@
     self.peerTableView.delegate = self;
     self.peerTableView.dataSource = self;
 
-    self.peerTableView.layer.cornerRadius = 5;
+    self.peerTableView.layer.cornerRadius = 8;
     
     [self.peerTableView reloadData];
     [self.view addSubview:self.peerTableView];

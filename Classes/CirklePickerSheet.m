@@ -28,7 +28,7 @@
     if (self) {
         // Initialization code
         [self setAlpha:0.9];
-        [self setBackgroundColor:[self sysBlueColor:0.7f]];
+        [self setBackgroundColor:[self sysBlueColor:0.85f]];
         
         // Add button
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -51,7 +51,7 @@
         title.text = @"Select a Circle to Host";
         title.textAlignment = UITextAlignmentCenter;
         //title.lineBreakMode = UILineBreakModeWordWrap;
-        title.textColor = [UIColor whiteColor];
+        title.textColor = [UIColor blackColor];
         title.backgroundColor = [UIColor clearColor];
         title.font = [UIFont boldSystemFontOfSize:14.0f];
         [self addSubview:title];
@@ -61,7 +61,7 @@
         CGRect bounds = CGRectMake(10.0f, 40.0f, 300.0f, 310.0f - 48.0f);
         UIView *borderView = [[UIView alloc] initWithFrame:bounds];
         [borderView setBackgroundColor:[self sysBlueColor:0.5f]];
-        borderView.layer.cornerRadius = 5;
+        borderView.layer.cornerRadius = 8;
         
         [self addSubview:borderView];
         [borderView release];
@@ -72,7 +72,7 @@
         tableView.backgroundColor = [UIColor whiteColor];
         tableView.delegate = self;
         tableView.dataSource = self;
-        tableView.layer.cornerRadius = 5;
+        tableView.layer.cornerRadius = 8;
         
         [tableView reloadData];
         [self addSubview:tableView];
