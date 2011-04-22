@@ -15,10 +15,10 @@
 
 typedef enum {
     TAB_CIRCLES,
-    TAB_MEETS,
     TAB_ENCOUNTER,
+    TAB_SETUP,
+    TAB_MEETS,
     TAB_PLACES,
-    TAB_SETUP
 } TAB_ITEM;
 
 
