@@ -196,6 +196,9 @@
 		[mainTextColor set];
         
 		// Draw name
+        CGRect drawRect = CGRectMake(boundsX+NAME_TOP_X, GENERIC_MARGIN, NAME_TOP_WIDTH, PIC_HEIGHT);
+        [circle.nameString drawInRect:drawRect withFont:nameFont];
+        /*
 		point = CGPointMake(boundsX + NAME_TOP_X, GENERIC_MARGIN);
 		[circle.nameString drawAtPoint:point 
 					   forWidth:NAME_TOP_WIDTH 
@@ -204,7 +207,7 @@
 				 actualFontSize:NULL 
 				  lineBreakMode:UILineBreakModeTailTruncation 
 			 baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
-		
+		*/
 		// Draw logo
         // check circle.score
         UIImage *logo;
@@ -243,7 +246,7 @@
 		//[icon drawAtPoint:point];
         
 		// Draw text content
-		CGRect drawRect = CGRectMake(boundsX+CONTENT_TOP_X, CONTENT_TOP_Y, CONTENT_WIDTH, 9999.0);
+		drawRect = CGRectMake(boundsX+CONTENT_TOP_X, CONTENT_TOP_Y, CONTENT_WIDTH, 9999.0);
 		        
 		drawRect.size = circle.size;
         

@@ -552,6 +552,8 @@
 		3A03974D128DD82C004C2315 /* MeetViews */ = {
 			isa = PBXGroup;
 			children = (
+				3A0FC7011289D0F700BFC7F5 /* LoadCell.h */,
+				3A0FC7021289D0F700BFC7F5 /* LoadCell.m */,
 				3AF8547E1326A1D100676E02 /* BaseTableViewCell.h */,
 				3AF8547F1326A1D100676E02 /* BaseTableViewCell.m */,
 				3AF854801326A1D100676E02 /* TimelineViewCell.m */,
@@ -801,8 +803,6 @@
 				3ACA18351288E62900D74450 /* SetupViewController.h */,
 				3ACA18361288E62900D74450 /* SetupViewController.m */,
 				3A03974D128DD82C004C2315 /* MeetViews */,
-				3A0FC7011289D0F700BFC7F5 /* LoadCell.h */,
-				3A0FC7021289D0F700BFC7F5 /* LoadCell.m */,
 				3A04AA5B12D02520000B99FB /* placeDisplayMap.h */,
 				3A04AA5C12D02520000B99FB /* placeDisplayMap.m */,
 				3A04A94312D00522000B99FB /* PlaceViewController.h */,

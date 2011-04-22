@@ -394,6 +394,10 @@
      [pic drawAtPoint:point];
     
     // Draw name
+    CGRect drawRect = CGRectMake(boundsX+NAME_TOP_X, GENERIC_MARGIN, NAME_TOP_WIDTH, PIC_HEIGHT);
+    [circleDetail.nameString drawInRect:drawRect withFont:nameFont];
+    
+    /*
     point = CGPointMake(boundsX + NAME_TOP_X, GENERIC_MARGIN);
     [circleDetail.nameString drawAtPoint:point 
                           forWidth:NAME_TOP_WIDTH 
@@ -402,6 +406,7 @@
                     actualFontSize:NULL 
                      lineBreakMode:UILineBreakModeTailTruncation 
                 baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+    */
     
     // Draw timestring
     UIImage *icon;// = [UIImage imageNamed:@"timeofupdate_icon.png"];

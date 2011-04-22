@@ -109,7 +109,7 @@
         location = nil;
     }
 //  warning to app
-    [[kaya_meetAppDelegate getAppDelegate] alert:@"Location Service Error" message:@"Operation timeout"];
+//    [[kaya_meetAppDelegate getAppDelegate] alert:@"Location Service Error" message:@"Operation timeout"];
 
     [delegate locationManagerDidFail:self];
 }
@@ -120,7 +120,7 @@
 
     if (!([error code] == kCLErrorDenied && [[error domain] isEqualToString:kCLErrorDomain])) {
 //  warning to app
-		[[kaya_meetAppDelegate getAppDelegate] alert:@"Location Service Error" message:[error localizedDescription]];
+//		[[kaya_meetAppDelegate getAppDelegate] alert:@"Location Service Error" message:[error localizedDescription]];
     }
     else if ([error code] == kCLErrorLocationUnknown) {
         // Ignore this error and keep tracking
