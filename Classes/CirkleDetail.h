@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 #import "sqlite3.h"
+#import <CoreText/CoreText.h>
 
 #define CD_TYPE_ENCOUNETR   1
 #define CD_TYPE_TOPIC       2
@@ -23,7 +24,8 @@
     NSInteger       type;
     User            *user;
     NSMutableArray  *imageUrl;
-    NSMutableArray *contentString;
+    NSMutableAttributedString *contentString;
+    CTFramesetterRef framesetter;
     CGSize          size;
     float           latitude;
     float           longitude;
@@ -37,11 +39,13 @@
 @property (nonatomic) NSInteger       type;
 @property (nonatomic, retain) User            *user;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
-@property (nonatomic, retain) NSMutableArray *contentString;
+@property (nonatomic, retain) NSMutableAttributedString *contentString;
 @property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;
 @property (nonatomic, assign) CGSize size;
 
+
 - (id)initWithJsonDictionary:(NSDictionary*)dic;
+- (CTFramesetterRef) getFramesetter;
 
 @end

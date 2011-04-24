@@ -7,7 +7,7 @@
 //
 
 #import "CirkleDetail.h"
-
+#import <CoreText/CoreText.h>
 
 @implementation CirkleDetail
 @synthesize cId;
@@ -24,6 +24,11 @@
 @synthesize longitude;
 @synthesize size;
 
+- (CTFramesetterRef) getFramesetter
+{
+    return framesetter;
+}
+
 // Why isn't this in template?
 - (void)dealloc
 {
@@ -33,8 +38,8 @@
     [user release];
     [imageUrl removeAllObjects];
     [imageUrl release];
-    [contentString removeAllObjects];
     [contentString release];
+    CFRelease(framesetter);
     [super dealloc];
 }
 
@@ -139,12 +144,32 @@
             if (userObject) {
                 //construct the string
                 if (contentString==nil) {
-                    contentString = [[NSMutableArray alloc] init];
+                    contentString = [[NSMutableAttributedString alloc] init];
                 }
                 //[contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
-                [contentString addObject:dict];
-                [dict release];
+                //NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
+                //[contentString addObject:dict];
+                //[dict release];
+                CTFontRef ctNameFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), 
+                                                            12, /*nameFont.pointSize, */
+                                                            NULL);
+                
+                CTFontRef ctMainFont = CTFontCreateWithName(CFSTR("Helvetica"), 
+                                                            12, /*mainFont.pointSize, */
+                                                            NULL);
+                
+                NSString *fullcomment = [NSString stringWithFormat:@"%@: %@\n",userObject.name,aContent];
+                
+                NSMutableAttributedString *oneComment = [[NSMutableAttributedString alloc] initWithString:fullcomment];
+                
+                [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctNameFont range:NSMakeRange(0, [userObject.name length])];
+                
+                [oneComment addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[UIColor blackColor].CGColor range:NSMakeRange(0, [userObject.name length])];
+                
+                [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctMainFont range:NSMakeRange([userObject.name length], [oneComment length]-[userObject.name length])];
+                
+                [contentString appendAttributedString:oneComment];
+                
             }
             //if anything goes wrong, do nothing in this for loop
         }
@@ -192,13 +217,32 @@
     NSString *tContent = [dic objectForKey:@"content"]; //no retain
     if ((tContent) && [tContent isKindOfClass:[NSString class]]) {
         if (contentString==nil) {
-            contentString = [[NSMutableArray alloc] init];
+            contentString = [[NSMutableAttributedString alloc] init];
         }
         
         //[contentString appendFormat:@"%@:\n    %@\n", user.name, tContent];
-        NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:user.name, @"name", tContent, @"comment", nil];
-        [contentString addObject:dict];
-        [dict release];
+        //NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:user.name, @"name", tContent, @"comment", nil];
+        //[contentString addObject:dict];
+        //[dict release];
+        CTFontRef ctNameFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), 
+                                                    12, /*nameFont.pointSize, */
+                                                    NULL);
+        
+        CTFontRef ctMainFont = CTFontCreateWithName(CFSTR("Helvetica"), 
+                                                    12, /*mainFont.pointSize, */
+                                                    NULL);
+        
+        NSString *fullcomment = [NSString stringWithFormat:@"%@: %@\n",user.name,tContent];
+        
+        NSMutableAttributedString *oneComment = [[NSMutableAttributedString alloc] initWithString:fullcomment];
+        
+        [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctNameFont range:NSMakeRange(0, [user.name length])];
+        
+        [oneComment addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[UIColor blackColor].CGColor range:NSMakeRange(0, [user.name length])];
+        
+        [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctMainFont range:NSMakeRange([user.name length], [oneComment length]-[user.name length])];
+        
+        [contentString appendAttributedString:oneComment];
     }
     
     //get chatter string
@@ -226,12 +270,31 @@
             if (userObject) {
                 //construct the string
                 if (contentString==nil) {
-                    contentString = [[NSMutableArray alloc] init];
+                    contentString = [[NSMutableAttributedString alloc] init];
                 }
                 //[contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
-                [contentString addObject:dict];
-                [dict release];
+                //NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
+                //[contentString addObject:dict];
+                //[dict release];
+                CTFontRef ctNameFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), 
+                                                            12, /*nameFont.pointSize, */
+                                                            NULL);
+                
+                CTFontRef ctMainFont = CTFontCreateWithName(CFSTR("Helvetica"), 
+                                                            12, /*mainFont.pointSize, */
+                                                            NULL);
+                
+                NSString *fullcomment = [NSString stringWithFormat:@"%@: %@\n",userObject.name,aContent];
+                
+                NSMutableAttributedString *oneComment = [[NSMutableAttributedString alloc] initWithString:fullcomment];
+                
+                [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctNameFont range:NSMakeRange(0, [userObject.name length])];
+                
+                [oneComment addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[UIColor blackColor].CGColor range:NSMakeRange(0, [userObject.name length])];
+                
+                [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctMainFont range:NSMakeRange([userObject.name length], [oneComment length]-[userObject.name length])];
+                
+                [contentString appendAttributedString:oneComment];
             }
             //if anything goes wrong, do nothing in this for loop
         }
@@ -274,6 +337,11 @@
         [self parseTopic:dic];
     }
     //other types are ignored
+    
+    if ([contentString length] >0) {
+        //framesetting
+        framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)contentString);
+    }
     return self;
 }
 

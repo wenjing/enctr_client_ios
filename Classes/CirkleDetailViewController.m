@@ -12,6 +12,7 @@
 #import "kaya_meetAppDelegate.h"
 #import "MessageViewController.h"
 #import "UIImage+Resize.h"
+#import <CoreText/CoreText.h>
 
 #define CDV_SEGMENT_LIVE        0
 #define CDV_SEGMENT_MEMBERS     1
@@ -534,25 +535,7 @@
     //NSLog(@"cell variable Text Size = %@", NSStringFromCGSize(size));
     
     // variable comment text
-    if ([circleDetail.contentString count]>0 && circleDetail.size.height == 0) {
-        drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
-        
-        NSMutableString *concatString = [[NSMutableString alloc] init];
-        
-        for (int i =0; i < [circleDetail.contentString count]; i++) {
-            NSDictionary *dict = [circleDetail.contentString objectAtIndex:i];
-            NSString *name = [dict objectForKey:@"name"];
-            NSString *comment = [dict objectForKey:@"comment"];
-            [concatString appendFormat:@"%@: %@\n", name, comment];
-        }
-    
-        circleDetail.size = [concatString sizeWithFont:mainFont 
-                          constrainedToSize:drawRect.size];
-        
-        //NSLog(@"content string height %f",circleDetail.size.height);
-        
-        [concatString release];
-    }
+    circleDetail.size = CTFramesetterSuggestFrameSizeWithConstraints([circleDetail getFramesetter], CFRangeMake(0, 0), NULL, CGSizeMake(CD_CONTENT_WIDTH, CGFLOAT_MAX), NULL);
     
     height = height+circleDetail.size.height;
 
