@@ -22,6 +22,7 @@
 @synthesize contentString;
 @synthesize latitude;
 @synthesize longitude;
+@synthesize size;
 
 // Why isn't this in template?
 - (void)dealloc
@@ -32,6 +33,7 @@
     [user release];
     [imageUrl removeAllObjects];
     [imageUrl release];
+    [contentString removeAllObjects];
     [contentString release];
     [super dealloc];
 }
@@ -137,9 +139,12 @@
             if (userObject) {
                 //construct the string
                 if (contentString==nil) {
-                    contentString = [[NSMutableString alloc] initWithCapacity:20];
+                    contentString = [[NSMutableArray alloc] init];
                 }
-                [contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
+                //[contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
+                [contentString addObject:dict];
+                [dict release];
             }
             //if anything goes wrong, do nothing in this for loop
         }
@@ -187,10 +192,13 @@
     NSString *tContent = [dic objectForKey:@"content"]; //no retain
     if ((tContent) && [tContent isKindOfClass:[NSString class]]) {
         if (contentString==nil) {
-            contentString = [[NSMutableString alloc] initWithCapacity:20];
+            contentString = [[NSMutableArray alloc] init];
         }
         
-        [contentString appendFormat:@"%@:\n    %@\n", user.name, tContent];
+        //[contentString appendFormat:@"%@:\n    %@\n", user.name, tContent];
+        NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:user.name, @"name", tContent, @"comment", nil];
+        [contentString addObject:dict];
+        [dict release];
     }
     
     //get chatter string
@@ -218,9 +226,12 @@
             if (userObject) {
                 //construct the string
                 if (contentString==nil) {
-                    contentString = [[NSMutableString alloc] initWithCapacity:20];
+                    contentString = [[NSMutableArray alloc] init];
                 }
-                [contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
+                //[contentString appendFormat:@"%@:\n    %@\n", userObject.name, aContent];
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:userObject.name, @"name", aContent, @"comment", nil];
+                [contentString addObject:dict];
+                [dict release];
             }
             //if anything goes wrong, do nothing in this for loop
         }
@@ -233,6 +244,8 @@
     //get current time
     //time_t now;
     //time(&now);	
+    
+    size = CGSizeZero;
     
     //read type 
     NSString *eventType = [aDic objectForKey:@"type"];

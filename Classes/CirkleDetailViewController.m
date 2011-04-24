@@ -534,12 +534,27 @@
     //NSLog(@"cell variable Text Size = %@", NSStringFromCGSize(size));
     
     // variable comment text
-    drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
-    varString = circleDetail.contentString;
+    if ([circleDetail.contentString count]>0 && circleDetail.size.height == 0) {
+        drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
+        
+        NSMutableString *concatString = [[NSMutableString alloc] init];
+        
+        for (int i =0; i < [circleDetail.contentString count]; i++) {
+            NSDictionary *dict = [circleDetail.contentString objectAtIndex:i];
+            NSString *name = [dict objectForKey:@"name"];
+            NSString *comment = [dict objectForKey:@"comment"];
+            [concatString appendFormat:@"%@: %@\n", name, comment];
+        }
     
-    size = [varString sizeWithFont:mainFont 
+        circleDetail.size = [concatString sizeWithFont:mainFont 
                           constrainedToSize:drawRect.size];
-    height = height+size.height;
+        
+        //NSLog(@"content string height %f",circleDetail.size.height);
+        
+        [concatString release];
+    }
+    
+    height = height+circleDetail.size.height;
 
     NSInteger rowsOfImages = 0;
     

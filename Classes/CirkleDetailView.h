@@ -52,7 +52,7 @@
     NSMutableArray *images;
     CGSize      size_names;
     NSInteger   rowsOfImages;
-    CGSize      size_comments;
+//    CGSize      size_comments;
     UIButton    *commentButton;
 }
 
@@ -60,7 +60,7 @@
 @property (nonatomic, retain) NSMutableArray *images;
 
 @property (nonatomic, retain) CirkleDetail *circleDetail;
-@property (nonatomic) CGSize size_names, size_comments;
+@property (nonatomic) CGSize size_names;
 @property (nonatomic) NSInteger rowsOfImages;
 
 @property (nonatomic, retain) UIButton *commentButton;

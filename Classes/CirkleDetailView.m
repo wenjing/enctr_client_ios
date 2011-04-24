@@ -9,6 +9,9 @@
 #import "CirkleDetailView.h"
 #import "kaya_meetAppDelegate.h"
 #import "CirkleDetailViewController.h"
+#import <Foundation/Foundation.h>
+#import <CoreText/CoreText.h>
+//#import "NSAttributedString+Attributes.h"
 
 @implementation CirkleDetailView
 
@@ -16,7 +19,7 @@
 @synthesize circleDetail;
 @synthesize images;
 @synthesize size_names;
-@synthesize size_comments;
+//@synthesize size_comments;
 @synthesize rowsOfImages;
 @synthesize commentButton;
 
@@ -103,14 +106,15 @@
 
 - (void) topicDetailSet {
     
-    UIFont *mainFont = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
+    //UIFont *mainFont = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
     CGRect drawRect;
-    NSString *varString;
+    //NSString *varString;
     
     // no name list to display
     size_names = CGSizeZero;
     
     // variable comment text
+    /*
     if (circleDetail.contentString) {
         
         drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
@@ -120,7 +124,7 @@
                               constrainedToSize:drawRect.size];
     } else
         size_comments = CGSizeZero;
-    
+    */
     // no rows of images
     rowsOfImages = 0;
     
@@ -187,6 +191,7 @@
     //NSLog(@"cell variable Text Size = %@", NSStringFromCGSize(size));
     
     // variable comment text
+    /*
     if (circleDetail.contentString) {
         
         drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
@@ -196,7 +201,7 @@
                                     constrainedToSize:drawRect.size];
     } else
         size_comments = CGSizeZero;
-    
+    */
     //number of image rows
     if ((circleDetail.imageUrl==nil)) {
         rowsOfImages = 0;
@@ -300,7 +305,7 @@
     return (GENERIC_MARGIN+PIC_HEIGHT+GENERIC_MARGIN+picSize+GENERIC_MARGIN+
                 size_names.height+GENERIC_MARGIN+
                 rowsOfImages*( LG_PIC_SIZE+GENERIC_MARGIN)+
-                size_comments.height+
+                circleDetail.size.height+
                 GENERIC_MARGIN+CD_COMBUT_HEIGHT+GENERIC_MARGIN);
     
 }
@@ -355,6 +360,14 @@
     
     //NSLog(@"timestring is %@", timeString);
     return timeString;
+}
+
+- (CGFloat)boundingHeightForWidth:(CGFloat)inWidth
+{
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString( (CFMutableAttributedStringRef) self); 
+    CGSize suggestedSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(inWidth, CGFLOAT_MAX), NULL);
+    CFRelease(framesetter);
+    return suggestedSize.height;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -445,7 +458,7 @@
     }
     
     // Draw comments
-    if (size_comments.height != 0) {
+    if (circleDetail.size.height != 0) {
         NSInteger commentTopY = GENERIC_MARGIN + PIC_WIDTH + GENERIC_MARGIN + GENERIC_MARGIN;
         if (circleDetail.type == CD_TYPE_ENCOUNETR) {
             commentTopY += CD_MAP_SIZE;
@@ -459,11 +472,69 @@
         point = CGPointMake(boundsX+19.5, commentTopY);
         [icon drawAtPoint:point];
         
+        
+        CTFontRef ctNameFont = CTFontCreateWithName((CFStringRef)nameFont.fontName, 
+                                                10, /*nameFont.pointSize, */
+                                                NULL);
+        
+        CTFontRef ctMainFont = CTFontCreateWithName((CFStringRef)mainFont.fontName, 
+                                                    10, /*mainFont.pointSize, */
+                                                    NULL);
+        
+        NSMutableAttributedString * astring = [[NSMutableAttributedString alloc] init];
+        
+        for (int i =0; i < [circleDetail.contentString count]; i++) {
+            NSDictionary *dict = [circleDetail.contentString objectAtIndex:i];
+            NSString *name = [dict objectForKey:@"name"];
+            NSString *fullcomment = [NSString stringWithFormat:@"%@: %@\n", name, [dict objectForKey:@"comment"]];
+            //NSLog(@"fullcomment = %@", fullcomment);
+            
+            NSMutableAttributedString *oneComment = [[NSMutableAttributedString alloc] initWithString:fullcomment];
+            
+            [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctNameFont range:NSMakeRange(0, [name length])];
+            
+            [oneComment addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[UIColor blackColor].CGColor range:NSMakeRange(0, [name length])];
+            
+            [oneComment addAttribute:(NSString*)kCTFontAttributeName value:(id)ctMainFont range:NSMakeRange([name length], [oneComment length]-[name length])];
+            
+            [astring appendAttributedString:oneComment];
+             
+        }
+         
+        CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)astring);
+        
+        CGSize suggestedSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, CGSizeMake(CD_CONTENT_WIDTH, CGFLOAT_MAX), NULL);
+        
+        //NSLog(@"suggested height is %f", suggestedSize.height);
+        
         CGRect drawRect = CGRectMake(boundsX+CD_NAME_TOP_X, 
-                          commentTopY,
-                          CD_CONTENT_WIDTH,
-                          size_comments.height);
-        [circleDetail.contentString drawInRect:drawRect withFont:mainFont];
+                                     commentTopY,
+                                     CD_CONTENT_WIDTH,
+                                     suggestedSize.height+1);
+        
+        //NSLog(@" x %f y %d width %d height %f", boundsX+CD_NAME_TOP_X, commentTopY, CD_CONTENT_WIDTH, suggestedSize.height);
+        
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+		CGContextSaveGState(ctx);
+
+        //NSLog(@" matrix height %f", drawRect.size.height);
+        
+        CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+        CGContextTranslateCTM(ctx, drawRect.origin.x, drawRect.origin.y);
+        CGContextScaleCTM(ctx, 1.0f, -1.0f);
+        CGContextTranslateCTM(ctx, -drawRect.origin.x, - (drawRect.origin.y + drawRect.size.height));
+        
+        CGMutablePathRef path = CGPathCreateMutable();
+		CGPathAddRect(path, NULL, drawRect);
+				
+		CTFrameRef frame = CTFramesetterCreateFrame(framesetter,CFRangeMake(0,0), path, NULL);
+        
+		CTFrameDraw(frame, ctx);
+        
+        CFRelease(framesetter);
+		CGPathRelease(path);
+		CFRelease(frame);
+		CGContextRestoreGState(ctx);
     }
     
     //that's it

@@ -118,6 +118,9 @@
 		3D0E95F1130CE7F700CB021F /* cirkle-72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D0E95EE130CE7F700CB021F /* cirkle-72x72.png */; };
 		3D5A962B135F9CF100897364 /* CirklePrompt.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A962A135F9CF100897364 /* CirklePrompt.m */; };
 		3D5A962E135FF79900897364 /* CirklePlaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A962D135FF79800897364 /* CirklePlaceView.m */; };
+		3D5A963113621F9200897364 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5A963013621F9100897364 /* CoreText.framework */; };
+		3D5A963313621FC700897364 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5A963213621FC700897364 /* CoreText.framework */; };
+		3D5A963E136235B500897364 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */; };
 		3DC1F714133FACE800CC81AF /* CirkleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F712133FACE600CC81AF /* CirkleViewController.m */; };
 		3DC1F715133FACE800CC81AF /* CirkleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F713133FACE700CC81AF /* CirkleViewController.xib */; };
 		3DC1F71E133FAF6D00CC81AF /* CirkleEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F71D133FAF6C00CC81AF /* CirkleEntryCell.m */; };
@@ -343,6 +346,10 @@
 		3D5A962A135F9CF100897364 /* CirklePrompt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirklePrompt.m; sourceTree = "<group>"; };
 		3D5A962C135FF79700897364 /* CirklePlaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirklePlaceView.h; sourceTree = "<group>"; };
 		3D5A962D135FF79800897364 /* CirklePlaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirklePlaceView.m; sourceTree = "<group>"; };
+		3D5A963013621F9100897364 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		3D5A963213621FC700897364 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		3D5A963C136235A600897364 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Attributes.h"; path = "../../Documents/PracticeApps/OHAttributedLabel/NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
+		3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Attributes.m"; path = "../../Documents/PracticeApps/OHAttributedLabel/NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
 		3DC1F711133FACE500CC81AF /* CirkleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleViewController.h; sourceTree = "<group>"; };
 		3DC1F712133FACE600CC81AF /* CirkleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleViewController.m; sourceTree = "<group>"; };
 		3DC1F713133FACE700CC81AF /* CirkleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CirkleViewController.xib; path = Classes/CirkleViewController.xib; sourceTree = "<group>"; };
@@ -399,6 +406,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D5A963113621F9200897364 /* CoreText.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -410,6 +418,7 @@
 				3A5F346D12A91ADB008E9353 /* AudioToolbox.framework in Frameworks */,
 				3A7A885312E57D6F00076712 /* AddressBook.framework in Frameworks */,
 				3A7A885512E57D7F00076712 /* AddressBookUI.framework in Frameworks */,
+				3D5A963313621FC700897364 /* CoreText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +477,7 @@
 		29B97314FDCFA39411CA2CEA /* kaya-meet */ = {
 			isa = PBXGroup;
 			children = (
+				3D5A963013621F9100897364 /* CoreText.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -490,6 +500,8 @@
 				3A3B20AA130FA20B0069BB29 /* UIImage+RoundedCorner.m */,
 				3A0208DB1303CB5A0017841B /* ImageUtils.h */,
 				3A0208DC1303CB5A0017841B /* ImageUtils.m */,
+				3D5A963C136235A600897364 /* NSAttributedString+Attributes.h */,
+				3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */,
 				3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */,
 				3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */,
 				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
@@ -534,6 +546,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D5A963213621FC700897364 /* CoreText.framework */,
 				3A7A885212E57D6F00076712 /* AddressBook.framework */,
 				3A7A885412E57D7F00076712 /* AddressBookUI.framework */,
 				3AF7B40C1279109C008F83BC /* libsqlite3.0.dylib */,
@@ -1033,6 +1046,7 @@
 				3DDB5287135C9D1900F56B4F /* CirklePickerSheet.m in Sources */,
 				3D5A962B135F9CF100897364 /* CirklePrompt.m in Sources */,
 				3D5A962E135FF79900897364 /* CirklePlaceView.m in Sources */,
+				3D5A963E136235B500897364 /* NSAttributedString+Attributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

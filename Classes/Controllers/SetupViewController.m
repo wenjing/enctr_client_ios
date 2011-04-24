@@ -469,8 +469,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         [DBConnection deleteDBCache] ;
         
         //clear up meetview
-        MeetViewController *mc = [kaya_delegate getAppMeetViewController] ;
-        [mc resetMeets];    // push login view
+        //[mc resetMeets];    // push login view
         //kaya_delegate.selectedTab = TAB_MEETS;
         //kaya_delegate.tabBarController.selectedIndex = TAB_MEETS;
         

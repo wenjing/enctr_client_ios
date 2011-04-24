@@ -32,7 +32,7 @@
         }
         
         //now the user - retain it
-        User *aUser = [[aUserArray objectAtIndex:0] retain];
+        //User *aUser = [[aUserArray objectAtIndex:0] retain];
     }
     
     return self;

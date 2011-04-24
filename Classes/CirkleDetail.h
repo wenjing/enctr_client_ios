@@ -23,7 +23,8 @@
     NSInteger       type;
     User            *user;
     NSMutableArray  *imageUrl;
-    NSMutableString *contentString;
+    NSMutableArray *contentString;
+    CGSize          size;
     float           latitude;
     float           longitude;
 }
@@ -36,9 +37,10 @@
 @property (nonatomic) NSInteger       type;
 @property (nonatomic, retain) User            *user;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
-@property (nonatomic, retain) NSMutableString *contentString;
+@property (nonatomic, retain) NSMutableArray *contentString;
 @property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;
+@property (nonatomic, assign) CGSize size;
 
 - (id)initWithJsonDictionary:(NSDictionary*)dic;
 
