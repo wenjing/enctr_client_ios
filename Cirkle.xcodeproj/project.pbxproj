@@ -120,7 +120,6 @@
 		3D5A962E135FF79900897364 /* CirklePlaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A962D135FF79800897364 /* CirklePlaceView.m */; };
 		3D5A963113621F9200897364 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5A963013621F9100897364 /* CoreText.framework */; };
 		3D5A963313621FC700897364 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5A963213621FC700897364 /* CoreText.framework */; };
-		3D5A963E136235B500897364 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */; };
 		3DC1F714133FACE800CC81AF /* CirkleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F712133FACE600CC81AF /* CirkleViewController.m */; };
 		3DC1F715133FACE800CC81AF /* CirkleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC1F713133FACE700CC81AF /* CirkleViewController.xib */; };
 		3DC1F71E133FAF6D00CC81AF /* CirkleEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC1F71D133FAF6C00CC81AF /* CirkleEntryCell.m */; };
@@ -348,8 +347,6 @@
 		3D5A962D135FF79800897364 /* CirklePlaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirklePlaceView.m; sourceTree = "<group>"; };
 		3D5A963013621F9100897364 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3D5A963213621FC700897364 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		3D5A963C136235A600897364 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Attributes.h"; path = "../../Documents/PracticeApps/OHAttributedLabel/NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
-		3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Attributes.m"; path = "../../Documents/PracticeApps/OHAttributedLabel/NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
 		3DC1F711133FACE500CC81AF /* CirkleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirkleViewController.h; sourceTree = "<group>"; };
 		3DC1F712133FACE600CC81AF /* CirkleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirkleViewController.m; sourceTree = "<group>"; };
 		3DC1F713133FACE700CC81AF /* CirkleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CirkleViewController.xib; path = Classes/CirkleViewController.xib; sourceTree = "<group>"; };
@@ -500,8 +497,6 @@
 				3A3B20AA130FA20B0069BB29 /* UIImage+RoundedCorner.m */,
 				3A0208DB1303CB5A0017841B /* ImageUtils.h */,
 				3A0208DC1303CB5A0017841B /* ImageUtils.m */,
-				3D5A963C136235A600897364 /* NSAttributedString+Attributes.h */,
-				3D5A963D136235B500897364 /* NSAttributedString+Attributes.m */,
 				3A7B496912EEB44600F8AA17 /* EGORefreshTableHeaderView.h */,
 				3A7B496A12EEB44600F8AA17 /* EGORefreshTableHeaderView.m */,
 				3A40570D12A738EB005E7F2B /* MBProgressHUD.h */,
@@ -1046,7 +1041,6 @@
 				3DDB5287135C9D1900F56B4F /* CirklePickerSheet.m in Sources */,
 				3D5A962B135F9CF100897364 /* CirklePrompt.m in Sources */,
 				3D5A962E135FF79900897364 /* CirklePlaceView.m in Sources */,
-				3D5A963E136235B500897364 /* NSAttributedString+Attributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

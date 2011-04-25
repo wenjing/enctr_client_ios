@@ -147,7 +147,7 @@ NSString *KAYAMEET_FORM_BOUNDARY = @"--0xkAyAMeEtB0uNd@rYStRiNg";
     [req setValue:[NSString stringWithFormat:@"%d", contentLength] forHTTPHeaderField:@"Content-Length"];
     [req setHTTPBody:[NSData dataWithBytes:[body UTF8String] length:contentLength]];
   }
-  NSLog(@"post : %@\n%@ \n %@", [req allHTTPHeaderFields], [req HTTPBody], body);
+  //NSLog(@"post : %@\n%@ \n %@", [req allHTTPHeaderFields], [req HTTPBody], body);
   buf = [[NSMutableData data] retain];
   connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
   [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

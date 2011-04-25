@@ -39,7 +39,8 @@
     [imageUrl removeAllObjects];
     [imageUrl release];
     [contentString release];
-    CFRelease(framesetter);
+    if (framesetter!=nil)
+        CFRelease(framesetter);
     [super dealloc];
 }
 
