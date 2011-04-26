@@ -267,7 +267,7 @@
     [titleLabel setText:@"New encounter completed."];
     
 	NSMutableDictionary *param = [NSMutableDictionary dictionary];
-	NSString* query = [foundPeers componentsJoinedByString:@";"];
+	NSString* query = [foundPeers componentsJoinedByString:@","];
 	
 	[param setObject:query forKey:@"devs"];
 	

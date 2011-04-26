@@ -631,6 +631,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             self.navigationItem.leftBarButtonItem.enabled = false;
             
             holder.name = [[NSString alloc] initWithString:nameField.text];
+            //holder.name = [nameField.text stringByReplacingOccurrencesOfString:@"," withString:@"\,"];
             holder.email = [[NSString alloc] initWithString:emailField.text];
             holder.password = [[NSString alloc] initWithString:passwordField.text];
             holder.userId = 0;
