@@ -55,7 +55,7 @@
     
     [userImage clear];
 	userImage.url = [NSURL URLWithString:[user.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	userImage.oid = [NSString stringWithFormat:@"user_%d",user.userId];
+	
 	[delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:userImage waitUntilDone:YES];
 
 	[self setNeedsDisplay];
