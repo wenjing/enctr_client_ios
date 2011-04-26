@@ -665,13 +665,14 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    NSLog(@"Hitting done");
+    //NSLog(@"Hitting done");
     
     //check semicolon
     NSRange range = [textField.text rangeOfString:@":"];
-    if (range.location != NSNotFound) {
+    NSRange rangeb = [textField.text rangeOfString:@";"];
+    if (range.location != NSNotFound || rangeb.location != NSNotFound) {
         //pop an alert and refuse the return key
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Circle name can't contain semicolon \":\"" 
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Circle name can't contain colon \":\" or semicolon \";\"" 
                                                         message:@"Please correct" 
                                                        delegate:nil 
                                               cancelButtonTitle:@"OK" 

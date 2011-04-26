@@ -291,14 +291,15 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         UIAlertView *alert=nil;
         //name
         NSRange range = [nameField.text rangeOfString:@":"];
+        NSRange rangeb = [nameField.text rangeOfString:@";"];
         if ([nameField.text length] < 5 || [nameField.text length] >50) {
             alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have between 5 to 50 characters" 
                                                    message:@"Tip: real names work better"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
                                          otherButtonTitles:nil];
-        } else if (range.location != NSNotFound) {
-            alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain semicolon \":\"" 
+        } else if (range.location != NSNotFound || rangeb.location != NSNotFound) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain colon \":\" or semicolon \";\"" 
                                                        message:@"Tip: real names work better"
                                                       delegate:nil 
                                              cancelButtonTitle:@"OK" 
@@ -356,8 +357,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
                                          otherButtonTitles:nil];
             } else {
                 NSRange range = [textField.text rangeOfString:@":"];
-                if (range.location != NSNotFound) {
-                    alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain any semicolon \":\"" 
+                NSRange rangeb = [textField.text rangeOfString:@";"];
+                if (range.location != NSNotFound || rangeb.location != NSNotFound) {
+                    alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain any colon \":\" or semicolon \";\"" 
                                                        message:@"Tip: real names work better"
                                                       delegate:nil 
                                              cancelButtonTitle:@"OK" 

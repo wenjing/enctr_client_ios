@@ -170,8 +170,9 @@
         NSLog(@"creating new circle: %@", circleName);
         // validate
         NSRange range = [circleName rangeOfString:@":"];
-        if (range.location != NSNotFound) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Name can't contain semicolon \":\"" 
+        NSRange rangeb = [circleName rangeOfString:@";"];
+        if (range.location != NSNotFound || rangeb.location != NSNotFound) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Name can't contain colon \":\" or semicolon \";\"" 
                                                             message:@"Please try again"
                                                            delegate:nil 
                                                   cancelButtonTitle:@"OK" 
