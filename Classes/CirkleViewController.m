@@ -32,7 +32,8 @@
 
 - (void)dealloc
 {
-    [listCircles removeAllObjects];
+    if (listCircles)
+        [listCircles removeAllObjects];
     [listCircles release];
     if (query) {
         [query clear];
@@ -53,7 +54,8 @@
 // called by logout to clear 
 // to-do: do i need to consider that a circleDetail view may be on??
 - (void)clear {
-    [listCircles removeAllObjects];
+    if (listCircles)
+        [listCircles removeAllObjects];
     [self.tableView reloadData];
 }
 

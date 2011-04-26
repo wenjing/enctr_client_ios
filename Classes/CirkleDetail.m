@@ -120,7 +120,10 @@
             if (userObject!=nil) {
                 //NSLog(@"Read a user %@", userObject.name);
                 [imageUrl addObject:[userObject.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                [nameList appendFormat:@"%@, ", userObject.name];
+                if (i==([userList count]-1) )
+                    [nameList appendFormat:@"%@", userObject.name];
+                else
+                    [nameList appendFormat:@"%@, ", userObject.name];
                 
             }
         }

@@ -601,7 +601,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         NSString *picURL = user.profileImageUrl ;
         if ((picURL != (NSString *) [NSNull null]) && (picURL.length !=0)) {
             user_image.url = [NSURL URLWithString:[picURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            user_image.oid = [NSString stringWithFormat:@"user_%d",user.userId];
             kaya_meetAppDelegate *delg = [kaya_meetAppDelegate getAppDelegate];
             [delg.objMan performSelectorOnMainThread:@selector(manage:) withObject:user_image waitUntilDone:YES];
         } else {
