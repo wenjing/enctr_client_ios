@@ -610,8 +610,16 @@
 
 - (void)sessionManagerDidUpdate:(NSString *)peerName {
 	NSLog(@"sessionManagerDidUpdate: new peer %@\n", peerName);
+    BOOL found = false;
+    for (NSString *peer in foundPeers) {
+        if ([peer rangeOfString:peerName].location != NSNotFound) {
+            found = true;
+            break;
+        }
+    }
+    
 	//add new peer only if it does not already know
-	if (![foundPeers containsObject:peerName]) {
+	if (!found) {
         NSTimeInterval dtime = [NSDate timeIntervalSinceReferenceDate];
         NSString *fullstring = [NSString stringWithFormat:@"%@:%lld", peerName, (uint64_t)(dtime)];
         
