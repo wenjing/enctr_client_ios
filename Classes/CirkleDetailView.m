@@ -447,7 +447,7 @@
         // Draw name list string
         drawRect = CGRectMake(boundsX+CD_NAME_TOP_X, CD_NAME_TOP_Y, CD_CONTENT_WIDTH, size_names.height);
     
-        [circleDetail.nameString drawInRect:drawRect withFont:mainFont];
+        [circleDetail.nameList drawInRect:drawRect withFont:mainFont];
     
         // Draw image icon
         if ((circleDetail.type == CD_TYPE_ENCOUNETR) && ([circleDetail.imageUrl count] > 1)) {

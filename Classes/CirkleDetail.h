@@ -24,6 +24,7 @@
     NSInteger       type;
     User            *user;
     NSMutableArray  *imageUrl;
+    NSMutableString *nameList;
     NSMutableAttributedString *contentString;
     CTFramesetterRef framesetter;
     CGSize          size;
@@ -39,6 +40,7 @@
 @property (nonatomic) NSInteger       type;
 @property (nonatomic, retain) User            *user;
 @property (nonatomic, retain) NSMutableArray  *imageUrl;
+@property (nonatomic, retain) NSMutableString *nameList;
 @property (nonatomic, retain) NSMutableAttributedString *contentString;
 @property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;

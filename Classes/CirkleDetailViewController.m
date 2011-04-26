@@ -525,7 +525,7 @@
     
     if (circleDetail.type == CD_TYPE_ENCOUNETR) {
         drawRect = CGRectMake(CD_NAME_TOP_X, 0, CD_CONTENT_WIDTH, 9999.0);
-        varString = circleDetail.nameString;
+        varString = circleDetail.nameList;
     
         size = [varString sizeWithFont:mainFont 
                        constrainedToSize:drawRect.size];

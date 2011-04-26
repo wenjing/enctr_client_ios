@@ -19,6 +19,7 @@
 @synthesize type;
 @synthesize user;
 @synthesize imageUrl;
+@synthesize nameList;
 @synthesize contentString;
 @synthesize latitude;
 @synthesize longitude;
@@ -38,6 +39,7 @@
     [user release];
     [imageUrl removeAllObjects];
     [imageUrl release];
+    [nameList release];
     [contentString release];
     if (framesetter!=nil)
         CFRelease(framesetter);
@@ -102,6 +104,8 @@
     [imageUrl addObject:[NSString stringWithString:mapurl]];
     
     //get people image url
+    nameList = [[NSMutableString alloc] init];
+    
     NSArray *userList = (NSArray *)[dic objectForKey:@"users"];
     if ([userList isKindOfClass:[NSArray class]]) {
         for (int i=0; i<[userList count]; i++) {
@@ -116,6 +120,8 @@
             if (userObject!=nil) {
                 //NSLog(@"Read a user %@", userObject.name);
                 [imageUrl addObject:[userObject.profileImageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                [nameList appendFormat:@"%@, ", userObject.name];
+                
             }
         }
     }
