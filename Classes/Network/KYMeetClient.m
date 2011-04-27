@@ -205,9 +205,14 @@ NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com";
 {
   needAuth = true;
   request = KAYAMEET_REQUEST_POST_MEET;
+    kaya_meetAppDelegate *appDelegate = [kaya_meetAppDelegate getAppDelegate];
+    
   NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                         message, @"content", nil];
-
+    [dic setObject:[NSString stringWithFormat:@"%lf",appDelegate.latitude]  forKey:@"lat" ];
+    [dic setObject:[NSString stringWithFormat:@"%lf",appDelegate.longitude] forKey:@"lng"];
+    [dic setObject:[NSString stringWithFormat:@"%f", appDelegate.lerror]    forKey:@"lerror"];
+    
   //[dic setObject:[NSString stringWithFormat:@"test %ld",meetId] forKey:@"testid"];
   NSMutableData *data = [NSMutableData data];
   // When the server can support Data transfer
