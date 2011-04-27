@@ -91,9 +91,9 @@
     imageUrl = [[NSMutableArray alloc] init];
     
     //get map image url
-    if ( [dic objectForKey:@"lng"]!= nil)
+    if ( [dic objectForKey:@"lng"]!= nil && [dic objectForKey:@"lng"]!= [NSNull null])
         longitude = [[dic objectForKey:@"lng"]    floatValue] ;
-    if ( [dic objectForKey:@"lat"]!=nil)
+    if ( [dic objectForKey:@"lat"]!=nil && [dic objectForKey:@"lat"]!= [NSNull null])
         latitude = [[dic objectForKey:@"lat"]    floatValue] ;
     
     //to-do: cleanup
@@ -214,10 +214,10 @@
     }
     
     //NSLog(@"name %@",nameString);
-    // these return nil if non there
-    if ( [dic objectForKey:@"lng"]!= nil)
+    // these return nil if non there, but server sends a Json object with "null" instead
+    if ( [dic objectForKey:@"lng"]!= nil && [dic objectForKey:@"lng"]!= [NSNull null])
         longitude = [[dic objectForKey:@"lng"]    floatValue] ;
-    if ( [dic objectForKey:@"lat"]!=nil)
+    if ( [dic objectForKey:@"lat"]!=nil && [dic objectForKey:@"lat"]!= [NSNull null])
         latitude = [[dic objectForKey:@"lat"]    floatValue] ;
 
     //init imageUrl

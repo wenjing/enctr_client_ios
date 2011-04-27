@@ -110,8 +110,14 @@
             NSString *actType = [act objectForKey:@"type"];
             if ([actType isEqualToString:@"encounter"]) {
                 //read lat and lng
-                float longitude        = [[act objectForKey:@"lng"]    floatValue] ;
-                float latitude         = [[act objectForKey:@"lat"]    floatValue] ;
+                float longitude;
+                if ([act objectForKey:@"lng"]!= nil && [act objectForKey:@"lng"]!= [NSNull null])
+                    longitude = [[act objectForKey:@"lng"]    floatValue] ;
+                
+                float latitude;
+                if ([act objectForKey:@"lat"]!= nil && [dic objectForKey:@"lat"]!= [NSNull null])
+                    latitude = [[act objectForKey:@"lat"]    floatValue] ;
+                
                 // get url, to-do: cleanup
                 NSString *headmapurl = @"http://maps.google.com/maps/api/staticmap?zoom=11&size=100x100&maptype=roadmap&format=png32&markers=color:green|size:small";
                 
