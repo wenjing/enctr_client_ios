@@ -8,6 +8,9 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "LoginViewController.h"
+//#import "TwitterViewController.h"
+#import "FBConnect.h"
+#import "RegisterViewController.h"
 #import "MeetViewController.h"
 #import "MessageViewController.h"
 #import "LocationManager.h"
@@ -19,14 +22,20 @@ typedef enum {
     TAB_SETUP,
     TAB_MEETS,
     TAB_PLACES,
+    TAB_MAX,
 } TAB_ITEM;
 
 
-@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UIAccelerometerDelegate/*, MKReverseGeocoderDelegate*/> {
+@interface kaya_meetAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, UIAccelerometerDelegate, FBSessionDelegate, FBRequestDelegate /*, MKReverseGeocoderDelegate*/ > {
     IBOutlet	UIWindow			*window;
     IBOutlet	UITabBarController  *tabBarController;
 	
 	LoginViewController   *loginView;
+//    TwitterViewController *twitterView;
+    Facebook                *facebook;
+    FBRequest               *fbUser;
+    FBRequest               *fbFriends;
+    RegisterViewController *registerView;
 	MessageViewController *messageView;
 	NSString			*screeName;
 	int					 selectedTab;
@@ -49,6 +58,10 @@ typedef enum {
 @property (nonatomic, readonly) IBOutlet UIWindow *window;
 @property (nonatomic, assign) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, assign) LoginViewController    *loginView;
+//@property (nonatomic, assign) TwitterViewController  *twitterView;
+@property (nonatomic, retain) Facebook *facebook;
+@property (nonatomic, retain) FBRequest *fbUser;
+@property (nonatomic, retain) FBRequest *fbFriends;
 @property (nonatomic, assign) MessageViewController  *messageView;
 @property (nonatomic, retain) NSString* screenName;
 @property (nonatomic, assign) int selectedTab;
@@ -62,6 +75,8 @@ typedef enum {
 - (void)openLoginView;
 - (void)postInit;
 - (void)closeLoginView:(NSInteger)selectTab;
+- (void)openRegisterView;
+- (void)closeRegisterView;
 - (void) getLocation;
 - (UINavigationController*)getAppTabController:(int)selectTab;
 - (void)messageViewAnimationDidFinish ;

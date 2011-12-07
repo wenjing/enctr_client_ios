@@ -22,7 +22,7 @@
 @synthesize errorCode;
 @synthesize toBeRetried;
 
-NSString *KAYAMEET_SITE_NAME = @"http://www.kayameet.com";
+NSString *KAYAMEET_SITE_NAME = @"http://api.enctr.com";
 
 //NSString *KAYAMEET_SITE_NAME = @"http:/0.0.0.0:3000" ;
 

@@ -2,7 +2,7 @@
 //  SetupViewController.m
 //
 //  Created by Jun Li on 11/8/10.
-//
+//f
 #import <QuartzCore/QuartzCore.h>
 #import "SetupViewController.h"
 #import "kaya_meetAppDelegate.h"
@@ -24,7 +24,7 @@ enum {
 
 // account section
 enum {
-    ROW_USERNAME,
+    ROW_NAME,
     ROW_EMAIL,
     ROW_PASSWORD,
     NUM_ROWS_ACCOUNT,
@@ -65,7 +65,7 @@ static int sNumRows[NUM_OF_SECTION] = {
 //    NUM_ROWS_PROFILE,
 //    NUM_ROWS_CONNECTION,
 };
-
+/*
 static NSString * sSectionHeader [NUM_OF_SECTION] = {
     @"Account",
     @"User Image",
@@ -73,7 +73,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 //    @"Profile",
 //    @"Connection",
 };
-
+*/
 
 @implementation SetupViewController
 @synthesize navigation;
@@ -91,6 +91,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     navigation = self.navigationController ;
     self.navigationItem.title = @"Settings";
+    
+    UIImageView *logoBarView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo-bar.png"]];
+    self.tableView.tableHeaderView = logoBarView;
     
     holder = [[User alloc] init];
     
@@ -113,7 +116,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return NUM_OF_SECTION;
+        return NUM_OF_SECTION;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -123,7 +126,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection: (NSInteger)section
 {
-    return sSectionHeader[section];
+    return nil; //sSectionHeader[section];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -149,7 +152,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     switch (indexPath.section) {
         case SECTION_ACCOUNT:
-            if (indexPath.row == ROW_USERNAME) {
+            if (indexPath.row == ROW_NAME) {
                 cell = Name;
             }
             else if (indexPath.row == ROW_EMAIL){
@@ -180,9 +183,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             if (indexPath.row == ROW_PHONE) {
                 cell = Phone;
             }
-            else if (indexPath.row == ROW_LOCATION){
-                cell = Location;
-            }
             else {
                 cell = Url;
             }
@@ -194,7 +194,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             
         default: // SECTION_CONNECTION
             if (indexPath.row == ROW_FACEBOOK) {
-                cell = Facebook;
+                cell = Facebookcell;
             }
             else if (indexPath.row == ROW_TWITTER){
                 cell = Twitter;
@@ -216,9 +216,9 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     
     switch (indexPath.section) {
         case SECTION_ACCOUNT:
-            if (indexPath.row == ROW_USERNAME) {
+            if (indexPath.row == ROW_NAME) {
                 cell = Name;
-            }
+            } 
             else if (indexPath.row == ROW_EMAIL){
                 cell = Email;
             }
@@ -232,9 +232,6 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         case SECTION_PROFILE:
             if (indexPath.row == ROW_PHONE) {
                 cell = Phone;
-            }
-            else if (indexPath.row == ROW_LOCATION){
-                cell = Location;
             }
             else {
                 cell = Url;
@@ -270,7 +267,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             
         default: // SECTION_CONNECTION
             if (indexPath.row == ROW_FACEBOOK) {
-                cell = Facebook;
+                cell = Facebookcell;
             }
             else if (indexPath.row == ROW_TWITTER){
                 cell = Twitter;
@@ -281,36 +278,53 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
+/*
+ * textField is current text before the last character is done to it, range is where the current editing is
+ * (it could be in the middle of the string, and string is the new char.
+ */
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    
+    if (textField == nameField) {
+        return (newLength > 50) ? NO : YES;
+    } else if (textField == emailField) {
+        return (newLength > 320) ? NO : YES; //RFC2821, RFC2822
+    }
+        return (newLength > 40) ? NO : YES;
+}
 
 // return button hit
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //NSLog(@"textFieldShouldReturn");
+    
     if(signupMode) {
         //check required fields are properly filled - one at a time
         UIAlertView *alert=nil;
+        
         //name
-        NSRange range = [nameField.text rangeOfString:@":"];
+        NSRange rangea = [nameField.text rangeOfString:@":"];
         NSRange rangeb = [nameField.text rangeOfString:@";"];
-        if ([nameField.text length] < 5 || [nameField.text length] >50) {
-            alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have between 5 to 50 characters" 
-                                                   message:@"Tip: real names work better"
-                                                  delegate:nil 
-                                         cancelButtonTitle:@"OK" 
-                                         otherButtonTitles:nil];
-        } else if (range.location != NSNotFound || rangeb.location != NSNotFound) {
-            alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain colon \":\" or semicolon \";\"" 
-                                                       message:@"Tip: real names work better"
+        
+        if ([nameField.text length] < 3) {
+            alert = [[UIAlertView alloc] initWithTitle:@"A name is required" 
+                                               message:@"Enter your commonly used name so your friends can recognize you"
+                                              delegate:nil 
+                                     cancelButtonTitle:@"OK" 
+                                     otherButtonTitles:nil];
+        }  
+        else if (rangea.location != NSNotFound || rangeb.location != NSNotFound) {
+            alert = [[UIAlertView alloc] initWithTitle:@"Sorry, names cannot contain colon \":\" or semicolon \";\"" 
+                                                       message:@"Enter your commonly used name"
                                                       delegate:nil 
                                              cancelButtonTitle:@"OK" 
                                              otherButtonTitles:nil];
         }
-
         //email
         else if ([emailField.text length] < 3 || 
             ![self validateEmail:emailField.text]) {
             
-            alert = [[UIAlertView alloc] initWithTitle:@"Email is not in correct format, or missing" 
+            alert = [[UIAlertView alloc] initWithTitle:@"Email address is not in correct format" 
                                                message:@"Check your email field again"
                                               delegate:nil 
                                      cancelButtonTitle:@"OK" 
@@ -320,7 +334,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         //password
         else if ([passwordField.text length] < 6 ||
             [passwordField.text length] > 40) {
-            alert = [[UIAlertView alloc] initWithTitle:@"Password needs to have at least 6 characters and no more than 40" 
+            alert = [[UIAlertView alloc] initWithTitle:@"Password should have at least 6 characters and no more than 40" 
                                                message:@"Check your password field again"
                                               delegate:nil 
                                      cancelButtonTitle:@"OK" 
@@ -346,21 +360,22 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
     if ((![user.name isEqualToString:nameField.text]) ||
         (![user.email isEqualToString:emailField.text]) ||
         (![password isEqualToString:passwordField.text])) {
+        
         //validate again one at a time
         UIAlertView *alert=nil;
         if (![user.name isEqualToString:nameField.text]) {
-            if ([nameField.text length] < 5) {
-                alert = [[UIAlertView alloc] initWithTitle:@"Name is required and should have between 5 to 50 characters" 
-                                                   message:@"Tip: real names work better"
+            if ([nameField.text length] < 1) {
+                alert = [[UIAlertView alloc] initWithTitle:@"A name is required" 
+                                                   message:@"Enter your commonly used name so your friends can recognize you"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
                                          otherButtonTitles:nil];
             } else {
-                NSRange range = [textField.text rangeOfString:@":"];
-                NSRange rangeb = [textField.text rangeOfString:@";"];
-                if (range.location != NSNotFound || rangeb.location != NSNotFound) {
-                    alert = [[UIAlertView alloc] initWithTitle:@"Names can't contain any colon \":\" or semicolon \";\"" 
-                                                       message:@"Tip: real names work better"
+                NSRange rangea = [nameField.text rangeOfString:@":"];
+                NSRange rangeb = [nameField.text rangeOfString:@";"];
+                if (rangea.location != NSNotFound || rangeb.location != NSNotFound) {
+                    alert = [[UIAlertView alloc] initWithTitle:@"Names cannot contain any colon \":\" or semicolon \";\"" 
+                                                       message:@"Enter your commonly used name"
                                                       delegate:nil 
                                              cancelButtonTitle:@"OK" 
                                              otherButtonTitles:nil];
@@ -372,7 +387,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             if ([emailField.text length] < 3 || 
                 ![self validateEmail:emailField.text]) {
                 
-                alert = [[UIAlertView alloc] initWithTitle:@"Email is not in correct format, or missing" 
+                alert = [[UIAlertView alloc] initWithTitle:@"Email address is not in correct format" 
                                                    message:@"Check your email field again"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
@@ -383,7 +398,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         else if (![password isEqualToString:passwordField.text]) {
             if ([passwordField.text length] < 6 ||
                 [passwordField.text length] > 40) {
-                alert = [[UIAlertView alloc] initWithTitle:@"Passwords should have at least 6 characters and no more than 40" 
+                alert = [[UIAlertView alloc] initWithTitle:@"Password should have at least 6 characters and no more than 40" 
                                                    message:@"Check your password field again"
                                                   delegate:nil 
                                          cancelButtonTitle:@"OK" 
@@ -494,10 +509,10 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         
         //this is a little more complicated - we will notify user and treat it as a cancel
         //sender must make sure nothing ever happened
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops, unexpected problem. Please try later." 
-                                                        message:nil 
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sorry. It did not succeed." 
+                                                        message:@"Your email address may be already in use. Check and try again." 
                                                        delegate:nil 
-                                              cancelButtonTitle:@"Bummer" 
+                                              cancelButtonTitle:@"OK" 
                                               otherButtonTitles:nil];
         [alert show];
         [alert release];
@@ -584,7 +599,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         nameField.text  = @"";
         emailField.text = @"";
         passwordField.text = @"";
-        user_image.image = nil;
+        user_image.image = [UIImage imageNamed:@"unknown-person.png"];
     } else {
         // reset shown text
         user = [User userWithId:[[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId" ]];
@@ -592,7 +607,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
         NSLog(@"init: %d %@ %@", user.userId, user.name, user.email);
         nameField.text  = user.name;
         emailField.text = user.email;
-        locationField.text = user.location;
+        //locationField.text = user.location;
         passwordField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"password" ];
         phoneField.text = (NSString *) [[NSUserDefaults standardUserDefaults] objectForKey:@"SBFormattedPhoneNumber"]; // Will return null in simulator!
     
@@ -647,7 +662,7 @@ static NSString * sSectionHeader [NUM_OF_SECTION] = {
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Some required field not filled" 
-                                                            message:@"Will provide better feedback later"
+                                                            message:@""
                                                            delegate:nil 
                                                   cancelButtonTitle:@"OK" 
                                                   otherButtonTitles:nil];

@@ -11,6 +11,7 @@
 #import "User.h"
 #import "CirkleViewController.h"
 #import "SetupViewController.h"
+#import "RegisterViewController.h"
 
 @implementation LoginViewController
 
@@ -36,17 +37,17 @@
 	password_field.text = pass;
     
     // Create signup button
-    UIButton *signupButton = [[UIButton alloc] initWithFrame:CGRectMake(107.0f, 331.0f, 106.0f, 37.0f)];
+    UIButton *signupButton = [[UIButton alloc] initWithFrame:CGRectMake(107.0f, 401.0f, 106.0f, 47.0f)];
     
     [signupButton setBackgroundImage:[[UIImage imageNamed:@"green-button-sm.png"] stretchableImageWithLeftCapWidth:12.0 topCapHeight:0.0] forState:UIControlStateNormal];
     
     signupButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     signupButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     
-    [signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
+    [signupButton setTitle:@"Sign up" forState:UIControlStateNormal];
     [signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    signupButton.titleLabel.font = [UIFont fontWithName:@"Tw Cen MT Bold" size:18.0];
     
     [self.view addSubview:signupButton];
     
@@ -120,8 +121,9 @@
 - (IBAction)signup:(id)sender
 {
     //NSLog(@"sign up button clicked");
-    [self dismissModalViewControllerAnimated:true];
-    [[kaya_meetAppDelegate getAppDelegate] closeLoginView:TAB_SETUP];
+    [self dismissModalViewControllerAnimated:NO]; //animated will 'block' the next modal view!!
+    
+    [[kaya_meetAppDelegate getAppDelegate] closeLoginView:TAB_MAX];
 }
 
 - (void) saveSettings

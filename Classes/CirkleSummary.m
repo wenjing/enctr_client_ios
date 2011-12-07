@@ -80,7 +80,9 @@
         }
     }
     
-    score = [[dic objectForKey:@"relation_score"] intValue];
+    //BUG: server sometimes not returning valid value
+    
+    score = 2; //[[dic objectForKey:@"relation_score"] intValue];
     
     //user = [[dic objectForKey:@"user"] retain]; //we don't use this anymore
     NSString *urlString = [[dic objectForKey:@"image"] retain];

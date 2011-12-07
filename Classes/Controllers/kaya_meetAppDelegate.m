@@ -25,6 +25,9 @@
 
 @implementation kaya_meetAppDelegate
 
+@synthesize facebook;
+@synthesize fbUser;
+@synthesize fbFriends;
 @synthesize window;
 @synthesize tabBarController;
 @synthesize screenName;
@@ -39,29 +42,42 @@
 #pragma mark Application lifecycle
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {   
     
     // Override point for customization after application launch.
 
-  [self initializeUserDefaults];
-  BOOL forceCreate = [[NSUserDefaults standardUserDefaults] boolForKey:@"clearLocalCache"];
+    facebook = [[Facebook alloc] initWithAppId:@"333980376617116" andDelegate:self];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+    if (![facebook isSessionValid]) {
+        // temporily turn this off so i can baseline and check in, push to github and restart as k2.
+       // [facebook authorize:nil];
+    }
+    
+    [self initializeUserDefaults];
+    BOOL forceCreate = [[NSUserDefaults standardUserDefaults] boolForKey:@"clearLocalCache"];
     [DBConnection createEditableCopyOfDatabaseIfNeeded:forceCreate];
     [DBConnection getSharedDatabase];
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"clearLocalCache"];
     
-  NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
-  NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
-  NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+    NSString *prevusername = [[NSUserDefaults standardUserDefaults] stringForKey:@"prevusername"];
+    NSString *password = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
     
-  uint64_t  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];        
+    uint64_t  user_id = [[NSUserDefaults standardUserDefaults] integerForKey:@"KYUserId"];        
     
     if (prevusername != nil && [username caseInsensitiveCompare:prevusername] != NSOrderedSame) {
-    // delete other user's DB data
+        // delete other user's DB data
         [DBConnection deleteDBCache];
     }
 
-  messageView = nil ;
-  objMan                = nil ;
+    messageView = nil ;
+    objMan      = nil ;
     
     cachedImages = [[NSMutableArray alloc] initWithCapacity:10];
     
@@ -77,29 +93,29 @@
     [cachedImages addObject:[UIImage imageNamed:@"invitation_icon.png"]];
 
     /* move this to after login is done, otherwise the circle view doesn't know who
-  selectedTab = TAB_CIRCLES;
-    tabBarController.selectedIndex = selectedTab;
+     selectedTab = TAB_CIRCLES;
+     tabBarController.selectedIndex = selectedTab;
      */
-  tabBarController.delegate = self ;
-  [window addSubview:tabBarController.view];
+    tabBarController.delegate = self ;
+    [window addSubview:tabBarController.view];
 
-    
+#if 1    
     // login if needed.
 
-  if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
-    [self openLoginView];
-  }
-  else if ( [User userWithId:user_id] == nil ) {
-    [self openLoginView];
-  }
-  else {
+    if ([username length] == 0 || [password length] == 0 ||  user_id == 0 ) {
+        [self openLoginView];
+    }
+    else if ( [User userWithId:user_id] == nil ) {
+        [self openLoginView];
+    }
+    else {
         // no login needed, load tab
         selectedTab = TAB_CIRCLES;
         tabBarController.selectedIndex = selectedTab;
                 
-    [self postInit];
-  }
-
+        [self postInit];
+    }
+#endif
   // turn on this for on phone logging
 #if 0   
 #if TARGET_IPHONE_SIMULATOR == 0
@@ -110,9 +126,98 @@
 #endif
 #endif
 
-  [window makeKeyAndVisible];
+    [window makeKeyAndVisible];
     return YES;
 }
+
+// Pre 4.2 support
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [facebook handleOpenURL:url]; 
+}
+
+// For 4.2+ support
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [facebook handleOpenURL:url]; 
+}
+
+//fb authentication delegates, aka fbSessionDelegate
+- (void)fbDidLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
+    // get information about the currently logged in user
+    fbUser = [facebook requestWithGraphPath:@"me" andDelegate:self];
+    
+    // get the logged-in user's friends
+    fbFriends = [facebook requestWithGraphPath:@"me/friends" andDelegate:self];
+
+}
+
+- (void)fbDidNotLogin:(BOOL)cancelled {
+    if (cancelled) {
+        NSLog(@"Facebook login failed because user declined");
+    } else {
+        NSLog(@"Facebook login failed. Mistyped? Try again.");
+    }
+}
+
+- (void)fbDidLogout {
+    NSLog(@"User logout through Facebook");
+}
+
+//FBRequestDelegate
+
+- (void)requestLoading:(FBRequest *)request {
+    if (request == self.fbUser) {
+        NSLog(@"user requestLoading");
+    } else if (request == self.fbFriends) {
+        NSLog(@"friend list requestLoading");
+    }
+}
+
+- (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response{
+    
+    if (request == self.fbUser) {
+        NSLog(@"user request didReceiveResponse");
+    } else if (request == self.fbFriends) {
+        NSLog(@"friend list request didReceiveResponse");
+    }
+}
+
+- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
+    if (request == self.fbUser) {
+        NSLog(@"user request didFailWithError %@", error);
+    } else if (request == self.fbFriends) {
+        NSLog(@"friend list request didFailWithError %@", error);
+    }
+}
+
+- (void)request:(FBRequest *)request didLoad:(id)result {
+    if (request == self.fbUser) {
+        // read logged-on user info
+        NSLog(@"user didLoad: %@", result);
+        if (![result isKindOfClass:[NSDictionary class]]) {
+            NSLog(@"Bad format fbUser");
+            // what to do - same as error
+            return;
+        }
+        NSString *username = [result objectForKey:@"name"];
+        NSString *email = [result objectForKey:@"email"];
+        NSString *userid = [result objectForKey:@"id"];
+        
+        NSLog(@"name %@ email %@ id %@",username, email, userid);
+    } else if (request == self.fbFriends) {
+        // read friends of logged-on user
+        //if ([result isKindOfClass:[NSData class]])
+        {
+            NSLog(@"friend list didLoad: %@", result);
+        }
+    }
+}
+
 
 - (void)initializeUserDefaults
 {
@@ -120,7 +225,7 @@
                          @"",                             @"username",
                          @"",                             @"password",
                          @"",                             @"name",
-             [NSNumber numberWithInt:0],      @"KYUserId",
+                         [NSNumber numberWithInt:0],      @"KYUserId",
                          [NSNumber numberWithBool:false], @"clearLocalCache",
                          [NSNumber numberWithBool:true],  @"loadAllTabOnLaunch",
                          [NSNumber numberWithInt:5],      @"autoRefresh",
@@ -143,20 +248,31 @@
 
 - (void)openLoginView 
 {
-  if( loginView ) 
+    //test twitter oauth login
+//    initialized = false;
+//    twitterView = [[[TwitterViewController alloc] initWithNibName:nil bundle:[NSBundle mainBundle]] autorelease];
+//    UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
+//    [nav presentModalViewController:twitterView animated:YES];
+//    return;
+    // skipped for test
+    
+    if( loginView ) 
         return ;
     
-  initialized = false;
-  loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];    
-    UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
-    [nav presentModalViewController:loginView animated:YES];
+    initialized = false;
+    loginView = [[[LoginViewController alloc] initWithNibName:@"LoginView" bundle:[NSBundle mainBundle]] autorelease];    
+    UINavigationController* nav2 = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
+    [nav2 presentModalViewController:loginView animated:YES];
 }
 
 // the loginViewController calls this when login succeeded or to sign up
 - (void)closeLoginView:(NSInteger)selectTab
 {
     loginView = nil;
-    
+    if (selectTab==TAB_MAX) {
+        [self openRegisterView];
+        return;
+    }
     selectedTab = selectTab;
     tabBarController.selectedIndex = selectedTab;
     
@@ -164,6 +280,32 @@
   {
     [self postInit];
   }
+
+}
+
+- (void)openRegisterView
+{
+    if (registerView) {
+        return;
+    }
+    registerView = [[[RegisterViewController alloc] initWithNibName:@"RegisterViewController" bundle:[NSBundle mainBundle]] autorelease]; 
+    
+    UINavigationController* nav = (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
+    [nav presentModalViewController:registerView animated:YES];
+    
+}
+
+- (void)closeRegisterView
+{
+    registerView = nil;
+    
+    selectedTab = TAB_CIRCLES;
+    tabBarController.selectedIndex = selectedTab;
+    
+    if ( !initialized )
+    {
+        [self postInit];
+    }
 
 }
 

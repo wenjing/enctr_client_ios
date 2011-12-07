@@ -20,12 +20,12 @@
   IBOutlet UITableViewCell*     Name;
   IBOutlet UITableViewCell*     Email;
   IBOutlet UITableViewCell*     Password;
-    IBOutlet UITableViewCell*   Logout;
+  IBOutlet UITableViewCell*     Logout;
   IBOutlet UITableViewCell*     Location;
   IBOutlet UITableViewCell*     Url;
   IBOutlet UITableViewCell*     Phone;
-  IBOutlet UITableViewCell*   Image;
-  IBOutlet UITableViewCell*     Facebook;
+  IBOutlet UITableViewCell*     Image;
+  IBOutlet UITableViewCell*     Facebookcell;
   IBOutlet UITableViewCell*     Twitter;
     
   IBOutlet UITextField*         nameField;
